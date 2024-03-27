@@ -1,11 +1,15 @@
-import { LitElement, html } from 'lit';
+import { LitElement, css, html } from 'lit';
 
 /**
  * The complete app, don't remove this!
  */
 export class GreenifyApp extends LitElement {
-  static get properties() {
-  }
+  static styles = [
+    css`
+      h1 {
+        color: green;
+      }
+    `];
 
   constructor() {
     super()
