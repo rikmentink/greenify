@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Lit
+node_modules/
+.wireit
+/temp
+/scripts/check-size-out.md
