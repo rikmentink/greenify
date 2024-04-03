@@ -1,0 +1,64 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Build backend
+        run: mvn -B verify -D spring.profiles.active=ci pitest:mutationCoverage
+    
+      - name: Save repository name
+        run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ env.REPOSITORY_NAME }}-reports
+          path: |
+            target/site/jacoco/
+            target/pit-reports/
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Save Azure app name
+        run: echo "APP_NAME=$(if [ "${{ github.event_name }}" = "pull_request" ]; then echo 'greenify-client-staging'; else echo 'greenify-client-production'; fi)" >> $GITHUB_ENV    
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.APP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: |
+            dist:dist
+            target:target
