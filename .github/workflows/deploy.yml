@@ -14,8 +14,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: client/
+
+      - name: Change directory to frontend
+        run: cd client
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -39,8 +40,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          path: server/
+
+      - name: Change directory to backend
+        run: cd server
 
       - name: Setup JDK
         uses: actions/setup-java@v3
