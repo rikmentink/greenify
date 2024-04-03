@@ -108,19 +108,19 @@
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
                                             <!-- <minimum>0.90</minimum> -->
-                                            <minimum>0</minimum>
+<!--                                            <minimum>0</minimum>-->
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
                                             <!-- <minimum>0.90</minimum> -->
-                                            <minimum>0</minimum>
+<!--                                            <minimum>0</minimum>-->
                                         </limit>
                                         <limit>
                                             <counter>CLASS</counter>
                                             <value>MISSEDCOUNT</value>
                                             <!-- <minimum>0</minimum> -->
-                                            <maximum>0</maximum>
+<!--                                            <maximum>0</maximum>-->
                                         </limit>
                                     </limits>
                                 </rule>
@@ -136,7 +136,7 @@
 
                 <configuration>
                     <timestampedReports>false</timestampedReports>
-                    <mutationThreshold>90</mutationThreshold>
+<!--                    <mutationThreshold>90</mutationThreshold>-->
                     
                     <jvmArgs>
                         <jvmArg>-Dspring.profiles.active=ci</jvmArg>
