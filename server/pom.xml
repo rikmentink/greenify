@@ -128,17 +128,6 @@
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <includes>
-                        <include>**/trainer/application/*</include>
-                        <include>**/trainer/domain/*</include>
-                        <include>**/trainer/domain/converter/*</include>
-                        <include>**/words/application/*</include>
-                        <include>**/words/domain/*</include>
-                        <include>**/words/domain/*</include>
-                        <include>**/words/presentation/*</include>
-                    </includes>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.pitest</groupId>
@@ -152,6 +141,10 @@
                     <jvmArgs>
                         <jvmArg>-Dspring.profiles.active=ci</jvmArg>
                     </jvmArgs>
+
+                    <targetClasses>
+                        <param>nl.hu.greenify.*</param>
+                    </targetClasses>
                 </configuration>
 
                 <dependencies>
