@@ -9,28 +9,39 @@ on:
       - master
 
 jobs:
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '14'
 
-      - name: Install frontend dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Build frontend
         run: npm run build
+    
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend
+          path: target/
 
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Setup JDK
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v3
         with:
           java-version: '17'
+          distribution: 'temurin'
+          cache: maven
 
       - name: Build backend
         run: mvn -B verify -D spring.profiles.active=ci pitest:mutationCoverage
@@ -38,27 +49,37 @@ jobs:
       - name: Save repository name
         run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
         shell: bash
+    
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend
+          path: target/
 
       - name: Upload test reports
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ env.REPOSITORY_NAME }}-reports
           path: |
             target/site/jacoco/
             target/pit-reports/
 
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
+#   deploy:
+#     needs: [build-frontend, build-backend]
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Save Azure app name
-        run: echo "APP_NAME=$(if [ "${{ github.event_name }}" = "pull_request" ]; then echo 'greenify-client-staging'; else echo 'greenify-client-production'; fi)" >> $GITHUB_ENV    
-      - name: Deploy to Azure
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.APP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: |
-            dist:dist
-            target:target
+#     steps:
+#       - name: Download artifact
+#         uses: actions/download-artifact@v3
+#         with:
+#           name: frontend
+#       - name: Save Azure app name
+#         run: echo "APP_NAME=$(if [ "${{ github.event_name }}" = "pull_request" ]; then echo 'greenify-client-staging'; else echo 'greenify-client-production'; fi)" >> $GITHUB_ENV    
+#       - name: Deploy to Azure
+#         uses: azure/webapps-deploy@v3
+#         with:
+#           app-name: ${{ env.APP_NAME }}
+#           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+#           package: |
+#             dist:dist
+#             target:target
