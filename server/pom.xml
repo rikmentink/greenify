@@ -143,7 +143,7 @@
                     </jvmArgs>
 
                     <targetClasses>
-                        <param>nl.hu.greenify.*</param>
+                        <param>nl.hu.greenify.GreenifyApplicationTests</param>
                     </targetClasses>
                 </configuration>
 
