@@ -107,20 +107,20 @@
                                         <limit>
                                             <counter>INSTRUCTION</counter>
                                             <value>COVEREDRATIO</value>
-                                            <!-- <minimum>0.90</minimum> -->
-<!--                                            <minimum>0</minimum>-->
+                                             <minimum>0.90</minimum>
+                                            <minimum>0</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <!-- <minimum>0.90</minimum> -->
-<!--                                            <minimum>0</minimum>-->
+                                             <minimum>0.90</minimum>
+                                            <minimum>0</minimum>
                                         </limit>
                                         <limit>
                                             <counter>CLASS</counter>
                                             <value>MISSEDCOUNT</value>
-                                            <!-- <minimum>0</minimum> -->
-<!--                                            <maximum>0</maximum>-->
+                                             <minimum>0</minimum>
+                                            <maximum>0</maximum>
                                         </limit>
                                     </limits>
                                 </rule>
