@@ -15,34 +15,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Change directory to frontend
-        run: cd client
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install
+        run: cd client && npm install
 
       - name: Build frontend
-        run: npm run build
+        run: cd client && npm run build
     
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: backend
-          path: target/
+          name: frontend
+          path: client/dist/
 
   build-backend:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Change directory to backend
-        run: cd server
 
       - name: Setup JDK
         uses: actions/setup-java@v3
@@ -52,7 +46,7 @@ jobs:
           cache: maven
 
       - name: Build backend
-        run: mvn -B verify -D spring.profiles.active=ci pitest:mutationCoverage
+        run: cd server && mvn -B verify -D spring.profiles.active=ci pitest:mutationCoverage
     
       - name: Save repository name
         run: echo "REPOSITORY_NAME=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
@@ -69,8 +63,8 @@ jobs:
         with:
           name: ${{ env.REPOSITORY_NAME }}-reports
           path: |
-            target/site/jacoco/
-            target/pit-reports/
+            server/target/site/jacoco/
+            server/target/pit-reports/
 
 #   deploy:
 #     needs: [build-frontend, build-backend]
