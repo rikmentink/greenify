@@ -136,7 +136,7 @@
 
                 <configuration>
                     <timestampedReports>false</timestampedReports>
-<!--                    <mutationThreshold>90</mutationThreshold>-->
+                    <mutationThreshold>90</mutationThreshold>
                     
                     <jvmArgs>
                         <jvmArg>-Dspring.profiles.active=ci</jvmArg>
