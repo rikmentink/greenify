@@ -1,13 +1,17 @@
 package nl.hu.greenify;
 
-import org.junit.jupiter.api.Test;
+import domain.User;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class GreenifyApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void toStringTest() { //for PITest purposes, you can remove this
+		User user = new User("John", "Doe", "test@gmail.com");
+		assertEquals("User{firstName='John', lastName='Doe', email='test@gmail.com'}", user.toString());
 	}
-
 }
