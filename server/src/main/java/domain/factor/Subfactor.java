@@ -11,9 +11,8 @@ public class Subfactor implements IFactor {
     private IFactor parentIFactor;
     private boolean isParentFactor;
 
-    public Subfactor(IFactor parentIFactor, boolean isParentFactor) {
+    public Subfactor(IFactor parentIFactor) {
         this.parentIFactor = parentIFactor;
-        this.isParentFactor = isParentFactor;
     }
 
     @Override
