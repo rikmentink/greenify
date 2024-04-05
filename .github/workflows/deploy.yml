@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: backend
-          path: target/
+          path: server/target/
 
       - name: Upload test reports
         uses: actions/upload-artifact@v3
