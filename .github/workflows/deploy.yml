@@ -81,21 +81,22 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-      - name: Set environment based on trigger
-        id: set-env
+      - name: Set credentials based on trigger
+        id: credentials
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
-            echo "::set-output name=env::production"
             echo "::set-output name=app-name::${{ secrets.FRONTEND_PROD_APP_NAME }}"
+            echo "::set-output name=publish-profile::${{ secrets.FRONTEND_PROD_PUBLISH_PROFILE }}"
           else
-            echo "::set-output name=env::staging"
             echo "::set-output name=app-name::${{ secrets.FRONTEND_STAGING_APP_NAME }}"
+            echo "::set-output name=publish-profile::${{ secrets.FRONTEND_STAGING_PUBLISH_PROFILE }}"
           fi
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ steps.set-env.outputs.app-name }}
+          app-name: ${{ steps.credentials.outputs.app-name }}
+          publish-profile: ${{ steps.credentials.outputs.publish-profile }}
           package: client/dist/
 
   deploy-backend:
@@ -113,18 +114,20 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set environment based on trigger
-        id: set-env
+      - name: Set credentials based on trigger
+        id: credentials
         run: |
           if [ "${{ github.event_name }}" == "push" ]; then
-            echo "::set-output name=env::production"
             echo "::set-output name=app-name::${{ secrets.BACKEND_PROD_APP_NAME }}"
+            echo "::set-output name=publish-profile::${{ secrets.BACKEND_PROD_PUBLISH_PROFILE }}"
           else
-            echo "::set-output name=env::staging"
             echo "::set-output name=app-name::${{ secrets.BACKEND_STAGING_APP_NAME }}"
+            echo "::set-output name=publish-profile::${{ secrets.BACKEND_STAGING_PUBLISH_PROFILE }}"
           fi
+
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: ${{ steps.set-env.outputs.app-name }}
+          app-name: ${{ steps.credentials.outputs.app-name }}
+          publish-profile: ${{ steps.credentials.outputs.publish-profile }}
           package: server/target/
