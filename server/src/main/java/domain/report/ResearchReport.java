@@ -1,4 +1,6 @@
 package domain.report;
 
-public class ResearchReport {
+import domain.interfaces.Report;
+
+public class ResearchReport implements Report {
 }
