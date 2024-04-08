@@ -75,11 +75,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: frontend
-      
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
     
       - name: Set credentials based on trigger
         id: credentials
@@ -108,11 +103,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: backend
-      
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set credentials based on trigger
         id: credentials
