@@ -1,14 +1,15 @@
 import {css, html, LitElement} from "lit";
 
 export class BubbleBox extends LitElement {
-    static styles = css` 
+    static styles = css`
       .flex-col-container {
         display: flex;
         flex-direction: column;
         align-items: start;
-        max-width: 587px;
-      } 
-      
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
       .header {
         position: relative;
         z-index: 10;
@@ -20,14 +21,15 @@ export class BubbleBox extends LitElement {
         color: white;
         background-color: green;
         border-radius: 35px;
-        } 
-      
+        margin-left: -8px;
+      }
+
       .contents {
         justify-content: center;
         align-items: start;
-        padding: 9px 8px;
+        padding: 9px 0;
         margin-top: -10px;
-        margin-left: 4px;
+        //margin-left: 20px;
         width: 100%;
         font-size: 1em;
         color: black;
@@ -35,6 +37,7 @@ export class BubbleBox extends LitElement {
         border-color: lightgreen;
         border-radius: 35px;
         border-width: 0.8px;
+        background-color: #f8fcff;
       }
     `;
 
