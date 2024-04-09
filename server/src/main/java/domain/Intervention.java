@@ -5,14 +5,17 @@ import jakarta.persistence.Id;
 
 import java.util.Objects;
 
-public class Intervention {
+public class Intervention { // Add relationship with Phase
     @GeneratedValue
     @Id
     private Long id;
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
 
     public Intervention(String name, String description) {
+        if(name == null || description == null) {
+            throw new IllegalArgumentException("Intervention should have a name and description");
+        }
         this.name = name;
         this.description = description;
     }
