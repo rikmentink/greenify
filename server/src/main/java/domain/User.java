@@ -51,7 +51,6 @@ public class User {
         }
     }
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -59,15 +58,5 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
-    }
-
-    public void removeIntervention(Long id) {
-        for(Intervention intervention : this.interventions) {
-            if(intervention.getId().equals(id)) {
-                this.interventions.remove(intervention);
-                return;
-            }
-        }
-        throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
     }
 }
