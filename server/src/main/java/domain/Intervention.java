@@ -2,9 +2,14 @@ package domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+
+@Setter
+@Getter
 public class Intervention { // Add relationship with Phase
     @GeneratedValue
     @Id
