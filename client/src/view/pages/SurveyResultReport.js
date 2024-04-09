@@ -2,6 +2,7 @@ import {css, html, LitElement} from "lit";
 import "../components/surveyReport/charts/AgreementPolarChart.js";
 import "../components/surveyReport/ContentBoxPlain.js";
 import "../components/surveyReport/HeaderBox.js";
+import "../components/surveyReport/BubbleBox.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [
@@ -29,6 +30,26 @@ export class SurveyResultReport extends LitElement {
       .grid-right-section {
         display: grid;
       }
+      
+      .header-box-contents {
+        margin: 4px;
+        display: grid;
+        gap: 4px;
+      }
+      
+      .bubble-header {
+        font-size: 15px;
+        margin: 2px;
+      }
+      
+      .bubble-contents {
+        font-size: 12px;
+      }
+      
+      .content-box-chart {
+        width: 500px;
+        height: 500px;
+      }
     `];
 
   constructor() {
@@ -42,7 +63,7 @@ export class SurveyResultReport extends LitElement {
       <h1>Vergroenings rapportage</h1>
       <div class="grid-container">
         <div class="grid-left-section">
-          <content-box-plain>
+          <content-box-plain class="content-box-chart">
             <agreement-polar-chart .chartData=${this.chartData} .chartLabels=${this.chartLabels}></agreement-polar-chart>
           </content-box-plain>
         </div>
@@ -51,6 +72,18 @@ export class SurveyResultReport extends LitElement {
           <header-box>
             <h2 slot="header">Actiepunten</h2>
             <div class="header-box-contents">
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 1</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 2</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 3</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
             </div>
           </header-box>
         </div>
