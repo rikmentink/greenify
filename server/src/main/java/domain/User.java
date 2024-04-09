@@ -20,20 +20,30 @@ public class User {
     private List<Intervention> interventions;
 
     public User(String firstName, String lastName, String email) {
-        if(firstName == null || lastName == null || email == null) {
-            throw new IllegalArgumentException("User should have a first name, last name and email");
-        }
+        validateInput(firstName, "First name");
+        validateInput(lastName, "Last name");
+        validateEmail(email);
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.interventions = new ArrayList<>();
     }
 
-    protected User() {
-    }
-
     public void addIntervention(String name, String description) {
         this.interventions.add(new Intervention(name, description));
+    }
+
+    private void validateInput(String value, String fieldName) {
+        if (value == null || value.isEmpty()) {
+            throw new IllegalArgumentException(fieldName + " cannot be null or empty");
+        }
+    }
+
+    private void validateEmail(String email) {
+        if (email == null || email.isEmpty() || !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
     }
 
 
