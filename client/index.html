@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -8,9 +9,17 @@
     <link rel="stylesheet" href="/global.css" />
     <script type="module" src="/src/greenify-app.js"></script>
   </head>
+
   <body>
-    <greenify-app>
-      <h1>Greenify</h1>
-    </greenify-app>
+  <gi-header></gi-header>
+  <profile-panel></profile-panel>
+
+  <greenify-app>
+  </greenify-app>
+
+  <div class="container" id="outlet"></div>
+  <script type="module" src="./src/view/router/router.js"></script>
+  <script type="module" src="./src/view/components/header/Header.js"></script>
   </body>
+
 </html>
