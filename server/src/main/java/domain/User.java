@@ -31,6 +31,11 @@ public class User {
     }
 
     public void addIntervention(String name, String description) {
+        for(Intervention intervention : this.interventions) {
+            if(intervention.getName().equals(name) && intervention.getDescription().equals(description)) {
+                throw new IllegalArgumentException("Intervention with name " + name + "&" + description + "already exists");
+            }
+        }
         this.interventions.add(new Intervention(name, description));
     }
 
@@ -54,5 +59,15 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public void removeIntervention(Long id) {
+        for(Intervention intervention : this.interventions) {
+            if(intervention.getId().equals(id)) {
+                this.interventions.remove(intervention);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
     }
 }
