@@ -4,6 +4,12 @@ import Chart from "chart.js/auto";
 export class AgreementPolarChart extends LitElement {
     static styles = [
         css`
+            :host {
+                display: grid;
+                place-items: center;
+                width: 100%;
+                aspect-ratio: 1/1;
+            }
     `];
 
     static properties = {
