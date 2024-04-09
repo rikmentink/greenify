@@ -15,7 +15,7 @@ class GreenifyApplicationTests {
 
 	@Test
 	void toStringTest() { //for PITest purposes, you can remove this
-		User user = new User("John", "Doe", "test@gmail.com");
+		User user = new User("John", "Doe", "test@gmail.com", List.of());
 		assertEquals("User{firstName='John', lastName='Doe', email='test@gmail.com'}", user.toString());
 
 	}
