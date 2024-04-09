@@ -4,9 +4,6 @@ import Chart from "chart.js/auto";
 export class AgreementPolarChart extends LitElement {
     static styles = [
         css`
-            .div {
-              font-size: 160px;
-            }
     `];
 
     static properties = {
@@ -33,6 +30,8 @@ export class AgreementPolarChart extends LitElement {
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: true,
                 scales: {
                     r: {
                         min: 0,
@@ -43,7 +42,7 @@ export class AgreementPolarChart extends LitElement {
                     }
                 },
                 layout: {
-                    padding: 20
+                    padding: 20,
                 },
                 plugins: {
                     legend: {
@@ -63,9 +62,7 @@ export class AgreementPolarChart extends LitElement {
 
     render() {
         return html`
-            <div>
-                <canvas id="polarChart"></canvas>
-            </div>
+            <canvas id="polarChart"></canvas>
         `
     }
 }
