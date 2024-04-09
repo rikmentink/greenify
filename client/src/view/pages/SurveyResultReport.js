@@ -19,7 +19,8 @@ export class SurveyResultReport extends LitElement {
       }
       .grid-container {
         display: grid;
-        gap: 10px;
+        gap: 20px;
+        margin: 20px;
         grid-template-columns: repeat(2, 1fr);
       }
       
@@ -44,11 +45,6 @@ export class SurveyResultReport extends LitElement {
       
       .bubble-contents {
         font-size: 12px;
-      }
-      
-      .content-box-chart {
-        width: 500px;
-        height: 500px;
       }
     `];
 
@@ -82,7 +78,7 @@ export class SurveyResultReport extends LitElement {
               </bubble-box>
               <bubble-box>
                 <p class="bubble-header" slot="header">Actiepunt 3</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
               </bubble-box>
             </div>
           </header-box>
