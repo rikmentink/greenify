@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,11 +19,14 @@ public class User {
     private String email;
     private List<Intervention> interventions;
 
-    public User(String firstName, String lastName, String email, List<Intervention> interventions) {
+    public User(String firstName, String lastName, String email) {
+        if(firstName == null || lastName == null || email == null) {
+            throw new IllegalArgumentException("User should have a first name, last name and email");
+        }
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.interventions = interventions;
+        this.interventions = new ArrayList<>();
     }
 
     protected User() {
