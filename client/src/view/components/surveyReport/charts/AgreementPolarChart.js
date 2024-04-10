@@ -25,14 +25,17 @@ export class AgreementPolarChart extends LitElement {
 
     firstUpdated() {
         const ctx = this.shadowRoot.getElementById('polarChart');
-        new Chart(ctx, {
+        const chart = new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: this.chartLabels,
                 datasets: [{
                     label: 'Instemmingspercentage',
                     data: this.chartData,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    pointStyle: 'circle',
+                    pointRadius: 5,
+                    hitRadius: 50
                 }]
             },
             options: {
@@ -61,6 +64,13 @@ export class AgreementPolarChart extends LitElement {
                             size: 20
                         }
                     }
+                },
+                onClick: (event, elements) => {
+                    if (elements.length) {
+                        const label = chart.data.labels[elements[0].index];
+                        this.dispatchEvent(new CustomEvent('chart-click', { detail: label }));
+                    }
+
                 }
             }
         });
