@@ -6,7 +6,7 @@ import domain.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InterventionService { //Pure? DTO?
+public class InterventionService {
     private final GreenifyRepository greenifyRepository;
 
     public InterventionService(GreenifyRepository greenifyRepository) {
