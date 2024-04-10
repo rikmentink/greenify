@@ -21,7 +21,7 @@ public class Intervention { // Add relationship with Phase
     private List<Phase> phases;
 
     public Intervention(String name, String description) {
-        if(name == null || description == null) {
+        if(name == null) {
             throw new IllegalArgumentException("Intervention should have a name and description");
         }
         this.name = name;

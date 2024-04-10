@@ -22,12 +22,6 @@ public class InterventionTest {
         assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants"));
     }
 
-    @DisplayName("Intervention should have a description")
-    @Test
-    void interventionDescription() {
-        assertThrows(IllegalArgumentException.class, () -> new Intervention("Garden", null));
-    }
-
     @DisplayName("An intervention should be able to add a phase")
     @Test
     void interventionAddPhase() {
