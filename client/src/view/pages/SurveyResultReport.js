@@ -3,6 +3,7 @@ import "../components/surveyReport/charts/AgreementPolarChart.js";
 import "../components/surveyReport/ContentBoxPlain.js";
 import "../components/surveyReport/HeaderBox.js";
 import "../components/surveyReport/BubbleBox.js";
+import "../components/surveyReport/DialogPlain.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [
@@ -60,6 +61,10 @@ export class SurveyResultReport extends LitElement {
     const element = this.shadowRoot.querySelector(".header-box-contents");
     element.scrollIntoView();
   }
+  openDialog(event) {
+    this.shadowRoot.querySelector('#dialog-title').textContent = event.detail;
+    this.shadowRoot.querySelector('dialog-plain').open();
+  }
 
   render() {
     return html`
@@ -67,7 +72,7 @@ export class SurveyResultReport extends LitElement {
       <div class="grid-container">
         <div class="grid-left-section">
           <content-box-plain class="content-box-chart">
-            <agreement-polar-chart .chartData=${this.chartData} .chartLabels=${this.chartLabels}></agreement-polar-chart>
+            <agreement-polar-chart .chartData=${this.chartData} .chartLabels=${this.chartLabels} @chart-click="${this.openDialog}"></agreement-polar-chart>
           </content-box-plain>
         </div>
         
@@ -119,7 +124,11 @@ export class SurveyResultReport extends LitElement {
           </header-box>
         </div>
       </div>
-      
+
+      <dialog-plain>
+        <h1 id="dialog-title"></h1>
+        <p>Insert contents here</p>
+      </dialog-plain>
     `
   }
 }
