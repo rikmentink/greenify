@@ -12,8 +12,10 @@ public class Phase {
     private String name;
     private Intervention intervention;
 
-    public Phase(Long id, String name, Intervention intervention) {
-        this.id = id;
+    public Phase(String name, Intervention intervention) {
+        if(name == null) {
+            throw new IllegalArgumentException("Phase should have a name");
+        }
         this.name = name;
         this.intervention = intervention;
     }
