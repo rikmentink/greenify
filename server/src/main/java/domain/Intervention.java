@@ -29,6 +29,23 @@ public class Intervention { // Add relationship with Phase
         this.phases = new ArrayList<>();
     }
 
+    public void addPhase(String name) {
+        if(this.phases.size() >= 3) {
+            throw new IllegalArgumentException("Intervention can only have 3 phases");
+        }
+        for(Phase p : this.phases) {
+            if(p.getName().equals(name)) {
+                throw new IllegalArgumentException("Phase with name " + name + " already exists");
+            }
+        }
+        this.phases.add(new Phase(name, this));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, description);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,10 +53,6 @@ public class Intervention { // Add relationship with Phase
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description);
-    }
 
     @Override
     public String toString() {
