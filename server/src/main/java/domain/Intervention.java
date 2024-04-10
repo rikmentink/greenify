@@ -53,7 +53,6 @@ public class Intervention { // Add relationship with Phase
         return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
     }
 
-
     @Override
     public String toString() {
         return "Intervention{" +

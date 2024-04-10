@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Getter
 @Setter
@@ -28,6 +29,20 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.interventions = new ArrayList<>();
+    }
+
+    public void addPhaseToIntervention(String name, String phaseName) {
+        boolean interventionFound = false;
+        for (Intervention i : this.interventions) {
+            if (i.getName().equals(name)) {
+                i.addPhase(phaseName);
+                interventionFound = true;
+                break;
+            }
+        }
+        if (!interventionFound) {
+            throw new NoSuchElementException("Intervention with name " + name + " does not exist");
+        }
     }
 
     public void addIntervention(String name, String description) {

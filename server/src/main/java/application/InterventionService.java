@@ -5,6 +5,8 @@ import domain.Intervention;
 import domain.User;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 public class InterventionService {
     private final GreenifyRepository greenifyRepository;
@@ -19,13 +21,7 @@ public class InterventionService {
     }
 
     public void addPhaseToIntervention(String name, String phaseName, User user) {
-        for(Intervention i : user.getInterventions()) {
-            if(i.getName().equals(name)) {
-                i.addPhase(phaseName);
-            }
-        }
+        user.addPhaseToIntervention(name, phaseName);
         greenifyRepository.save(user);
     }
-
-
 }

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
@@ -39,7 +41,8 @@ public class InterventionServiceTest {
     @DisplayName("Multiple phases should be added to multiple interventions")
     void addMultiplePhasesToInterventions() {
         interventionService.addIntervention("Garden2", "Watering the plants", user);
-        interventionService.addPhaseToIntervention("Garden2", "Watering the plants2", user);
+        System.out.println(user.getInterventions());
+        interventionService.addPhaseToIntervention("Garden2", "test", user);
         interventionService.addPhaseToIntervention("Garden2", "Watering the plants3", user);
         assertAll(
                 () -> assertEquals(1, user.getInterventions().get(0).getPhases().size()),
@@ -75,7 +78,7 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("A phase should not be added when the name of the intervention it belongs to is incorrect")
     void addPhaseToInterventionWithIncorrectInterventionName() {
-        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden5", "Watering the plants", user));
+        assertThrows(NoSuchElementException.class, () -> interventionService.addPhaseToIntervention("Garden5", "Watering the plants", user));
     }
 
 }
