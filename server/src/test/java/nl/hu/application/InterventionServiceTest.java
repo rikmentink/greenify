@@ -41,7 +41,6 @@ public class InterventionServiceTest {
     @DisplayName("Multiple phases should be added to multiple interventions")
     void addMultiplePhasesToInterventions() {
         interventionService.addIntervention("Garden2", "Watering the plants", user);
-        System.out.println(user.getInterventions());
         interventionService.addPhaseToIntervention("Garden2", "test", user);
         interventionService.addPhaseToIntervention("Garden2", "Watering the plants3", user);
         assertAll(
@@ -81,4 +80,9 @@ public class InterventionServiceTest {
         assertThrows(NoSuchElementException.class, () -> interventionService.addPhaseToIntervention("Garden5", "Watering the plants", user));
     }
 
+    @Test
+    @DisplayName("A phase should not be added when the name of the phase is incorrect")
+    void addPhaseToInterventionWithIncorrectPhaseName() {
+        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", null, user));
+    }
 }
