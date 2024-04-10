@@ -5,6 +5,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -16,6 +18,7 @@ public class Intervention { // Add relationship with Phase
     private Long id;
     private final String name;
     private final String description;
+    private List<Phase> phases;
 
     public Intervention(String name, String description) {
         if(name == null || description == null) {
@@ -23,6 +26,7 @@ public class Intervention { // Add relationship with Phase
         }
         this.name = name;
         this.description = description;
+        this.phases = new ArrayList<>();
     }
 
     @Override

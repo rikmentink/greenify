@@ -5,10 +5,10 @@ import domain.User;
 import org.springframework.stereotype.Service;
 
 @Service
-public class GreenifyService { //Pure? DTO?
+public class InterventionService { //Pure? DTO?
     GreenifyRepository greenifyRepository;
 
-    public GreenifyService(GreenifyRepository greenifyRepository) {
+    public InterventionService(GreenifyRepository greenifyRepository) {
         this.greenifyRepository = greenifyRepository;
     }
 
