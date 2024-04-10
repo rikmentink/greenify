@@ -11,16 +11,25 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
+}
+
+*:before, *:after, * {
+    box-sizing: border-box;
+}
 
 body {
     display: flex;
     flex-direction: column;
 
+    background-color: #f0f0f0;
     min-width: 300px;
     min-height: 100vh;
     margin: 0;
     padding: 0;
+}
+
+h1, h2 {
+    color: #4CBB17;
 }
 
 #outlet {
