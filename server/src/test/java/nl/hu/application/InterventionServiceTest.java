@@ -17,22 +17,20 @@ public class InterventionServiceTest {
 
     @BeforeEach
     void setUp() {
-        interventionService.addIntervention("Garden", "Watering the plants", user);
         user = new User("John", "Doe", "johndoe@gmail.com");
+        interventionService.addIntervention("Garden", "Watering the plants", user);
+        interventionService.addPhaseToIntervention("Garden", "Watering the plants", user);
     }
 
     @Test
     @DisplayName("Intervention should be added to the user")
     void addIntervention() {
-        interventionService.addIntervention("Garden", "Watering the plants", user);
         assertEquals(1, user.getInterventions().size());
     }
 
     @Test
     @DisplayName("Phase should be added to the intervention")
     void addPhaseToIntervention() {
-        interventionService.addIntervention("Garden", "Watering the plants", user);
-        interventionService.addPhaseToIntervention("Garden", "Watering the plants", user);
         System.out.println(user.getInterventions());
         assertEquals(1, user.getInterventions().get(0).getPhases().size());
     }
@@ -40,9 +38,7 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("Multiple phases should be added to multiple interventions")
     void addMultiplePhasesToInterventions() {
-        interventionService.addIntervention("Garden1", "Watering the plants", user);
         interventionService.addIntervention("Garden2", "Watering the plants", user);
-        interventionService.addPhaseToIntervention("Garden1", "Watering the plants1", user);
         interventionService.addPhaseToIntervention("Garden2", "Watering the plants2", user);
         interventionService.addPhaseToIntervention("Garden2", "Watering the plants3", user);
         assertAll(
@@ -54,16 +50,12 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("Phase with the same name should not be added to the same intervention")
     void addDuplicatePhaseToIntervention() {
-        interventionService.addIntervention("Garden", "Watering the plants", user);
-        interventionService.addPhaseToIntervention("Garden", "Watering the plants", user);
         assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", "Watering the plants", user));
     }
 
     @Test
     @DisplayName("More than 3 phases should not be added to the same intervention")
     void addMoreThanThreePhasesToIntervention() {
-        interventionService.addIntervention("Garden", "Watering the plants", user);
-        interventionService.addPhaseToIntervention("Garden", "Watering the plants", user);
         interventionService.addPhaseToIntervention("Garden", "Watering the plants2", user);
         interventionService.addPhaseToIntervention("Garden", "Watering the plants3", user);
         assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", "Watering the plants4", user));
@@ -72,14 +64,18 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("The same phase can only be added to another intervention")
     void addDuplicatePhaseToAnotherIntervention() {
-        interventionService.addIntervention("Garden1", "Watering the plants", user);
         interventionService.addIntervention("Garden2", "Watering the plants", user);
-        interventionService.addPhaseToIntervention("Garden1", "Watering the plants", user);
         interventionService.addPhaseToIntervention("Garden2", "Watering the plants", user);
        assertAll(
                () -> assertEquals(1, user.getInterventions().get(0).getPhases().size()),
                () -> assertEquals(1, user.getInterventions().get(1).getPhases().size())
        );
+    }
+
+    @Test
+    @DisplayName("A phase should not be added when the name of the intervention it belongs to is incorrect")
+    void addPhaseToInterventionWithIncorrectInterventionName() {
+        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden5", "Watering the plants", user));
     }
 
 }
