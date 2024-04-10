@@ -36,6 +36,8 @@ export class SurveyResultReport extends LitElement {
         margin: 4px;
         display: grid;
         gap: 4px;
+        overflow: auto;
+        max-height: 700px;
       }
       
       .bubble-header {
@@ -52,6 +54,11 @@ export class SurveyResultReport extends LitElement {
     super();
     this.chartData = [100, 80, 20, 60, 85, 30];
     this.chartLabels = ['Kenmerken betrokken', 'De groene interventie', 'Ontwerp', 'De externe omgeving', 'De organisatie', 'Proces'];
+  }
+
+  firstUpdated() {
+    const element = this.shadowRoot.querySelector(".header-box-contents");
+    element.scrollIntoView();
   }
 
   render() {
@@ -78,6 +85,34 @@ export class SurveyResultReport extends LitElement {
               </bubble-box>
               <bubble-box>
                 <p class="bubble-header" slot="header">Actiepunt 3</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 4</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 5</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 6</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 7</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 8</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 9</p>
+                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
+              </bubble-box>
+              <bubble-box>
+                <p class="bubble-header" slot="header">Actiepunt 10</p>
                 <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
               </bubble-box>
             </div>
