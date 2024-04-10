@@ -1,11 +1,9 @@
 package application;
 
 import data.GreenifyRepository;
-import domain.Intervention;
 import domain.User;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 
 @Service
 public class InterventionService {

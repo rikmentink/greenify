@@ -33,7 +33,6 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("Phase should be added to the intervention")
     void addPhaseToIntervention() {
-        System.out.println(user.getInterventions());
         assertEquals(1, user.getInterventions().get(0).getPhases().size());
     }
 
