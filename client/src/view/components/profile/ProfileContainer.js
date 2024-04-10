@@ -9,7 +9,6 @@ export class ProfileContainer extends LitElement {
     .profile-container {
       background-color: #4CBB17;
       color: #fff;
-      padding: 10px;
     }
       
     @media (min-width: 767px) {
