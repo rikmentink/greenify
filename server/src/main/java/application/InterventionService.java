@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class InterventionService { //Pure? DTO?
-    GreenifyRepository greenifyRepository;
+    private final GreenifyRepository greenifyRepository;
 
     public InterventionService(GreenifyRepository greenifyRepository) {
         this.greenifyRepository = greenifyRepository;
@@ -15,11 +15,17 @@ public class InterventionService { //Pure? DTO?
 
     public void addIntervention(String name, String description, User user) {
         user.addIntervention(name, description);
+        greenifyRepository.save(user);
     }
 
-//    public void addPhaseToIntervention(Intervention intervention, String phase, User user) {
-//        user.
-//    }
+    public void addPhaseToIntervention(String name, String phaseName, User user) {
+        for(Intervention i : user.getInterventions()) {
+            if(i.getName().equals(name)) {
+                i.addPhase(phaseName);
+            }
+        }
+        greenifyRepository.save(user);
+    }
 
 
 }
