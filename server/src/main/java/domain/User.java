@@ -31,24 +31,24 @@ public class User {
         this.interventions = new ArrayList<>();
     }
 
-    public void addPhaseToIntervention(String name, String phaseName) {
+    public void addPhaseToIntervention(String interventionName, String phaseName) { //User side
         boolean interventionFound = false;
         for (Intervention i : this.interventions) {
-            if (i.getName().equals(name)) {
+            if (i.getName().equals(interventionName)) {
                 i.addPhase(phaseName);
                 interventionFound = true;
                 break;
             }
         }
         if (!interventionFound) {
-            throw new NoSuchElementException("Intervention with name " + name + " does not exist");
+            throw new NoSuchElementException("Intervention with name " + interventionName + " does not exist");
         }
     }
 
     public void addIntervention(String name, String description) {
         for(Intervention intervention : this.interventions) {
             if(intervention.getName().equals(name) && intervention.getDescription().equals(description)) {
-                throw new IllegalArgumentException("Intervention with name " + name + "&" + description + "already exists");
+                throw new IllegalArgumentException("Intervention with name " + name + " & " + description + " already exists");
             }
         }
         this.interventions.add(new Intervention(name, description));

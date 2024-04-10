@@ -29,7 +29,7 @@ public class Intervention { // Add relationship with Phase
         this.phases = new ArrayList<>();
     }
 
-    public void addPhase(String name) {
+    public void addPhase(String name) { //Intervention side
         if(this.phases.size() >= 3) {
             throw new IllegalArgumentException("Intervention can only have 3 phases");
         }

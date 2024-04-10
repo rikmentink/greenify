@@ -1,5 +1,6 @@
 package nl.hu.domain;
 
+import domain.Intervention;
 import domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,16 +10,18 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("User Domain Test")
-public class UserTest {
+public class UserTest { //Extra tests
     private User user;
 
     @BeforeEach
     void setUp() {
         user = new User("John", "Doe", "JohnDoe@gmail.com");
+        user.addIntervention("Garden", "Watering the plants");
     }
 
     @Test
@@ -42,7 +45,7 @@ public class UserTest {
     @Test
     @DisplayName("User should be able to add a valid intervention")
     void userAddIntervention() {
-        user.addIntervention("Garden", "Watering the plants");
+        user.addIntervention("Garden2", "Watering the plants");
     }
 
     @Test
@@ -74,6 +77,31 @@ public class UserTest {
                 {null, false},
                 {"", false}
         });
+    }
+
+    @Test
+    @DisplayName("User should be able to add a phase to an intervention")
+    void userAddPhaseToIntervention() {
+        user.addPhaseToIntervention("Garden", "Watering the plants");
+    }
+
+    @Test
+    @DisplayName("User should not be able to add an invalid phase to an intervention")
+    void userAddInvalidPhaseToIntervention() {
+        assertThrows(NoSuchElementException.class, () -> user.addPhaseToIntervention("Garden2", null));
+    }
+
+    @Test
+    @DisplayName("User should not be able to add a phase to an intervention that does not exist")
+    void userAddPhaseToInterventionInvalidIntervention() {
+        assertThrows(NoSuchElementException.class, () -> user.addPhaseToIntervention("Garden2", "Watering the plants"));
+    }
+
+    @Test
+    @DisplayName("User should not be able to add a phase with the same name to the same intervention")
+    void userAddDuplicatePhaseToIntervention() {
+        user.addPhaseToIntervention("Garden", "Watering the plants");
+        assertThrows(IllegalArgumentException.class, () -> user.addPhaseToIntervention("Garden", "Watering the plants"));
     }
 
 }
