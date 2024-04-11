@@ -3,6 +3,7 @@ package nl.hu.greenify.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ public class Person {
         this.interventions = new ArrayList<>();
     }
 
-    public void addPhaseToIntervention(String interventionName, String phaseName) { //User side
+    public void addPhaseToIntervention(String interventionName, PhaseName phaseName) { //User side
         boolean interventionFound = false;
         for (Intervention i : this.interventions) {
             if (i.getName().equals(interventionName)) {

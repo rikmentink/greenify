@@ -2,6 +2,7 @@ package nl.hu.greenify.application;
 
 import nl.hu.greenify.data.GreenifyRepository;
 import nl.hu.greenify.domain.Person;
+import nl.hu.greenify.domain.enums.PhaseName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class InterventionServiceTest {
     void setUp() {
         person = new Person("John", "Doe", "johndoe@gmail.com");
         interventionService.addIntervention("Garden", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden", "Watering the plants", person);
+        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
     }
 
     @Test
@@ -39,8 +40,8 @@ public class InterventionServiceTest {
     @DisplayName("Multiple phases should be added to multiple interventions")
     void addMultiplePhasesToInterventions() {
         interventionService.addIntervention("Garden2", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden2", "test", person);
-        interventionService.addPhaseToIntervention("Garden2", "Watering the plants3", person);
+        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
+        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
         assertAll(
                 () -> assertEquals(1, person.getInterventions().get(0).getPhases().size()),
                 () -> assertEquals(2, person.getInterventions().get(1).getPhases().size())
@@ -50,22 +51,22 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("Phase with the same name should not be added to the same intervention")
     void addDuplicatePhaseToIntervention() {
-        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", "Watering the plants", person));
+        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person));
     }
 
     @Test
     @DisplayName("More than 3 phases should not be added to the same intervention")
     void addMoreThanThreePhasesToIntervention() {
-        interventionService.addPhaseToIntervention("Garden", "Watering the plants2", person);
-        interventionService.addPhaseToIntervention("Garden", "Watering the plants3", person);
-        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", "Watering the plants4", person));
+        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
+        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
+        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person));
     }
 
     @Test
     @DisplayName("The same phase can only be added to another intervention")
     void addDuplicatePhaseToAnotherIntervention() {
         interventionService.addIntervention("Garden2", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden2", "Watering the plants", person);
+        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
        assertAll(
                () -> assertEquals(1, person.getInterventions().get(0).getPhases().size()),
                () -> assertEquals(1, person.getInterventions().get(1).getPhases().size())
@@ -75,7 +76,7 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("A phase should not be added when the name of the intervention it belongs to is incorrect")
     void addPhaseToInterventionWithIncorrectInterventionName() {
-        assertThrows(NoSuchElementException.class, () -> interventionService.addPhaseToIntervention("Garden5", "Watering the plants", person));
+        assertThrows(NoSuchElementException.class, () -> interventionService.addPhaseToIntervention("Garden5", PhaseName.INITIATION, person));
     }
 
     @Test

@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
+import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.Objects;
 
@@ -16,12 +17,12 @@ public class Phase {
     @GeneratedValue
     @Id
     private Long id;
-    private String name;
+    private PhaseName name;
 
     @OneToOne
     private Intervention intervention;
 
-    public Phase(String name, Intervention intervention) {
+    public Phase(PhaseName name, Intervention intervention) {
         if(name == null) {
             throw new IllegalArgumentException("Phase should have a name");
         }
@@ -47,7 +48,9 @@ public class Phase {
     @Override
     public String toString() {
         return "Phase{" +
-                "intervention=" + intervention +
+                "id=" + id +
+                ", name=" + name +
+                ", intervention=" + intervention +
                 '}';
     }
 }

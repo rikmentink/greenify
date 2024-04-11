@@ -2,6 +2,8 @@ package nl.hu.greenify.application;
 
 import nl.hu.greenify.data.GreenifyRepository;
 import nl.hu.greenify.domain.Person;
+import nl.hu.greenify.domain.Phase;
+import nl.hu.greenify.domain.enums.PhaseName;
 import org.springframework.stereotype.Service;
 
 
@@ -18,7 +20,7 @@ public class InterventionService {
         greenifyRepository.save(person);
     }
 
-    public void addPhaseToIntervention(String name, String phaseName, Person person) {
+    public void addPhaseToIntervention(String name, PhaseName phaseName, Person person) {
         person.addPhaseToIntervention(name, phaseName);
         greenifyRepository.save(person);
     }

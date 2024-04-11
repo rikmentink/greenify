@@ -1,5 +1,6 @@
 package nl.hu.greenify.domain;
 
+import nl.hu.greenify.domain.enums.PhaseName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -80,7 +81,7 @@ public class PersonTest { //Extra tests
     @Test
     @DisplayName("User should be able to add a phase to an intervention")
     void userAddPhaseToIntervention() {
-        person.addPhaseToIntervention("Garden", "Watering the plants");
+        person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
     }
 
     @Test
@@ -92,14 +93,14 @@ public class PersonTest { //Extra tests
     @Test
     @DisplayName("User should not be able to add a phase to an intervention that does not exist")
     void userAddPhaseToInterventionInvalidIntervention() {
-        assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", "Watering the plants"));
+        assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", PhaseName.INITIATION));
     }
 
     @Test
     @DisplayName("User should not be able to add a phase with the same name to the same intervention")
     void userAddDuplicatePhaseToIntervention() {
-        person.addPhaseToIntervention("Garden", "Watering the plants");
-        assertThrows(IllegalArgumentException.class, () -> person.addPhaseToIntervention("Garden", "Watering the plants"));
+        person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
+        assertThrows(IllegalArgumentException.class, () -> person.addPhaseToIntervention("Garden", PhaseName.INITIATION));
     }
 
 }

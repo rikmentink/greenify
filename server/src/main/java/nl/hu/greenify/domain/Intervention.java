@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,16 +38,8 @@ public class Intervention { // Add relationship with Phase
     public Intervention() {
     }
 
-    public void addPhase(String name) { //Intervention side
-        if(this.phases.size() >= 3) {
-            throw new IllegalArgumentException("Intervention can only have 3 phases");
-        }
-        for(Phase p : this.phases) {
-            if(p.getName().equals(name)) {
-                throw new IllegalArgumentException("Phase with name " + name + " already exists");
-            }
-        }
-        this.phases.add(new Phase(name, this));
+    public void addPhase(PhaseName phaseName) { //Intervention side
+        this.phases.add(new Phase(phaseName, this));
     }
 
     @Override

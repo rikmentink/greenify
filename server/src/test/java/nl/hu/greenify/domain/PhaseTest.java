@@ -1,5 +1,6 @@
 package nl.hu.greenify.domain;
 
+import nl.hu.greenify.domain.enums.PhaseName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ public class PhaseTest {
     @BeforeEach
     void setUp() {
         Intervention intervention = new Intervention("Garden", "Watering the plants");
-        phase = new Phase("Garden", intervention);
+        phase = new Phase(PhaseName.PLANNING, intervention);
     }
 
     @DisplayName("Phase should have a name")
