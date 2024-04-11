@@ -1,6 +1,6 @@
 package nl.hu.greenify;
 
-import nl.hu.greenify.domain.User;
+import nl.hu.greenify.domain.Person;
 import nl.hu.greenify.domain.factor.Subfactor;
 import nl.hu.greenify.domain.factor.Factor;
 import nl.hu.greenify.domain.interfaces.IFactor;
@@ -16,8 +16,8 @@ class GreenifyApplicationTests {
 
 	@Test
 	void toStringTest() { //for PITest purposes, you can remove this
-		User user = new User("John", "Doe", "test@gmail.com");
-		assertEquals("User{firstName='John', lastName='Doe', email='test@gmail.com'}", user.toString());
+		Person person = new Person("John", "Doe", "test@gmail.com");
+		assertEquals("User{firstName='John', lastName='Doe', email='test@gmail.com'}", person.toString());
 
 	}
 

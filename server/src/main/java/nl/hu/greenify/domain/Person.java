@@ -1,7 +1,6 @@
 package nl.hu.greenify.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,16 +10,22 @@ import java.util.NoSuchElementException;
 
 @Getter
 @Setter
-public class User {
-   @GeneratedValue
-   @Id
+@Entity
+public class Person {
+    @GeneratedValue
+    @Id
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
+
+    @OneToMany
     private List<Intervention> interventions;
 
-    public User(String firstName, String lastName, String email) {
+    public Person() {
+    }
+
+    public Person(String firstName, String lastName, String email) {
         validateInput(firstName, "First name");
         validateInput(lastName, "Last name");
         validateEmail(email);

@@ -1,7 +1,9 @@
 package nl.hu.greenify.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,12 +14,15 @@ import java.util.Objects;
 
 @Setter
 @Getter
+@Entity
 public class Intervention { // Add relationship with Phase
     @GeneratedValue
     @Id
     private Long id;
-    private final String name;
-    private final String description;
+    private String name;
+    private String description;
+
+    @OneToMany
     private List<Phase> phases;
 
     public Intervention(String name, String description) {
@@ -27,6 +32,9 @@ public class Intervention { // Add relationship with Phase
         this.name = name;
         this.description = description;
         this.phases = new ArrayList<>();
+    }
+
+    public Intervention() {
     }
 
     public void addPhase(String name) { //Intervention side

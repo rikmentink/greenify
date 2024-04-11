@@ -1,5 +1,9 @@
 package nl.hu.greenify.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,9 +11,14 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@Entity
 public class Phase {
+    @GeneratedValue
+    @Id
     private Long id;
     private String name;
+
+    @OneToOne
     private Intervention intervention;
 
     public Phase(String name, Intervention intervention) {
@@ -18,6 +27,9 @@ public class Phase {
         }
         this.name = name;
         this.intervention = intervention;
+    }
+
+    public Phase() {
     }
 
     @Override
