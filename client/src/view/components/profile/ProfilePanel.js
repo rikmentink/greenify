@@ -9,7 +9,7 @@ export class ProfilePanel extends LitElement {
     .profile-panel {
       position: absolute;
       right: 0;
-      width: 200px;
+      width: 210px;
       background-color: #4CBB17;
       color: #fff;
       padding: 10px;
