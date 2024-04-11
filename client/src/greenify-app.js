@@ -17,6 +17,7 @@ export class GreenifyApp extends LitElement {
 
   render() {
     return html`
+      <div id="outlet"/>
     `
   }
 }
