@@ -139,7 +139,8 @@
                         <jvmArg>-Dspring.profiles.active=ci</jvmArg>
                     </jvmArgs>
 					<excludedClasses>
-						<param>nl.hu.greenify.*</param>
+						<param>nl.hu.greenify.application</param>
+						<param>nl.hu.greenify.domain</param>
 					</excludedClasses>
                 </configuration>
 
