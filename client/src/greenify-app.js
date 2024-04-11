@@ -1,5 +1,5 @@
 import { LitElement, css, html } from 'lit';
-
+ 
 /**
  * The complete app, don't remove this!
  */
@@ -17,8 +17,14 @@ export class GreenifyApp extends LitElement {
 
   render() {
     return html`
-      <div id="outlet"/>
+      <main id="main-content">
+        <slot></slot>
+      </main>
     `
+  }
+
+  createRenderRoot() {
+    return this;
   }
 }
 
