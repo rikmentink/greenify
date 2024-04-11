@@ -120,6 +120,18 @@ export class SurveyResultReport extends LitElement {
       {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightgreen']},
       {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['black']},
     ];
+    this.actionPointData = [
+      {title: "Actiepunt 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 2", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 3", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 4", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 5", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 6", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 7", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 8", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 9", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
+      {title: "Actiepunt 10", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."}
+    ];
   }
 
   firstUpdated() {
@@ -145,46 +157,7 @@ export class SurveyResultReport extends LitElement {
           <header-box>
             <h2 slot="header">Actiepunten</h2>
             <div class="header-box-contents">
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 1</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 2</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 3</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 4</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 5</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 6</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 7</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 8</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 9</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
-              <bubble-box>
-                <p class="bubble-header" slot="header">Actiepunt 10</p>
-                <p class="bubble-contents" slot="contents">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia.</p>
-              </bubble-box>
+              ${this.renderActionPoints(this.actionPointData)}
             </div>
           </header-box>
         </div>
@@ -198,6 +171,15 @@ export class SurveyResultReport extends LitElement {
         </ul>
       </dialog-plain>
     `
+  }
+
+  renderActionPoints(data) {
+    return data.map(item => html`
+    <bubble-box>
+      <p class="bubble-header" slot="header">${item.title}</p>
+      <p class="bubble-contents" slot="contents">${item.description}</p>
+    </bubble-box>
+  `);
   }
 
   renderListItems(data) {
