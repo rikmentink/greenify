@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 
-export class Overzicht extends LitElement {
+export class Overview extends LitElement {
     static styles = [css`
         h1 {
             color: Green;
@@ -25,4 +25,4 @@ export class Overzicht extends LitElement {
     }
 }
 
-window.customElements.define('gi-overzicht', Overzicht);
+window.customElements.define('gi-overview', Overview);
