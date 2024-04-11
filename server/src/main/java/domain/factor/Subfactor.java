@@ -1,26 +1,28 @@
 package domain.factor;
 
 import domain.interfaces.IFactor;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 @Getter
-@Setter
+@ToString
+@EqualsAndHashCode
 public class Subfactor implements IFactor {
+    @Id
+    @GeneratedValue
     private Long id;
-    private IFactor parentIFactor;
     private boolean isParentFactor;
 
-    public Subfactor(IFactor parentIFactor) {
-        this.parentIFactor = parentIFactor;
-    }
+    @ManyToOne
+    private IFactor parentIFactor;
 
-    @Override
-    public String toString() {
-        return "Subfactor{" +
-                "id=" + id +
-                ", parentFactor=" + parentIFactor +
-                ", isParentFactor=" + isParentFactor +
-                '}';
+    public Subfactor(Long id, boolean isParentFactor, IFactor parentIFactor) {
+        this.id = id;
+        this.isParentFactor = isParentFactor;
+        this.parentIFactor = parentIFactor;
     }
 }
