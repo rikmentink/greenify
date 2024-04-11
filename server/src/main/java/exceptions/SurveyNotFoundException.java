@@ -1,4 +1,4 @@
-package nl.hu.greenify.exceptions;
+package exceptions;
 
 public class SurveyNotFoundException extends RuntimeException {
     public SurveyNotFoundException(String message) {

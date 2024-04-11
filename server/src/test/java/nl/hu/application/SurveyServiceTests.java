@@ -1,4 +1,4 @@
-package nl.hu.greenify.application;
+package nl.hu.application;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -12,9 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import application.SurveyService;
 import data.SurveyRepository;
 import domain.Survey;
-import nl.hu.greenify.exceptions.SurveyNotFoundException;
+import exceptions.SurveyNotFoundException;
 
 public class SurveyServiceTests {
     private SurveyService surveyService;

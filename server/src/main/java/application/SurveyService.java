@@ -1,11 +1,11 @@
-package nl.hu.greenify.application;
+package application;
 
 import org.springframework.stereotype.Service;
 
 import data.SurveyRepository;
 import domain.Survey;
+import exceptions.SurveyNotFoundException;
 import jakarta.transaction.Transactional;
-import nl.hu.greenify.exceptions.SurveyNotFoundException;
 
 @Service
 @Transactional
