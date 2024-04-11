@@ -6,6 +6,8 @@ import nl.hu.greenify.domain.Phase;
 import nl.hu.greenify.domain.enums.PhaseName;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 public class InterventionService {
@@ -23,5 +25,14 @@ public class InterventionService {
     public void addPhaseToIntervention(String name, PhaseName phaseName, Person person) {
         person.addPhaseToIntervention(name, phaseName);
         greenifyRepository.save(person);
+    }
+
+    public Person getPersonById(Long id) {
+        Optional<Person> person = greenifyRepository.findById(id);
+        if(person.isEmpty()) {
+            throw new IllegalArgumentException("Person with id " + id + " does not exist");
+        } else {
+            return person.get();
+        }
     }
 }
