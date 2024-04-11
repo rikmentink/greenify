@@ -6,7 +6,7 @@ export class ProfileFooter extends LitElement {
             margin: 20px 0 10px 0;
         }
 
-        .logout-button {
+        .logout-button, .role-button {
             font-size: 14px;
             color: #4CBB17;
             font-weight: bold;
@@ -17,7 +17,7 @@ export class ProfileFooter extends LitElement {
             text-decoration: none;
         }
 
-        .logout-button:hover {
+        .logout-button:hover, .role-button:hover{
             color: gray;
         }
         
@@ -30,7 +30,8 @@ export class ProfileFooter extends LitElement {
     render() {
         return html`
       <div class="footer">
-          <a .href=${import.meta.env.BASE_URL + 'login'} class="logout-button" @click=${this.handleLogoutButtonClick} tabindex="0">Uitloggen</a>          
+          <a .href=${import.meta.env.BASE_URL + 'login/option'} class="role-button" tabindex="0">Mijn rol</a>
+          <a .href=${import.meta.env.BASE_URL + 'login'} class="logout-button" @click=${this.handleLogoutButtonClick} tabindex="0">Uitloggen</a>
       </div>
     `;
     }
