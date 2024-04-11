@@ -3,6 +3,7 @@ import { Router } from '@vaadin/router';
 import { Register } from '../pages/Register';
 import { Login } from '../pages/Login';
 import { Survey } from '../pages/Survey';
+import { SurveyResultReport } from '../pages/SurveyResultReport';
 
 export const router = new Router(document.querySelector('#outlet'), {
     baseUrl: import.meta.env.BASE_URL
@@ -34,6 +35,10 @@ router.setRoutes([
                   return page;
                 }
             },
+            {
+                path: import.meta.env.BASE_URL + 'surveyReport',
+                component: 'gi-survey-result-report',
+            }
         ]
     },
     

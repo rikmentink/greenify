@@ -133,4 +133,4 @@ export class SurveyResultReport extends LitElement {
   }
 }
 
-window.customElements.define('survey-result-report', SurveyResultReport);
+window.customElements.define('gi-survey-result-report', SurveyResultReport);
