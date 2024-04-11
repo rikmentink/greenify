@@ -15,14 +15,18 @@ public class Subfactor implements IFactor {
     @Id
     @GeneratedValue
     private Long id;
-    private boolean isParentFactor;
+    private String title;
+    private int number;
+    private boolean isSupportingFactor;
 
     @ManyToOne
     private IFactor parentIFactor;
 
-    public Subfactor(Long id, boolean isParentFactor, IFactor parentIFactor) {
+    public Subfactor(Long id, String title, int number, boolean isSupportingFactor, IFactor parentIFactor) {
         this.id = id;
-        this.isParentFactor = isParentFactor;
+        this.title = title;
+        this.number = number;
+        this.isSupportingFactor = isSupportingFactor;
         this.parentIFactor = parentIFactor;
     }
 }
