@@ -36,6 +36,7 @@ router.setRoutes([
                 }
             },
             {
+                // TODO: Include a way to determine of which phase the survey report is
                 path: import.meta.env.BASE_URL + 'surveyReport',
                 component: 'gi-survey-result-report',
             }

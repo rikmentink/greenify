@@ -4,6 +4,7 @@ import "../components/surveyReport/ContentBoxPlain.js";
 import "../components/surveyReport/HeaderBox.js";
 import "../components/surveyReport/BubbleBox.js";
 import "../components/surveyReport/DialogPlain.js";
+import "../components/surveyReport/charts/HorizontalBarChart.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [
@@ -48,6 +49,58 @@ export class SurveyResultReport extends LitElement {
       
       .bubble-contents {
         font-size: 12px;
+      }
+      
+      .list-item {
+        font-size: 12px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+      }
+      
+      .list {
+        list-style: none;
+        padding-left: 0;
+        overflow: auto;
+        max-height: 500px;
+      }
+      
+      .list-item-chart {
+        min-width: 500px;
+        height: 50px;
+        padding-right: 8px;
+        padding-top: 10px;
+      }
+      
+      #dialog-title {
+        color: grey;
+      }
+      
+      .dialog-subtitle {
+        color: darkgrey;
+        font-size: 20px;
+      }
+      
+      hr {
+        width: 95%;
+        border: 0;
+        border-top: 1px solid #f1f1f1;
+        margin: 0;
+      }
+
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: #888;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
       }
     `];
 
