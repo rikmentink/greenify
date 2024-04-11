@@ -53,8 +53,20 @@ export class SurveyResultReport extends LitElement {
 
   constructor() {
     super();
-    this.chartData = [100, 80, 20, 60, 85, 30];
-    this.chartLabels = ['Kenmerken betrokken', 'De groene interventie', 'Ontwerp', 'De externe omgeving', 'De organisatie', 'Proces'];
+    this.polarChartData = [100, 80, 20, 60, 85, 30];
+    this.polarChartLabels = ['Kenmerken betrokken', 'De groene interventie', 'Ontwerp', 'De externe omgeving', 'De organisatie', 'Proces'];
+    this.barChartData = [
+      {description: 'Hier staat een vraag waar wat minder op gescoord is', chartData: [50], chartLabels: ["Percentage"], chartColors: ['purple']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [60], chartLabels: ["Percentage"], chartColors: ['blue']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [65], chartLabels: ["Percentage"], chartColors: ['green']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [65], chartLabels: ["Percentage"], chartColors: ['red']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [70], chartLabels: ["Percentage"], chartColors: ['orange']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [75], chartLabels: ["Percentage"], chartColors: ['pink']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['yellow']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightblue']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightgreen']},
+      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['black']},
+    ];
   }
 
   firstUpdated() {
@@ -72,7 +84,7 @@ export class SurveyResultReport extends LitElement {
       <div class="grid-container">
         <div class="grid-left-section">
           <content-box-plain class="content-box-chart">
-            <agreement-polar-chart .chartData=${this.chartData} .chartLabels=${this.chartLabels} @chart-click="${this.openDialog}"></agreement-polar-chart>
+            <agreement-polar-chart .chartData=${this.polarChartData} .chartLabels=${this.polarChartLabels} @chart-click="${this.openDialog}"></agreement-polar-chart>
           </content-box-plain>
         </div>
         
@@ -127,9 +139,26 @@ export class SurveyResultReport extends LitElement {
 
       <dialog-plain>
         <h1 id="dialog-title"></h1>
-        <p>Insert contents here</p>
+        <h2 class="dialog-subtitle">Groei uitdagingen</h2>
+        <ul class="list">
+          ${this.renderListItems(this.barChartData)}
+        </ul>
       </dialog-plain>
     `
+  }
+
+  renderListItems(data) {
+    return data.map(item => html`
+    <hr>
+    <li class="list-item">
+      <div class="list-item-description">
+        ${item.description}
+      </div>
+      <div class="list-item-chart">
+        <horizontal-bar-chart .chartData=${item.chartData} .chartLabels=${item.chartLabels} .chartColors=${item.chartColors}></horizontal-bar-chart>
+      </div>
+    </li>
+  `);
   }
 }
 
