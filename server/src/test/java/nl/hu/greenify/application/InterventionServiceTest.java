@@ -41,7 +41,7 @@ public class InterventionServiceTest {
     void addMultiplePhasesToInterventions() {
         interventionService.addIntervention("Garden2", "Watering the plants", person);
         interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
-        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
+        interventionService.addPhaseToIntervention("Garden2", PhaseName.PLANNING, person);
         assertAll(
                 () -> assertEquals(1, person.getInterventions().get(0).getPhases().size()),
                 () -> assertEquals(2, person.getInterventions().get(1).getPhases().size())
@@ -51,14 +51,6 @@ public class InterventionServiceTest {
     @Test
     @DisplayName("Phase with the same name should not be added to the same intervention")
     void addDuplicatePhaseToIntervention() {
-        assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person));
-    }
-
-    @Test
-    @DisplayName("More than 3 phases should not be added to the same intervention")
-    void addMoreThanThreePhasesToIntervention() {
-        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
-        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
         assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person));
     }
 
