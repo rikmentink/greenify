@@ -1,6 +1,6 @@
-package nl.hu.domain;
+package nl.hu.greenify.domain;
 
-import domain.Intervention;
+import nl.hu.greenify.domain.Intervention;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

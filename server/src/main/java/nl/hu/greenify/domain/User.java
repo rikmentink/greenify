@@ -1,4 +1,4 @@
-package domain;
+package nl.hu.greenify.domain;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

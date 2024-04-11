@@ -1,6 +1,6 @@
-package domain.report;
+package nl.hu.greenify.domain.report;
 
-import domain.interfaces.Report;
+import nl.hu.greenify.domain.interfaces.Report;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package domain.factor;
+package nl.hu.greenify.domain.factor;
 
-import domain.interfaces.IFactor;
+import nl.hu.greenify.domain.interfaces.IFactor;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,4 +1,4 @@
-package domain.interfaces;
+package nl.hu.greenify.domain.interfaces;
 
 public interface IFactor {
     int number = 0;

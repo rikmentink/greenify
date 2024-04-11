@@ -1,8 +1,8 @@
-package nl.hu.application;
+package nl.hu.greenify.application;
 
-import application.InterventionService;
-import data.GreenifyRepository;
-import domain.User;
+import nl.hu.greenify.application.InterventionService;
+import nl.hu.greenify.data.GreenifyRepository;
+import nl.hu.greenify.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

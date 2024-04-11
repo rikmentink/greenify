@@ -1,4 +1,4 @@
-package domain;
+package nl.hu.greenify.domain;
 
 import lombok.Getter;
 import lombok.Setter;

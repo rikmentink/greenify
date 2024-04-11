@@ -1,8 +1,9 @@
 package nl.hu.greenify;
 
-import domain.User;
-import domain.factor.Subfactor;
-import domain.interfaces.IFactor;
+import nl.hu.greenify.domain.User;
+import nl.hu.greenify.domain.factor.Subfactor;
+import nl.hu.greenify.domain.factor.Factor;
+import nl.hu.greenify.domain.interfaces.IFactor;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class GreenifyApplicationTests {
 
 	@Test
 	void interfaceTest() {
-		IFactor IFactor = new domain.factor.Factor(List.of()); //Parent, is also referenced thru Factor class
+		IFactor IFactor = new Factor(List.of()); //Parent, is also referenced thru Factor class
 		assertEquals(0, IFactor.number); //Check if the number is 0, according to the interface
 
 		Subfactor subfactor = new Subfactor(IFactor);

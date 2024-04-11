@@ -1,7 +1,7 @@
-package application;
+package nl.hu.greenify.application;
 
-import data.GreenifyRepository;
-import domain.User;
+import nl.hu.greenify.data.GreenifyRepository;
+import nl.hu.greenify.domain.User;
 import org.springframework.stereotype.Service;
 
 
