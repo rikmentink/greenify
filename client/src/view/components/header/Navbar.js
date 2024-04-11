@@ -134,7 +134,7 @@ class Navbar extends LitElement {
             <gi-navbar-item url="" label="Home"></gi-navbar-item>
             <gi-navbar-item url="vragenlijst" label="Vragenlijst"></gi-navbar-item>
             <gi-navbar-item url="overzicht" label="Overzicht"></gi-navbar-item>
-
+            <gi-navbar-item url="survey/1" label="Survey (temp)"></gi-navbar-item>
             <profile-container></profile-container>
         </nav>
       </div>

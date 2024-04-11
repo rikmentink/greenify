@@ -2,20 +2,24 @@ import { LitElement, html, css } from 'lit';
 
 export class ProfileFooter extends LitElement {
     static styles = css`
-    .footer {
-      margin-top: 10px;
-    }
+        .footer {
+            margin: 20px 0 10px 0;
+        }
 
-    .logout-button {
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        background-color: transparent;
-    }
-      
-    .logout-button:hover {
-        color: blue;
-    }
+        .logout-button {
+            font-size: 14px;
+            color: #4CBB17;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            padding: 8px 20px 8px 20px;
+            background-color: white;
+            text-decoration: none;
+        }
+
+        .logout-button:hover {
+            color: gray;
+        }
         
   `;
 
@@ -26,7 +30,7 @@ export class ProfileFooter extends LitElement {
     render() {
         return html`
       <div class="footer">
-          <a .href=${import.meta.env.BASE_URL + 'login'} class="logout-button" @click=${this.handleLogoutButtonClick} tabindex="0"></a>          
+          <a .href=${import.meta.env.BASE_URL + 'login'} class="logout-button" @click=${this.handleLogoutButtonClick} tabindex="0">Uitloggen</a>          
       </div>
     `;
     }
