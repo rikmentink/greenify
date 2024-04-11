@@ -2,7 +2,6 @@ package nl.hu.greenify.application;
 
 import nl.hu.greenify.data.GreenifyRepository;
 import nl.hu.greenify.domain.Person;
-import nl.hu.greenify.domain.Phase;
 import nl.hu.greenify.domain.enums.PhaseName;
 import org.springframework.stereotype.Service;
 
