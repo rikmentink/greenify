@@ -22,8 +22,17 @@ router.setRoutes([
                 component: 'gi-register',
             },
             {
-                path: import.meta.env.BASE_URL + 'temp/survey',
+                path: import.meta.env.BASE_URL + 'survey/:surveyId',
                 component: 'gi-survey',
+                action: (context) => {
+                  let page = document.querySelector('gi-survey');
+                  if (!page) {
+                    page = document.createElement('gi-survey');
+                    document.body.appendChild(page);
+                  }
+                  page.id = parseInt(context.params.surveyId);
+                  return page;
+                }
             },
         ]
     },
