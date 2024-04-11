@@ -21,13 +21,13 @@ public class Template {
     private Integer version;
 
     @OneToMany
-    private List<Category> questions;
+    private List<Category> categories;
 
-    public Template(Long id, String name, String description, Integer version, List<Category> questions) {
+    public Template(Long id, String name, String description, Integer version, List<Category> categories) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.version = version;
-        this.questions = questions;
+        this.categories = categories;
     }
 }

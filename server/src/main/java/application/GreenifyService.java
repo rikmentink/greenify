@@ -15,6 +15,4 @@ public class GreenifyService { //Pure? DTO?
     public void addIntervention(String name, String description, User user) {
         user.addIntervention(name, description);
     }
-
-
 }
