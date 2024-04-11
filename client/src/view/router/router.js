@@ -2,6 +2,7 @@ import { Router } from '@vaadin/router';
 
 import { Register } from '../pages/Register';
 import { Login } from '../pages/Login';
+import { LoginOption } from '../pages/LoginOption';
 import { Survey } from '../pages/Survey';
 import { SurveyResultReport } from '../pages/SurveyResultReport';
 
@@ -17,6 +18,10 @@ router.setRoutes([
             {
                 path: import.meta.env.BASE_URL + 'login',
                 component: 'gi-login',
+            },
+            {
+                path: import.meta.env.BASE_URL + 'login/option',
+                component: 'gi-loginoption',
             },
             {
                 path: import.meta.env.BASE_URL + 'register',
