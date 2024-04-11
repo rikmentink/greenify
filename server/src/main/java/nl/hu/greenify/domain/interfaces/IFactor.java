@@ -1,10 +1,12 @@
 package nl.hu.greenify.domain.interfaces;
 
 public interface IFactor {
+    // Constants
     int number = 0;
     String title = "";
 
-    public Long getId();
-    public String getTitle();
-    public int getNumber();
+    // Methods
+    Long getId();
+    String getTitle();
+    int getNumber();
 }

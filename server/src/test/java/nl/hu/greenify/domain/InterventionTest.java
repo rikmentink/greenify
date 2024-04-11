@@ -1,11 +1,10 @@
 package nl.hu.greenify.domain;
 
 import nl.hu.greenify.domain.enums.PhaseName;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {
@@ -19,7 +18,7 @@ public class InterventionTest {
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants"));
     }
 
     @DisplayName("An intervention should be able to add a phase")
@@ -31,14 +30,14 @@ public class InterventionTest {
     @DisplayName("An intervention should not be able to add an invalid phase")
     @Test
     void interventionAddInvalidPhase() {
-        assertThrows(IllegalArgumentException.class, () -> intervention.addPhase(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> intervention.addPhase(null));
     }
 
     @DisplayName("An intervention should not accept when the exact same phase is added")
     @Test
     void interventionAddDuplicatePhase() {
         intervention.addPhase(PhaseName.INITIATION);
-        assertThrows(IllegalArgumentException.class, () -> intervention.addPhase(PhaseName.INITIATION));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> intervention.addPhase(PhaseName.INITIATION));
     }
 
     @DisplayName("An intervention should be able to have 3 phases")

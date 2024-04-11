@@ -1,6 +1,9 @@
 package nl.hu.greenify.domain;
 
+import nl.hu.greenify.domain.Intervention;
+import nl.hu.greenify.domain.Phase;
 import nl.hu.greenify.domain.enums.PhaseName;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,6 @@ public class PhaseTest {
     @DisplayName("Phase should have a name")
     @Test
     void phaseName() {
-        assertThrows(IllegalArgumentException.class, () -> new Phase(null, phase.getIntervention()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Phase(null, phase.getIntervention()));
     }
 }

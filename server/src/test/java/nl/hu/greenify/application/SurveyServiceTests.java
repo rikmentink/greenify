@@ -1,4 +1,4 @@
-package nl.hu.application;
+package nl.hu.greenify.application;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -8,14 +8,16 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import application.SurveyService;
-import data.SurveyRepository;
-import domain.Survey;
-import exceptions.SurveyNotFoundException;
+import nl.hu.greenify.application.SurveyService;
+import nl.hu.greenify.data.SurveyRepository;
+import nl.hu.greenify.domain.Survey;
+import nl.hu.greenify.domain.exceptions.SurveyNotFoundException;
+import org.mockito.Mockito;
 
 public class SurveyServiceTests {
     private SurveyService surveyService;
@@ -26,13 +28,13 @@ public class SurveyServiceTests {
     @DisplayName("When fetching a survey with a valid id, it should be fetched from the repository")
     public void getSurveyShouldFetch() {
         surveyService.getSurvey(1L);
-        verify(surveyRepository).findById(1L);
+        Mockito.verify(surveyRepository).findById(1L);
     }
 
     @Test
     @DisplayName("When fetching a survey with an invalid id, it should throw an exception")
     public void getSurveyShouldThrowException() {
-        assertThrows(
+        Assertions.assertThrows(
             SurveyNotFoundException.class, 
             () -> surveyService.getSurvey(2L)
         );
@@ -40,8 +42,8 @@ public class SurveyServiceTests {
 
     @BeforeEach
     public void setup() {
-        this.surveyRepository = mock(SurveyRepository.class);
-        when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
+        this.surveyRepository = Mockito.mock(SurveyRepository.class);
+        Mockito.when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
 
         this.surveyService = new SurveyService(surveyRepository);
     }

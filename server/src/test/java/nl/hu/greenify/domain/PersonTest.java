@@ -1,6 +1,7 @@
 package nl.hu.greenify.domain;
 
 import nl.hu.greenify.domain.enums.PhaseName;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("Person Domain Test")
 public class PersonTest { //Extra tests
@@ -26,19 +25,19 @@ public class PersonTest { //Extra tests
     @Test
     @DisplayName("User should have a first name")
     void userFirstName() {
-        assertThrows(IllegalArgumentException.class, () -> new Person(null, "Doe", "JohnDoe@gmail.com"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(null, "Doe", "JohnDoe@gmail.com"));
     }
 
     @Test
     @DisplayName("User should have a last name")
     void userLastName() {
-        assertThrows(IllegalArgumentException.class, () -> new Person("John", null, "JohnDoe@Gmail.com"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", null, "JohnDoe@Gmail.com"));
     }
 
     @Test
     @DisplayName("User should have an email")
     void userEmail() {
-        assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", null));
     }
 
     @Test
@@ -50,7 +49,7 @@ public class PersonTest { //Extra tests
     @Test
     @DisplayName("User should not be able to add an invalid intervention")
     void userAddInvalidIntervention() {
-        assertThrows(IllegalArgumentException.class, () -> person.addIntervention(null, "Watering the plants"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> person.addIntervention(null, "Watering the plants"));
     }
 
     @ParameterizedTest
@@ -58,7 +57,7 @@ public class PersonTest { //Extra tests
     @MethodSource("emailProvider")
     void userValidEmailParameterized(String email, boolean expected) {
         if (!expected) {
-            assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", email));
+            Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", email));
         } else {
             new Person("John", "Doe", email);
         }
@@ -87,20 +86,20 @@ public class PersonTest { //Extra tests
     @Test
     @DisplayName("User should not be able to add an invalid phase to an intervention")
     void userAddInvalidPhaseToIntervention() {
-        assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", null));
+        Assertions.assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", null));
     }
 
     @Test
     @DisplayName("User should not be able to add a phase to an intervention that does not exist")
     void userAddPhaseToInterventionInvalidIntervention() {
-        assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", PhaseName.INITIATION));
+        Assertions.assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", PhaseName.INITIATION));
     }
 
     @Test
     @DisplayName("User should not be able to add a phase with the same name to the same intervention")
     void userAddDuplicatePhaseToIntervention() {
         person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
-        assertThrows(IllegalArgumentException.class, () -> person.addPhaseToIntervention("Garden", PhaseName.INITIATION));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> person.addPhaseToIntervention("Garden", PhaseName.INITIATION));
     }
 
 }

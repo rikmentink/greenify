@@ -1,6 +1,6 @@
-package presentation.dto;
+package nl.hu.greenify.presentation.dto;
 
-import domain.Survey;
+import nl.hu.greenify.domain.Survey;
 import lombok.Getter;
 
 @Getter

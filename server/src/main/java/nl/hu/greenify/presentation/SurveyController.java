@@ -1,14 +1,14 @@
-package presentation;
+package nl.hu.greenify.presentation;
 
+import nl.hu.greenify.presentation.dto.SurveyDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import application.SurveyService;
-import domain.Survey;
-import presentation.dto.SurveyDto;
+import nl.hu.greenify.application.SurveyService;
+import nl.hu.greenify.domain.Survey;
 
 @RestController
 @RequestMapping("/survey")

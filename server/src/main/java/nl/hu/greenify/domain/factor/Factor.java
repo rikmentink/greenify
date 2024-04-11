@@ -1,12 +1,12 @@
-package domain.factor;
+package nl.hu.greenify.domain.factor;
 
-import domain.interfaces.IFactor;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import nl.hu.greenify.domain.interfaces.IFactor;
 
 import java.util.List;
 
