@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.Objects;
@@ -13,6 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
+@ToString
 public class Phase {
     @GeneratedValue
     @Id
@@ -30,27 +34,6 @@ public class Phase {
         this.intervention = intervention;
     }
 
-    public Phase() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Phase phase)) return false;
-        return Objects.equals(intervention, phase.intervention);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(intervention);
-    }
-
-    @Override
-    public String toString() {
-        return "Phase{" +
-                "id=" + id +
-                ", name=" + name +
-                ", intervention=" + intervention +
-                '}';
+    protected Phase() {
     }
 }

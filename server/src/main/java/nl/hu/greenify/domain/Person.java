@@ -1,8 +1,10 @@
 package nl.hu.greenify.domain;
 
 import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.NoSuchElementException;
 @Getter
 @Setter
 @Entity
+@EqualsAndHashCode
+@ToString
 public class Person {
     @GeneratedValue
     @Id
@@ -23,7 +27,7 @@ public class Person {
     @OneToMany
     private List<Intervention> interventions;
 
-    public Person() {
+    protected Person() {
     }
 
     public Person(String firstName, String lastName, String email) {
@@ -70,14 +74,5 @@ public class Person {
         if (email == null || email.isEmpty() || !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             throw new IllegalArgumentException("Invalid email format");
         }
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
     }
 }

@@ -4,8 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.ArrayList;
@@ -16,6 +18,8 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
+@EqualsAndHashCode
+@ToString
 public class Intervention { // Add relationship with Phase
     @GeneratedValue
     @Id
@@ -27,7 +31,7 @@ public class Intervention { // Add relationship with Phase
     private List<Phase> phases;
 
     public Intervention(String name, String description) {
-        if(name == null) {
+        if (name == null) {
             throw new IllegalArgumentException("Intervention should have a name and description");
         }
         this.name = name;
@@ -35,7 +39,7 @@ public class Intervention { // Add relationship with Phase
         this.phases = new ArrayList<>();
     }
 
-    public Intervention() {
+    protected Intervention() {
     }
 
     public void addPhase(PhaseName phaseName) { //Intervention side
@@ -45,26 +49,5 @@ public class Intervention { // Add relationship with Phase
             }
         }
         this.phases.add(new Phase(phaseName, this));
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, description);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Intervention that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(description, that.description);
-    }
-
-    @Override
-    public String toString() {
-        return "Intervention{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 }

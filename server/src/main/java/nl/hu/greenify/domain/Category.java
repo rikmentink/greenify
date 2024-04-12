@@ -18,7 +18,7 @@ public class Category {
     private String color;
     private String description;
 
-    public Category() {
+    protected Category() {
     }
     
     public Category(Long id, String name, String color, String description, IFactor factors) {

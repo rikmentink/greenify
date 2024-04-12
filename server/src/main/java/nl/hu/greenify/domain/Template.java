@@ -33,7 +33,7 @@ public class Template {
         this.categories = categories;
     }
 
-    public Template() {
+    protected Template() {
 
     }
 }

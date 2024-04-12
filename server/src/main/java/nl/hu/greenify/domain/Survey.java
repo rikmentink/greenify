@@ -20,7 +20,7 @@ public class Survey extends Template {
         super(id, name, description, version, questions);
     }
 
-    public Survey() {
+    protected Survey() {
 
     }
 }
