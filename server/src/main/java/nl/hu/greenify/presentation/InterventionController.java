@@ -36,4 +36,15 @@ public class InterventionController {
            return ResponseEntity.badRequest().body(e.getMessage());
        }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getPersonById(@RequestParam Long id) {
+       try {
+           Person person = this.interventionService.getPersonById(id);
+
+           return ResponseEntity.ok(this.interventionService.getPersonById(id));
+       } catch (IllegalArgumentException e) {
+           return ResponseEntity.badRequest().body(e.getMessage());
+       }
+    }
 }
