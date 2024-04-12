@@ -10,8 +10,6 @@ import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.domain.enums.PhaseName;
 
-import java.util.Objects;
-
 @Getter
 @Setter
 @Entity

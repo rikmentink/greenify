@@ -21,7 +21,7 @@ public class Category {
     protected Category() {
     }
     
-    public Category(Long id, String name, String color, String description, IFactor factors) {
+    public Category(Long id, String name, String color, String description) {
         this.id = id;
         this.name = name;
         this.color = color;

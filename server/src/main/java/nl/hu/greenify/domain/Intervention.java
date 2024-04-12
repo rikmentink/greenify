@@ -12,7 +12,6 @@ import nl.hu.greenify.domain.enums.PhaseName;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 @Setter
