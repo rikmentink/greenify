@@ -3,6 +3,7 @@ package nl.hu.greenify.presentation;
 import nl.hu.greenify.application.InterventionService;
 import nl.hu.greenify.domain.Person;
 import nl.hu.greenify.domain.enums.PhaseName;
+import nl.hu.greenify.presentation.dto.PersonDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class InterventionController {
        try {
            Person person = this.interventionService.getPersonById(id);
            this.interventionService.addIntervention(name, description, person);
-           return ResponseEntity.ok(person.getInterventions());
+           return ResponseEntity.ok(PersonDto.fromEntity(person).getInterventions());
        } catch (IllegalArgumentException e) {
            return ResponseEntity.badRequest().body(e.getMessage());
        }
@@ -29,9 +30,11 @@ public class InterventionController {
     @PostMapping("/phase/{personId}")
     public ResponseEntity<?> addPhaseToIntervention(@RequestParam Long personId, String name, PhaseName phaseName) {
        try {
+
            Person person = this.interventionService.getPersonById(personId);
            this.interventionService.addPhaseToIntervention(name, phaseName, person);
-           return ResponseEntity.ok(person.getInterventions());
+
+           return ResponseEntity.ok(PersonDto.fromEntity(person).getInterventions());
        } catch (IllegalArgumentException e) {
            return ResponseEntity.badRequest().body(e.getMessage());
        }
@@ -40,9 +43,8 @@ public class InterventionController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPersonById(@RequestParam Long id) {
        try {
-           Person person = this.interventionService.getPersonById(id);
-
-           return ResponseEntity.ok(this.interventionService.getPersonById(id));
+           PersonDto personDto = PersonDto.fromEntity(this.interventionService.getPersonById(id));
+           return ResponseEntity.ok(personDto);
        } catch (IllegalArgumentException e) {
            return ResponseEntity.badRequest().body(e.getMessage());
        }
