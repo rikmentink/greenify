@@ -47,6 +47,6 @@ public class Intervention { // Add relationship with Phase
                 throw new IllegalArgumentException("Phase with name " + phaseName + " already exists");
             }
         }
-        this.phases.add(new Phase(phaseName, this));
+        this.phases.add(new Phase(phaseName));
     }
 }

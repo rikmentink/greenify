@@ -21,7 +21,7 @@ public class InterventionController {
        try {
            Person person = this.interventionService.getPersonById(id);
            this.interventionService.addIntervention(name, description, person);
-           return ResponseEntity.ok(PersonDto.fromEntity(person).getInterventions());
+           return ResponseEntity.ok(PersonDto.fromEntity(person));
        } catch (IllegalArgumentException e) {
            return ResponseEntity.badRequest().body(e.getMessage());
        }
@@ -34,7 +34,7 @@ public class InterventionController {
            Person person = this.interventionService.getPersonById(personId);
            this.interventionService.addPhaseToIntervention(name, phaseName, person);
 
-           return ResponseEntity.ok(PersonDto.fromEntity(person).getInterventions());
+           return ResponseEntity.ok(PersonDto.fromEntity(person));
        } catch (IllegalArgumentException e) {
            return ResponseEntity.badRequest().body(e.getMessage());
        }
