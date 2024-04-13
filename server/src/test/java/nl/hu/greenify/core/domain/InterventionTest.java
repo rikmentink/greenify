@@ -1,10 +1,11 @@
-package nl.hu.greenify.domain;
+package nl.hu.greenify.core.domain;
 
-import nl.hu.greenify.domain.enums.PhaseName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import nl.hu.greenify.core.domain.enums.PhaseName;
 
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {

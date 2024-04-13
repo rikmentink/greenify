@@ -1,7 +1,5 @@
 package nl.hu.greenify.security.config;
 
-import nl.hu.greenify.security.controller.filter.JwtAuthenticationFilter;
-import nl.hu.greenify.security.controller.filter.JwtAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import nl.hu.greenify.security.presentation.filter.JwtAuthenticationFilter;
+import nl.hu.greenify.security.presentation.filter.JwtAuthorizationFilter;
 
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;

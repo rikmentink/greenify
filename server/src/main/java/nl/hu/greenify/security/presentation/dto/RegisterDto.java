@@ -1,4 +1,4 @@
-package nl.hu.greenify.security.controller.dto;
+package nl.hu.greenify.security.presentation.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

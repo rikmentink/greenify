@@ -1,4 +1,4 @@
-package nl.hu.greenify.security.controller.filter;
+package nl.hu.greenify.security.presentation.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -7,8 +7,9 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import nl.hu.greenify.security.controller.dto.LoginDto;
 import nl.hu.greenify.security.domain.Account;
+import nl.hu.greenify.security.presentation.dto.LoginDto;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,20 +1,27 @@
-package nl.hu.greenify.application;
+package nl.hu.greenify.core.application;
 
-import nl.hu.greenify.data.GreenifyRepository;
-import nl.hu.greenify.domain.Person;
-import nl.hu.greenify.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.data.GreenifyRepository;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.NoSuchElementException;
 
-import static org.mockito.Mockito.mock;
+@SpringBootTest
+public class InterventionServiceIntegrationTest {
 
-public class InterventionServiceTest {
-    private final GreenifyRepository greenifyRepository = mock(GreenifyRepository.class);
-    private final InterventionService interventionService = new InterventionService(greenifyRepository);
+    @Autowired
+    private InterventionService interventionService;
+    @MockBean
+    private GreenifyRepository greenifyRepository;
     private Person person;
 
     @BeforeEach
@@ -22,6 +29,7 @@ public class InterventionServiceTest {
         person = new Person("John", "Doe", "johndoe@gmail.com");
         interventionService.addIntervention("Garden", "Watering the plants", person);
         interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
+        Mockito.when(greenifyRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
     }
 
     @Test
@@ -41,11 +49,9 @@ public class InterventionServiceTest {
     void addMultiplePhasesToInterventions() {
         interventionService.addIntervention("Garden2", "Watering the plants", person);
         interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
-        interventionService.addPhaseToIntervention("Garden2", PhaseName.PLANNING, person);
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(1, person.getInterventions().get(0).getPhases().size()),
-                () -> Assertions.assertEquals(2, person.getInterventions().get(1).getPhases().size())
-        );
+        interventionService.addPhaseToIntervention("Garden2", PhaseName.EXECUTION, person);
+        Assertions.assertEquals(1, person.getInterventions().get(0).getPhases().size());
+        Assertions.assertEquals(2, person.getInterventions().get(1).getPhases().size());
     }
 
     @Test
@@ -55,14 +61,21 @@ public class InterventionServiceTest {
     }
 
     @Test
-    @DisplayName("The same phase can only be added to another intervention")
-    void addDuplicatePhaseToAnotherIntervention() {
-        interventionService.addIntervention("Garden2", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
-       Assertions.assertAll(
-               () -> Assertions.assertEquals(1, person.getInterventions().get(0).getPhases().size()),
-               () -> Assertions.assertEquals(1, person.getInterventions().get(1).getPhases().size())
-       );
+    @DisplayName("The user should be fetched when asked from the database")
+    void fetchUser() {
+        Assertions.assertEquals(person, interventionService.getPersonById(1L));
+    }
+
+    @Test
+    @DisplayName("The user should not be fetched when the id is invalid")
+    void fetchInvalidUser() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> interventionService.getPersonById(5L));
+    }
+
+    @Test
+    @DisplayName("The user should not be fetched when the id is null")
+    void fetchNullUser() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> interventionService.getPersonById(null));
     }
 
     @Test

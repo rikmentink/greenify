@@ -1,4 +1,4 @@
-package nl.hu.greenify.security.controller.filter;
+package nl.hu.greenify.security.presentation.filter;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

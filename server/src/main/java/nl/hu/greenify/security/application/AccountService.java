@@ -1,11 +1,12 @@
-package nl.hu.greenify.security.service;
+package nl.hu.greenify.security.application;
 
 import jakarta.transaction.Transactional;
 import nl.hu.greenify.core.data.GreenifyRepository;
 import nl.hu.greenify.core.domain.Person;
-import nl.hu.greenify.security.controller.exceptions.AccountNotFoundException;
 import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
+import nl.hu.greenify.security.presentation.exceptions.AccountNotFoundException;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

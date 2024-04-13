@@ -1,4 +1,4 @@
-package nl.hu.greenify.security.controller.dto;
+package nl.hu.greenify.security.presentation.dto;
 
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Person;

@@ -1,4 +1,4 @@
-package nl.hu.greenify.security.controller.dto;
+package nl.hu.greenify.security.presentation.dto;
 
 public record LoginDto (String email, String password){
 }
