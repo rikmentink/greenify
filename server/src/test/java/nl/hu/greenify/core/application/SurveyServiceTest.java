@@ -13,14 +13,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nl.hu.greenify.core.application.SurveyService;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 
 import org.mockito.Mockito;
 
-public class SurveyServiceTests {
+public class SurveyServiceTest {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private Survey survey = this.getSurveyExample();
