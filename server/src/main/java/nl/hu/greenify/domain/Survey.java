@@ -26,4 +26,12 @@ public class Survey extends Template {
     public static Survey createSurvey(Phase phase, Template activeTemplate) {
         return null;
     }
+
+    public Phase getPhase() {
+        return null;
+    }
+
+    public Template getTemplate() {
+        return null;
+    }
 }

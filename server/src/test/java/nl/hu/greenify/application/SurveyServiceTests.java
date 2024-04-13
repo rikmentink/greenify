@@ -1,6 +1,7 @@
 package nl.hu.greenify.application;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,25 +14,29 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nl.hu.greenify.application.SurveyService;
 import nl.hu.greenify.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.data.SurveyRepository;
 import nl.hu.greenify.data.TemplateRepository;
+import nl.hu.greenify.domain.Phase;
 import nl.hu.greenify.domain.Survey;
-
-import org.mockito.Mockito;
+import nl.hu.greenify.domain.Template;
+import nl.hu.greenify.domain.enums.PhaseName;
 
 public class SurveyServiceTests {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private TemplateRepository templateRepository;
-    private Survey survey = this.getSurveyExample();
     
+    /**
+     * getSurvey tests
+     */
     @Test
     @DisplayName("When fetching a survey with a valid id, it should be fetched from the repository")
     public void getSurveyShouldFetch() {
+        SurveyRepository surveyRepository = mock(SurveyRepository.class);
+        when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
         surveyService.getSurvey(1L);
-        Mockito.verify(surveyRepository).findById(1L);
+        verify(surveyRepository).findById(1L);
     }
 
     @Test
@@ -43,16 +48,58 @@ public class SurveyServiceTests {
         );
     }
 
+    /**
+     * createSurvey tests
+     */
+    @Test
+    @DisplayName("When creating a survey, it should be saved in the repository")
+    public void createSurveyShouldSave() {
+        Phase phase = this.mockPhase();
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
+
+        surveyService.createSurvey(phase);
+        verify(surveyRepository).save(any(Survey.class));
+    }
+
+    @Test
+    @DisplayName("When creating a survey, it should have the correct phase")
+    public void createSurveyShouldHavePhase() {
+        Phase phase = this.mockPhase();
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
+
+        Survey survey = surveyService.createSurvey(phase);
+        assertEquals(survey.getPhase(), PhaseName.INITIATION);
+    }
+    
+    @Test
+    @DisplayName("When creating a survey, it should have the correct template")
+    public void createSurveyShouldHaveTemplate() {
+        Phase phase = this.mockPhase();
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
+
+        Survey survey = surveyService.createSurvey(phase);
+        assertEquals(survey.getTemplate(), this.mockTemplate());
+    }
+
     @BeforeEach
     public void setup() {
-        this.surveyRepository = Mockito.mock(SurveyRepository.class);
-        this.templateRepository = Mockito.mock(TemplateRepository.class);
-        Mockito.when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
-
+        this.surveyRepository = mock(SurveyRepository.class);
+        this.templateRepository = mock(TemplateRepository.class);
         this.surveyService = new SurveyService(surveyRepository, templateRepository);
     }
 
+    private Phase mockPhase() {
+        Phase phase = mock(Phase.class);
+        when(phase.getName()).thenReturn(PhaseName.INITIATION);
+        return phase;
+    }
+
+    private Template mockTemplate() {
+        Template template = mock(Template.class);
+        return template;
+    }
+
     private Survey getSurveyExample() {
-        return new Survey(1L, "Survey", "Description", 0, new ArrayList<>());
+        return new Survey(1L, "Survey", "Description", 1, new ArrayList<>());
     }
 }
