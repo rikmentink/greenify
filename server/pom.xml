@@ -8,9 +8,9 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>nl.hu</groupId>
+	<groupId>nl.hu.todss</groupId>
 	<artifactId>greenify</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>greenify</name>
 	<description>Back-end for Greenify</description>
 	<properties>
