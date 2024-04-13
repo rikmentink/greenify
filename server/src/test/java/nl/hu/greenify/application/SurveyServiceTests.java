@@ -14,14 +14,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.greenify.application.SurveyService;
+import nl.hu.greenify.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.data.SurveyRepository;
+import nl.hu.greenify.data.TemplateRepository;
 import nl.hu.greenify.domain.Survey;
-import nl.hu.greenify.domain.exceptions.SurveyNotFoundException;
+
 import org.mockito.Mockito;
 
 public class SurveyServiceTests {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
+    private TemplateRepository templateRepository;
     private Survey survey = this.getSurveyExample();
     
     @Test
@@ -43,9 +46,10 @@ public class SurveyServiceTests {
     @BeforeEach
     public void setup() {
         this.surveyRepository = Mockito.mock(SurveyRepository.class);
+        this.templateRepository = Mockito.mock(TemplateRepository.class);
         Mockito.when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
 
-        this.surveyService = new SurveyService(surveyRepository);
+        this.surveyService = new SurveyService(surveyRepository, templateRepository);
     }
 
     private Survey getSurveyExample() {

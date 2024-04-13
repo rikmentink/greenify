@@ -16,11 +16,14 @@ public class Survey extends Template {
     @GeneratedValue
     private Long id;
 
+    protected Survey() {
+    }
+
     public Survey(Long id, String name, String description, Integer version, List<Category> questions) {
         super(id, name, description, version, questions);
     }
 
-    protected Survey() {
-
+    public static Survey createSurvey(Phase phase, Template activeTemplate) {
+        return null;
     }
 }
