@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.interfaces.IFactor;
+import nl.hu.greenify.core.domain.factor.IFactor;
 
 @Entity
 @Getter

@@ -6,7 +6,6 @@ import jakarta.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.interfaces.IFactor;
 
 @Getter
 @ToString

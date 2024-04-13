@@ -2,11 +2,10 @@ package nl.hu.greenify.core.domain.report;
 
 import lombok.Setter;
 import nl.hu.greenify.core.domain.Phase;
-import nl.hu.greenify.core.domain.interfaces.Report;
 
 import java.util.List;
 
-public class ResearchReport implements Report {
+public class ResearchReport implements IReport {
     private Long id;
 
     @Setter

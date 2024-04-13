@@ -1,4 +1,4 @@
-package nl.hu.greenify.core.domain.interfaces;
+package nl.hu.greenify.core.domain.factor;
 
 public interface IFactor {
     // Constants
