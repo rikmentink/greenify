@@ -6,7 +6,6 @@ import jakarta.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import nl.hu.greenify.domain.interfaces.IFactor;
 
 import java.util.List;
 
