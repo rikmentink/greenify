@@ -1,0 +1,35 @@
+package nl.hu.security.controller;
+
+import lombok.Getter;
+import nl.hu.greenify.domain.Survey;
+import nl.hu.greenify.presentation.dto.SurveyDto;
+import nl.hu.security.controller.dto.RegisterDto;
+import nl.hu.security.controller.dto.AccountDto;
+import nl.hu.security.domain.Account;
+import nl.hu.security.service.AccountService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/account")
+public class AccountController {
+    private final AccountService accountService;
+
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AccountDto> register(@Validated @RequestBody RegisterDto registerDto) {
+        Account account = this.accountService.register(registerDto.email, registerDto.password, registerDto.firstName, registerDto.lastName);
+        return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<Account> getAccount(@PathVariable String email) {
+        Account account = this.accountService.getAccount(email);
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+}
