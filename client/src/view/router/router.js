@@ -1,7 +1,7 @@
 import { Router } from '@vaadin/router';
 
 import { Register } from '../pages/Register';
-import { Overzicht } from '../pages/Overview';
+import { Overview } from '../pages/Overview';
 import { Login } from '../pages/Login';
 import { LoginOption } from '../pages/LoginOption';
 import { Survey } from '../pages/Survey';
