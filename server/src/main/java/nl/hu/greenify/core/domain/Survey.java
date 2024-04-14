@@ -5,8 +5,8 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
-import lombok.ToString;
 
 @Entity
 @Getter
@@ -15,8 +15,12 @@ public class Survey extends Template {
     @GeneratedValue
     private Long id;
 
-    public Survey(Long id, String name, String description, Integer version, List<Category> questions) {
-        super(id, name, description, version, questions);
+    @ManyToOne
+    private Phase phase;
+
+    public Survey(Long id, String name, String description, Integer version, Phase phase) {
+        super(id, name, description, version);
+        this.phase = phase;
     }
 
     protected Survey() {
