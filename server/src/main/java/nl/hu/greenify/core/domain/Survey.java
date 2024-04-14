@@ -10,7 +10,6 @@ import lombok.ToString;
 
 @Entity
 @Getter
-@ToString
 public class Survey extends Template {
     @Id
     @GeneratedValue
@@ -22,5 +21,15 @@ public class Survey extends Template {
 
     protected Survey() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "id=" + id +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", version=" + getVersion() +
+                '}';
     }
 }
