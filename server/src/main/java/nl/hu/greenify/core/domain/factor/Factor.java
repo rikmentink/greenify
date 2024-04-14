@@ -1,18 +1,19 @@
 package nl.hu.greenify.core.domain.factor;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.interfaces.IFactor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @ToString
 @EqualsAndHashCode
+@Entity
 public class Factor implements IFactor {
     @Id
     @GeneratedValue
@@ -20,13 +21,29 @@ public class Factor implements IFactor {
     private String title;
     private int number;
 
-    @OneToMany
-    private List<IFactor> subfactors;
+    @ManyToOne
+    private Category category;
 
-    public Factor(Long id, String title, int number, List<IFactor> subfactors) {
+    @OneToMany
+    private List<Subfactor> subfactors = new ArrayList<>();
+
+    protected Factor() {
+    }
+
+    public Factor(Long id, String title, int number, Category category) {
         this.id = id;
         this.title = title;
         this.number = number;
-        this.subfactors = subfactors;
+        this.category = category;
+    }
+
+    @Override
+    public void setTitle(String title) {
+
+    }
+
+    @Override
+    public void setNumber(int number) {
+
     }
 }
