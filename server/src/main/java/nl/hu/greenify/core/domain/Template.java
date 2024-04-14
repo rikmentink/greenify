@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -23,17 +24,20 @@ public class Template {
     private Integer version;
 
     @OneToMany
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
 
-    public Template(Long id, String name, String description, Integer version, List<Category> categories) {
+    public Template(Long id, String name, String description, Integer version) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.version = version;
-        this.categories = categories;
     }
 
     protected Template() {
 
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 }
