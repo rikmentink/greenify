@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.interfaces.IFactor;
 
@@ -21,6 +22,7 @@ public class Subfactor implements IFactor {
     private int number;
     private boolean isSupportingFactor;
 
+    @Setter
     @ManyToOne
     private Factor factor;
 
