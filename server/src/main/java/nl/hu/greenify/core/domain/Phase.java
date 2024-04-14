@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -25,12 +27,16 @@ public class Phase {
     @OneToOne
     private Intervention intervention;
 
-    public Phase(PhaseName name, Intervention intervention) {
+    @OneToMany
+    private List<Survey> surveys;
+
+    public Phase(PhaseName name, Intervention intervention, List<Survey> surveys) {
         if(name == null) {
             throw new IllegalArgumentException("Phase should have a name");
         }
         this.name = name;
         this.intervention = intervention;
+        this.surveys = surveys;
     }
 
     protected Phase() {

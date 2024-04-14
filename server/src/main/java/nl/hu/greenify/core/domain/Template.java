@@ -25,8 +25,7 @@ public class Template {
     @OneToMany
     private List<Category> categories;
 
-    public Template(Long id, String name, String description, Integer version, List<Category> categories) {
-        this.id = id;
+    public Template(String name, String description, Integer version, List<Category> categories) {
         this.name = name;
         this.description = description;
         this.version = version;

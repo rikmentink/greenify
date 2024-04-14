@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode
 @ToString
-public class Intervention { // Add relationship with Phase
+public class Intervention {
     @GeneratedValue
     @Id
     private Long id;
@@ -47,6 +47,6 @@ public class Intervention { // Add relationship with Phase
                 throw new IllegalArgumentException("Phase with name " + phaseName + " already exists");
             }
         }
-        this.phases.add(new Phase(phaseName, this));
+        this.phases.add(new Phase(phaseName, this, new ArrayList<>()));
     }
 }

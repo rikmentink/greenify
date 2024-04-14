@@ -68,17 +68,17 @@ public class SurveyServiceTest {
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         Survey survey = surveyService.createSurvey(phase);
-        assertEquals(survey.getPhase(), PhaseName.INITIATION);
+        assertEquals(survey.getPhase(), phase);
     }
     
     @Test
-    @DisplayName("When creating a survey, it should have the correct template")
+    @DisplayName("When creating a survey, it should match the template")
     public void createSurveyShouldHaveTemplate() {
         Phase phase = this.mockPhase();
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         Survey survey = surveyService.createSurvey(phase);
-        assertEquals(survey.getTemplate(), this.mockTemplate());
+        assertEquals(survey.getCategories(), templateRepository.findFirstByOrderByVersionDesc().get().getCategories());
     }
 
     @BeforeEach
@@ -100,6 +100,6 @@ public class SurveyServiceTest {
     }
 
     private Survey getSurveyExample() {
-        return new Survey(1L, "Survey", "Description", 1, new ArrayList<>());
+        return new Survey("Survey", "Description", 1, new ArrayList<>(), this.mockPhase());
     }
 }

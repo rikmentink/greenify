@@ -11,6 +11,8 @@ import nl.hu.greenify.core.domain.enums.PhaseName;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
+
 @DisplayName("Phase Domain Test")
 public class PhaseTest {
     private Phase phase;
@@ -18,12 +20,12 @@ public class PhaseTest {
     @BeforeEach
     void setUp() {
         Intervention intervention = new Intervention("Garden", "Watering the plants");
-        phase = new Phase(PhaseName.PLANNING, intervention);
+        phase = new Phase(PhaseName.PLANNING, intervention, new ArrayList<>());
     }
 
     @DisplayName("Phase should have a name")
     @Test
     void phaseName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Phase(null, phase.getIntervention()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Phase(null, phase.getIntervention(), new ArrayList<>()));
     }
 }

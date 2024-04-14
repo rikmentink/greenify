@@ -2,9 +2,12 @@ package nl.hu.greenify.core.domain;
 
 import java.util.List;
 
+import javax.print.DocFlavor.READER;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -16,22 +19,29 @@ public class Survey extends Template {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne
+    private Phase phase;
+
     protected Survey() {
     }
 
-    public Survey(Long id, String name, String description, Integer version, List<Category> questions) {
-        super(id, name, description, version, questions);
+    public Survey(String name, String description, Integer version, List<Category> categories, Phase phase) {
+        super(name, description, version, categories);
+        this.phase = phase;
     }
 
     public static Survey createSurvey(Phase phase, Template activeTemplate) {
-        return null;
+        Survey survey = new Survey(
+            activeTemplate.getName(),
+            activeTemplate.getDescription(),
+            activeTemplate.getVersion(),
+            activeTemplate.getCategories(),
+            phase
+        );
+        return survey;
     }
 
     public Phase getPhase() {
-        return null;
-    }
-
-    public Template getTemplate() {
-        return null;
+        return this.phase;
     }
 }
