@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.ToString;
 
 @Entity
@@ -31,14 +32,18 @@ public class Survey extends Template {
     }
 
     public static Survey createSurvey(Phase phase, Template activeTemplate) {
-        Survey survey = new Survey(
+        if (phase == null || phase.getName() == null)
+            throw new IllegalArgumentException("A phase cannot be empty or null.");
+        if (activeTemplate == null || activeTemplate.getCategories() == null)
+            throw new IllegalArgumentException("A template cannot be empty or null.");
+        
+        return new Survey(
             activeTemplate.getName(),
             activeTemplate.getDescription(),
             activeTemplate.getVersion(),
             activeTemplate.getCategories(),
             phase
         );
-        return survey;
     }
 
     public Phase getPhase() {
