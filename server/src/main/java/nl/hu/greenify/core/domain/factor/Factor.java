@@ -3,6 +3,7 @@ package nl.hu.greenify.core.domain.factor;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.interfaces.IFactor;
@@ -21,6 +22,7 @@ public class Factor implements IFactor {
     private String title;
     private int number;
 
+    @Setter
     @ManyToOne
     private Category category;
 
@@ -45,5 +47,10 @@ public class Factor implements IFactor {
     @Override
     public void setNumber(int number) {
 
+    }
+
+    public void addSubfactor(Subfactor subfactor) {
+        this.subfactors.add(subfactor);
+        subfactor.setFactor(this);
     }
 }
