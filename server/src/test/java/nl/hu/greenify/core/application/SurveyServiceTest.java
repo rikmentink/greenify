@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import nl.hu.greenify.core.domain.Phase;
+import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,6 +51,6 @@ public class SurveyServiceTest {
     }
 
     private Survey getSurveyExample() {
-        return new Survey(1L, "Survey", "Description", 0, new ArrayList<>());
+        return new Survey(1L, "Survey", "Description", 0, new Phase(PhaseName.INITIATION));
     }
 }
