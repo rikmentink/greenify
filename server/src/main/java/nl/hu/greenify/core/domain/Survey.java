@@ -23,8 +23,8 @@ public class Survey extends Template {
     protected Survey() {
     }
 
-    public Survey(String name, String description, Integer version, List<Category> categories, Phase phase) {
-        super(name, description, version, categories);
+    public Survey(Long id, String name, String description, Integer version, List<Category> categories, Phase phase) {
+        super(id, name, description, version, categories);
         this.phase = phase;
     }
 
@@ -35,6 +35,7 @@ public class Survey extends Template {
             throw new IllegalArgumentException("A template cannot be empty or null.");
         
         return new Survey(
+            activeTemplate.getId(),
             activeTemplate.getName(),
             activeTemplate.getDescription(),
             activeTemplate.getVersion(),

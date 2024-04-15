@@ -33,4 +33,9 @@ public class Category {
         this.color = color;
         this.description = description;
     }
+
+    public void addFactor(Factor factor) {
+        this.factors.add(factor);
+        factor.setCategory(this);
+    }
 }
