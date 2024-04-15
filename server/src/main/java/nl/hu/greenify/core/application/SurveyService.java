@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.application;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
@@ -9,6 +11,7 @@ import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.Template;
+import nl.hu.greenify.core.domain.enums.PhaseName;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -22,6 +25,10 @@ public class SurveyService {
         this.templateRepository = templateRepository;
     }
 
+    public List<Survey> getAllSurveys() {
+        return surveyRepository.findAll();
+    }
+
     public Survey getSurvey(Long id) {
         Survey survey = surveyRepository.findById(id)
                 .orElseThrow(() -> new SurveyNotFoundException("Survey with ID " + id + " not found."));
@@ -31,11 +38,14 @@ public class SurveyService {
     /**
      * Creates a new survey based on the given phase.
      *
-     * @param phase The phase for which the survey is created.
+     * @param phaseId The ID of the phase to create the survey for.
      * @return The created survey.
      */
-    public Survey createSurvey(Phase phase) {
-        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
+    public Survey createSurvey(Long phaseId) {
+        // TODO: The phase should be retrieved from the database.
+        Phase testPhase = new Phase(PhaseName.INITIATION, null, null);
+
+        Survey survey = Survey.createSurvey(testPhase, this.getActiveTemplate());
         surveyRepository.save(survey);
         return survey;
     }

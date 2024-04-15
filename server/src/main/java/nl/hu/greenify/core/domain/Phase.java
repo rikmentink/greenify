@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -31,12 +32,16 @@ public class Phase {
     private List<Survey> surveys;
 
     public Phase(PhaseName name, Intervention intervention, List<Survey> surveys) {
-        if(name == null) {
-            throw new IllegalArgumentException("Phase should have a name");
-        }
         this.name = name;
         this.intervention = intervention;
         this.surveys = surveys;
+    }
+
+    public static Phase createPhase(PhaseName name, Intervention intervention) {
+        if(name == null) {
+            throw new IllegalArgumentException("Phase should have a name");
+        }
+        return new Phase(name, intervention, new ArrayList<>());
     }
 
     protected Phase() {

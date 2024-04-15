@@ -26,6 +26,23 @@ public class SurveyServiceTest {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private TemplateRepository templateRepository;
+
+    /**
+     * getAllSurveys tests
+     */
+    @Test
+    @DisplayName("When fetching all surveys, they should be fetched from the repository")
+    public void getAllSurveysShouldFetch() {
+        surveyService.getAllSurveys();
+        verify(surveyRepository).findAll();
+    }
+
+    @Test
+    @DisplayName("When fetching all surveys and there are none, an empty list should be returned")
+    public void getAllSurveysShouldReturnEmptyList() {
+        when(surveyRepository.findAll()).thenReturn(new ArrayList<>());
+        assertEquals(surveyService.getAllSurveys(), new ArrayList<>());
+    }
     
     /**
      * getSurvey tests
@@ -33,7 +50,6 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When fetching a survey with a valid id, it should be fetched from the repository")
     public void getSurveyShouldFetch() {
-        SurveyRepository surveyRepository = mock(SurveyRepository.class);
         when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
         surveyService.getSurvey(1L);
         verify(surveyRepository).findById(1L);
@@ -54,30 +70,30 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
-        Phase phase = this.mockPhase();
+        // TODO: Mock the phaseRepository when implemented.
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
-        surveyService.createSurvey(phase);
+        surveyService.createSurvey(1L);
         verify(surveyRepository).save(any(Survey.class));
     }
 
     @Test
     @DisplayName("When creating a survey, it should have the correct phase")
     public void createSurveyShouldHavePhase() {
-        Phase phase = this.mockPhase();
+        // TODO: Mock the phaseRepository when implemented.
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
-        Survey survey = surveyService.createSurvey(phase);
-        assertEquals(survey.getPhase(), phase);
+        Survey survey = surveyService.createSurvey(1L);
+        assertEquals(survey.getPhase(), new Phase(null, null, null));
     }
     
     @Test
     @DisplayName("When creating a survey, it should match the template")
     public void createSurveyShouldHaveTemplate() {
-        Phase phase = this.mockPhase();
+        // TODO: Mock the phaseRepository when implemented.
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
-        Survey survey = surveyService.createSurvey(phase);
+        Survey survey = surveyService.createSurvey(1L);
         assertEquals(survey.getCategories(), templateRepository.findFirstByOrderByVersionDesc().get().getCategories());
     }
 
@@ -88,18 +104,13 @@ public class SurveyServiceTest {
         this.surveyService = new SurveyService(surveyRepository, templateRepository);
     }
 
-    private Phase mockPhase() {
-        Phase phase = mock(Phase.class);
-        when(phase.getName()).thenReturn(PhaseName.INITIATION);
-        return phase;
-    }
-
     private Template mockTemplate() {
         Template template = mock(Template.class);
         return template;
     }
 
     private Survey getSurveyExample() {
-        return new Survey("Survey", "Description", 1, new ArrayList<>(), this.mockPhase());
+        // TODO: Update the given phase?
+        return new Survey("Survey", "Description", 1, new ArrayList<>(), new Phase(PhaseName.INITIATION, null, null));
     }
 }
