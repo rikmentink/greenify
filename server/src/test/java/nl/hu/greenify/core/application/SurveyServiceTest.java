@@ -84,7 +84,7 @@ public class SurveyServiceTest {
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         Survey survey = surveyService.createSurvey(1L);
-        assertEquals(survey.getPhase(), new Phase(null, null, null));
+        assertEquals(survey.getPhase(), new Phase(PhaseName.INITIATION));
     }
     
     @Test
@@ -111,6 +111,6 @@ public class SurveyServiceTest {
 
     private Survey getSurveyExample() {
         // TODO: Update the given phase?
-        return new Survey("Survey", "Description", 1, new ArrayList<>(), new Phase(PhaseName.INITIATION, null, null));
+        return new Survey("Survey", "Description", 1, new ArrayList<>(), new Phase(PhaseName.INITIATION));
     }
 }

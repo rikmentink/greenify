@@ -25,23 +25,15 @@ public class Phase {
     private Long id;
     private PhaseName name;
 
-    @OneToOne
-    private Intervention intervention;
-
     @OneToMany
     private List<Survey> surveys;
 
-    public Phase(PhaseName name, Intervention intervention, List<Survey> surveys) {
-        this.name = name;
-        this.intervention = intervention;
-        this.surveys = surveys;
-    }
-
-    public static Phase createPhase(PhaseName name, Intervention intervention) {
+    // TODO: Create static named constructor
+    public Phase(PhaseName name) {
         if(name == null) {
             throw new IllegalArgumentException("Phase should have a name");
         }
-        return new Phase(name, intervention, new ArrayList<>());
+        this.name = name;
     }
 
     protected Phase() {

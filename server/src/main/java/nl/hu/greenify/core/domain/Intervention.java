@@ -47,6 +47,6 @@ public class Intervention {
                 throw new IllegalArgumentException("Phase with name " + phaseName + " already exists");
             }
         }
-        this.phases.add(new Phase(phaseName, this, new ArrayList<>()));
+        this.phases.add(new Phase(phaseName));
     }
 }

@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.factor.IFactor;
+import nl.hu.greenify.core.domain.factor.Factor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,6 +20,9 @@ public class Category {
     private String name;
     private String color;
     private String description;
+
+    @OneToMany
+    private List<Factor> factors = new ArrayList<>();
 
     protected Category() {
     }

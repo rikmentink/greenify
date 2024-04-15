@@ -7,6 +7,7 @@ import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.presentation.exceptions.AccountNotFoundException;
 
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

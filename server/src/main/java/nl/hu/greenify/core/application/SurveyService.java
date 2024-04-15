@@ -43,7 +43,7 @@ public class SurveyService {
      */
     public Survey createSurvey(Long phaseId) {
         // TODO: The phase should be retrieved from the database.
-        Phase testPhase = new Phase(PhaseName.INITIATION, null, null);
+        Phase testPhase = new Phase(PhaseName.INITIATION);
 
         Survey survey = Survey.createSurvey(testPhase, this.getActiveTemplate());
         surveyRepository.save(survey);
