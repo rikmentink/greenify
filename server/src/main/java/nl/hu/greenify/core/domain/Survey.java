@@ -2,14 +2,11 @@ package nl.hu.greenify.core.domain;
 
 import java.util.List;
 
-import javax.print.DocFlavor.READER;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.ToString;
 
 @Entity
