@@ -78,6 +78,7 @@ public class PersonTest { //Extra tests
         });
     }
 
+
     @Test
     @DisplayName("User should be able to add a phase to an intervention")
     void userAddPhaseToIntervention() {
