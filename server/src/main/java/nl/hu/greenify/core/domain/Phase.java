@@ -1,5 +1,8 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,10 +13,8 @@ import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
+@Setter
 @Entity
 @EqualsAndHashCode
 @ToString
@@ -21,13 +22,12 @@ public class Phase {
     @GeneratedValue
     @Id
     private Long id;
-
-    @Setter
     private PhaseName name;
 
     @OneToMany
     private List<Survey> surveys = new ArrayList<>();
 
+    // TODO: Create static named constructor
     public Phase(PhaseName name) {
         if(name == null) {
             throw new IllegalArgumentException("Phase should have a name");
@@ -36,9 +36,5 @@ public class Phase {
     }
 
     protected Phase() {
-    }
-
-    public void addSurvey(Survey survey) {
-        this.surveys.add(survey);
     }
 }

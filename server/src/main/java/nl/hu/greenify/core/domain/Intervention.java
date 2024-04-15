@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @EqualsAndHashCode
 @ToString
-public class Intervention { // Add relationship with Phase
+public class Intervention {
     @GeneratedValue
     @Id
     private Long id;

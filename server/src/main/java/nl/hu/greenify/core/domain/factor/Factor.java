@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.Category;
-import nl.hu.greenify.core.domain.interfaces.IFactor;
 
 import java.util.ArrayList;
 import java.util.List;

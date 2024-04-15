@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.factor.Factor;
-import nl.hu.greenify.core.domain.interfaces.IFactor;
 
 import java.util.ArrayList;
 import java.util.List;

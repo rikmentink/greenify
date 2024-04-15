@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.interfaces.IFactor;
 
 @Getter
 @ToString
