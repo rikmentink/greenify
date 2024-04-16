@@ -8,9 +8,9 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>nl.hu</groupId>
+	<groupId>nl.hu.greenify</groupId>
 	<artifactId>greenify</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>greenify</name>
 	<description>Back-end for Greenify</description>
 	<properties>
@@ -32,6 +32,28 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -139,7 +161,8 @@
                         <jvmArg>-Dspring.profiles.active=ci</jvmArg>
                     </jvmArgs>
 					<excludedClasses>
-						<param>nl.hu.greenify.*</param>
+						<param>nl.hu.greenify.application</param>
+						<param>nl.hu.greenify.domain</param>
 					</excludedClasses>
                 </configuration>
 
