@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
+import { login } from '../../services/LoginService.js';
+
 export class Login extends LitElement {
     static styles = [css`
 
@@ -98,12 +100,28 @@ export class Login extends LitElement {
 
     `];
 
-    static properties = {
-        // Define properties here
-    };
-
     constructor() {
         super();
+    }
+
+    // Handle form submission
+    async submitForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        const password = formData.get('password');
+        try {
+            await login(email, password)
+            // window.location.href = import.meta.env.BASE_URL + 'dashboard';
+        } catch (error) {
+            console.error('Failed to login:', error);
+        }
+    }
+
+    // Add event listener to the form
+    firstUpdated() {
+        this.shadowRoot.querySelector('.login-form').addEventListener('submit', this.submitForm);
     }
 
     // Render the component
