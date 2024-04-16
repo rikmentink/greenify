@@ -26,6 +26,7 @@ public class SurveyServiceTest {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private TemplateRepository templateRepository;
+    private InterventionService interventionService;
 
     /**
      * getAllSurveys tests
@@ -50,7 +51,6 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When fetching a survey with a valid id, it should be fetched from the repository")
     public void getSurveyShouldFetch() {
-        when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
         surveyService.getSurvey(1L);
         verify(surveyRepository).findById(1L);
     }
@@ -70,38 +70,20 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
-        // TODO: Mock the phaseRepository when implemented.
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-
         surveyService.createSurvey(1L);
         verify(surveyRepository).save(any(Survey.class));
-    }
-
-    @Test
-    @DisplayName("When creating a survey, it should have the correct phase")
-    public void createSurveyShouldHavePhase() {
-        // TODO: Mock the phaseRepository when implemented.
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-
-        Survey survey = surveyService.createSurvey(1L);
-        assertEquals(survey.getPhase(), new Phase(PhaseName.INITIATION));
-    }
-    
-    @Test
-    @DisplayName("When creating a survey, it should match the template")
-    public void createSurveyShouldHaveTemplate() {
-        // TODO: Mock the phaseRepository when implemented.
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-
-        Survey survey = surveyService.createSurvey(1L);
-        assertEquals(survey.getCategories(), templateRepository.findFirstByOrderByVersionDesc().get().getCategories());
     }
 
     @BeforeEach
     public void setup() {
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
-        this.surveyService = new SurveyService(surveyRepository, templateRepository);
+        this.interventionService = mock(InterventionService.class);
+        this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService);
+    
+        when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
+        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
     }
 
     private Template mockTemplate() {

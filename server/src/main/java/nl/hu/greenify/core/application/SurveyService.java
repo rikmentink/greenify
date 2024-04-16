@@ -11,7 +11,6 @@ import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.Template;
-import nl.hu.greenify.core.domain.enums.PhaseName;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -19,10 +18,13 @@ import jakarta.transaction.Transactional;
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
+    private final InterventionService interventionService;
 
-    public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository) {
+    public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
+            InterventionService interventionService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
+        this.interventionService = interventionService;
     }
 
     public List<Survey> getAllSurveys() {
@@ -42,12 +44,10 @@ public class SurveyService {
      * @return The created survey.
      */
     public Survey createSurvey(Long phaseId) {
-        // TODO: The phase should be retrieved from the database.
-        Phase testPhase = new Phase(PhaseName.INITIATION);
+        Phase phase = interventionService.getPhaseById(phaseId);
 
-        Survey survey = Survey.createSurvey(testPhase, this.getActiveTemplate());
-        surveyRepository.save(survey);
-        return survey;
+        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
+        return surveyRepository.save(survey);
     }
 
     /**
