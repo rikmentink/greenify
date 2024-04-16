@@ -17,7 +17,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nl.hu.greenify.core.application.exceptions.NotFoundException;
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
+import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Survey;
@@ -60,7 +61,7 @@ public class SurveyServiceTest {
     @DisplayName("When fetching a survey with an invalid id, it should throw an exception")
     public void getSurveyShouldThrowException() {
         Assertions.assertThrows(
-            NotFoundException.class, 
+            SurveyNotFoundException.class, 
             () -> surveyService.getSurvey(2L)
         );
     }
@@ -80,7 +81,7 @@ public class SurveyServiceTest {
     public void createSurveyShouldThrowException() {
         when(interventionService.getPhaseById(1L)).thenReturn(null);
         assertThrows(
-            NotFoundException.class, 
+            PhaseNotFoundException.class, 
             () -> surveyService.createSurvey(1L)
         );
     }
