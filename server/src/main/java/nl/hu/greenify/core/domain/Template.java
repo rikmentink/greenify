@@ -31,6 +31,7 @@ public class Template {
         this.name = name;
         this.description = description;
         this.version = version;
+        this.categories = categories;
     }
 
     protected Template() {
