@@ -1,7 +1,9 @@
 package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PhaseRepository;
 import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.Optional;
 @Service
 public class InterventionService {
     private final GreenifyRepository greenifyRepository;
+    private final PhaseRepository phaseRepository;
 
-    public InterventionService(GreenifyRepository greenifyRepository) {
+    public InterventionService(GreenifyRepository greenifyRepository, PhaseRepository phaseRepository) {
         this.greenifyRepository = greenifyRepository;
+        this.phaseRepository = phaseRepository;
     }
 
     public void addIntervention(String name, String description, Person person) {
@@ -26,10 +30,30 @@ public class InterventionService {
         greenifyRepository.save(person);
     }
 
+    public Phase getPhaseById(Long id) {
+        Optional<Phase> phase = phaseRepository.findById(id);
+        if(phase.isEmpty()) {
+            throw new IllegalArgumentException("Phase with id " + id + " does not exist");
+        } else {
+            return phase.get();
+        }
+    }
+
+    // TODO: Move to separate PersonService
     public Person getPersonById(Long id) {
         Optional<Person> person = greenifyRepository.findById(id);
         if(person.isEmpty()) {
             throw new IllegalArgumentException("Person with id " + id + " does not exist");
+        } else {
+            return person.get();
+        }
+    }
+
+    // TODO: Move to separate PersonService
+    public Person getPersonByUsername(String username) {
+        Optional<Person> person = greenifyRepository.findByUsername(username);
+        if(person.isEmpty()) {
+            throw new IllegalArgumentException("Person with username " + username + " does not exist");
         } else {
             return person.get();
         }

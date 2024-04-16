@@ -26,6 +26,7 @@ public class SurveyServiceTest {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private TemplateRepository templateRepository;
+    private InterventionService interventionService;
 
     /**
      * getAllSurveys tests
@@ -70,7 +71,7 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
-        // TODO: Mock the phaseRepository when implemented.
+        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         surveyService.createSurvey(1L);
@@ -80,7 +81,7 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should have the correct phase")
     public void createSurveyShouldHavePhase() {
-        // TODO: Mock the phaseRepository when implemented.
+        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         Survey survey = surveyService.createSurvey(1L);
@@ -90,7 +91,7 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should match the template")
     public void createSurveyShouldHaveTemplate() {
-        // TODO: Mock the phaseRepository when implemented.
+        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         Survey survey = surveyService.createSurvey(1L);
@@ -101,7 +102,8 @@ public class SurveyServiceTest {
     public void setup() {
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
-        this.surveyService = new SurveyService(surveyRepository, templateRepository);
+        this.interventionService = mock(InterventionService.class);
+        this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService);
     }
 
     private Template mockTemplate() {
