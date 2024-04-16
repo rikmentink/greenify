@@ -15,13 +15,14 @@ public class InterventionTest {
 
     @BeforeEach
     void setUp() {
-        intervention = new Intervention("Garden", "Watering the plants");
+        Person person = new Person("John", "Doe", "johnDoe@gmail.com");
+        intervention = new Intervention("Garden", "Watering the plants", person);
     }
 
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants", new Person("John", "Doe", "johnDoe@gmail.com")));
     }
 
     @DisplayName("An intervention should be able to add a phase")
