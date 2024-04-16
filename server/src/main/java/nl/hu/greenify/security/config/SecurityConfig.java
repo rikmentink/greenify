@@ -19,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import nl.hu.greenify.security.presentation.filter.JwtAuthenticationFilter;
 import nl.hu.greenify.security.presentation.filter.JwtAuthorizationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import static org.springframework.http.HttpMethod.POST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -66,6 +68,17 @@ public class SecurityConfig {
                 .addFilter(new JwtAuthorizationFilter(jwtSecret, authenticationManager))
                 .sessionManagement(s -> s.sessionCreationPolicy(STATELESS));
         return http.build();
+    }
+
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            var cors = new CorsConfiguration();
+            cors.addAllowedOrigin("*");
+            cors.addAllowedMethod("*");
+            cors.addAllowedHeader("*");
+            return cors;
+        };
     }
 
     @Bean
