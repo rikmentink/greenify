@@ -37,4 +37,8 @@ public class Phase {
 
     protected Phase() {
     }
+
+    public void addSurvey(Survey survey) {
+        this.surveys.add(survey);
+    }
 }
