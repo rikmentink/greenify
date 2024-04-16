@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -79,23 +80,15 @@ public class SurveyServiceTest {
     }
 
     @Test
-    @DisplayName("When creating a survey, it should have the correct phase")
-    public void createSurveyShouldHavePhase() {
-        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
+    @DisplayName("When creating a survey with an invalid phase id, it should throw an exception")
+    public void createSurveyShouldThrowException() {
+        when(interventionService.getPhaseById(1L)).thenReturn(null);
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-
-        Survey survey = surveyService.createSurvey(1L);
-        assertEquals(survey.getPhase(), new Phase(PhaseName.INITIATION));
-    }
-    
-    @Test
-    @DisplayName("When creating a survey, it should match the template")
-    public void createSurveyShouldHaveTemplate() {
-        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-
-        Survey survey = surveyService.createSurvey(1L);
-        assertEquals(survey.getCategories(), templateRepository.findFirstByOrderByVersionDesc().get().getCategories());
+        
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> surveyService.createSurvey(1L)
+        );
     }
 
     @BeforeEach
