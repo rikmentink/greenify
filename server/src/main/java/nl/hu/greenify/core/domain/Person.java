@@ -55,6 +55,15 @@ public class Person {
         }
     }
 
+    public void addIntervention(String name, String description) {
+        for(Intervention intervention : this.interventions) {
+            if(intervention.getName().equals(name) && intervention.getDescription().equals(description)) {
+                throw new IllegalArgumentException("Intervention with name " + name + " & " + description + " already exists");
+            }
+        }
+        this.interventions.add(new Intervention(name, description));
+    }
+
     private void validateInput(String value, String fieldName) {
         if (value == null || value.isEmpty()) {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");
