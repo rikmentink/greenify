@@ -24,9 +24,6 @@ public class Person {
     private String lastName;
     private String email;
 
-    @OneToMany
-    private List<Intervention> interventions;
-
     protected Person() {
     }
 
@@ -38,7 +35,6 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.interventions = new ArrayList<>();
     }
 
     public void addPhaseToIntervention(String interventionName, PhaseName phaseName) { //User side
