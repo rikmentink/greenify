@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.application;
 
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.data.GreenifyRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 import nl.hu.greenify.core.domain.Person;
@@ -33,7 +34,7 @@ public class InterventionService {
     public Phase getPhaseById(Long id) {
         Optional<Phase> phase = phaseRepository.findById(id);
         if(phase.isEmpty()) {
-            throw new IllegalArgumentException("Phase with id " + id + " does not exist");
+            throw new PhaseNotFoundException("Phase with id " + id + " does not exist");
         } else {
             return phase.get();
         }

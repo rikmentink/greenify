@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
+import nl.hu.greenify.core.application.exceptions.NotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Survey;
@@ -52,7 +52,6 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When fetching a survey with a valid id, it should be fetched from the repository")
     public void getSurveyShouldFetch() {
-        when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
         surveyService.getSurvey(1L);
         verify(surveyRepository).findById(1L);
     }
@@ -61,7 +60,7 @@ public class SurveyServiceTest {
     @DisplayName("When fetching a survey with an invalid id, it should throw an exception")
     public void getSurveyShouldThrowException() {
         Assertions.assertThrows(
-            SurveyNotFoundException.class, 
+            NotFoundException.class, 
             () -> surveyService.getSurvey(2L)
         );
     }
@@ -72,9 +71,6 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
-        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-
         surveyService.createSurvey(1L);
         verify(surveyRepository).save(any(Survey.class));
     }
@@ -83,10 +79,8 @@ public class SurveyServiceTest {
     @DisplayName("When creating a survey with an invalid phase id, it should throw an exception")
     public void createSurveyShouldThrowException() {
         when(interventionService.getPhaseById(1L)).thenReturn(null);
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-        
         assertThrows(
-            IllegalArgumentException.class, 
+            NotFoundException.class, 
             () -> surveyService.createSurvey(1L)
         );
     }
@@ -97,6 +91,10 @@ public class SurveyServiceTest {
         this.templateRepository = mock(TemplateRepository.class);
         this.interventionService = mock(InterventionService.class);
         this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService);
+    
+        when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
+        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
     }
 
     private Template mockTemplate() {
