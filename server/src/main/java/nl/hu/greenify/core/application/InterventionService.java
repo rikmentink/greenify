@@ -32,12 +32,8 @@ public class InterventionService {
     }
 
     public Phase getPhaseById(Long id) {
-        Optional<Phase> phase = phaseRepository.findById(id);
-        if(phase.isEmpty()) {
-            throw new PhaseNotFoundException("Phase with id " + id + " does not exist");
-        } else {
-            return phase.get();
-        }
+        return phaseRepository.findById(id)
+                .orElseThrow(() -> new PhaseNotFoundException("Phase with id " + id + " does not exist"));
     }
 
     // TODO: Move to separate PersonService

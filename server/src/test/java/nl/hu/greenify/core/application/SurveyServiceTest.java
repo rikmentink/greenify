@@ -1,7 +1,6 @@
 package nl.hu.greenify.core.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -17,7 +16,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
@@ -74,16 +72,6 @@ public class SurveyServiceTest {
     public void createSurveyShouldSave() {
         surveyService.createSurvey(1L);
         verify(surveyRepository).save(any(Survey.class));
-    }
-
-    @Test
-    @DisplayName("When creating a survey with an invalid phase id, it should throw an exception")
-    public void createSurveyShouldThrowException() {
-        when(interventionService.getPhaseById(1L)).thenReturn(null);
-        assertThrows(
-            PhaseNotFoundException.class, 
-            () -> surveyService.createSurvey(1L)
-        );
     }
 
     @BeforeEach

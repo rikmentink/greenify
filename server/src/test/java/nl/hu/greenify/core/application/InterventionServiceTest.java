@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.util.NoSuchElementException;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class InterventionServiceTest {
     private final GreenifyRepository greenifyRepository = mock(GreenifyRepository.class);
