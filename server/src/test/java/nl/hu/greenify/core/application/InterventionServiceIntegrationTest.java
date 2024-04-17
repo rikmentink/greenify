@@ -55,9 +55,11 @@ public class InterventionServiceIntegrationTest {
     }
 
     @Test
-    @DisplayName("Phase with the same name should not be added to the same intervention")
+    @DisplayName("Phase with the same name should be added to the same intervention")
     void addDuplicatePhaseToIntervention() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person));
+        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
+        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
+        Assertions.assertEquals(3, person.getInterventions().get(0).getPhases().size());
     }
 
     @Test

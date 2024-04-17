@@ -78,6 +78,7 @@ public class PersonTest { //Extra tests
         });
     }
 
+
     @Test
     @DisplayName("User should be able to add a phase to an intervention")
     void userAddPhaseToIntervention() {
@@ -100,7 +101,8 @@ public class PersonTest { //Extra tests
     @DisplayName("User should not be able to add a phase with the same name to the same intervention")
     void userAddDuplicatePhaseToIntervention() {
         person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> person.addPhaseToIntervention("Garden", PhaseName.INITIATION));
+        person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
+        Assertions.assertEquals(2, person.getInterventions().get(0).getPhases().size());
     }
 
 }

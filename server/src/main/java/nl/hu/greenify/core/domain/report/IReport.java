@@ -1,9 +1,9 @@
-package nl.hu.greenify.core.domain.interfaces;
+package nl.hu.greenify.core.domain.report;
 
 import java.lang.reflect.Array;
 import java.util.List;
 
-public interface Report {
+public interface IReport {
     void generateReport();
     double calculateAgreementScore();
     List<String> getActionPoints();

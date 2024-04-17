@@ -7,9 +7,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.ToString;
 
 @Entity
 @Getter
+@ToString
 public class Survey extends Template {
     @Id
     @GeneratedValue
@@ -18,22 +20,27 @@ public class Survey extends Template {
     @ManyToOne
     private Phase phase;
 
-    public Survey(Long id, String name, String description, Integer version, Phase phase) {
-        super(id, name, description, version);
+    protected Survey() {
+    }
+
+    public Survey(Long id, String name, String description, Integer version, List<Category> categories, Phase phase) {
+        super(id, name, description, version, categories);
         this.phase = phase;
     }
 
-    protected Survey() {
-
-    }
-
-    @Override
-    public String toString() {
-        return "Survey{" +
-                "id=" + id +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", version=" + getVersion() +
-                '}';
+    public static Survey createSurvey(Phase phase, Template activeTemplate) {
+        if (phase == null || phase.getName() == null)
+            throw new IllegalArgumentException("A phase cannot be empty or null.");
+        if (activeTemplate == null || activeTemplate.getCategories() == null)
+            throw new IllegalArgumentException("A template cannot be empty or null.");
+        
+        return new Survey(
+            activeTemplate.getId(),
+            activeTemplate.getName(),
+            activeTemplate.getDescription(),
+            activeTemplate.getVersion(),
+            activeTemplate.getCategories(),
+            phase
+        );
     }
 }
