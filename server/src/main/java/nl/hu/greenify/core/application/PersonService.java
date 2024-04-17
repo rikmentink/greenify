@@ -1,10 +1,16 @@
 package nl.hu.greenify.core.application;
 
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 
 import java.util.Optional;
 
 public class PersonService {
+    private final PersonRepository personRepository;
+
+    public PersonService(PersonRepository personRepository) {
+        this.personRepository = personRepository;
+    }
 
     public Person getPersonById(Long id) {
         Optional<Person> person = greenifyRepository.findById(id);
