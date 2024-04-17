@@ -5,11 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.enums.PhaseName;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 @Getter
 @Setter
@@ -35,29 +30,6 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-    }
-
-    public void addPhaseToIntervention(String interventionName, PhaseName phaseName) { //User side
-        boolean interventionFound = false;
-        for (Intervention i : this.interventions) {
-            if (i.getName().equals(interventionName)) {
-                i.addPhase(phaseName);
-                interventionFound = true;
-                break;
-            }
-        }
-        if (!interventionFound) {
-            throw new NoSuchElementException("Intervention with name " + interventionName + " does not exist");
-        }
-    }
-
-    public void addIntervention(String name, String description) {
-        for(Intervention intervention : this.interventions) {
-            if(intervention.getName().equals(name) && intervention.getDescription().equals(description)) {
-                throw new IllegalArgumentException("Intervention with name " + name + " & " + description + " already exists");
-            }
-        }
-        this.interventions.add(new Intervention(name, description));
     }
 
     private void validateInput(String value, String fieldName) {
