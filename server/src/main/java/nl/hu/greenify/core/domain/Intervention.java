@@ -9,6 +9,7 @@ import nl.hu.greenify.core.domain.enums.PhaseName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Setter
@@ -25,9 +26,6 @@ public class Intervention {
 
     @OneToMany
     private List<Phase> phases = new ArrayList<>();
-
-    @OneToMany
-    private List<Intervention> interventions = new ArrayList<>();
 
     @ManyToOne
     private Person admin;
@@ -47,7 +45,21 @@ public class Intervention {
     protected Intervention() {
     }
 
-    public void addPhase(PhaseName phaseName) { //Intervention side
+    public void addPhaseToIntervention(PhaseName phaseName) { //User side
+        boolean interventionFound = false;
+        for (Intervention i : this.interventions) {
+            if (i.getName().equals(interventionName)) {
+                i.addPhase(phaseName);
+                interventionFound = true;
+                break;
+            }
+        }
+        if (!interventionFound) {
+            throw new NoSuchElementException("Intervention with name " + interventionName + " does not exist");
+        }
+    }
+
+    private void addPhase(PhaseName phaseName) { //Intervention side
         this.phases.add(new Phase(phaseName));
     }
 
