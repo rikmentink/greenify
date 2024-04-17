@@ -55,6 +55,10 @@ router.setRoutes([
         component: 'gi-register',
     },
     {
+        path: import.meta.env.BASE_URL + 'overview',
+        component: 'gi-overview',
+    },
+    {
         path: import.meta.env.BASE_URL + 'createphase',
         component: 'gi-createphase',
     }

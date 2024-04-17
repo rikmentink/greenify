@@ -3,9 +3,10 @@ package nl.hu.greenify.security.application;
 import jakarta.transaction.Transactional;
 import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.security.application.exceptions.AccountAlreadyExistsException;
 import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
-import nl.hu.greenify.security.presentation.exceptions.AccountNotFoundException;
+import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 
 
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,10 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account register(String email, String password, String firstName, String lastName) {
+        // Check if the email is already in use
+        if (accountRepository.findByEmail(email).isPresent()) {
+            throw new AccountAlreadyExistsException("Email is already in use");
+        }
 
         // Encode the password
         String encodedPassword = this.passwordEncoder.encode(password);

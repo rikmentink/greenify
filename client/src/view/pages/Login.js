@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
+import { login } from '../../services/AccountService.js';
+
 export class Login extends LitElement {
     static styles = [css`
 
@@ -82,6 +84,10 @@ export class Login extends LitElement {
             width: 125px;
             height: 125px;
         }
+        
+        .error-message {
+            color: red;
+        }
 
         @media (min-width: 992px) {
             .login-form {
@@ -98,12 +104,38 @@ export class Login extends LitElement {
 
     `];
 
-    static properties = {
-        // Define properties here
-    };
-
     constructor() {
         super();
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+    }
+
+    // Handle form submission
+    async submitForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        await login(email, password).then(token => {
+            sessionStorage.setItem('token', token);
+            window.location.href = import.meta.env.BASE_URL + 'dashboard';
+        }).catch(error => {
+            this.handleErrorMessage(error.message)
+        })
+    }
+
+    // Add event listener to the form
+    firstUpdated() {
+        this.shadowRoot.querySelector('.login-form').addEventListener('submit', this.submitForm.bind(this))
+    }
+
+    handleErrorMessage(error) {
+        const errorMessage = this.shadowRoot.querySelector('.error-message');
+        errorMessage.textContent = error;
     }
 
     // Render the component
@@ -122,6 +154,7 @@ export class Login extends LitElement {
                             <a class="register-btn" .href=${import.meta.env.BASE_URL + 'register'}>Aanmelden</a>
                             <button class="login-btn" type="submit">Inloggen</button>
                         </div>
+                        <p class="error-message"></p>
                     </form>
                 </div>
             </div>
