@@ -52,6 +52,10 @@ router.setRoutes([
         path: import.meta.env.BASE_URL + 'register',
         component: 'gi-register',
     },
+    {
+        path: import.meta.env.BASE_URL + 'overview',
+        component: 'gi-overview',
+    },
 ]);
 
 export default router;
