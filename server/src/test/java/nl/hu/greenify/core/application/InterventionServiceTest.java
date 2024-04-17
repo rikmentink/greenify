@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 public class InterventionServiceTest {
     private final InterventionRepository interventionRepository = mock(InterventionRepository.class);
     private final PhaseRepository phaseRepository = mock(PhaseRepository.class);
-    private final InterventionService interventionService = new InterventionService(interventionRepository, phaseRepository);
+    private final InterventionService interventionService = new InterventionService(interventionRepository, phaseRepository, personRepository);
     private Person person;
 
     @BeforeEach

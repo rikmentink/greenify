@@ -19,34 +19,25 @@ import java.util.Optional;
 @Service
 public class InterventionService {
     private final InterventionRepository interventionRepository;
-    private final PersonRepository personRepository;
+    private final PersonService personService;
     private final PhaseRepository phaseRepository;
 
-    public InterventionService(InterventionRepository interventionRepository, PhaseRepository phaseRepository, PersonRepository personRepository) {
+    public InterventionService(InterventionRepository interventionRepository, PhaseRepository phaseRepository, PersonService personService) {
         this.interventionRepository = interventionRepository;
-        this.personRepository = personRepository;
+        this.personService = personService;
         this.phaseRepository = phaseRepository;
     }
 
     public void createIntervention(String name, String description, Long adminId) {
-        Optional<Person> admin = personRepository.findById(adminId);
-
-        if(admin.isEmpty()) {
-            throw new PersonNotFoundException(adminId);
-        }
-
-        Intervention intervention = new Intervention(name, description, admin.get());
-        interventionRepository.save(intervention);
+        Person admin = personService.getPersonById(adminId);
+        interventionRepository.save(new Intervention(name, description, admin));
     }
 
 
     public void addPhase(Long id, PhaseName phaseName) {
-        Optional<Intervention> intervention = interventionRepository.findById(id);
-        if(intervention.isEmpty()) {
-            throw new InterventionNotFoundException(id);
-        }
-            intervention.get().addPhase(phaseName);
-            interventionRepository.save(intervention.get());
+        Intervention intervention = getInterventionById(id);
+        intervention.addPhase(phaseName);
+        interventionRepository.save(intervention);
         }
 
     public Phase getPhaseById(Long id) {
