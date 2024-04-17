@@ -13,7 +13,7 @@ public class PersonService {
     }
 
     public Person getPersonById(Long id) {
-        Optional<Person> person = greenifyRepository.findById(id);
+        Optional<Person> person = personRepository.findById(id);
         if(person.isEmpty()) {
             throw new IllegalArgumentException("Person with id " + id + " does not exist");
         } else {
@@ -21,9 +21,8 @@ public class PersonService {
         }
     }
 
-    // TODO: Move to separate PersonService
     public Person getPersonByUsername(String username) {
-        Optional<Person> person = greenifyRepository.findByUsername(username);
+        Optional<Person> person = personRepository.findByUsername(username);
         if(person.isEmpty()) {
             throw new IllegalArgumentException("Person with username " + username + " does not exist");
         } else {
