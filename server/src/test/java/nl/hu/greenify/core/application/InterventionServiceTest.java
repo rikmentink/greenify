@@ -2,7 +2,7 @@ package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 
 import org.junit.jupiter.api.Assertions;
@@ -16,9 +16,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class InterventionServiceTest {
-    private final GreenifyRepository greenifyRepository = mock(GreenifyRepository.class);
+    private final PersonRepository personRepository = mock(PersonRepository.class);
     private final PhaseRepository phaseRepository = mock(PhaseRepository.class);
-    private final InterventionService interventionService = new InterventionService(greenifyRepository, phaseRepository);
+    private final InterventionService interventionService = new InterventionService(personRepository, phaseRepository);
     private Person person;
 
     @BeforeEach

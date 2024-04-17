@@ -1,7 +1,7 @@
 package nl.hu.greenify.security.application;
 
 import jakarta.transaction.Transactional;
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
@@ -20,14 +20,14 @@ public class AccountService implements UserDetailsService {
 
     private final AccountRepository accountRepository;
 
-    private final GreenifyRepository greenifyRepository;
+    private final PersonRepository personRepository;
 
     private final PasswordEncoder passwordEncoder;
 
-    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder, GreenifyRepository greenifyRepository) {
+    public AccountService(AccountRepository accountRepository, PasswordEncoder passwordEncoder, PersonRepository personRepository) {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
-        this.greenifyRepository = greenifyRepository;
+        this.personRepository = personRepository;
     }
 
     public Account register(String email, String password, String firstName, String lastName) {
@@ -37,7 +37,7 @@ public class AccountService implements UserDetailsService {
 
         // Create a new person
         Person person = new Person(firstName, lastName, email);
-        this.greenifyRepository.save(person);
+        this.personRepository.save(person);
 
         // Create a new user
         Account account = new Account(email, encodedPassword, person);

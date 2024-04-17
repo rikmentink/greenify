@@ -2,7 +2,7 @@ package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,7 @@ public class InterventionServiceIntegrationTest {
     @Autowired
     private InterventionService interventionService;
     @MockBean
-    private GreenifyRepository greenifyRepository;
+    private PersonRepository personRepository;
     private Person person;
 
     @BeforeEach
@@ -29,7 +29,7 @@ public class InterventionServiceIntegrationTest {
         person = new Person("John", "Doe", "johndoe@gmail.com");
         interventionService.addIntervention("Garden", "Watering the plants", person);
         interventionService.addPhase("Garden", PhaseName.INITIATION, person);
-        Mockito.when(greenifyRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
+        Mockito.when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
     }
 
     @Test

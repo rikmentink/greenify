@@ -1,7 +1,7 @@
 package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
@@ -13,41 +13,21 @@ import java.util.Optional;
 
 @Service
 public class InterventionService {
-    private final GreenifyRepository greenifyRepository;
+    private final PersonRepository personRepository;
     private final PhaseRepository phaseRepository;
 
-    public InterventionService(GreenifyRepository greenifyRepository, PhaseRepository phaseRepository) {
-        this.greenifyRepository = greenifyRepository;
+    public InterventionService(PersonRepository personRepository, PhaseRepository phaseRepository) {
+        this.personRepository = personRepository;
         this.phaseRepository = phaseRepository;
     }
 
     public void addPhase(String name, PhaseName phaseName, Person person) {
         person.addPhaseToIntervention(name, phaseName);
-        greenifyRepository.save(person);
+        personRepository.save(person);
     }
 
     public Phase getPhaseById(Long id) {
         return phaseRepository.findById(id)
                 .orElseThrow(() -> new PhaseNotFoundException("Phase with id " + id + " does not exist"));
-    }
-
-    // TODO: Move to separate PersonService
-    public Person getPersonById(Long id) {
-        Optional<Person> person = greenifyRepository.findById(id);
-        if(person.isEmpty()) {
-            throw new IllegalArgumentException("Person with id " + id + " does not exist");
-        } else {
-            return person.get();
-        }
-    }
-
-    // TODO: Move to separate PersonService
-    public Person getPersonByUsername(String username) {
-        Optional<Person> person = greenifyRepository.findByUsername(username);
-        if(person.isEmpty()) {
-            throw new IllegalArgumentException("Person with username " + username + " does not exist");
-        } else {
-            return person.get();
-        }
     }
 }

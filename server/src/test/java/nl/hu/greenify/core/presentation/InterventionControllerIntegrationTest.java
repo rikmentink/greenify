@@ -1,6 +1,6 @@
 package nl.hu.greenify.core.presentation;
 
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,13 +27,13 @@ public class InterventionControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private GreenifyRepository greenifyRepository;
+    private PersonRepository personRepository;
     Person person;
 
     @BeforeEach
     void setUp() {
         person = new Person("John", "Doe", "johndoe@gmail.com");
-        when(greenifyRepository.findById(1L)).thenReturn(Optional.of(person));
+        when(personRepository.findById(1L)).thenReturn(Optional.of(person));
         person.addIntervention("Init", "Initiation");
     }
 
