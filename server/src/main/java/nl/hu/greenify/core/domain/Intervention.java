@@ -9,7 +9,6 @@ import nl.hu.greenify.core.domain.enums.PhaseName;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Setter
@@ -35,8 +34,13 @@ public class Intervention {
 
     public Intervention(String name, String description, Person admin) {
         if (name == null) {
-            throw new IllegalArgumentException("Intervention should have a name and description");
+            throw new IllegalArgumentException("Intervention should have a name");
         }
+
+        if(admin == null) {
+            throw new IllegalArgumentException("Intervention should have an admin");
+        }
+
         this.name = name;
         this.description = description;
         this.admin = admin;
@@ -45,21 +49,7 @@ public class Intervention {
     protected Intervention() {
     }
 
-    public void addPhaseToIntervention(PhaseName phaseName) { //User side
-        boolean interventionFound = false;
-        for (Intervention i : this.interventions) {
-            if (i.getName().equals(interventionName)) {
-                i.addPhase(phaseName);
-                interventionFound = true;
-                break;
-            }
-        }
-        if (!interventionFound) {
-            throw new NoSuchElementException("Intervention with name " + interventionName + " does not exist");
-        }
-    }
-
-    private void addPhase(PhaseName phaseName) { //Intervention side
+    public void addPhase(PhaseName phaseName) {
         this.phases.add(new Phase(phaseName));
     }
 
