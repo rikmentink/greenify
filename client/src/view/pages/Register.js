@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
+import {login, register} from '../../services/AccountService.js';
+
 export class Register extends LitElement {
     static styles = [css`
         
@@ -79,6 +81,10 @@ export class Register extends LitElement {
             display: grid;
             justify-content: flex-end;
         }
+        
+        .error-message {
+            color: red;
+        }
 
         @media (min-width: 992px) {
             .register-form {
@@ -102,12 +108,38 @@ export class Register extends LitElement {
 
     `];
 
-    static properties = {
-        // Define properties here
-    };
-
     constructor() {
         super();
+    }
+
+    async submitForm(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const firstName = formData.get('firstName');
+        const lastName = formData.get('lastName');
+
+        await register(email, password, firstName, lastName)
+            .then(() => login(email, password).then(
+                token => {
+                    sessionStorage.setItem('token', token);
+                    window.location.href = import.meta.env.BASE_URL + 'dashboard';
+                }
+            )).catch(error => {
+                this.handleErrorMessage(error.message)
+            });
+
+    }
+
+    firstUpdated() {
+        this.shadowRoot.querySelector('.register-form').addEventListener('submit', this.submitForm.bind(this))
+    }
+
+    handleErrorMessage(error) {
+        const errorMessage = this.shadowRoot.querySelector('.error-message');
+        errorMessage.textContent = error;
     }
 
     // Render the component
@@ -122,7 +154,6 @@ export class Register extends LitElement {
                         <div class="input-group">
                             <input class="emailField" type="email" id="email" name="email" placeholder="Email" required>
                             <input class="passwordField" type="password" id="password" name="password" placeholder="Wachtwoord" required>
-                            <p>Vul een sterk wachtwoord in!</p>
                         </div>
                         <div class="privacy-group">
                             <input class="privacyField" type="checkbox" id="privacy" name="privacy" required><label for="privacy">Ik ga akkoord met de <a href="/privacy">privacy policy</a></label>
@@ -130,6 +161,7 @@ export class Register extends LitElement {
                         <div class="btn-container">
                             <button type="submit">Aanmelden</button>
                         </div>
+                        <p class="error-message"></p>
                     </form>
                 </div>
             </div>
