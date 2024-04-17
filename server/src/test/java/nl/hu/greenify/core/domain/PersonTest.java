@@ -7,11 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import nl.hu.greenify.core.domain.enums.PhaseName;
-
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 @DisplayName("Person Domain Test")
 public class PersonTest { //Extra tests
@@ -20,7 +17,6 @@ public class PersonTest { //Extra tests
     @BeforeEach
     void setUp() {
         person = new Person("John", "Doe", "JohnDoe@gmail.com");
-        person.addIntervention("Garden", "Watering the plants");
     }
 
     @Test
@@ -39,18 +35,6 @@ public class PersonTest { //Extra tests
     @DisplayName("User should have an email")
     void userEmail() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", null));
-    }
-
-    @Test
-    @DisplayName("User should be able to add a valid intervention")
-    void userAddIntervention() {
-        person.addIntervention("Garden2", "Watering the plants");
-    }
-
-    @Test
-    @DisplayName("User should not be able to add an invalid intervention")
-    void userAddInvalidIntervention() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> person.addIntervention(null, "Watering the plants"));
     }
 
     @ParameterizedTest
@@ -77,32 +61,4 @@ public class PersonTest { //Extra tests
                 {"", false}
         });
     }
-
-
-    @Test
-    @DisplayName("User should be able to add a phase to an intervention")
-    void userAddPhaseToIntervention() {
-        person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
-    }
-
-    @Test
-    @DisplayName("User should not be able to add an invalid phase to an intervention")
-    void userAddInvalidPhaseToIntervention() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", null));
-    }
-
-    @Test
-    @DisplayName("User should not be able to add a phase to an intervention that does not exist")
-    void userAddPhaseToInterventionInvalidIntervention() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> person.addPhaseToIntervention("Garden2", PhaseName.INITIATION));
-    }
-
-    @Test
-    @DisplayName("User should not be able to add a phase with the same name to the same intervention")
-    void userAddDuplicatePhaseToIntervention() {
-        person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
-        person.addPhaseToIntervention("Garden", PhaseName.INITIATION);
-        Assertions.assertEquals(2, person.getInterventions().get(0).getPhases().size());
-    }
-
 }

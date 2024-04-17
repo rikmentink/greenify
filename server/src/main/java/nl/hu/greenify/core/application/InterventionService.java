@@ -21,12 +21,7 @@ public class InterventionService {
         this.phaseRepository = phaseRepository;
     }
 
-    public void addIntervention(String name, String description, Person person) {
-        person.addIntervention(name, description);
-        greenifyRepository.save(person);
-    }
-
-    public void addPhaseToIntervention(String name, PhaseName phaseName, Person person) {
+    public void addPhase(String name, PhaseName phaseName, Person person) {
         person.addPhaseToIntervention(name, phaseName);
         greenifyRepository.save(person);
     }

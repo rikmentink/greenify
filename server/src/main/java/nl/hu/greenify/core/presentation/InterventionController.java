@@ -32,7 +32,7 @@ public class InterventionController {
         try {
 
             Person person = this.interventionService.getPersonById(personId);
-            this.interventionService.addPhaseToIntervention(name, phaseName, person);
+            this.interventionService.addPhase(name, phaseName, person);
 
             return ResponseEntity.ok(PersonDto.fromEntity(person));
         } catch (IllegalArgumentException e) {

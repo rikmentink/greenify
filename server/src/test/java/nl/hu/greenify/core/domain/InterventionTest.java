@@ -11,17 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {
-    private Intervention intervention; //For future tests
+    private Intervention intervention;
+    private Person person;
 
     @BeforeEach
     void setUp() {
-        intervention = new Intervention("Garden", "Watering the plants");
+        person = new Person("John", "Doe", "johndoe@gmail.com");
+        intervention = new Intervention("Garden", "Watering the plants", person);
     }
 
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants", person));
     }
 
     @DisplayName("An intervention should be able to add a phase")
@@ -44,7 +46,7 @@ public class InterventionTest {
         assertEquals(2, intervention.getPhases().size());
     }
 
-    @DisplayName("An intervention should be able to have 3 phases")
+    @DisplayName("An intervention should be able to have multiple phases")
     @Test
     void interventionAddThreePhases() {
         intervention.addPhase(PhaseName.INITIATION);
