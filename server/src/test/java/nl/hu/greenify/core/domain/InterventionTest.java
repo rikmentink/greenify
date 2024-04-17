@@ -54,4 +54,27 @@ public class InterventionTest {
         intervention.addPhase(PhaseName.EXECUTION);
     }
 
+    @DisplayName("An intervention should have an admin")
+    @Test
+    void interventionAdmin() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention("Garden", "Watering the plants", null));
+    }
+
+    @DisplayName("An intervention should be able to add a participant")
+    @Test
+    void interventionAddParticipant() {
+        Person participant = new Person("Jane", "Doe", "Janedoe@gmail.com");
+        intervention.addParticipant(participant);
+        assertEquals(1, intervention.getParticipants().size());
+    }
+
+    @DisplayName("An intervention should be able to add multiple participants")
+    @Test
+    void interventionAddMultipleParticipants() {
+        Person participant1 = new Person("Jane", "Doe", "Janedoe@gmail.com");
+        Person participant2 = new Person("Jack", "Doe", "jackdoe@gmail.com");
+        intervention.addParticipant(participant1);
+        intervention.addParticipant(participant2);
+        assertEquals(2, intervention.getParticipants().size());
+    }
 }
