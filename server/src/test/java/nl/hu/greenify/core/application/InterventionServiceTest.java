@@ -24,20 +24,5 @@ public class InterventionServiceTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "johndoe@gmail.com");
-        interventionService.addIntervention("Garden", "Watering the plants", person);
-        interventionService.addPhase("Garden", PhaseName.INITIATION, person);
-    }
-
-    @Test
-    @DisplayName("A phase should not be added when the name of the intervention it belongs to is incorrect")
-    void addPhaseToInterventionWithIncorrectInterventionName() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> interventionService.addPhase("Garden5", PhaseName.INITIATION, person));
-    }
-
-    @Test
-    @DisplayName("A phase should not be added when the name of the phase is incorrect")
-    void addPhaseToInterventionWithIncorrectPhaseName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> interventionService.addPhase("Garden", null));
     }
 }

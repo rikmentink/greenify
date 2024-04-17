@@ -32,12 +32,12 @@ public class InterventionController {
         }
     }
 
-    @PostMapping("/phase/{personId}")
-    public ResponseEntity<?> addPhase(@RequestParam Long id, String name, PhaseName phaseName) {
+    @PostMapping("/phase/{id}")
+    public ResponseEntity<?> addPhase(@RequestParam Long id, PhaseName phaseName) {
         try {
             this.interventionService.addPhase(id, phaseName);
 
-            return ResponseEntity.ok(PersonDto.fromEntity(person));
+            return ResponseEntity.ok("Phase added");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
