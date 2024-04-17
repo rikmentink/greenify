@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import nl.hu.greenify.core.domain.enums.PhaseName;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {
     private Intervention intervention; //For future tests
@@ -34,11 +36,12 @@ public class InterventionTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> intervention.addPhase(null));
     }
 
-    @DisplayName("An intervention should not accept when the exact same phase is added")
+    @DisplayName("An intervention should accept when the exact same phase is added")
     @Test
     void interventionAddDuplicatePhase() {
         intervention.addPhase(PhaseName.INITIATION);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> intervention.addPhase(PhaseName.INITIATION));
+        intervention.addPhase(PhaseName.INITIATION);
+        assertEquals(2, intervention.getPhases().size());
     }
 
     @DisplayName("An intervention should be able to have 3 phases")

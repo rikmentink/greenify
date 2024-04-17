@@ -6,6 +6,7 @@ import { Login } from '../pages/Login';
 import { LoginOption } from '../pages/LoginOption';
 import { Survey } from '../pages/Survey';
 import { SurveyResultReport } from '../pages/SurveyResultReport';
+import { CreatePhase } from '../pages/CreatePhase';
 
 export const router = new Router(document.getElementById('outlet'), {
     baseUrl: import.meta.env.BASE_URL
@@ -45,7 +46,8 @@ router.setRoutes([
                 // TODO: Include a way to determine of which phase the survey report is
                 path: import.meta.env.BASE_URL + 'surveyReport',
                 component: 'gi-survey-result-report',
-            }
+            },
+
         ]
     },
     {
@@ -56,6 +58,10 @@ router.setRoutes([
         path: import.meta.env.BASE_URL + 'overview',
         component: 'gi-overview',
     },
+    {
+        path: import.meta.env.BASE_URL + 'createphase',
+        component: 'gi-createphase',
+    }
 ]);
 
 export default router;

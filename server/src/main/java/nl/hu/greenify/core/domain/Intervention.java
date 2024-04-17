@@ -42,11 +42,6 @@ public class Intervention {
     }
 
     public void addPhase(PhaseName phaseName) { //Intervention side
-        for (Phase p : this.phases) {
-            if (p.getName().equals(phaseName)) {
-                throw new IllegalArgumentException("Phase with name " + phaseName + " already exists");
-            }
-        }
         this.phases.add(new Phase(phaseName));
     }
 }
