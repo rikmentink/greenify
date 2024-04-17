@@ -20,11 +20,9 @@ public class Response {
     @Setter
     private String comment;
 
-    @Setter
     @Enumerated(EnumType.STRING)
     private FacilitatingFactor facilitatingFactor;
 
-    @Setter
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
@@ -36,5 +34,15 @@ public class Response {
 
     public void calculateScore() {
         this.score = facilitatingFactor.getValue() * priority.getValue();
+    }
+
+    public void setFacilitatingFactor(FacilitatingFactor facilitatingFactor) {
+        this.facilitatingFactor = facilitatingFactor;
+        this.calculateScore();
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+        this.calculateScore();
     }
 }
