@@ -1,6 +1,5 @@
 package nl.hu.greenify.core.domain.enums;
 
-import lombok.Getter;
 
 public enum FacilitatingFactor {
     TOTALLY_DISAGREE(1),
@@ -11,10 +10,16 @@ public enum FacilitatingFactor {
     I_DONT_KNOW(0),
     PENDING(0);
 
-    @Getter
     private final int value;
 
     FacilitatingFactor(int value) {
         this.value = value;
+    }
+
+    public int getValue(boolean isSupportingFactor) {
+        if (isSupportingFactor) {
+            return this.value;
+        }
+        return 6 - this.value;
     }
 }
