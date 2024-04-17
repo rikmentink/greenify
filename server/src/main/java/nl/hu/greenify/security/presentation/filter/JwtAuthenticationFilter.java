@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.presentation.dto.LoginDto;
 
+import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,9 +42,12 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         LoginDto login = new ObjectMapper()
                 .readValue(request.getInputStream(), LoginDto.class);
 
-        return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(login.email(), login.password())
-        );
+        try {
+            return authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(login.email(), login.password()));
+        } catch (AuthenticationException e) {
+            throw new AccountNotFoundException("Email or password is incorrect");
+        }
     }
 
     @Override
@@ -67,8 +71,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                 .setExpiration(new Date(System.currentTimeMillis() + this.expirationInMs))
                 .claim("rol", roles)
                 .claim("email", account.getUsername())
+                .claim("personId", account.getPerson().getId())
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Access-Control-Expose-Headers", "Authorization");
     }
 }

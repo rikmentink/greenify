@@ -1,4 +1,4 @@
-package nl.hu.greenify.security.presentation.exceptions;
+package nl.hu.greenify.security.application.exceptions;
 
 public class AccountNotFoundException extends RuntimeException{
     public AccountNotFoundException(String message) {
