@@ -23,6 +23,11 @@ public class InterventionService {
         this.phaseRepository = phaseRepository;
     }
 
+    public void createIntervention(String name, String description, Person admin) {
+        Intervention intervention = new Intervention(name, description, admin);
+        interventionRepository.save(intervention);
+    }
+
 
     public void addPhase(Long id, PhaseName phaseName) {
         Optional<Intervention> intervention = interventionRepository.findById(id);
