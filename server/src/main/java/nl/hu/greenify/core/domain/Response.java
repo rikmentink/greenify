@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.Priority;
+import nl.hu.greenify.core.domain.factor.Subfactor;
 
 @Entity
 @ToString
@@ -26,14 +27,22 @@ public class Response {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    public Response() {
+    @OneToOne
+    private Subfactor subfactor;
+
+    public Response(Subfactor subfactor) {
+        this.subfactor = subfactor;
         this.score = 0;
         this.facilitatingFactor = FacilitatingFactor.PENDING;
         this.priority = Priority.PENDING;
     }
 
-    public void calculateScore() {
-        this.score = facilitatingFactor.getValue() * priority.getValue();
+    protected Response() {
+    }
+
+    private void calculateScore() {
+        boolean isSupportingFactor = this.subfactor.isSupportingFactor();
+        this.score = facilitatingFactor.getValue(isSupportingFactor) * priority.getValue();
     }
 
     public void setFacilitatingFactor(FacilitatingFactor facilitatingFactor) {
