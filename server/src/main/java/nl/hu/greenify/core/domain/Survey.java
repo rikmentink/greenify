@@ -43,8 +43,4 @@ public class Survey extends Template {
             phase
         );
     }
-
-    public Phase getPhase() {
-        return this.phase;
-    }
 }
