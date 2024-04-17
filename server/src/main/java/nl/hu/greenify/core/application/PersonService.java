@@ -2,9 +2,11 @@ package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class PersonService {
     private final PersonRepository personRepository;
 
