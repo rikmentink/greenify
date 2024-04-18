@@ -30,6 +30,7 @@ router.setRoutes([
                 component: 'gi-register',
             },
             {
+                // TODO: Use form data instead of parameter in the future.
                 path: import.meta.env.BASE_URL + 'survey/:surveyId',
                 component: 'gi-survey',
                 action: (context) => {
