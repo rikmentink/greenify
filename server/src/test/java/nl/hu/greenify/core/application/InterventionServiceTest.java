@@ -38,7 +38,6 @@ public class InterventionServiceTest {
         i.setId(1L);
 
         when(personService.getPersonById(1L)).thenReturn(person);
-
         when(interventionRepository.save(i)).thenReturn(i);
         when(personRepository.save(person)).thenReturn(person);
         when(interventionRepository.findByPerson(person)).thenReturn(List.of(i));
@@ -105,5 +104,4 @@ public class InterventionServiceTest {
     void getAllInterventionsByPersonShouldReturnEmptyList() {
         assertEquals(interventionService.getAllInterventionsByPerson(person), List.of(i));
     }
-
 }
