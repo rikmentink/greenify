@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
 @Service
 public class InterventionService {
     private final InterventionRepository interventionRepository;
@@ -29,7 +28,6 @@ public class InterventionService {
         Person admin = personService.getPersonById(adminId);
         interventionRepository.save(new Intervention(name, description, admin));
     }
-
 
     public void addPhase(Long id, PhaseName phaseName) {
         Intervention intervention = getInterventionById(id);
