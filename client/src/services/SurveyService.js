@@ -1,9 +1,16 @@
 async function getSurvey(id, page, pageSize) {
-    const response = await fetch(`/api/survey/${id}/questions?page=${page}&pageSize=${pageSize}`);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch survey questions: ${response.statusText}`);
-    }
-    return response.json();
+    // return fetch(`${import.meta.env.VITE_API_URL}/api/survey/${id}/questions?page=${page}&pageSize=${pageSize}`)
+    return fetch(`${import.meta.env.VITE_API_URL}/api/survey/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to fetch survey questions: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error(error);
+            throw error;
+        });
 }
 
 export { getSurvey };
