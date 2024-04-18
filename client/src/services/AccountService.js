@@ -1,3 +1,5 @@
+const API_URL = import.meta.env.VITE_API_URL;
+
 async function handleErrorMessages(response) {
     if (!response.ok) {
         const errorData = await response.json();
@@ -7,7 +9,7 @@ async function handleErrorMessages(response) {
 
 
 async function login (email, password) {
-    const response = await fetch('http://localhost:8080/api/login', {
+    const response = await fetch(`${API_URL}/login`, {
         method: 'POST',
         body: JSON.stringify({ email, password })
     });
@@ -21,7 +23,7 @@ async function login (email, password) {
 }
 
 async function register (email, password, firstName, lastName){
-    const response = await fetch('http://localhost:8080/api/account/register', {
+    const response = await fetch(`${API_URL}/account/register`, {
         method: 'POST',
         body: JSON.stringify({ email, password, firstName, lastName}),
         headers: {
