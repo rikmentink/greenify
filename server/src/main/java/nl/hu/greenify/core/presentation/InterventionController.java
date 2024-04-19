@@ -17,7 +17,7 @@ public class InterventionController {
         this.interventionService = interventionService;
     }
     @PostMapping("/create")
-    public ResponseEntity<?> createIntervention(@RequestParam String name, String description, Long adminId) {
+    public ResponseEntity<?> createIntervention(@RequestParam Long adminId, String name, String description) {
         try {
             this.interventionService.createIntervention(name, description, adminId);
             return ResponseEntity.ok("Intervention created");

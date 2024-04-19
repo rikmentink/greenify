@@ -30,8 +30,6 @@ public class InterventionControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private PersonRepository personRepository;
-    @MockBean
     private PhaseRepository phaseRepository;
     @MockBean
     private InterventionRepository interventionRepository;
@@ -61,7 +59,7 @@ public class InterventionControllerIntegrationTest {
         RequestBuilder request = MockMvcRequestBuilders.post("/intervention/create")
                 .param("name", name)
                 .param("description", description)
-                .param("id", person.getId().toString());
+                .param("adminId", "1");
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
