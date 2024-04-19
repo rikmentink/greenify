@@ -2,7 +2,6 @@ package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.InterventionService;
 import nl.hu.greenify.core.application.PersonService;
-import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.presentation.dto.PersonDto;
@@ -33,7 +32,7 @@ public class InterventionController {
     }
 
     @PostMapping("/phase/{id}")
-    public ResponseEntity<?> addPhase(@RequestParam Long id, PhaseName phaseName) {
+    public ResponseEntity<?> addPhase(@PathVariable Long id, PhaseName phaseName) {
         try {
             this.interventionService.addPhase(id, phaseName);
 
