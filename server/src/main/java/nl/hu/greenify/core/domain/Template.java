@@ -21,12 +21,12 @@ public class Template {
     private Long id;
     private String name;
     private String description;
-    private Integer version;
+    private int version;
 
     @OneToMany
     private List<Category> categories = new ArrayList<>();
 
-    public Template(Long id, String name, String description, Integer version, List<Category> categories) {
+    public Template(Long id, String name, String description, int version, List<Category> categories) {
         this.id = id;
         this.name = name;
         this.description = description;
