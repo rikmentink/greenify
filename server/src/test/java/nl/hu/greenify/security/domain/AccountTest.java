@@ -2,6 +2,7 @@ package nl.hu.greenify.security.domain;
 
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
+import nl.hu.greenify.security.domain.exceptions.AccountDoesntHaveRoleException;
 import nl.hu.greenify.security.domain.exceptions.AccountHasRoleAlreadyException;
 import nl.hu.greenify.security.domain.exceptions.AccountWithoutPersonException;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,7 +97,7 @@ public class AccountTest {
     @DisplayName("Test removing a role from an account that doesn't have the role")
     void removeRoleDoesntExist() {
         Account account = Account.createAccount("john@gmail.com", "password", person);
-        assertThrows(AccountHasRoleAlreadyException.class, () -> account.removeRole(AccountRoles.ROLE_VUMEDEWERKER));
+        assertThrows(AccountDoesntHaveRoleException.class, () -> account.removeRole(AccountRoles.ROLE_VUMEDEWERKER));
     }
 
 }
