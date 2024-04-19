@@ -68,7 +68,7 @@ public class Account implements UserDetails {
 
     public void addRole(AccountRoles role) {
         if (roles.contains(role))
-            throw new AccountHasRoleAlreadyException(String.format("Role %s already exists", role.name()));
+            throw new AccountHasRoleAlreadyException(String.format("Account already has role %s and cannot be added again", role.name()));
 
         roles.add(role);
     }
