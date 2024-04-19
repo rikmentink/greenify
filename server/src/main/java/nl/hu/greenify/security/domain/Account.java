@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
+import nl.hu.greenify.security.domain.exceptions.AccountDoesntHaveRoleException;
 import nl.hu.greenify.security.domain.exceptions.AccountHasRoleAlreadyException;
 import nl.hu.greenify.security.domain.exceptions.AccountWithoutPersonException;
 import org.springframework.security.core.GrantedAuthority;
