@@ -7,5 +7,5 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GreenifyRepository extends JpaRepository<Person, Long> {
-    Optional<Person> findByUsername(String username);
+    Optional<Person> findByEmail(String username);
 }
