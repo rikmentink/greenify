@@ -75,7 +75,7 @@ public class Account implements UserDetails {
 
     public void removeRole(AccountRoles role) {
         if (!roles.contains(role))
-            throw new AccountHasRoleAlreadyException(String.format("Role %s doesn't exist", role.name()));
+            throw new AccountDoesntHaveRoleException(String.format("Account doesn't have role %s , meaning it cannot be removed", role.name()));
 
         roles.remove(role);
     }
