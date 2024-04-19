@@ -40,7 +40,11 @@ public class InterventionService {
                 .orElseThrow(() -> new PhaseNotFoundException("Phase with id " + id + " does not exist"));
     }
 
-    public List<Intervention> getAllInterventionsByPerson(Person person) {
+    public List<Intervention> getAllInterventionsByPerson(Long id) {
+        Person person = personService.getPersonById(id);
+        if(person == null) {
+            throw new IllegalArgumentException("Person with id " + id + " does not exist");
+        }
         return interventionRepository.findByPerson(person);
     }
 

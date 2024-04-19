@@ -84,7 +84,7 @@ public class InterventionServiceIntegrationTest {
     @DisplayName("When fetching all interventions by a person, they should be fetched from the repository")
     @Test
     void getAllInterventionsByPersonShouldFetch() {
-        interventionService.getAllInterventionsByPerson(person);
+        interventionService.getAllInterventionsByPerson(person.getId());
         verify(interventionRepository).findByPerson(person);
     }
 
@@ -110,6 +110,6 @@ public class InterventionServiceIntegrationTest {
     @DisplayName("When fetching all interventions by a person and there are none, a list should be returned")
     @Test
     void getAllInterventionsByPersonShouldReturnEmptyList() {
-        assertEquals(interventionService.getAllInterventionsByPerson(person), List.of(i));
+        assertEquals(interventionService.getAllInterventionsByPerson(person.getId()), List.of(i));
     }
 }

@@ -1,10 +1,9 @@
 package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.InterventionService;
-import nl.hu.greenify.core.application.PersonService;
-import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.presentation.dto.PersonDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +11,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/intervention")
 public class InterventionController {
     private final InterventionService interventionService;
-    private final PersonService personService;
 
-    public InterventionController(InterventionService interventionService, PersonService personService) {
+    public InterventionController(InterventionService interventionService) {
         this.interventionService = interventionService;
-        this.personService = personService;
     }
-
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createIntervention(@RequestParam String name, String description, Long adminId) {
         try {
-            Person admin = this.personService.getPersonById(adminId);
             this.interventionService.createIntervention(name, description, adminId);
-
-            return ResponseEntity.ok(PersonDto.fromEntity(admin));
+            return ResponseEntity.ok("Intervention created");
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -35,11 +29,38 @@ public class InterventionController {
     public ResponseEntity<?> addPhase(@PathVariable Long id, PhaseName phaseName) {
         try {
             this.interventionService.addPhase(id, phaseName);
-
             return ResponseEntity.ok("Phase added");
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("/phase/{id}")
+    public ResponseEntity<?> getPhaseById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.interventionService.getPhaseById(id));
+        } catch (PhaseNotFoundException p) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("/all/{id}")
+    public ResponseEntity<?> getAllInterventionsByPerson(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.interventionService.getAllInterventionsByPerson(id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getInterventionById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(this.interventionService.getInterventionById(id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 }
+
 
