@@ -50,7 +50,7 @@ public class InterventionServiceIntegrationTest {
 
         when(interventionRepository.findById(1L)).thenReturn(java.util.Optional.of(i));
         when(phaseRepository.findById(1L)).thenReturn(java.util.Optional.of(phase));
-        when(interventionRepository.findByPerson(person)).thenReturn(List.of(i));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
 
     }
@@ -85,7 +85,7 @@ public class InterventionServiceIntegrationTest {
     @Test
     void getAllInterventionsByPersonShouldFetch() {
         interventionService.getAllInterventionsByPerson(person.getId());
-        verify(interventionRepository).findByPerson(person);
+        verify(interventionRepository).findInterventionsByAdmin(person);
     }
 
     @DisplayName("When fetching an intervention with a valid id, it should be fetched from the repository")

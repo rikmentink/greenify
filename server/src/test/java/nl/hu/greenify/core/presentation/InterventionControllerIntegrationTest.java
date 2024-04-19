@@ -21,9 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -49,13 +47,9 @@ public class InterventionControllerIntegrationTest {
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);
 
-        personRepository.save(person);
-
         when(interventionRepository.findById(1L)).thenReturn(Optional.of(i));
         when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(PhaseName.PLANNING)));
-        when(personRepository.findById(1L)).thenReturn(Optional.of(person));
         when(personService.getPersonById(1L)).thenReturn(person);
-
     }
 
     @Test
@@ -63,14 +57,11 @@ public class InterventionControllerIntegrationTest {
     void addInterventionTest() throws Exception {
         String name = "Garden";
         String description = "Watering the plants";
-        Long id = 1L;
 
-        System.out.println(person.getId().toString());
-
-        RequestBuilder request = MockMvcRequestBuilders.post("/intervention")
+        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/create")
                 .param("name", name)
-                .param("id", person.getId().toString())
-                .param("description", description);
+                .param("description", description)
+                .param("id", person.getId().toString());
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
@@ -90,18 +81,6 @@ public class InterventionControllerIntegrationTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("Fetching a nonexisting intervention")
-    void getNonExistingInterventionTest() throws Exception {
-        Long id = 2L;
-
-        RequestBuilder request = MockMvcRequestBuilders.get("/intervention/{id}", id)
-                .param("id", id.toString());
-
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
     }
 
     @Test

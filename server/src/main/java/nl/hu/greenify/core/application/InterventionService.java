@@ -25,8 +25,11 @@ public class InterventionService {
     }
 
     public void createIntervention(String name, String description, Long adminId) {
-        Person admin = personService.getPersonById(adminId);
-        interventionRepository.save(new Intervention(name, description, admin));
+        Person person = personService.getPersonById(adminId);
+        if(person == null) {
+            throw new IllegalArgumentException("Person with id " + adminId + " does not exist");
+        }
+        interventionRepository.save(new Intervention(name, description, person));
     }
 
     public void addPhase(Long id, PhaseName phaseName) {
@@ -45,7 +48,7 @@ public class InterventionService {
         if(person == null) {
             throw new IllegalArgumentException("Person with id " + id + " does not exist");
         }
-        return interventionRepository.findByPerson(person);
+        return interventionRepository.findInterventionsByAdmin(person);
     }
 
     public Intervention getInterventionById(Long id) {

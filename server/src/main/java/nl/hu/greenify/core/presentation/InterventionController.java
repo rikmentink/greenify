@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.InterventionService;
+import nl.hu.greenify.core.application.exceptions.InterventionNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ public class InterventionController {
     public InterventionController(InterventionService interventionService) {
         this.interventionService = interventionService;
     }
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createIntervention(@RequestParam String name, String description, Long adminId) {
         try {
             this.interventionService.createIntervention(name, description, adminId);
@@ -57,7 +58,7 @@ public class InterventionController {
     public ResponseEntity<?> getInterventionById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(this.interventionService.getInterventionById(id));
-        } catch (IllegalArgumentException e) {
+        } catch (InterventionNotFoundException i) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

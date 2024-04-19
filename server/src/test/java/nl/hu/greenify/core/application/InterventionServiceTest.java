@@ -40,11 +40,11 @@ public class InterventionServiceTest {
         when(personService.getPersonById(1L)).thenReturn(person);
         when(interventionRepository.save(i)).thenReturn(i);
         when(personRepository.save(person)).thenReturn(person);
-        when(interventionRepository.findByPerson(person)).thenReturn(List.of(i));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
         when(interventionRepository.findById(i.getId())).thenReturn(Optional.ofNullable(i));
         when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(PhaseName.PLANNING)));
-        when(interventionRepository.findByPerson(person)).thenReturn(List.of(i));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
     }
 
     @DisplayName("Creating an intervention should be possible")
@@ -77,7 +77,7 @@ public class InterventionServiceTest {
     @Test
     void getAllInterventionsByPersonShouldFetch() {
         interventionService.getAllInterventionsByPerson(person.getId());
-        verify(interventionRepository).findByPerson(person);
+        verify(interventionRepository).findInterventionsByAdmin(person);
     }
 
     @DisplayName("When fetching an intervention with a valid id, it should be fetched from the repository")

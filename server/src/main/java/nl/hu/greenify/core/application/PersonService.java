@@ -24,7 +24,7 @@ public class PersonService {
     }
 
     public Person getPersonByUsername(String username) {
-        Optional<Person> person = personRepository.findByUsername(username);
+        Optional<Person> person = personRepository.findByFirstName(username);
         if(person.isEmpty()) {
             throw new IllegalArgumentException("Person with username " + username + " does not exist");
         } else {
