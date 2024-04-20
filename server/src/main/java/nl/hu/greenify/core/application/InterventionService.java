@@ -47,10 +47,10 @@ public class InterventionService {
     }
 
     // TODO: Move to separate PersonService
-    public Person getPersonByUsername(String username) {
-        Optional<Person> person = greenifyRepository.findByUsername(username);
+    public Person getPersonByEmail(String email) {
+        Optional<Person> person = greenifyRepository.findByEmail(email);
         if(person.isEmpty()) {
-            throw new IllegalArgumentException("Person with username " + username + " does not exist");
+            throw new IllegalArgumentException("Person with username " + email + " does not exist");
         } else {
             return person.get();
         }
