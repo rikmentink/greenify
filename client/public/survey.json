@@ -1,0 +1,55 @@
+{
+    "surveyId": 1,
+    "category": {
+        "id": 1,
+        "name": "Category",
+        "number": 1
+    },
+    "factors": [
+        {
+            "id": 1,
+            "title": "Factor 1",
+            "number": 1,
+            "subfactors": [
+                {
+                    "id": 1,
+                    "title": "Subfactor 1",
+                    "number": 1,
+                    "comments": [
+                        {
+                            "id": 1,
+                            "text": "Comment 1",
+                            "author": "Author 1",
+                            "date": "2017-01-01"
+                        },
+                        {
+                            "id": 2,
+                            "text": "Comment 2",
+                            "author": "Author 2",
+                            "date": "2017-01-02"
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "title": "Subfactor 2",
+                    "number": 2,
+                    "comments": [
+                        {
+                            "id": 3,
+                            "text": "Comment 1",
+                            "author": "Author 1",
+                            "date": "2017-01-01"
+                        },
+                        {
+                            "id": 4,
+                            "text": "Comment 2",
+                            "author": "Author 2",
+                            "date": "2017-01-02"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

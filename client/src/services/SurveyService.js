@@ -6,7 +6,10 @@ async function getSurvey(id, categoryId, page = 1, pageSize = 10) {
     url.searchParams.append('page', page);
     url.searchParams.append('pageSize', pageSize);
 
-    return fetch(url, {
+    // TODO: Remove!
+    const tempUrl = './survey.json';
+
+    return fetch(tempUrl, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     }).then(response => {

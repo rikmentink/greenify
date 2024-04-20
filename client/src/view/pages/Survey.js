@@ -1,7 +1,9 @@
-import { html, LitElement } from "lit";
+import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
 
 import { getSurvey } from '../../services/SurveyService.js';
+
+import { Question } from "../components/survey/Question.js";
 
 export class Survey extends LitElement {
     static properties = {
@@ -9,6 +11,13 @@ export class Survey extends LitElement {
         page: { type: Number },
         pageSize: { type: Number }
     }
+
+    static styles = css`
+        .survey > h1,
+        .survey > .factor > h2 {
+            font-weight: normal;
+        }
+    `
 
     constructor() {
         super();
@@ -18,26 +27,31 @@ export class Survey extends LitElement {
         this.data = new Task(this, {
             task: async ([id, page, pageSize]) => getSurvey(id, page, pageSize),
             args: () => [this.id, this.page, this.pageSize]
-        });
+        })
+
+        // TODO: Should redirect back if the survey id is not found
     }
 
     render() {
         return html`
-            <h1>Survey</h1>
-            <p>Note: this page is static temporarily for development purposes.</p>
-            <div class="survey">
                 ${this.data.render({
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
-                    data: (factors) => html`
-                        <ul>
-                            ${factors.map((question) => html`
-                                <li>${factors}</li>
+                    complete: (data) => html`
+                        <div class="survey">
+                            <a href="/intervention/${this.id}">Back to overview</a>
+                            <h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>
+                            ${data.factors.map((factor) => html`    
+                                <div class="factor">
+                                    <h2><strong>${factor.number}</strong> - ${factor.title}</h2>
+                                    ${factor.subfactors.map((subfactor) => html`
+                                        <gi-question .subfactor=${subfactor}></gi-question>
+                                    `)}
+                                </div>
                             `)}
-                        </ul>
+                        </div>
                     `
                 })}
-            </div>
         `
     }
 }
