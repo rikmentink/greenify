@@ -8,9 +8,11 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,8 +40,8 @@ public class SurveyController {
         value = "/{id}", 
         produces = "application/json"
     )
-    public ResponseEntity<?> getSurvey(@PathVariable Long id) {
-        Survey survey = this.surveyService.getSurvey(id);
+    public ResponseEntity<?> getSurvey(@PathVariable String id) {
+        Survey survey = this.surveyService.getSurvey(Long.parseLong(id));
         return this.createResponse(SurveyDto.fromEntity(survey));
     }
 
@@ -47,7 +49,7 @@ public class SurveyController {
         consumes = "application/json",
         produces = "application/json"
     )
-    public ResponseEntity<?> createSurvey(CreateSurveyDto createSurveyDto) {
+    public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
         Survey survey = this.surveyService.createSurvey(createSurveyDto.getPhaseId());
         return this.createResponse(SurveyDto.fromEntity(survey), HttpStatus.CREATED);
     }

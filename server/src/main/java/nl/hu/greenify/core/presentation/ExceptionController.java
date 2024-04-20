@@ -11,14 +11,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import nl.hu.greenify.core.application.exceptions.NotFoundException;
-import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 
 @RestControllerAdvice
 public class ExceptionController {
     
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleSurveyNotFoundException(SurveyNotFoundException exception) {
+    public ResponseEntity<String> handleSurveyNotFoundException(NotFoundException exception) {
         return createErrorResponse(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
