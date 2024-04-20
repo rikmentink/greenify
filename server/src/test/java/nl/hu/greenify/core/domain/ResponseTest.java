@@ -20,8 +20,11 @@ public class ResponseTest {
     @DisplayName("Test response score calculation")
     void testResponseScoreCalculation(FacilitatingFactor facilitatingFactor, Priority priority, double expectedScore) {
         // Given:
-        Factor factor = new Factor(1L, "title", 1, new Category(1L, "title", "red", "description"));
-        Subfactor subfactor = new Subfactor(1L, "title", 1, true, factor);
+        Category category = new Category(1L, "title", "red", "description");
+        Factor factor = new Factor(1L, "title", 1);
+        category.addFactor(factor);
+        Subfactor subfactor = new Subfactor(1L, "title", 1, true);
+        factor.addSubfactor(subfactor);
         Response response = new Response(subfactor);
 
         // When:
@@ -87,8 +90,11 @@ public class ResponseTest {
     @DisplayName("Supporting subfactor should not affect score")
     void testSubfactorWithSupportingFactor() {
         // Given:
-        Factor factor = new Factor(1L, "title", 1, new Category(1L, "title", "red", "description"));
-        Subfactor subfactor = new Subfactor(1L, "title", 1, true, factor);
+        Category category = new Category(1L, "title", "red", "description");
+        Factor factor = new Factor(1L, "title", 1);
+        category.addFactor(factor);
+        Subfactor subfactor = new Subfactor(1L, "title", 1, true);
+        factor.addSubfactor(subfactor);
         Response response = new Response(subfactor);
 
         // When:
@@ -104,8 +110,11 @@ public class ResponseTest {
     @DisplayName("Non-supporting subfactor should invert facilitating factor score")
     void testSubfactorWithNonSupportingFactor() {
         // Given:
-        Factor factor = new Factor(1L, "title", 1, new Category(1L, "title", "red", "description"));
-        Subfactor subfactor = new Subfactor(1L, "title", 1, false, factor);
+        Category category = new Category(1L, "title", "red", "description");
+        Factor factor = new Factor(1L, "title", 1);
+        category.addFactor(factor);
+        Subfactor subfactor = new Subfactor(1L, "title", 1, false);
+        factor.addSubfactor(subfactor);
         Response response = new Response(subfactor);
 
         // When:
