@@ -31,17 +31,8 @@ router.setRoutes([
             },
             {
                 // TODO: Use form data instead of parameter in the future.
-                path: import.meta.env.BASE_URL + 'survey/:surveyId',
+                path: import.meta.env.BASE_URL + 'survey',
                 component: 'gi-survey',
-                action: (context) => {
-                  let page = document.querySelector('gi-survey');
-                  if (!page) {
-                    page = document.createElement('gi-survey');
-                    document.body.appendChild(page);
-                  }
-                  page.id = parseInt(context.params.surveyId);
-                  return page;
-                }
             },
             {
                 // TODO: Include a way to determine of which phase the survey report is
