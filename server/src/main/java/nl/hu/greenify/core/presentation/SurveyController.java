@@ -1,7 +1,6 @@
 package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.presentation.dto.CreateSurveyDto;
-import nl.hu.greenify.core.presentation.dto.GetSurveyQuestionsDto;
 import nl.hu.greenify.core.presentation.dto.SurveyDto;
 
 import java.util.List;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.hu.greenify.core.application.SurveyService;
@@ -58,11 +58,9 @@ public class SurveyController {
         value = "/{id}/questions",
         produces = "application/json"
     )
-    public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestBody GetSurveyQuestionsDto getSurveyQuestionsDto) {
-        return this.createResponse(
-            this.surveyService.getQuestions(Long.parseLong(id), 
-            getSurveyQuestionsDto.getCategoryId())
-        );
+    public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestParam Long categoryId,
+            @RequestParam int page, @RequestParam int pageSize) {
+        return this.createResponse(this.surveyService.getQuestions(Long.parseLong(id), categoryId));
     }
 
     /**
