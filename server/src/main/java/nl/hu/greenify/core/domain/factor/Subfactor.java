@@ -20,8 +20,8 @@ public class Subfactor implements IFactor {
     private boolean isSupportingFactor;
 
     @Setter
-    @ManyToOne
-    private Factor factor;
+    @OneToOne
+    private Response response;
 
     protected Subfactor() {
     }
