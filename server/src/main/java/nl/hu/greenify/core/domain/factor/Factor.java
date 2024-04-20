@@ -25,6 +25,7 @@ public class Factor implements IFactor {
     @ManyToOne
     private Category category;
 
+    @Setter
     @OneToMany
     private List<Subfactor> subfactors = new ArrayList<>();
 
