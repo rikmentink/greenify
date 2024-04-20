@@ -36,6 +36,5 @@ public class Category {
 
     public void addFactor(Factor factor) {
         this.factors.add(factor);
-        factor.setCategory(this);
     }
 }

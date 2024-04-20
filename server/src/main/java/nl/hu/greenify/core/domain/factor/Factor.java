@@ -21,21 +21,16 @@ public class Factor implements IFactor {
     private String title;
     private int number;
 
-    @Setter
-    @ManyToOne
-    private Category category;
-
     @OneToMany
     private List<Subfactor> subfactors = new ArrayList<>();
 
     protected Factor() {
     }
 
-    public Factor(Long id, String title, int number, Category category) {
+    public Factor(Long id, String title, int number) {
         this.id = id;
         this.title = title;
         this.number = number;
-        this.category = category;
     }
 
     @Override
@@ -50,6 +45,5 @@ public class Factor implements IFactor {
 
     public void addSubfactor(Subfactor subfactor) {
         this.subfactors.add(subfactor);
-        subfactor.setFactor(this);
     }
 }
