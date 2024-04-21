@@ -33,6 +33,15 @@ public class Subfactor implements IFactor {
         this.isSupportingFactor = isSupportingFactor;
     }
 
+    public static Subfactor copyOf(Subfactor original) {
+        Subfactor copy = new Subfactor();
+        copy.id = original.id;
+        copy.title = original.title;
+        copy.number = original.number;
+        copy.isSupportingFactor = original.isSupportingFactor;
+        return copy;
+    }
+
     @Override
     public void setTitle(String title) {
 
