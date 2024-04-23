@@ -1,6 +1,6 @@
 package nl.hu.greenify.security.application;
 
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.application.exceptions.AccountAlreadyExistsException;
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 public class AccountServiceTest {
 
     private final AccountRepository accountRepository = mock(AccountRepository.class);
-    private final GreenifyRepository greenifyRepository = mock(GreenifyRepository.class);
+    private final PersonRepository greenifyRepository = mock(PersonRepository.class);
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
     private final AccountService accountService = new AccountService(accountRepository, passwordEncoder, greenifyRepository);
     private Person person;
