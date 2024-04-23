@@ -1,16 +1,13 @@
 package nl.hu.greenify.security.presentation;
 
-import lombok.Getter;
-import nl.hu.greenify.core.domain.Survey;
-import nl.hu.greenify.core.presentation.dto.SurveyDto;
 import nl.hu.greenify.security.application.AccountService;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.presentation.dto.AccountDto;
 import nl.hu.greenify.security.presentation.dto.RegisterDto;
 
+import nl.hu.greenify.security.presentation.dto.RoleDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +26,21 @@ public class AccountController {
         return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
     }
 
+    @PostMapping("/addrole")
+    public ResponseEntity<AccountDto> addRole(@Validated @RequestBody RoleDto roleDto) {
+        Account account = this.accountService.addRole(roleDto.email, roleDto.role);
+        return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
+    }
+
+    @PostMapping("/removerole")
+    public ResponseEntity<AccountDto> removeRole(@Validated @RequestBody RoleDto roleDto) {
+        Account account = this.accountService.removeRole(roleDto.email, roleDto.role);
+        return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
+    }
+
     @GetMapping("/{email}")
     public ResponseEntity<Account> getAccount(@PathVariable String email) {
-        Account account = this.accountService.getAccount(email);
+        Account account = this.accountService.getAccountByEmail(email);
         return new ResponseEntity<>(account, HttpStatus.OK);
     }
 }

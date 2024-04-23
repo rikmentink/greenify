@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
+import nl.hu.greenify.security.domain.exceptions.AccountDoesntHaveRoleException;
+import nl.hu.greenify.security.domain.exceptions.AccountHasRoleAlreadyException;
+import nl.hu.greenify.security.domain.exceptions.AccountWithoutPersonException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,6 +49,13 @@ public class Account implements UserDetails {
         addDefaultRole();
     }
 
+    public static Account createAccount(String email, String password, Person person) {
+        if (person == null || person.getEmail() == null)
+            throw new AccountWithoutPersonException("Person is required to create an account");
+
+        return new Account(email, password, person);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
@@ -57,11 +67,17 @@ public class Account implements UserDetails {
         roles.add(AccountRoles.ROLE_USER);
     }
 
-    public void addRoles(AccountRoles role) {
+    public void addRole(AccountRoles role) {
+        if (roles.contains(role))
+            throw new AccountHasRoleAlreadyException(String.format("Account already has role %s and cannot be added again", role.name()));
+
         roles.add(role);
     }
 
-    public void removeRoles(AccountRoles role) {
+    public void removeRole(AccountRoles role) {
+        if (!roles.contains(role))
+            throw new AccountDoesntHaveRoleException(String.format("Account doesn't have role %s , meaning it cannot be removed", role.name()));
+
         roles.remove(role);
     }
 
