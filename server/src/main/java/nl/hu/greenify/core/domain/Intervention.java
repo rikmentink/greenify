@@ -1,9 +1,6 @@
 package nl.hu.greenify.core.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,21 +24,36 @@ public class Intervention {
     private String description;
 
     @OneToMany
-    private List<Phase> phases;
+    private List<Phase> phases = new ArrayList<>();
 
-    public Intervention(String name, String description) {
+    @ManyToOne
+    private Person admin;
+
+    @ManyToMany
+    private List<Person> participants = new ArrayList<>();
+
+    public Intervention(String name, String description, Person admin) {
         if (name == null) {
-            throw new IllegalArgumentException("Intervention should have a name and description");
+            throw new IllegalArgumentException("Intervention should have a name");
         }
+
+        if(admin == null) {
+            throw new IllegalArgumentException("Intervention should have an admin");
+        }
+
         this.name = name;
         this.description = description;
-        this.phases = new ArrayList<>();
+        this.admin = admin;
     }
 
     protected Intervention() {
     }
 
-    public void addPhase(PhaseName phaseName) { //Intervention side
+    public void addPhase(PhaseName phaseName) {
         this.phases.add(new Phase(phaseName));
+    }
+
+    public void addParticipant(Person person) {
+        this.participants.add(person);
     }
 }

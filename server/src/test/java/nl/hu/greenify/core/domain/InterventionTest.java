@@ -11,17 +11,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {
-    private Intervention intervention; //For future tests
+    private Intervention intervention;
+    private Person person;
 
     @BeforeEach
     void setUp() {
-        intervention = new Intervention("Garden", "Watering the plants");
+        person = new Person("John", "Doe", "johndoe@gmail.com");
+        intervention = new Intervention("Garden", "Watering the plants", person);
     }
 
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants", person));
     }
 
     @DisplayName("An intervention should be able to add a phase")
@@ -44,7 +46,7 @@ public class InterventionTest {
         assertEquals(2, intervention.getPhases().size());
     }
 
-    @DisplayName("An intervention should be able to have 3 phases")
+    @DisplayName("An intervention should be able to have multiple phases")
     @Test
     void interventionAddThreePhases() {
         intervention.addPhase(PhaseName.INITIATION);
@@ -52,4 +54,27 @@ public class InterventionTest {
         intervention.addPhase(PhaseName.EXECUTION);
     }
 
+    @DisplayName("An intervention should have an admin")
+    @Test
+    void interventionAdmin() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention("Garden", "Watering the plants", null));
+    }
+
+    @DisplayName("An intervention should be able to add a participant")
+    @Test
+    void interventionAddParticipant() {
+        Person participant = new Person("Jane", "Doe", "Janedoe@gmail.com");
+        intervention.addParticipant(participant);
+        assertEquals(1, intervention.getParticipants().size());
+    }
+
+    @DisplayName("An intervention should be able to add multiple participants")
+    @Test
+    void interventionAddMultipleParticipants() {
+        Person participant1 = new Person("Jane", "Doe", "Janedoe@gmail.com");
+        Person participant2 = new Person("Jack", "Doe", "jackdoe@gmail.com");
+        intervention.addParticipant(participant1);
+        intervention.addParticipant(participant2);
+        assertEquals(2, intervention.getParticipants().size());
+    }
 }

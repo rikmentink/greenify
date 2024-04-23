@@ -1,84 +1,107 @@
 package nl.hu.greenify.core.application;
 
+import nl.hu.greenify.core.application.exceptions.InterventionNotFoundException;
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
+import nl.hu.greenify.core.data.InterventionRepository;
+import nl.hu.greenify.core.data.PersonRepository;
+import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
-import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.data.GreenifyRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 
-import org.junit.jupiter.api.Assertions;
+import nl.hu.greenify.core.domain.Phase;
+import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.Optional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+@DisplayName("Intervention Service Test")
 public class InterventionServiceTest {
-    private final GreenifyRepository greenifyRepository = mock(GreenifyRepository.class);
+    private final InterventionRepository interventionRepository = mock(InterventionRepository.class);
     private final PhaseRepository phaseRepository = mock(PhaseRepository.class);
-    private final InterventionService interventionService = new InterventionService(greenifyRepository, phaseRepository);
-    private Person person;
+    private final PersonService personService = mock(PersonService.class);
+    private final PersonRepository personRepository = mock(PersonRepository.class);
+    private final InterventionService interventionService = new InterventionService(interventionRepository, phaseRepository, personService);
+    Person person;
+    Intervention i;
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "johndoe@gmail.com");
-        interventionService.addIntervention("Garden", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
+        person = new Person("firstName", "lastName", "username@gmail.com");
+        person.setId(1L);
+        i = new Intervention("Intervention", "Intervention description", person);
+        i.setId(1L);
+
+        when(personService.getPersonById(1L)).thenReturn(person);
+        when(interventionRepository.save(i)).thenReturn(i);
+        when(personRepository.save(person)).thenReturn(person);
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
+        when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
+        when(interventionRepository.findById(i.getId())).thenReturn(Optional.ofNullable(i));
+        when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(PhaseName.PLANNING)));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
     }
 
+    @DisplayName("Creating an intervention should be possible")
     @Test
-    @DisplayName("Intervention should be added to the user")
-    void addIntervention() {
-        Assertions.assertEquals(1, person.getInterventions().size());
+    void createIntervention() {
+        assertDoesNotThrow(() -> interventionService.createIntervention("Intervention", "Intervention description", person.getId()));
     }
 
+    @DisplayName("When creating an intervention with an invalid admin id, it should throw an exception")
     @Test
-    @DisplayName("Phase should be added to the intervention")
-    void addPhaseToIntervention() {
-        Assertions.assertEquals(1, person.getInterventions().get(0).getPhases().size());
+    void createInterventionShouldThrowException() {
+        assertThrows(IllegalArgumentException.class, () -> interventionService.createIntervention("Intervention", "Intervention description", 2L));
     }
 
+    @DisplayName("When adding a phase to an intervention, it should be added to the intervention")
     @Test
-    @DisplayName("Multiple phases should be added to multiple interventions")
-    void addMultiplePhasesToInterventions() {
-        interventionService.addIntervention("Garden2", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
-        interventionService.addPhaseToIntervention("Garden2", PhaseName.PLANNING, person);
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(1, person.getInterventions().get(0).getPhases().size()),
-                () -> Assertions.assertEquals(2, person.getInterventions().get(1).getPhases().size())
-        );
+    void addPhase() {
+        interventionService.addPhase(1L, PhaseName.PLANNING);
+        verify(interventionRepository).save(i);
     }
 
+    @DisplayName("When fetching a phase with a valid id, it should be fetched from the repository")
     @Test
-    @DisplayName("Phase with the same name should be added to the same intervention")
-    void addDuplicatePhaseToIntervention() {
-        interventionService.addPhaseToIntervention("Garden", PhaseName.INITIATION, person);
-        Assertions.assertEquals(2, person.getInterventions().get(0).getPhases().size());
+    void getPhaseByIdShouldFetch() {
+        interventionService.getPhaseById(1L);
+        verify(phaseRepository).findById(1L);
     }
 
+    @DisplayName("When fetching all interventions by a person, they should be fetched from the repository")
     @Test
-    @DisplayName("The same phase can be added to another intervention")
-    void addDuplicatePhaseToAnotherIntervention() {
-        interventionService.addIntervention("Garden2", "Watering the plants", person);
-        interventionService.addPhaseToIntervention("Garden2", PhaseName.INITIATION, person);
-       Assertions.assertAll(
-               () -> Assertions.assertEquals(1, person.getInterventions().get(0).getPhases().size()),
-               () -> Assertions.assertEquals(1, person.getInterventions().get(1).getPhases().size())
-       );
+    void getAllInterventionsByPersonShouldFetch() {
+        interventionService.getAllInterventionsByPerson(person.getId());
+        verify(interventionRepository).findInterventionsByAdmin(person);
     }
 
+    @DisplayName("When fetching an intervention with a valid id, it should be fetched from the repository")
     @Test
-    @DisplayName("A phase should not be added when the name of the intervention it belongs to is incorrect")
-    void addPhaseToInterventionWithIncorrectInterventionName() {
-        Assertions.assertThrows(NoSuchElementException.class, () -> interventionService.addPhaseToIntervention("Garden5", PhaseName.INITIATION, person));
+    void getInterventionByIdShouldFetch() {
+        interventionService.getInterventionById(1L);
+        verify(interventionRepository).findById(1L);
     }
 
+    @DisplayName("When fetching an intervention with an invalid id, it should throw an exception")
     @Test
-    @DisplayName("A phase should not be added when the name of the phase is incorrect")
-    void addPhaseToInterventionWithIncorrectPhaseName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> interventionService.addPhaseToIntervention("Garden", null, person));
+    void getInterventionByIdShouldThrowException() {
+        assertThrows(InterventionNotFoundException.class, () -> interventionService.getInterventionById(2L));
+    }
+
+    @DisplayName("When fetching a phase with an invalid id, it should throw an exception")
+    @Test
+    void getPhaseByIdShouldThrowException() {
+        assertThrows(PhaseNotFoundException.class, () -> interventionService.getPhaseById(2L));
+    }
+
+    @DisplayName("When fetching all interventions by a person and there are none, a list should be returned")
+    @Test
+    void getAllInterventionsByPersonShouldReturnEmptyList() {
+        assertEquals(interventionService.getAllInterventionsByPerson(person.getId()), List.of(i));
     }
 }

@@ -1,58 +1,62 @@
 package nl.hu.greenify.core.application;
 
+import nl.hu.greenify.core.application.exceptions.InterventionNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
-import nl.hu.greenify.core.data.GreenifyRepository;
+import nl.hu.greenify.core.data.InterventionRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
+import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+import java.util.List;
 
 @Service
 public class InterventionService {
-    private final GreenifyRepository greenifyRepository;
+    private final InterventionRepository interventionRepository;
+    private final PersonService personService;
     private final PhaseRepository phaseRepository;
 
-    public InterventionService(GreenifyRepository greenifyRepository, PhaseRepository phaseRepository) {
-        this.greenifyRepository = greenifyRepository;
+    public InterventionService(InterventionRepository interventionRepository, PhaseRepository phaseRepository, PersonService personService) {
+        this.interventionRepository = interventionRepository;
+        this.personService = personService;
         this.phaseRepository = phaseRepository;
     }
 
-    public void addIntervention(String name, String description, Person person) {
-        person.addIntervention(name, description);
-        greenifyRepository.save(person);
+    public void createIntervention(String name, String description, Long adminId) {
+        Person person = personService.getPersonById(adminId);
+        if(person == null) {
+            throw new IllegalArgumentException("Person with id " + adminId + " does not exist");
+        }
+        interventionRepository.save(new Intervention(name, description, person));
     }
 
-    public void addPhaseToIntervention(String name, PhaseName phaseName, Person person) {
-        person.addPhaseToIntervention(name, phaseName);
-        greenifyRepository.save(person);
-    }
+    public void addPhase(Long id, PhaseName phaseName) {
+        Intervention intervention = getInterventionById(id);
+        if(intervention == null) {
+            throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
+        }
+
+        intervention.addPhase(phaseName);
+        interventionRepository.save(intervention);
+        }
 
     public Phase getPhaseById(Long id) {
         return phaseRepository.findById(id)
                 .orElseThrow(() -> new PhaseNotFoundException("Phase with id " + id + " does not exist"));
     }
 
-    // TODO: Move to separate PersonService
-    public Person getPersonById(Long id) {
-        Optional<Person> person = greenifyRepository.findById(id);
-        if(person.isEmpty()) {
+    public List<Intervention> getAllInterventionsByPerson(Long id) {
+        Person person = personService.getPersonById(id);
+        if(person == null) {
             throw new IllegalArgumentException("Person with id " + id + " does not exist");
-        } else {
-            return person.get();
         }
+        return interventionRepository.findInterventionsByAdmin(person);
     }
 
-    // TODO: Move to separate PersonService
-    public Person getPersonByEmail(String email) {
-        Optional<Person> person = greenifyRepository.findByEmail(email);
-        if(person.isEmpty()) {
-            throw new IllegalArgumentException("Person with username " + email + " does not exist");
-        } else {
-            return person.get();
-        }
+    public Intervention getInterventionById(Long id) {
+        return interventionRepository.findById(id)
+                .orElseThrow(() -> new InterventionNotFoundException(id));
     }
 }
