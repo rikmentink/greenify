@@ -1,26 +1,25 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function getSurvey(id, categoryId, page = 1, pageSize = 10) {
+async function getSurvey(id, categoryId, page = 1, pageSize = 1000) {
     const url = new URL(`${API_URL}/survey/${id}/questions`);
     url.searchParams.append('categoryId', categoryId);
     url.searchParams.append('page', page);
     url.searchParams.append('pageSize', pageSize);
 
-    // TODO: Remove!
-    const tempUrl = './survey.json';
+    // url = `${API_URL}/survey/${id}/questions?categoryId=${categoryId}&page=${page}&pageSize=${pageSize}`;
 
-    return fetch(tempUrl, {
+    return fetch(url, {
         method: 'GET',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`Failed to fetch survey questions: ${response.statusText}`);
-        }
-        return response.json();
-    }).catch(error => {
+    }).then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        return data;
+      })
+      .catch(error => {
         console.error(error);
-        throw error;
-    });
+      })
 }
 
 export { getSurvey };
