@@ -23,12 +23,12 @@ public class PersonService {
         }
     }
 
-    public Person getPersonByUsername(String username) {
-        Optional<Person> person = personRepository.findByFirstName(username);
-        if(person.isEmpty()) {
-            throw new IllegalArgumentException("Person with username " + username + " does not exist");
-        } else {
-            return person.get();
-        }
+    public Person getPersonByEmail(String email) {
+           Optional<Person> person = personRepository.findByEmail(email);
+            if(person.isEmpty()) {
+                throw new IllegalArgumentException("Person with email " + email + " does not exist");
+            } else {
+                return person.get();
+            }
     }
 }
