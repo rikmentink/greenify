@@ -22,21 +22,28 @@ public class Factor implements IFactor {
     private int number;
 
     @Setter
-    @ManyToOne
-    private Category category;
-
-    @Setter
     @OneToMany
     private List<Subfactor> subfactors = new ArrayList<>();
 
     protected Factor() {
     }
 
-    public Factor(Long id, String title, int number, Category category) {
+    public Factor(Long id, String title, int number) {
         this.id = id;
         this.title = title;
         this.number = number;
-        this.category = category;
+    }
+
+    public static Factor copyOf(Factor original) {
+        Factor copy = new Factor();
+        copy.id = original.id;
+        copy.title = original.title;
+        copy.number = original.number;
+        // Make a deep copy of the subfactors using its static named constructor
+        for (Subfactor subfactor : original.subfactors) {
+            copy.subfactors.add(Subfactor.copyOf(subfactor));
+        }
+        return copy;
     }
 
     @Override
@@ -51,6 +58,5 @@ public class Factor implements IFactor {
 
     public void addSubfactor(Subfactor subfactor) {
         this.subfactors.add(subfactor);
-        subfactor.setFactor(this);
     }
 }

@@ -35,6 +35,9 @@ public class Response {
         this.score = 0;
         this.facilitatingFactor = FacilitatingFactor.PENDING;
         this.priority = Priority.PENDING;
+        if (subfactor != null) {
+            this.subfactor.setResponse(this);
+        }
     }
 
     protected Response() {
@@ -53,5 +56,13 @@ public class Response {
     public void setPriority(Priority priority) {
         this.priority = priority;
         this.calculateScore();
+    }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "id=" + id +
+                ", score=" + score +
+                '}';
     }
 }

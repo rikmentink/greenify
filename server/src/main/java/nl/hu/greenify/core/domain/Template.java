@@ -34,6 +34,19 @@ public class Template {
         this.categories = categories;
     }
 
+    public static Template copyOf(Template original) {
+        Template copy = new Template();
+        copy.id = original.id;
+        copy.name = original.name;
+        copy.description = original.description;
+        copy.version = original.version;
+        // Make a deep copy of the categories using its static named constructor
+        for (Category category : original.categories) {
+            copy.categories.add(Category.copyOf(category));
+        }
+        return copy;
+    }
+
     protected Template() {
 
     }
