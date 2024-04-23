@@ -26,6 +26,9 @@ public class Survey extends Template {
     public Survey(Long id, String name, String description, Integer version, List<Category> categories, Phase phase) {
         super(id, name, description, version, categories);
         this.phase = phase;
+        if (phase != null) {
+            phase.addSurvey(this);
+        }
     }
 
     public static Survey createSurvey(Phase phase, Template activeTemplate) {
@@ -42,5 +45,13 @@ public class Survey extends Template {
             activeTemplate.getCategories(),
             phase
         );
+    }
+
+    @Override
+    public String toString() {
+        return "Survey{" +
+                "id=" + id +
+                ", phaseId=" + (phase.getId()) +
+                '}';
     }
 }

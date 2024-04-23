@@ -1,13 +1,11 @@
 package nl.hu.greenify.core.domain.factor;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import nl.hu.greenify.core.domain.Response;
 
 @Getter
 @ToString
@@ -22,18 +20,26 @@ public class Subfactor implements IFactor {
     private boolean isSupportingFactor;
 
     @Setter
-    @ManyToOne
-    private Factor factor;
+    @OneToOne
+    private Response response;
 
     protected Subfactor() {
     }
 
-    public Subfactor(Long id, String title, int number, boolean isSupportingFactor, Factor factor) {
+    public Subfactor(Long id, String title, int number, boolean isSupportingFactor) {
         this.id = id;
         this.title = title;
         this.number = number;
         this.isSupportingFactor = isSupportingFactor;
-        this.factor = factor;
+    }
+
+    public static Subfactor copyOf(Subfactor original) {
+        Subfactor copy = new Subfactor();
+        copy.id = original.id;
+        copy.title = original.title;
+        copy.number = original.number;
+        copy.isSupportingFactor = original.isSupportingFactor;
+        return copy;
     }
 
     @Override

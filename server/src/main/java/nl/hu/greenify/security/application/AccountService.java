@@ -9,6 +9,7 @@ import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 
 
+import nl.hu.greenify.security.domain.enums.AccountRoles;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,13 +46,23 @@ public class AccountService implements UserDetailsService {
         this.personRepository.save(person);
 
         // Create a new user
-        Account account = new Account(email, encodedPassword, person);
-        this.accountRepository.save(account);
-
-        return account;
+        Account account = Account.createAccount(email, encodedPassword, person);
+        return this.accountRepository.save(account);
     }
 
-    public Account getAccount(String email) {
+    public Account addRole(String email, String role) {
+        Account account = getAccountByEmail(email);
+        account.addRole(AccountRoles.valueOf(role.toUpperCase()));
+        return accountRepository.save(account);
+    }
+
+    public Account removeRole(String email, String role) {
+        Account account = getAccountByEmail(email);
+        account.removeRole(AccountRoles.valueOf(role.toUpperCase()));
+        return accountRepository.save(account);
+    }
+
+    public Account getAccountByEmail(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
