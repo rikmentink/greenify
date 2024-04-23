@@ -6,8 +6,6 @@ async function getSurvey(id, categoryId, page = 1, pageSize = 1000) {
     url.searchParams.append('page', page);
     url.searchParams.append('pageSize', pageSize);
 
-    // url = `${API_URL}/survey/${id}/questions?categoryId=${categoryId}&page=${page}&pageSize=${pageSize}`;
-
     return fetch(url, {
         method: 'GET',
         mode: 'no-cors',
