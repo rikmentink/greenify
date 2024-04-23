@@ -34,8 +34,20 @@ public class Category {
         this.description = description;
     }
 
+    public static Category copyOf(Category original) {
+        Category copy = new Category();
+        copy.id = original.id;
+        copy.name = original.name;
+        copy.color = original.color;
+        copy.description = original.description;
+        // Make a deep copy of the factors using its static named constructor
+        for (Factor factor : original.factors) {
+            copy.factors.add(Factor.copyOf(factor));
+        }
+        return copy;
+    }
+
     public void addFactor(Factor factor) {
         this.factors.add(factor);
-        factor.setCategory(this);
     }
 }

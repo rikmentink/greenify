@@ -1,27 +1,40 @@
 package nl.hu.greenify.core.domain;
 
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
+import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResponseTest {
+
+    private Factor factor;
+
+    @BeforeEach
+    void setUp() {
+        Category category = new Category(1L, "title", "red", "description");
+        this.factor = new Factor(1L, "title", 1);
+        category.addFactor(factor);
+    }
+
     @ParameterizedTest
     @MethodSource("provideResponseScoreExamples")
     @DisplayName("Test response score calculation")
     void testResponseScoreCalculation(FacilitatingFactor facilitatingFactor, Priority priority, double expectedScore) {
         // Given:
-        Factor factor = new Factor(1L, "title", 1, new Category(1L, "title", "red", "description"));
-        Subfactor subfactor = new Subfactor(1L, "title", 1, true, factor);
+        Subfactor subfactor = new Subfactor(1L, "title", 1, true);
+        factor.addSubfactor(subfactor);
         Response response = new Response(subfactor);
 
         // When:
@@ -87,8 +100,8 @@ public class ResponseTest {
     @DisplayName("Supporting subfactor should not affect score")
     void testSubfactorWithSupportingFactor() {
         // Given:
-        Factor factor = new Factor(1L, "title", 1, new Category(1L, "title", "red", "description"));
-        Subfactor subfactor = new Subfactor(1L, "title", 1, true, factor);
+        Subfactor subfactor = new Subfactor(1L, "title", 1, true);
+        factor.addSubfactor(subfactor);
         Response response = new Response(subfactor);
 
         // When:
@@ -104,8 +117,8 @@ public class ResponseTest {
     @DisplayName("Non-supporting subfactor should invert facilitating factor score")
     void testSubfactorWithNonSupportingFactor() {
         // Given:
-        Factor factor = new Factor(1L, "title", 1, new Category(1L, "title", "red", "description"));
-        Subfactor subfactor = new Subfactor(1L, "title", 1, false, factor);
+        Subfactor subfactor = new Subfactor(1L, "title", 1, false);
+        factor.addSubfactor(subfactor);
         Response response = new Response(subfactor);
 
         // When:
