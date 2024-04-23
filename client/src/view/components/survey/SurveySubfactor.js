@@ -1,6 +1,8 @@
 import { LitElement, html, css } from "lit";
 
-export class Question extends LitElement {
+import { SurveyQuestion } from "./SurveyQuestion.js";
+
+export class SurveySubfactor extends LitElement {
     static properties = {
         subfactor: { type: Object },
         response: { type: Object },
@@ -40,8 +42,12 @@ export class Question extends LitElement {
     render() {
         return html`
                 <div class="subfactor__name">${this.subfactor.title}</div>
-                <div class="subfactor__question">radio's</div>
-                <div class="subfactor__question">radio's</div>
+                <div class="subfactor__question">
+                    <gi-survey-question></gi-survey-question>
+                </div>
+                <div class="subfactor__question">
+                    <gi-survey-question></gi-survey-question>
+                </div>
                 <div class="subfactor__comments">FA</div>
         `
     }
@@ -51,4 +57,4 @@ export class Question extends LitElement {
     }
 }
 
-window.customElements.define('gi-question', Question);
+window.customElements.define('gi-survey-subfactor', SurveySubfactor);

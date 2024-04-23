@@ -3,7 +3,7 @@ import { Task } from "@lit/task";
 
 import { getSurvey } from '../../services/SurveyService.js';
 
-import { Question } from "../components/survey/Question.js";
+import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
 export class Survey extends LitElement {
     static properties = {
@@ -14,7 +14,7 @@ export class Survey extends LitElement {
 
     static styles = css`
         .survey > .header,
-        .survey > .factor > gi-question {
+        .survey > .factor > gi-survey-subfactor {
             display: grid;
             grid-template-columns: 4fr 2fr 2fr 1fr;
             gap: 1rem;
@@ -57,7 +57,7 @@ export class Survey extends LitElement {
                                 <div class="factor">
                                     <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                     ${factor.subfactors.map((subfactor) => html`
-                                        <gi-question .subfactor=${subfactor}></gi-question>
+                                        <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
                                     `)}
                                 </div>
                             `)}
