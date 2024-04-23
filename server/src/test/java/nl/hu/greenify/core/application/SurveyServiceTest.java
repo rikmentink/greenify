@@ -1,14 +1,17 @@
 package nl.hu.greenify.core.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.junit.jupiter.api.Assertions;
@@ -74,6 +77,25 @@ public class SurveyServiceTest {
         verify(surveyRepository).save(any(Survey.class));
     }
 
+    /**
+     * getQuestions tests
+     */
+    @Test
+    @DisplayName("When getting questions for a survey, the survey should be fetched")
+    public void getQuestionsShouldFetchSurvey() {
+        surveyService.getQuestions(1L, 1L);
+        verify(surveyRepository).findById(1L);
+    }
+
+    @Test
+    @DisplayName("When getting questions for a survey with an invalid id, it should throw an exception")
+    public void getQuestionsShouldThrowException() {
+        assertThrows(
+            SurveyNotFoundException.class, 
+            () -> surveyService.getQuestions(2L, 1L)
+        );
+    }
+
     @BeforeEach
     public void setup() {
         this.surveyRepository = mock(SurveyRepository.class);
@@ -92,7 +114,6 @@ public class SurveyServiceTest {
     }
 
     private Survey getSurveyExample() {
-        // TODO: Update the given phase?
-        return new Survey(1L, "Survey", "Description", 1, new ArrayList<>(), new Phase(PhaseName.INITIATION));
+        return new Survey(1L, "Survey", "Description", 1, List.of(new Category(1L, "Category", "", "")), new Phase(PhaseName.INITIATION));
     }
 }

@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.hu.greenify.core.application.SurveyService;
@@ -38,8 +40,8 @@ public class SurveyController {
         value = "/{id}", 
         produces = "application/json"
     )
-    public ResponseEntity<?> getSurvey(@PathVariable Long id) {
-        Survey survey = this.surveyService.getSurvey(id);
+    public ResponseEntity<?> getSurvey(@PathVariable String id) {
+        Survey survey = this.surveyService.getSurvey(Long.parseLong(id));
         return this.createResponse(SurveyDto.fromEntity(survey));
     }
 
@@ -47,9 +49,18 @@ public class SurveyController {
         consumes = "application/json",
         produces = "application/json"
     )
-    public ResponseEntity<?> createSurvey(CreateSurveyDto createSurveyDto) {
+    public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
         Survey survey = this.surveyService.createSurvey(createSurveyDto.getPhaseId());
         return this.createResponse(SurveyDto.fromEntity(survey), HttpStatus.CREATED);
+    }
+
+    @GetMapping(
+        value = "/{id}/questions",
+        produces = "application/json"
+    )
+    public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestParam Long categoryId,
+            @RequestParam int page, @RequestParam int pageSize) {
+        return this.createResponse(this.surveyService.getQuestions(Long.parseLong(id), categoryId));
     }
 
     /**

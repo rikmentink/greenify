@@ -11,6 +11,7 @@ import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.Template;
+import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -48,6 +49,19 @@ public class SurveyService {
 
         Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
         return surveyRepository.save(survey);
+    }
+
+    /**
+     * Get the questions for the given survey and category.
+     * TODO: Keep page and page size into account.
+     * 
+     * @param surveyId   The ID of the survey to get the questions for.
+     * @param categoryId The ID of the category to get the questions for.
+     * @return The questions for the given survey and category.
+     */
+    public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
+        Survey survey = this.getSurvey(surveyId);
+        return QuestionSetDto.fromEntity(survey, categoryId);
     }
 
     /**

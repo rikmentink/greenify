@@ -6,6 +6,9 @@ import lombok.Getter;
 public class CreateSurveyDto {
     private Long phaseId;
 
+    public CreateSurveyDto() {
+    }
+
     public CreateSurveyDto(Long phaseId) {
         this.phaseId = phaseId;
     }

@@ -21,6 +21,7 @@ public class Factor implements IFactor {
     private String title;
     private int number;
 
+    @Setter
     @OneToMany
     private List<Subfactor> subfactors = new ArrayList<>();
 

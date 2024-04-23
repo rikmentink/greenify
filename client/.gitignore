@@ -28,3 +28,7 @@ node_modules/
 .wireit
 /temp
 /scripts/check-size-out.md
+
+# Dotenv environment variables file
+.env
+.env.*

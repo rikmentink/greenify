@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.ToString;
+import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.IFactor;
+import nl.hu.greenify.core.domain.factor.Subfactor;
 
 @Entity
 @Getter

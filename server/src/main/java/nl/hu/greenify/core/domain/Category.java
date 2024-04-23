@@ -3,8 +3,10 @@ package nl.hu.greenify.core.domain;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.IFactor;
 
 import java.util.ArrayList;
 import java.util.List;
