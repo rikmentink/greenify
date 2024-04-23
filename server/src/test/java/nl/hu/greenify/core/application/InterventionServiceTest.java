@@ -32,7 +32,7 @@ public class InterventionServiceTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("username", "lastname", "username@gmail.com");
+        person = new Person("firstName", "lastName", "username@gmail.com");
         person.setId(1L);
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);

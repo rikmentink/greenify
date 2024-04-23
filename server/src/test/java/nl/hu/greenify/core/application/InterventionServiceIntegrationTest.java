@@ -41,7 +41,7 @@ public class InterventionServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("username", "lastname", "johndoe@gmail.com");
+        person = new Person("firstName", "lastName", "johndoe@gmail.com");
         person.setId(1L);
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);
