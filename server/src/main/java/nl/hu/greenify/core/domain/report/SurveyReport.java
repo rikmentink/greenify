@@ -12,6 +12,8 @@ import nl.hu.greenify.core.domain.factor.Subfactor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -56,34 +58,14 @@ public class SurveyReport implements IReport {
 
     @Override
     public List<Response> getResponses() {
-        // TODO: Remove prints once done
-        List<Response> responses = new ArrayList<>();
+        List<Response> responses = phase.getSurveys().stream()
+                .flatMap(survey -> survey.getCategories().stream())
+                .flatMap(category -> category.getFactors().stream())
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .map(Subfactor::getResponse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
 
-        System.out.println("SURVEYS:");
-        System.out.println(phase.getSurveys());
-        for (Survey survey : phase.getSurveys()) {
-
-            System.out.println("CATEGORIES:");
-            System.out.println(survey.getCategories());
-            for (Category category : survey.getCategories()) {
-
-                System.out.println("FACTORS:");
-                System.out.println(category.getFactors());
-                for (Factor factor : category.getFactors()) {
-
-                    System.out.println("SUBFACTORS:");
-                    System.out.println(factor.getSubfactors());
-                    for (Subfactor subfactor : factor.getSubfactors()) {
-
-                        System.out.println("RESPONSE:");
-                        System.out.println(subfactor.getResponse());
-                        if (subfactor.getResponse() != null) {
-                            responses.add(subfactor.getResponse());
-                        }
-                    }
-                }
-            }
-        }
         return responses;
     }
 }
