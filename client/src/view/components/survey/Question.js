@@ -39,16 +39,15 @@ export class Question extends LitElement {
 
     render() {
         return html`
-            <div class="subfactor">
-                <p class="subfactor__name">${this.subfactor.title}</p>
-                <div class="subfactor__question">
-                </div>
-                <div class="subfactor__question">
-                </div>
-                <div class="subfactor__comments">
-                </div>
-            </div>
+                <div class="subfactor__name">${this.subfactor.title}</div>
+                <div class="subfactor__question">radio's</div>
+                <div class="subfactor__question">radio's</div>
+                <div class="subfactor__comments">FA</div>
         `
+    }
+
+    createRenderRoot() {
+        return this;
     }
 }
 

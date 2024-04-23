@@ -13,6 +13,12 @@ export class Survey extends LitElement {
     }
 
     static styles = css`
+        .survey > .header,
+        .survey > .factor > gi-question {
+            display: grid;
+            grid-template-columns: 4fr 2fr 2fr 1fr;
+            gap: 1rem;
+        }
         .survey > h1,
         .survey > .factor > h2 {
             font-weight: normal;
@@ -38,12 +44,18 @@ export class Survey extends LitElement {
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (data) => html`
+                        <a href="/intervention/${this.id}">Back to overview</a>
+                        <h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>
                         <div class="survey">
-                            <a href="/intervention/${this.id}">Back to overview</a>
-                            <h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>
+                            <div class="header">
+                                <div class="column">Vraag</div>
+                                <div class="column">Faciliterende factor</div>
+                                <div class="column">Prioriteit</div>
+                                <div class="column">Opmerkingen</div>
+                            </div>
                             ${data.factors.map((factor) => html`    
                                 <div class="factor">
-                                    <h2><strong>${factor.number}</strong> - ${factor.title}</h2>
+                                    <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                     ${factor.subfactors.map((subfactor) => html`
                                         <gi-question .subfactor=${subfactor}></gi-question>
                                     `)}
