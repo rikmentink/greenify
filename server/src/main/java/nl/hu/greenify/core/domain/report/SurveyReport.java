@@ -81,4 +81,14 @@ public class SurveyReport implements IReport {
 
         return responses;
     }
+
+    public List<Response> getResponsesOfCategory(Category category) {
+        List<Response> responses = category.getFactors().stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .map(Subfactor::getResponse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return responses;
+    }
 }
