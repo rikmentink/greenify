@@ -27,36 +27,25 @@ public class SurveyController extends Controller {
         this.surveyService = surveyService;
     }
 
-    @GetMapping(
-        produces = "application/json"
-    )
+    @GetMapping(produces="application/json")
     public ResponseEntity<?> getAllSurveys() {
         List<Survey> surveys = this.surveyService.getAllSurveys();
         return this.createResponse(surveys.stream().map(SurveyDto::fromEntity));
     }
 
-    @GetMapping(
-        value = "/{id}", 
-        produces = "application/json"
-    )
+    @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<?> getSurvey(@PathVariable String id) {
         Survey survey = this.surveyService.getSurvey(Long.parseLong(id));
         return this.createResponse(SurveyDto.fromEntity(survey));
     }
 
-    @PostMapping(
-        consumes = "application/json",
-        produces = "application/json"
-    )
+    @PostMapping(consumes="application/json", produces="application/json")
     public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
         Survey survey = this.surveyService.createSurvey(createSurveyDto.getPhaseId());
         return this.createResponse(SurveyDto.fromEntity(survey), HttpStatus.CREATED);
     }
 
-    @GetMapping(
-        value = "/{id}/questions",
-        produces = "application/json"
-    )
+    @GetMapping(value="/{id}/questions", produces="application/json")
     public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
         return this.createResponse(this.surveyService.getQuestions(Long.parseLong(id), categoryId));

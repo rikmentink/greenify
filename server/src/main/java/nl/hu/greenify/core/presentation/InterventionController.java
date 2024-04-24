@@ -21,7 +21,7 @@ public class InterventionController extends Controller {
      * Intervention endpoints
      */
 
-    @GetMapping("/{id}")
+    @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<?> getInterventionById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(this.interventionService.getInterventionById(id));
@@ -39,8 +39,11 @@ public class InterventionController extends Controller {
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<?> createIntervention(@RequestParam Long adminId, String name, String description) {
+    @PostMapping(consumes="application/json", produces="application/json")
+    /**
+     * TODO: Implement DTO for parameters.
+     */
+    public ResponseEntity<?> createIntervention(@RequestBody Long adminId, @RequestBody String name, @RequestBody String description) {
         try {
             this.interventionService.createIntervention(name, description, adminId);
             return ResponseEntity.ok("Intervention created");
@@ -53,7 +56,7 @@ public class InterventionController extends Controller {
      * Phase endpoints
      */
 
-    @GetMapping("/phase/{id}")
+    @GetMapping(value="/phase/{id}", produces="application/json")
     public ResponseEntity<?> getPhaseById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(this.interventionService.getPhaseById(id));
@@ -62,8 +65,8 @@ public class InterventionController extends Controller {
         }
     }
 
-    @PostMapping("/phase/{id}")
-    public ResponseEntity<?> addPhase(@PathVariable Long id, PhaseName phaseName) {
+    @PostMapping(value="/{id}/phase", consumes="application/json", produces="application/json")
+    public ResponseEntity<?> addPhase(@PathVariable Long id, @RequestBody PhaseName phaseName) {
         try {
             this.interventionService.addPhase(id, phaseName);
             return ResponseEntity.ok("Phase added");
