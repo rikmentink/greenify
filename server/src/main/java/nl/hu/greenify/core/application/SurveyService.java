@@ -32,6 +32,7 @@ public class SurveyService {
     }
 
     public List<Survey> getAllSurveys() {
+        this.createTemplateIfNotExists();
         return surveyRepository.findAll();
     }
 
@@ -48,7 +49,6 @@ public class SurveyService {
      * @return The created survey.
      */
     public Survey createSurvey(Long phaseId) {
-        this.createTemplateIfNotExists();
         Phase phase = interventionService.getPhaseById(phaseId);
 
         Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
