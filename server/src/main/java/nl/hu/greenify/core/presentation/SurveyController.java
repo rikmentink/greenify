@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.presentation.dto.CreateSurveyDto;
+import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
 import nl.hu.greenify.core.presentation.dto.SurveyDto;
 
 import java.util.List;
@@ -29,25 +30,29 @@ public class SurveyController extends Controller {
 
     @GetMapping(produces="application/json")
     public ResponseEntity<?> getAllSurveys() {
-        List<Survey> surveys = this.surveyService.getAllSurveys();
-        return this.createResponse(surveys.stream().map(SurveyDto::fromEntity));
+        List<SurveyDto> surveys = SurveyDto.fromEntities(this.surveyService.getAllSurveys());
+        return this.createResponse(surveys);
     }
 
     @GetMapping(value="/{id}", produces="application/json")
-    public ResponseEntity<?> getSurvey(@PathVariable String id) {
-        Survey survey = this.surveyService.getSurvey(Long.parseLong(id));
-        return this.createResponse(SurveyDto.fromEntity(survey));
+    public ResponseEntity<?> getSurvey(@PathVariable("id") Long id) {
+        SurveyDto survey = SurveyDto.fromEntity(this.surveyService.getSurvey(id));
+        return this.createResponse(survey);
     }
 
     @PostMapping(consumes="application/json", produces="application/json")
     public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
-        Survey survey = this.surveyService.createSurvey(createSurveyDto.getPhaseId());
-        return this.createResponse(SurveyDto.fromEntity(survey), HttpStatus.CREATED);
+        SurveyDto survey = SurveyDto.fromEntity(this.surveyService.createSurvey(createSurveyDto.getPhaseId()));
+        return this.createResponse(survey, HttpStatus.CREATED);
     }
 
     @GetMapping(value="/{id}/questions", produces="application/json")
-    public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestParam Long categoryId,
+    /**
+     * TODO: Take page and pageSize into account.
+     */
+    public ResponseEntity<?> getSurveyQuestions(@PathVariable("id") Long id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
-        return this.createResponse(this.surveyService.getQuestions(Long.parseLong(id), categoryId));
+        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId);
+        return this.createResponse(questions);
     }
 }
