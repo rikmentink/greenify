@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/person")
-public class PersonController {
+public class PersonController extends Controller {
     private final PersonService personService;
 
     public PersonController(PersonService personService) {
@@ -18,12 +18,8 @@ public class PersonController {
     }
 
     @GetMapping(value="/{id}", produces="application/json")
-    public ResponseEntity<?> getPersonById(@PathVariable Long id) {
-        try {
-            PersonDto personDto = PersonDto.fromEntity(this.personService.getPersonById(id));
-            return ResponseEntity.ok(personDto);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<?> getPersonById(@PathVariable("id") Long id) {
+        PersonDto personDto = PersonDto.fromEntity(this.personService.getPersonById(id));
+        return this.createResponse(personDto);
     }
 }
