@@ -7,6 +7,8 @@ import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Response;
 import nl.hu.greenify.core.domain.Survey;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
+import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
