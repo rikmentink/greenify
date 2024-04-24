@@ -1,8 +1,8 @@
 package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.InterventionService;
-import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
+import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +53,8 @@ public class InterventionController extends Controller {
     }
 
     @PostMapping(value="/{id}/phase", consumes="application/json", produces="application/json")
-    public ResponseEntity<?> addPhase(@PathVariable("id") Long id, @RequestBody PhaseName phaseName) {
-        return this.createResponse(this.interventionService.addPhase(id, phaseName), HttpStatus.CREATED);
+    public ResponseEntity<?> addPhase(@PathVariable("id") Long id, @RequestBody CreatePhaseDto createPhaseDto) {
+        return this.createResponse(this.interventionService.addPhase(id, createPhaseDto.getPhaseName()), HttpStatus.CREATED);
     }
 }
 

@@ -2,13 +2,13 @@ package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.PersonService;
 import nl.hu.greenify.core.data.InterventionRepository;
-import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
+import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -69,19 +69,19 @@ public class InterventionControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Add a phase to an intervention")
+    @DisplayName("Add a pse to an intervention")
     void addPhaseToInterventionTest() throws Exception {
-        String name = "Init";
         PhaseName phaseName = PhaseName.INITIATION;
+        String description = "Phase description with more info";
         Long id = 1L;
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/phase/{id}", id)
-                .param("name", name)
-                .param("personId", id.toString())
-                .param("phaseName", String.valueOf(phaseName));
+        CreatePhaseDto dto = new CreatePhaseDto(phaseName, description);
+        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/{id}/phase", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(dto.toJsonString());
 
         mockMvc.perform(request)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
