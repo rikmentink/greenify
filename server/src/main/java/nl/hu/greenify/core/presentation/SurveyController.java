@@ -51,7 +51,7 @@ public class SurveyController {
     )
     public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
         Survey survey = this.surveyService.createSurvey(createSurveyDto.getPhaseId());
-        return this.createResponse(SurveyDto.fromEntity(survey), HttpStatus.CREATED);
+        return this.createResponse(survey, HttpStatus.CREATED);
     }
 
     @GetMapping(
@@ -61,6 +61,11 @@ public class SurveyController {
     public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
         return this.createResponse(this.surveyService.getQuestions(Long.parseLong(id), categoryId));
+    }
+
+    @PostMapping(value="/template/default", produces="application/json")
+    public ResponseEntity<?> createDefaultTemplate() {
+        return this.createResponse(this.surveyService.createDefaultTemplate());
     }
 
     /**

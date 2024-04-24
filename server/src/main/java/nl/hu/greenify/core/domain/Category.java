@@ -23,7 +23,7 @@ public class Category {
     private String description;
 
     @Setter
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Factor> factors;
 
     protected Category() {

@@ -25,7 +25,7 @@ public class ResponseTest {
     @BeforeEach
     void setUp() {
         Category category = new Category(1L, "title", "red", "description", new ArrayList<>());
-        this.factor = new Factor(1L, "title", 1);
+        this.factor = new Factor(1L, "title", 1, new ArrayList<>());
         category.addFactor(factor);
     }
 

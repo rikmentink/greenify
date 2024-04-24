@@ -3,6 +3,7 @@ package nl.hu.greenify.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -23,13 +24,14 @@ public class Template {
     private String description;
     private int version;
 
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Category> categories = new ArrayList<>();
 
     protected Template() {
     }
 
-    private Template(String name, String description, int version, List<Category> categories) {
+    /* Is protected because Survey uses it! */
+    protected Template(String name, String description, int version, List<Category> categories) {
         this.name = name;
         this.description = description;
         this.version = version;

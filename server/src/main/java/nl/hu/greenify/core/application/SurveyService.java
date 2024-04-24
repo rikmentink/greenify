@@ -32,7 +32,6 @@ public class SurveyService {
     }
 
     public List<Survey> getAllSurveys() {
-        this.createTemplateIfNotExists();
         return surveyRepository.findAll();
     }
 
@@ -66,6 +65,11 @@ public class SurveyService {
     public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
         Survey survey = this.getSurvey(surveyId);
         return QuestionSetDto.fromEntity(survey, categoryId);
+    }
+
+    public Template createDefaultTemplate() {
+        this.createTemplateIfNotExists();
+        return this.getActiveTemplate();
     }
 
     /**

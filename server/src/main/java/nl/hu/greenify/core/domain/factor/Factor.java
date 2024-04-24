@@ -21,7 +21,7 @@ public class Factor implements IFactor {
     private int number;
 
     @Setter
-    @OneToMany
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Subfactor> subfactors = new ArrayList<>();
 
     protected Factor() {
