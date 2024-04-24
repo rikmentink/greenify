@@ -56,6 +56,17 @@ public class SurveyReport implements IReport {
         return null;
     }
 
+    public double calculateMaximumPossibleScore() {
+        double maxFacilitatingFactor = FacilitatingFactor.TOTALLY_AGREE.getValue(true);
+        double maxPriority = Priority.TOP_PRIORITY.getValue();
+        double maxResponseScore = maxFacilitatingFactor * maxPriority;
+        double result = 0;
+
+        result += this.getResponses().stream().mapToDouble(response -> maxResponseScore).sum();
+
+        return result;
+    }
+
     @Override
     public List<Response> getResponses() {
         List<Response> responses = phase.getSurveys().stream()
