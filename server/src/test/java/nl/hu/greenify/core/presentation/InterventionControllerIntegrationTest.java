@@ -145,7 +145,7 @@ public class InterventionControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Fetching an invalid intervention")
+    @DisplayName("Fetching a non-existent intervention")
     void getInvalidInterventionTest() throws Exception {
         Long id = 2L;
 
@@ -153,7 +153,7 @@ public class InterventionControllerIntegrationTest {
                 .param("id", id.toString());
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
 
