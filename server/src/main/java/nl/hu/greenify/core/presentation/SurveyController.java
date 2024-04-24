@@ -6,7 +6,6 @@ import nl.hu.greenify.core.presentation.dto.SurveyDto;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +20,7 @@ import nl.hu.greenify.core.domain.Survey;
 
 @RestController
 @RequestMapping("/survey")
-public class SurveyController {
+public class SurveyController extends Controller {
     private final SurveyService surveyService;
 
     public SurveyController(SurveyService surveyService) {
@@ -60,27 +59,7 @@ public class SurveyController {
     )
     public ResponseEntity<?> getSurveyQuestions(@PathVariable String id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
-        return this.createResponse(this.surveyService.getQuestions(Long.parseLong(id), categoryId));
-    }
-
-    /**
-     * Helper to create proper response entities.
-     * 
-     * @param body The response body to return
-     * @param status The status of the response
-     * @return A response entity with the given body and status
-     */
-    private ResponseEntity<?> createResponse(Object body, HttpStatus status) {
-        return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(body);
-    }
-
-    /**
-     * Helper to create proper response entities with status OK.
-     * 
-     * @param body The response body to return
-     * @return A response entity with the given body and status OK
-     */
-    private ResponseEntity<?> createResponse(Object body) {
-        return this.createResponse(body, HttpStatus.OK);
+        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId);
+        return this.createResponse(questions);
     }
 }
