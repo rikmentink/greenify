@@ -8,6 +8,7 @@ import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
+import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.Template;
@@ -45,6 +46,7 @@ public class SurveyService {
      * @return The created survey.
      */
     public Survey createSurvey(Long phaseId) {
+        this.createTemplateIfNotExists();
         Phase phase = interventionService.getPhaseById(phaseId);
 
         Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
@@ -72,5 +74,34 @@ public class SurveyService {
     private Template getActiveTemplate() {
         return this.templateRepository.findFirstByOrderByVersionDesc()
                 .orElseThrow(() -> new TemplateNotFoundException("No active template found."));
+    }
+
+    private void createTemplateIfNotExists() {
+        if (this.templateRepository.count() > 0) return;
+        this.templateRepository.save(
+            this.generateBasicTemplate()
+        );
+    }
+
+    private Template generateBasicTemplate() {
+        return Template.createTemplate(
+            "Default Template",
+            "Should be changed for production!",
+            1,
+            List.of(
+                new Category(
+                    1L,
+                    "Domein 1",
+                    "#FF0000",
+                    "This is the first domain of the default template."
+                ),
+                new Category(
+                    1L,
+                    "Domein 1",
+                    "#FF0000",
+                    "This is the first domain of the default template."
+                )
+            )
+        );
     }
 }

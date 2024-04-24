@@ -26,12 +26,23 @@ public class Template {
     @OneToMany
     private List<Category> categories = new ArrayList<>();
 
-    public Template(Long id, String name, String description, int version, List<Category> categories) {
-        this.id = id;
+    protected Template() {
+    }
+
+    private Template(String name, String description, int version, List<Category> categories) {
         this.name = name;
         this.description = description;
         this.version = version;
         this.categories = categories;
+    }
+
+    public Template(Long id, String name, String description, int version, List<Category> categories) {
+        this(name, description, version, categories);
+        this.id = id;
+    }
+
+    public static Template createTemplate(String name, String description, int version, List<Category> categories) {
+        return new Template(name, description, version, categories);
     }
 
     public static Template copyOf(Template original) {
@@ -45,10 +56,6 @@ public class Template {
             copy.categories.add(Category.copyOf(category));
         }
         return copy;
-    }
-
-    protected Template() {
-
     }
 
     public void addCategory(Category category) {
