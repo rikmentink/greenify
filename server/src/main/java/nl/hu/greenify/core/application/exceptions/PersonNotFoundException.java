@@ -1,6 +1,6 @@
 package nl.hu.greenify.core.application.exceptions;
 
-public class PersonNotFoundException extends RuntimeException {
+public class PersonNotFoundException extends NotFoundException {
     public PersonNotFoundException(Long id) {
         super("Person with id " + id + " does not exist");
     }
