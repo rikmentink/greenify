@@ -2,6 +2,8 @@ package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.InterventionService;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,13 +32,15 @@ public class InterventionController extends Controller {
     }
 
     @PostMapping(consumes="application/json", produces="application/json")
-    /**
-     * TODO: Implement DTO for parameters.
-     */
-    public ResponseEntity<?> createIntervention(@RequestBody Long adminId, @RequestBody String name,
-            @RequestBody String description) {
-        return this.createResponse(this.interventionService.createIntervention(name, description, adminId),
-                HttpStatus.CREATED);
+    public ResponseEntity<?> createIntervention(@RequestBody CreateInterventionDto createInterventionDto) {
+        return this.createResponse(
+            this.interventionService.createIntervention(
+                createInterventionDto.getName(),
+                createInterventionDto.getDescription(),
+                createInterventionDto.getAdminId()
+            ),
+            HttpStatus.CREATED
+        );
     }
 
     /**

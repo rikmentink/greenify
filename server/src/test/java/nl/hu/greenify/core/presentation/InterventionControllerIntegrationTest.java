@@ -8,6 +8,8 @@ import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -56,13 +59,13 @@ public class InterventionControllerIntegrationTest {
         String name = "Garden";
         String description = "Watering the plants";
 
-        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/create")
-                .param("name", name)
-                .param("description", description)
-                .param("adminId", "1");
+        CreateInterventionDto dto = new CreateInterventionDto(1L, name, description);
+        RequestBuilder request = MockMvcRequestBuilders.post("/intervention")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(dto.toJsonString());
 
         mockMvc.perform(request)
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
