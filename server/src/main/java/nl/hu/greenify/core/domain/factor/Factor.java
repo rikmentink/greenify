@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.Category;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +27,20 @@ public class Factor implements IFactor {
     protected Factor() {
     }
 
-    public Factor(Long id, String title, int number) {
+    private Factor(String title, int number) {
+        this.title = title;
+        this.number = number;
+    }
+
+    public Factor(Long id, String title, int number, List<Subfactor> subfactors) {
         this.id = id;
         this.title = title;
         this.number = number;
+        this.subfactors = subfactors;
+    }
+
+    public static Factor createFactor(String title, int number) {
+        return new Factor(title, number);
     }
 
     public static Factor copyOf(Factor original) {

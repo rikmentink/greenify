@@ -12,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,7 +24,7 @@ public class ResponseTest {
 
     @BeforeEach
     void setUp() {
-        Category category = new Category(1L, "title", "red", "description");
+        Category category = new Category(1L, "title", "red", "description", new ArrayList<>());
         this.factor = new Factor(1L, "title", 1);
         category.addFactor(factor);
     }

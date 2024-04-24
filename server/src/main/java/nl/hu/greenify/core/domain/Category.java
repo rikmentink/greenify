@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.factor.Factor;
-import nl.hu.greenify.core.domain.factor.IFactor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +22,27 @@ public class Category {
     private String color;
     private String description;
 
+    @Setter
     @OneToMany
-    private List<Factor> factors = new ArrayList<>();
+    private List<Factor> factors;
 
     protected Category() {
     }
-    
-    public Category(Long id, String name, String color, String description) {
-        this.id = id;
+
+    private Category(String name, String color, String description, List<Factor> factors) {
         this.name = name;
         this.color = color;
         this.description = description;
+        this.factors = factors;
+    }
+    
+    public Category(Long id, String name, String color, String description, List<Factor> factors) {
+        this(name, color, description, factors);
+        this.id = id;
+    }
+
+    public static Category createCategory(String name, String color, String description) {
+        return new Category(name, color, description, new ArrayList<>());
     }
 
     public static Category copyOf(Category original) {
