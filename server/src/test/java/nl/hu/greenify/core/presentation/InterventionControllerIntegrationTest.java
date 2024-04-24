@@ -2,14 +2,12 @@ package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.PersonService;
 import nl.hu.greenify.core.data.InterventionRepository;
+import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
-import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -59,29 +56,29 @@ public class InterventionControllerIntegrationTest {
         String name = "Garden";
         String description = "Watering the plants";
 
-        CreateInterventionDto dto = new CreateInterventionDto(1L, name, description);
-        RequestBuilder request = MockMvcRequestBuilders.post("/intervention")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(dto.toJsonString());
+        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/create")
+                .param("name", name)
+                .param("description", description)
+                .param("adminId", "1");
 
         mockMvc.perform(request)
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Add a pse to an intervention")
+    @DisplayName("Add a phase to an intervention")
     void addPhaseToInterventionTest() throws Exception {
+        String name = "Init";
         PhaseName phaseName = PhaseName.INITIATION;
-        String description = "Phase description with more info";
         Long id = 1L;
 
-        CreatePhaseDto dto = new CreatePhaseDto(phaseName, description);
-        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/{id}/phase", id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(dto.toJsonString());
+        RequestBuilder request = MockMvcRequestBuilders.post("/intervention/phase/{id}", id)
+                .param("name", name)
+                .param("personId", id.toString())
+                .param("phaseName", String.valueOf(phaseName));
 
         mockMvc.perform(request)
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -145,7 +142,7 @@ public class InterventionControllerIntegrationTest {
     }
 
     @Test
-    @DisplayName("Fetching a non-existent intervention")
+    @DisplayName("Fetching an invalid intervention")
     void getInvalidInterventionTest() throws Exception {
         Long id = 2L;
 
@@ -153,7 +150,7 @@ public class InterventionControllerIntegrationTest {
                 .param("id", id.toString());
 
         mockMvc.perform(request)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
 
