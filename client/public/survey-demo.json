@@ -2,14 +2,12 @@
   "id": 1,
   "name": "Default Survey",
   "description": "Should be based on template for production!",
-  "category": [
-    {
+  "category": {
       "id": 1,
       "name": "First category",
       "color": "#FF0000",
       "description": "This is the first category."
-    }
-  ],
+  },
   "factors": [
     {
       "id": 1,

@@ -19,7 +19,7 @@ export class Survey extends LitElement {
             grid-template-columns: 6fr 3fr 2fr 1fr;
             gap: 1rem;
         }
-        .survey > h1,
+        h1,
         .survey > .factor > h2 {
             font-weight: normal;
         }
