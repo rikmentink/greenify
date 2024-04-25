@@ -6,11 +6,10 @@ import lombok.Setter;
 import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Response;
-import nl.hu.greenify.core.domain.Survey;
-import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
+import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,11 +55,45 @@ public class SurveyReport implements IReport {
         return null;
     }
 
+    public double getMaxScore() {
+        double maxResponseScore = calculateMaxResponseScore();
+        double result = 0;
+
+        result += this.getResponses().stream().mapToDouble(response -> maxResponseScore).sum();
+
+        return result;
+    }
+
+    public double getMaxScoreOfCategory(Category category) {
+        double maxResponseScore = calculateMaxResponseScore();
+        double result = 0;
+
+        result += this.getResponsesOfCategory(category).stream().mapToDouble(response -> maxResponseScore).sum();
+
+        return result;
+    }
+
+    private double calculateMaxResponseScore() {
+        double maxFacilitatingFactor = FacilitatingFactor.TOTALLY_AGREE.getValue(true);
+        double maxPriority = Priority.TOP_PRIORITY.getValue();
+        return maxFacilitatingFactor * maxPriority;
+    }
+
     @Override
     public List<Response> getResponses() {
         List<Response> responses = phase.getSurveys().stream()
                 .flatMap(survey -> survey.getCategories().stream())
                 .flatMap(category -> category.getFactors().stream())
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .map(Subfactor::getResponse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return responses;
+    }
+
+    public List<Response> getResponsesOfCategory(Category category) {
+        List<Response> responses = category.getFactors().stream()
                 .flatMap(factor -> factor.getSubfactors().stream())
                 .map(Subfactor::getResponse)
                 .filter(Objects::nonNull)
