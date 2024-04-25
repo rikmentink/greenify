@@ -24,23 +24,23 @@ public class InterventionService {
         this.phaseRepository = phaseRepository;
     }
 
-    public void createIntervention(String name, String description, Long adminId) {
+    public Intervention createIntervention(String name, String description, Long adminId) {
         Person person = personService.getPersonById(adminId);
         if(person == null) {
             throw new IllegalArgumentException("Person with id " + adminId + " does not exist");
         }
-        interventionRepository.save(new Intervention(name, description, person));
+        return interventionRepository.save(new Intervention(name, description, person));
     }
 
-    public void addPhase(Long id, PhaseName phaseName) {
+    public Intervention addPhase(Long id, PhaseName phaseName) {
         Intervention intervention = getInterventionById(id);
         if(intervention == null) {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
 
         intervention.addPhase(phaseName);
-        interventionRepository.save(intervention);
-        }
+        return interventionRepository.save(intervention);
+    }
 
     public Phase getPhaseById(Long id) {
         return phaseRepository.findById(id)
