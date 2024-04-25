@@ -26,11 +26,24 @@ public class Subfactor implements IFactor {
     protected Subfactor() {
     }
 
-    public Subfactor(Long id, String title, int number, boolean isSupportingFactor) {
-        this.id = id;
+    private Subfactor(String title, int number, boolean isSupportingFactor) {
         this.title = title;
         this.number = number;
         this.isSupportingFactor = isSupportingFactor;
+    }
+
+    public Subfactor(Long id, String title, int number, boolean isSupportingFactor) {
+        this(title, number, isSupportingFactor);
+        this.id = id;
+    }
+
+    public Subfactor(Long id, String title, int number, boolean isSupportingFactor, Response response) {
+        this(id, title, number, isSupportingFactor);
+        this.response = response;
+    }
+
+    public static Subfactor createSubfactor(String title, int number, boolean isSupportingFactor) {
+        return new Subfactor(title, number, isSupportingFactor);
     }
 
     public static Subfactor copyOf(Subfactor original) {

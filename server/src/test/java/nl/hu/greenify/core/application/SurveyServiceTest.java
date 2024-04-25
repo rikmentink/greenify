@@ -114,6 +114,6 @@ public class SurveyServiceTest {
     }
 
     private Survey getSurveyExample() {
-        return new Survey(1L, "Survey", "Description", 1, List.of(new Category(1L, "Category", "", "")), new Phase(PhaseName.INITIATION));
+        return new Survey(1L, "Survey", "Description", 1, List.of(new Category(1L, "Category", "", "", new ArrayList<>())), new Phase(PhaseName.INITIATION));
     }
 }

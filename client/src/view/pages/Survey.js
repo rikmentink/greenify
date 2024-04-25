@@ -16,12 +16,21 @@ export class Survey extends LitElement {
         .survey > .header,
         .survey > .factor > gi-survey-subfactor {
             display: grid;
-            grid-template-columns: 4fr 2fr 2fr 1fr;
+            grid-template-columns: 6fr 3fr 2fr 1fr;
             gap: 1rem;
         }
-        .survey > h1,
+        h1,
         .survey > .factor > h2 {
             font-weight: normal;
+        }
+        .survey > .header > .column {
+            font-weight: bold;
+        }
+        .survey > .header > .column:not(:first-child) {
+            text-align: center;
+        }
+        .survey > .factor > gi-survey-subfactor {
+            margin-bottom: .5rem;
         }
     `
 

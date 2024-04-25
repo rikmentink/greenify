@@ -54,4 +54,9 @@ public class SurveyController extends Controller {
         QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId);
         return this.createResponse(questions);
     }
+
+    @PostMapping(value="/template/default", produces="application/json")
+    public ResponseEntity<?> createDefaultTemplate() {
+        return this.createResponse(this.surveyService.createDefaultTemplate());
+    }
 }

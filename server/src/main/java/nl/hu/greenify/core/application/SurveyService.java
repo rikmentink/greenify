@@ -8,9 +8,12 @@ import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
+import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.Template;
+import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.Subfactor;
 import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
 import jakarta.transaction.Transactional;
 
@@ -64,6 +67,11 @@ public class SurveyService {
         return QuestionSetDto.fromEntity(survey, categoryId);
     }
 
+    public Template createDefaultTemplate() {
+        this.createTemplateIfNotExists();
+        return this.getActiveTemplate();
+    }
+
     /**
      * Retrieve the active template by fetching the latest version.
      * 
@@ -72,5 +80,41 @@ public class SurveyService {
     private Template getActiveTemplate() {
         return this.templateRepository.findFirstByOrderByVersionDesc()
                 .orElseThrow(() -> new TemplateNotFoundException("No active template found."));
+    }
+
+    private void createTemplateIfNotExists() {
+        if (this.templateRepository.count() > 0) return;
+
+        Subfactor subfactor1 = Subfactor.createSubfactor("First subfactor", 1, false);
+        Subfactor subfactor2 = Subfactor.createSubfactor("Second subfactor", 2, true);
+        Subfactor subfactor3 = Subfactor.createSubfactor("Third subfactor", 3, false);
+        Subfactor subfactor4 = Subfactor.createSubfactor("Fourth subfactor", 4, true);
+        Subfactor subfactor5 = Subfactor.createSubfactor("Fifth subfactor", 5, false);
+        Subfactor subfactor6 = Subfactor.createSubfactor("Sixth subfactor", 6, true);
+        Subfactor subfactor7 = Subfactor.createSubfactor("Seventh subfactor", 7, false);
+        Subfactor subfactor8 = Subfactor.createSubfactor("Eighth subfactor", 8, true);
+        
+        Factor factor1 = Factor.createFactor("First factor", 1);
+        Factor factor2 = Factor.createFactor("Second factor", 2);
+        Factor factor3 = Factor.createFactor("Third factor", 3);
+        Factor factor4 = Factor.createFactor("Fourth factor", 4);
+        factor1.setSubfactors(List.of(subfactor1, subfactor2));
+        factor2.setSubfactors(List.of(subfactor3, subfactor4));
+        factor3.setSubfactors(List.of(subfactor5, subfactor6));
+        factor4.setSubfactors(List.of(subfactor7, subfactor8));
+
+        Category category1 = Category.createCategory("First category", "#FF0000", "This is the first category.");
+        Category category2 = Category.createCategory("Second category", "#00FF00", "This is the second category.");
+        category1.setFactors(List.of(factor1, factor2));
+        category2.setFactors(List.of(factor3, factor4));
+
+        Template template = Template.createTemplate(
+            "Default Template",
+            "Should be changed for production!",
+            1,
+            List.of(category1, category2)
+        );
+
+        this.templateRepository.save(template);
     }
 }
