@@ -9,27 +9,23 @@ export class SurveySubfactor extends LitElement {
     }
 
     static styles = css`
-        .subfactor {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .subfactor > .subfactor__name {
+        .subfactor__name {
             flex: 1 1 auto;
             margin: 0;
         }
 
-        .subfactor > .subfactor__question {
+        .subfactor__question {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex: 0 0 auto;
+            border-right: 1px solid #d6d6d6;
+            padding-right: 1rem;
         }
 
-        .subfactor > .subfactor__comments {
+        .subfactor__comments {
             flex: 0 0 auto;
+            text-align: center;
         }
     `
 
@@ -40,21 +36,22 @@ export class SurveySubfactor extends LitElement {
     }
 
     render() {
+        // TODO: Implement survey question components
         return html`
                 <div class="subfactor__name">${this.subfactor.title}</div>
                 <div class="subfactor__question">
-                    <gi-survey-question></gi-survey-question>
+                    <gi-survey-question name="facilitating-factor"></gi-survey-question>
                 </div>
                 <div class="subfactor__question">
-                    <gi-survey-question></gi-survey-question>
+                    <gi-survey-question name="priority"></gi-survey-question>
                 </div>
                 <div class="subfactor__comments">FA</div>
         `
     }
 
-    createRenderRoot() {
-        return this;
-    }
+    // createRenderRoot() {
+    //     return this;
+    // }
 }
 
 window.customElements.define('gi-survey-subfactor', SurveySubfactor);
