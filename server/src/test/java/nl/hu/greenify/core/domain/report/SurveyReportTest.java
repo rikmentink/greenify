@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -30,12 +31,12 @@ public class SurveyReportTest {
     void setUp() {
         // Template creation steps:
         // 1. Create categories
-        Category categoryTemplate1 = new Category(1L, "name", "red", "description");
-        Category categoryTemplate2 = new Category(2L, "name2", "blue", "description2");
+        Category categoryTemplate1 = new Category(1L, "name", "red", "description", new ArrayList<>());
+        Category categoryTemplate2 = new Category(2L, "name2", "blue", "description2", new ArrayList<>());
 
         // 2. Create factors
-        Factor factorTemplate1 = new Factor(1L, "title", 1);
-        Factor factorTemplate2 = new Factor(2L, "title2", 2);
+        Factor factorTemplate1 = new Factor(1L, "title", 1, new ArrayList<>());
+        Factor factorTemplate2 = new Factor(2L, "title2", 2, new ArrayList<>());
 
         // 3. Attach each factor to a category
         categoryTemplate1.addFactor(factorTemplate1);
