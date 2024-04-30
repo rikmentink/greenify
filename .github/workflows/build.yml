@@ -28,7 +28,7 @@ jobs:
         run: npm run build --if-present
 
   backend:
-    name: Compile and test the backend
+    name: Compile and check the backend
     runs-on: ubuntu-latest
     env:
       working-directory: ./server
@@ -47,7 +47,7 @@ jobs:
         uses: stCarolas/setup-maven@v5
         with:
           maven-version: 3.9.6
-      - name: Build backend
+      - name: Build and test backend
         run: mvn -B verify -D spring.profiles.active=ci pitest:mutationCoverage
       - name: Extract pull request number
         uses: jwalton/gh-find-current-pr@v1
