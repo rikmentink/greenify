@@ -1,5 +1,7 @@
 # Greenify
 
+[![Tests and checks](https://github.com/rikmentink/greenify/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/rikmentink/greenify/actions/workflows/build.yml)
+
 inleiding! 
 
 ## Technologieën
