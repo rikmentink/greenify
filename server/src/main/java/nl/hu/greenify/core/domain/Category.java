@@ -51,6 +51,8 @@ public class Category {
         copy.name = original.name;
         copy.color = original.color;
         copy.description = original.description;
+        copy.factors = new ArrayList<>();
+
         // Make a deep copy of the factors using its static named constructor
         for (Factor factor : original.factors) {
             copy.factors.add(Factor.copyOf(factor));
