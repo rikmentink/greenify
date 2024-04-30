@@ -35,8 +35,7 @@ jobs:
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
-    permissions:
-      pull-requests: read
+    permissions: read-all
     steps:
       - uses: actions/checkout@v4
       - name: Setup JDK 17
