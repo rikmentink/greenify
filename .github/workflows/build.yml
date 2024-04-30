@@ -52,6 +52,8 @@ jobs:
       - name: Extract pull request number
         uses: jwalton/gh-find-current-pr@v1
         id: pr
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Quality Monitor
         uses: uhafner/quality-monitor@v1
         with:
