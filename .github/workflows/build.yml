@@ -35,6 +35,8 @@ jobs:
     defaults:
       run:
         working-directory: ${{ env.working-directory }}
+    permissions:
+      pull-requests: read
     steps:
       - uses: actions/checkout@v4
       - name: Setup JDK 17
@@ -52,8 +54,6 @@ jobs:
       - name: Extract pull request number
         uses: jwalton/gh-find-current-pr@v1
         id: pr
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Quality Monitor
         uses: uhafner/quality-monitor@v1
         with:
