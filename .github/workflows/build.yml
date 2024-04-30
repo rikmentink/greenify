@@ -1,4 +1,4 @@
-name: Build and perform checks
+name: Tests and checks
 
 on:
   push: 
@@ -8,8 +8,8 @@ on:
     branches: [ master ]
 
 jobs:
-  build-frontend:
-    name: Build the frontend
+  frontend:
+    name: Compile the frontend
     runs-on: ubuntu-latest
     env:
       working-directory: ./client
@@ -27,8 +27,8 @@ jobs:
       - name: Build and compile the project
         run: npm run build --if-present
 
-  build-backend:
-    name: Build the backend
+  backend:
+    name: Compile and test the backend
     runs-on: ubuntu-latest
     env:
       working-directory: ./server
