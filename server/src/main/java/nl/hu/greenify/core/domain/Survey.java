@@ -55,6 +55,17 @@ public class Survey extends Template {
         );
     }
 
+    public static Survey copyOf(Survey survey) {
+        return new Survey(
+            survey.getId(),
+            survey.getName(),
+            survey.getDescription(),
+            survey.getVersion(),
+            cloneCategories(survey.getCategories()),
+            survey.getPhase()
+        );
+    }
+
     private static List<Category> cloneCategories(List<Category> templateCategories) {
         return templateCategories.stream()
                 .map(category -> Category.copyOf(category))
