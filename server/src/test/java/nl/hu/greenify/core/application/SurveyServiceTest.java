@@ -28,6 +28,8 @@ public class SurveyServiceTest {
     private TemplateRepository templateRepository;
     private InterventionService interventionService;
     private PersonService personService;
+    private Person person;
+    private Intervention intervention;
 
     /**
      * getAllSurveys tests
@@ -94,16 +96,49 @@ public class SurveyServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("A Survey should be added to a person")
+    public void addSurveyToPerson() {
+        surveyService.addSurveyToPerson(1L, 1L);
+        verify(personService).getPersonById(1L);
+    }
+
+    @Test
+    @DisplayName("The same survey should not be added to a person twice")
+    public void addSurveyToPersonTwice() {
+        person.setSurveyId(1L);
+        surveyService.addSurveyToPerson(1L, 1L);
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> surveyService.addSurveyToPerson(1L, 1L)
+        );
+    }
+
+    @Test
+    @DisplayName("A survey should only be added twice if the phases are different")
+    public void addSurveyToPersonTwiceDifferentPhase() {
+        surveyService.addSurveyToPerson(1L, 1L);
+        surveyService.addSurveyToPerson(1L, 2L);
+    }
+
     @BeforeEach
     public void setup() {
+        this.person = new Person("John", "Doe", "johndoe@gmail.com");
+        this.intervention = new Intervention("Intervention", "Description", new Person("Admin", "Admin", "admin@gmail.com"));
+        this.intervention.addParticipant(person);
+        this.intervention.addPhase(PhaseName.INITIATION);
+
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
         this.interventionService = mock(InterventionService.class);
+        this.personService = mock(PersonService.class);
         this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService, personService);
-    
+
         when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
         when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
+        when(interventionService.getPhaseById(2L)).thenReturn(new Phase(PhaseName.EXECUTION));
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
+        when(personService.getPersonById(1L)).thenReturn(person);
     }
 
     private Template mockTemplate() {
