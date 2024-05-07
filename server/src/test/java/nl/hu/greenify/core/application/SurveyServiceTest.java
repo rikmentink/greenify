@@ -109,8 +109,7 @@ public class SurveyServiceTest {
     }
 
     private Template mockTemplate() {
-        Template template = mock(Template.class);
-        return template;
+        return mock(Template.class);
     }
 
     private Survey getSurveyExample() {
