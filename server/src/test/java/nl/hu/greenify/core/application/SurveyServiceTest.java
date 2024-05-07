@@ -106,8 +106,8 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("The same survey should not be added to a person twice")
     public void addSurveyToPersonTwice() {
-        person.setSurveyId(1L);
         surveyService.addSurveyToPerson(1L, 1L);
+        person.setSurveyId(1L);
         assertThrows(
             IllegalArgumentException.class,
             () -> surveyService.addSurveyToPerson(1L, 1L)
