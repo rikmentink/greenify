@@ -66,9 +66,13 @@ public class Survey extends Template {
         );
     }
 
+    public Long getPhaseId() {
+        return phase.getId();
+    }
+
     private static List<Category> cloneCategories(List<Category> templateCategories) {
         return templateCategories.stream()
-                .map(category -> Category.copyOf(category))
+                .map(Category::copyOf)
                 .collect(Collectors.toList());
     }
 }
