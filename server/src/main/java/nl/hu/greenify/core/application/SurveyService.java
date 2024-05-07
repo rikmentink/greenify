@@ -2,16 +2,13 @@ package nl.hu.greenify.core.application;
 
 import java.util.List;
 
+import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
 
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
-import nl.hu.greenify.core.domain.Category;
-import nl.hu.greenify.core.domain.Phase;
-import nl.hu.greenify.core.domain.Survey;
-import nl.hu.greenify.core.domain.Template;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
@@ -23,12 +20,14 @@ public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
     private final InterventionService interventionService;
+    private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
-            InterventionService interventionService) {
+            InterventionService interventionService, PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
         this.interventionService = interventionService;
+        this.personService = personService;
     }
 
     public List<Survey> getAllSurveys() {
@@ -36,9 +35,21 @@ public class SurveyService {
     }
 
     public Survey getSurvey(Long id) {
-        Survey survey = surveyRepository.findById(id)
+        return surveyRepository.findById(id)
                 .orElseThrow(() -> new SurveyNotFoundException("Survey with ID " + id + " not found."));
-        return survey;
+    }
+
+    public void addSurveyToPerson(Long personId, Long phaseId) {
+        Phase phase = interventionService.getPhaseById(phaseId);
+        Person person = personService.getPersonById(personId);
+        Survey newSurvey = Survey.createSurvey(phase, this.getActiveTemplate());
+        Survey personSurvey = this.getSurvey(person.getSurveyId());
+
+        if(personSurvey.getPhase().equals(newSurvey.getPhase()) ) {
+            throw new IllegalArgumentException("Person already has this survey");
+        }
+
+        person.setSurveyId(newSurvey.getId());
     }
 
     /**
