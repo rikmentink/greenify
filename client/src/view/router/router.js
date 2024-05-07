@@ -4,6 +4,7 @@ import { Register } from '../pages/Register';
 import { Overview } from '../pages/Overview';
 import { Login } from '../pages/Login';
 import { LoginOption } from '../pages/LoginOption';
+import { Intervention } from '../pages/Intervention';
 import { Survey } from '../pages/Survey';
 import { SurveyResultReport } from '../pages/SurveyResultReport';
 import { CreatePhase } from '../pages/CreatePhase';
@@ -28,6 +29,10 @@ router.setRoutes([
             {
                 path: import.meta.env.BASE_URL + 'register',
                 component: 'gi-register',
+            },
+            {
+                path: import.meta.env.BASE_URL + 'intervention',
+                component: 'gi-intervention',
             },
             {
                 // TODO: Use form data instead of parameter in the future.
