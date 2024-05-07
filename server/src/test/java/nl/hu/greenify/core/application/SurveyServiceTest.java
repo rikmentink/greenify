@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import nl.hu.greenify.core.domain.Category;
-import nl.hu.greenify.core.domain.Phase;
+import nl.hu.greenify.core.domain.*;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +21,13 @@ import org.junit.jupiter.api.Test;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
-import nl.hu.greenify.core.domain.Survey;
-import nl.hu.greenify.core.domain.Template;
 
 public class SurveyServiceTest {
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private TemplateRepository templateRepository;
     private InterventionService interventionService;
+    private PersonService personService;
 
     /**
      * getAllSurveys tests
@@ -101,7 +99,7 @@ public class SurveyServiceTest {
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
         this.interventionService = mock(InterventionService.class);
-        this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService);
+        this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService, personService);
     
         when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
         when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
