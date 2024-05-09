@@ -128,4 +128,19 @@ public class SurveyReport implements IReport {
 
         return totalScore / categories.size();
     }
+
+    public double getAverageScoreOfSubfactor(int factorNumber, int subfactorNumber) {
+        List<Response> responses = phase.getSurveys().stream()
+                .flatMap(survey -> survey.getCategories().stream())
+                .flatMap(category -> category.getFactors().stream())
+                .filter(factor -> factor.getNumber() == factorNumber)
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getNumber() == subfactorNumber)
+                .map(Subfactor::getResponse)
+                .filter(Objects::nonNull)
+                .toList();
+
+        double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
+        return totalScore / responses.size();
+    }
 }
