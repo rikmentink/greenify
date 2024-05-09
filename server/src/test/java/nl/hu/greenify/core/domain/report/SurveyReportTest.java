@@ -236,6 +236,29 @@ public class SurveyReportTest {
         );
     }
 
+    @Test
+    @DisplayName("When responses are given to subfactors across multiple categories over MULTIPLE survey, AVERAGE scores can be given for a subfactor per provided factor number and subfactor number.")
+    void testAverageScorePerSubfactorMultipleSurveys() {
+        // Subfactor 1 and 2 fall under factor 1 (both supporting factors)
+        // Subfactor 3 and 4 fall under factor 2 (Both non-supporting factors)
+
+        // Survey 1:
+        // Part of category 1
+        Response response = new Response(this.subfactor1Survey1);
+        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor1Survey1.setResponse(response);
+
+        Response response2 = new Response(this.subfactor2Survey1);
+        response2.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response2.setPriority(Priority.LITTLE_PRIORITY);
+        subfactor2Survey1.setResponse(response2);
+
+        // Part of category 2
+        Response response3 = new Response(this.subfactor3Survey1);
+        response3.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response3.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor3Survey1.setResponse(response3);
 
 }
 
