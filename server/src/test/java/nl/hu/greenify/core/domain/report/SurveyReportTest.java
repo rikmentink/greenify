@@ -260,5 +260,31 @@ public class SurveyReportTest {
         response3.setPriority(Priority.TOP_PRIORITY);
         this.subfactor3Survey1.setResponse(response3);
 
+        // Survey 2:
+        // Part of category 1
+        Response response4 = new Response(this.subfactor1Survey2);
+        response4.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response4.setPriority(Priority.NO_PRIORITY);
+        this.subfactor1Survey2.setResponse(response4);
+
+        // Part of category 2
+        Response response5 = new Response(this.subfactor3Survey2);
+        response5.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response5.setPriority(Priority.NO_PRIORITY);
+        this.subfactor3Survey2.setResponse(response5);
+
+        SurveyReport surveyReport = new SurveyReport(phase);
+
+        // Expected average scores:
+        // Factor 1 subfactor 1: (10 + 2) / 2 = 6.0
+        // Factor 1 subfactor 2: (2.66) / 1 = 2.66
+        // Factor 2 subfactor 3: (2 + 1) / 2 = 1.5
+
+        assertAll(
+                () -> assertEquals(6.0, surveyReport.getAverageScoreOfSubfactor(1, 1)),
+                () -> assertEquals(2.66, surveyReport.getAverageScoreOfSubfactor(1, 2)),
+                () -> assertEquals(1.5, surveyReport.getAverageScoreOfSubfactor(2, 3))
+        );
+    }
 }
 
