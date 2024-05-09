@@ -101,4 +101,31 @@ public class SurveyReport implements IReport {
 
         return responses;
     }
+
+    public double getAverageScore(Category category) {
+        List<Response> responses = getResponsesOfCategory(category);
+        double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
+        return totalScore / responses.size();
+    }
+
+    /**
+     * This method is used to return the average score of a category by its name. The name is
+     * used to identify the category to allow for an average score to be calculated across
+     * multiple surveys.
+     *
+     * @return The average score of a category across all surveys in the phase.
+     */
+    public double getAverageScoreOfCategoryByName(String categoryName) {
+        List<Category> categories = phase.getSurveys().stream()
+                .flatMap(survey -> survey.getCategories().stream())
+                .filter(category -> category.getName().equals(categoryName))
+                .toList();
+
+        double totalScore = 0;
+        for (Category category : categories) {
+            totalScore += getAverageScore(category);
+        }
+
+        return totalScore / categories.size();
+    }
 }
