@@ -59,4 +59,10 @@ public class SurveyController extends Controller {
     public ResponseEntity<?> createDefaultTemplate() {
         return this.createResponse(this.surveyService.createDefaultTemplate());
     }
+
+    @PostMapping(value="/add", produces="application/json")
+    public ResponseEntity<?> addSurveyToPerson(@RequestParam Long personId, @RequestParam Long phaseId) {
+        this.surveyService.addSurveyToPerson(personId, phaseId);
+        return this.createResponse(this.surveyService.addSurveyToPerson(personId, phaseId));
+    }
 }
