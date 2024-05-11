@@ -40,7 +40,7 @@ public class SurveyService {
                 .orElseThrow(() -> new SurveyNotFoundException("Survey with ID " + id + " not found."));
     }
 
-    public void addSurveyToPerson(Long personId, Long phaseId) {
+    public Person addSurveyToPerson(Long personId, Long phaseId) {
         Phase phase = interventionService.getPhaseById(phaseId);
         Person person = personService.getPersonById(personId);
 
@@ -49,14 +49,15 @@ public class SurveyService {
         if (person.getSurveyId() != null) {
             Survey personSurvey = this.getSurvey(person.getSurveyId());
 
-            if (Objects.equals(personSurvey.getPhaseId(), newSurvey.getPhaseId())) {
+            if (personSurvey.getPhaseId().equals(newSurvey.getPhaseId())) {
                 throw new IllegalArgumentException("Person already has this survey");
             }
+            System.out.println("Not equal! Not null!");
         }
-
-        // Assign the new survey to the person
         person.setSurveyId(newSurvey.getId());
+        return person;
     }
+
 
 
     /**
