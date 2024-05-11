@@ -2,6 +2,7 @@ package nl.hu.greenify.core.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,5 +41,17 @@ public class Phase {
 
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Phase phase)) return false;
+        return Objects.equals(getId(), phase.getId()) && getName() == phase.getName() && Objects.equals(getSurveys(), phase.getSurveys());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSurveys());
     }
 }
