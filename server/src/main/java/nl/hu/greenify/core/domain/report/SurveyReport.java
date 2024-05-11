@@ -15,12 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
-@Entity
 public class SurveyReport implements IReport {
-    @Id
-    @GeneratedValue
-    private Long id;
-
     @Setter
     @OneToOne
     private Phase phase;
@@ -30,9 +25,6 @@ public class SurveyReport implements IReport {
 
     public SurveyReport(Phase phase) {
         this.phase = phase;
-    }
-
-    protected SurveyReport() {
     }
 
     @Override
