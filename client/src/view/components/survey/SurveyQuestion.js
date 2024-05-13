@@ -58,21 +58,21 @@ export class SurveyQuestion extends LitElement {
         // TODO: Map this properly.
         return html`
             <div class="question" data-question="${this.name}">
-                ${this.findOptions().map(option => html`
+                ${this._findOptions().map(option => html`
                     <div class="answer">
                         <label>${option.value}</label>
-                        <input type="radio" name="${this.name}" value="${option.value}" ?checked="${this.answer === option.value}" @change=${this.selectAnswer}/>
+                        <input type="radio" name="${this.name}" value="${option.value}" ?checked="${this.answer === option.value}" @change=${this._selectAnswer}/>
                     </div>
                 `)}
             </div>
         `
     }
 
-    findOptions() {
+    _findOptions() {
         return data.questions.find(question => question.question == this.name).options;
     }
 
-    selectAnswer(event) {
+    _selectAnswer(event) {
         console.log(`Answered question ${event.target.name} with ${event.target.value}.`);
         this.dispatchEvent(
             new CustomEvent('answer', {
