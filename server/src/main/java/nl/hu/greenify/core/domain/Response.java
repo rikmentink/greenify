@@ -63,6 +63,7 @@ public class Response {
         return "Response{" +
                 "id=" + id +
                 ", score=" + score +
+                ", supportingFactor=" + this.subfactor.isSupportingFactor() +
                 '}';
     }
 }

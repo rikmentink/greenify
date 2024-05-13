@@ -125,7 +125,7 @@ public class SurveyReportTest {
     }
 
     @Test
-    @DisplayName("When responses are given to subfactors across multiple categories, maximum scores can be given per provided category.")
+    @DisplayName("When responses are given to subfactors across multiple categories, MAXIMUM scores can be given per provided category.")
     void testMaxScorePerCategorySingleSurvey() {
         // Survey 1:
         // Part of category 1
@@ -154,6 +154,136 @@ public class SurveyReportTest {
         assertAll(
                 () -> assertEquals(20.0, surveyReport.getMaxScoreOfCategory(category)),
                 () -> assertEquals(10.0, surveyReport.getMaxScoreOfCategory(category2))
+        );
+    }
+
+    @Test
+    @DisplayName("When responses are given to subfactors across multiple categories within a SINGLE survey, AVERAGE scores can be given per provided category.")
+    void testAverageScorePerCategorySingleSurvey() {
+        // Survey 1:
+        // Part of category 1
+        Response response = new Response(this.subfactor1Survey1);
+        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor1Survey1.setResponse(response);
+
+        Response response2 = new Response(this.subfactor2Survey1);
+        response2.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response2.setPriority(Priority.LITTLE_PRIORITY);
+        subfactor2Survey1.setResponse(response2);
+
+        // Part of category 2
+        Response response3 = new Response(this.subfactor3Survey1);
+        response3.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response3.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor3Survey1.setResponse(response3);
+
+        SurveyReport surveyReport = new SurveyReport(phase);
+
+        // Get the first category of the first survey
+        Category category = phase.getSurveys().get(0).getCategories().get(0);
+        Category category2 = phase.getSurveys().get(0).getCategories().get(1);
+
+        assertAll(
+                () -> assertEquals(6.33, surveyReport.getAverageScore(category)),
+                () -> assertEquals(2.0, surveyReport.getAverageScore(category2))
+        );
+    }
+
+    @Test
+    @DisplayName("When responses are given to subfactors across multiple categories over MULTIPLE survey, AVERAGE scores can be given per provided category name.")
+    void testAverageScorePerCategoryMultipleSurveys() {
+        // Survey 1:
+        // Part of category 1
+        Response response = new Response(this.subfactor1Survey1);
+        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor1Survey1.setResponse(response);
+
+        Response response2 = new Response(this.subfactor2Survey1);
+        response2.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response2.setPriority(Priority.LITTLE_PRIORITY);
+        subfactor2Survey1.setResponse(response2);
+
+        // Part of category 2
+        Response response3 = new Response(this.subfactor3Survey1);
+        response3.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response3.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor3Survey1.setResponse(response3);
+
+        // Survey 2:
+        // Part of category 1
+        Response response4 = new Response(this.subfactor1Survey2);
+        response4.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response4.setPriority(Priority.NO_PRIORITY);
+        this.subfactor1Survey2.setResponse(response4);
+
+        // Part of category 2
+        Response response5 = new Response(this.subfactor3Survey2);
+        response5.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response5.setPriority(Priority.NO_PRIORITY);
+        this.subfactor3Survey2.setResponse(response5);
+
+        SurveyReport surveyReport = new SurveyReport(phase);
+
+        // Expected average scores:
+        // Category "name": (6.33 + 2) / 2 = 4.165
+        // Category "name2": (2 + 1) / 2 = 1.5
+
+        assertAll(
+                () -> assertEquals(4.165, surveyReport.getAverageScoreOfCategoryByName("name")),
+                () -> assertEquals(1.5, surveyReport.getAverageScoreOfCategoryByName("name2"))
+        );
+    }
+
+    @Test
+    @DisplayName("When responses are given to subfactors across multiple categories over MULTIPLE survey, AVERAGE scores can be given for a subfactor per provided factor number and subfactor number.")
+    void testAverageScorePerSubfactorMultipleSurveys() {
+        // Subfactor 1 and 2 fall under factor 1 (both supporting factors)
+        // Subfactor 3 and 4 fall under factor 2 (Both non-supporting factors)
+
+        // Survey 1:
+        // Part of category 1
+        Response response = new Response(this.subfactor1Survey1);
+        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor1Survey1.setResponse(response);
+
+        Response response2 = new Response(this.subfactor2Survey1);
+        response2.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response2.setPriority(Priority.LITTLE_PRIORITY);
+        subfactor2Survey1.setResponse(response2);
+
+        // Part of category 2
+        Response response3 = new Response(this.subfactor3Survey1);
+        response3.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response3.setPriority(Priority.TOP_PRIORITY);
+        this.subfactor3Survey1.setResponse(response3);
+
+        // Survey 2:
+        // Part of category 1
+        Response response4 = new Response(this.subfactor1Survey2);
+        response4.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
+        response4.setPriority(Priority.NO_PRIORITY);
+        this.subfactor1Survey2.setResponse(response4);
+
+        // Part of category 2
+        Response response5 = new Response(this.subfactor3Survey2);
+        response5.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
+        response5.setPriority(Priority.NO_PRIORITY);
+        this.subfactor3Survey2.setResponse(response5);
+
+        SurveyReport surveyReport = new SurveyReport(phase);
+
+        // Expected average scores:
+        // Factor 1 subfactor 1: (10 + 2) / 2 = 6.0
+        // Factor 1 subfactor 2: (2.66) / 1 = 2.66
+        // Factor 2 subfactor 3: (2 + 1) / 2 = 1.5
+
+        assertAll(
+                () -> assertEquals(6.0, surveyReport.getAverageScoreOfSubfactor(1, 1)),
+                () -> assertEquals(2.66, surveyReport.getAverageScoreOfSubfactor(1, 2)),
+                () -> assertEquals(1.5, surveyReport.getAverageScoreOfSubfactor(2, 3))
         );
     }
 }
