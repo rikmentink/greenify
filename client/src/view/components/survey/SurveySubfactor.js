@@ -35,8 +35,9 @@ export class SurveySubfactor extends LitElement {
         this.response = {};
     }
 
+    // TODO: Catch answer events from the questions and update the response object. Should immediately (lazily) save the updated response object to the backend.
+
     render() {
-        // TODO: Implement survey question components
         return html`
                 <div class="subfactor__name">${this.subfactor.title}</div>
                 <div class="subfactor__question">
@@ -48,10 +49,6 @@ export class SurveySubfactor extends LitElement {
                 <div class="subfactor__comments">FA</div>
         `
     }
-
-    // createRenderRoot() {
-    //     return this;
-    // }
 }
 
 window.customElements.define('gi-survey-subfactor', SurveySubfactor);
