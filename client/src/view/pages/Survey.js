@@ -36,7 +36,7 @@ export class Survey extends LitElement {
 
     constructor() {
         super();
-        this.id = 1;
+        this.id = 102;
         this.page = 1;
         this.pageSize = 10; // TODO: This should be dynamic
         this.data = new Task(this, {
