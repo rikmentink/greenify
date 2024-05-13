@@ -39,7 +39,7 @@ export class SurveySubfactor extends LitElement {
         super.connectedCallback();
         this.addEventListener('answer', event => {
             console.log(`Captured answer event for subfactor #${this.subfactor.id}: ${event.detail.question} - ${event.detail.answer}`)
-            this.response[event.detail.name] = event.detail.answer;
+            this.response[event.detail.question] = event.detail.answer;
         });
     }
 
