@@ -55,7 +55,6 @@ export class SurveyQuestion extends LitElement {
     }
 
     render() {
-        // TODO: Map this properly.
         return html`
             <div class="question" data-question="${this.name}">
                 ${this._findOptions().map(option => html`

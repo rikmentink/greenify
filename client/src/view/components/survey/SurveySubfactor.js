@@ -35,7 +35,18 @@ export class SurveySubfactor extends LitElement {
         this.response = {};
     }
 
-    // TODO: Catch answer events from the questions and update the response object. Should immediately (lazily) save the updated response object to the backend.
+    async connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('answer', event => {
+            console.log(`Captured answer event for subfactor #${this.subfactor.id}: ${event.detail.question} - ${event.detail.answer}`)
+            this.response[event.detail.name] = event.detail.answer;
+        });
+    }
+
+    async disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('answer');
+    }
 
     render() {
         return html`
