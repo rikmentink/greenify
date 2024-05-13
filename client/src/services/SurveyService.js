@@ -23,4 +23,9 @@ async function getSurvey(id, categoryId, page = 1, pageSize = 1000) {
       })
 }
 
-export { getSurvey };
+async function saveResponse(id, subfactorId, response) {
+  // TODO: Use back-end service!
+  console.log(`Saving response for subfactor #${subfactorId} on survey #${id}:`, response);
+} 
+
+export { getSurvey, saveResponse };
