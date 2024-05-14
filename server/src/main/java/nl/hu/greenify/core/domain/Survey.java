@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.ToString;
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
+import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
 @Entity
@@ -68,6 +70,17 @@ public class Survey extends Template {
                 .filter(subfactor -> subfactor.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new SubfactorNotFoundException("Subfactor with ID " + id + " not found."));
+    }
+
+    public Response saveResponse(Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
+        Subfactor subfactor = this.getSubfactorById(subfactorId);
+        Response response = Response.createResponse(
+            this.getSubfactorById(subfactorId), 
+            facilitatingFactor, priority, comment
+        );
+
+        subfactor.setResponse(response);
+        return response;
     }
 
     private static List<Category> cloneCategories(List<Category> templateCategories) {

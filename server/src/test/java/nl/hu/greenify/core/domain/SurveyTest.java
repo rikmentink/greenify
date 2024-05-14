@@ -7,12 +7,20 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.Subfactor;
 
 public class SurveyTest {
+    private Survey survey;
+    private Category category;
+    private Factor factor;
+    private Subfactor subfactor;
     
     @Test
     @DisplayName("When creating a survey, it should return a survey with the given phase.")
@@ -46,6 +54,35 @@ public class SurveyTest {
             IllegalArgumentException.class, 
             () -> Survey.createSurvey(this.mockPhase(), null)
         );
+    }
+
+    @Test
+    @DisplayName("When saving a response, it should add the response to the subfactor.")
+    public void saveResponseShouldAddResponseToSubfactor() {
+        var subfactorId = 1L;
+
+        Response response = this.survey.saveResponse(subfactorId, null, null, null);
+        assertEquals(subfactor.getResponse(), response);
+    }
+
+    @Test
+    @DisplayName("When saving a response with an invalid subfactor ID, it should throw an exception.")
+    public void saveResponseShouldThrowException() {
+        assertThrows(
+            SubfactorNotFoundException.class, 
+            () -> this.survey.saveResponse(2L, null, null, null)
+        );
+    }
+    
+    @BeforeEach
+    void setup() {
+        this.survey = new Survey(1L, null, null, 0, new ArrayList<>(), null);
+        this.category = new Category(1L, null, null, null, new ArrayList<>());
+        this.factor = new Factor(1L, null, 0, new ArrayList<>());
+        this.subfactor = new Subfactor(1L, "subfactor", 1, true);
+        this.factor.addSubfactor(subfactor);
+        this.category.addFactor(factor);
+        this.survey.addCategory(category);
     }
 
     private Phase mockPhase() {
