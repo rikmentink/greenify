@@ -93,9 +93,14 @@ public class SurveyService {
      * @return The saved response.
      * @throws SurveyNotFoundException If the survey with the given ID is not found.
      */
-    public Response submitResponse(Long id, Response response) {
+    public Response submitResponse(Long id, SubmitResponseDto responseDto) {
         Survey survey = this.getSurvey(id);
-        Subfactor subfactor = survey.getSubfactorById(response.getSubfactor().getId());
+        Subfactor subfactor = survey.getSubfactorById(responseDto.getSubfactorId());
+        
+        Response response = Response.createResponse(subfactor);
+        response.setFacilitatingFactor(response.getFacilitatingFactor());
+        response.setPriority(response.getPriority());
+        response.setComment(response.getComment());
         subfactor.setResponse(response);
 
         surveyRepository.save(survey);
