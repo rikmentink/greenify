@@ -94,8 +94,12 @@ public class SurveyService {
      * @throws SurveyNotFoundException If the survey with the given ID is not found.
      */
     public Response submitResponse(Long id, Response response) {
-        // TODO: Create method.
-        throw new UnsupportedOperationException("Unimplemented method 'submitResponse'");
+        Survey survey = this.getSurvey(id);
+        Subfactor subfactor = survey.getSubfactorById(response.getSubfactor().getId());
+        subfactor.setResponse(response);
+
+        surveyRepository.save(survey);
+        return response;
     }
 
     public Template createDefaultTemplate() {
