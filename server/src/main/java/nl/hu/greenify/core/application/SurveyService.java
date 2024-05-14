@@ -88,17 +88,15 @@ public class SurveyService {
     /**
      * Saves a response for the given survey.
      * 
-     * @param id       The ID of the survey to save the response for.
-     * @param response The response to save.
+     * @param id          The ID of the survey to save the response for.
+     * @param responseDto The response data to save.
      * @return The saved response.
      * @throws SurveyNotFoundException If the survey with the given ID is not found.
      */
     public Response submitResponse(Long id, SubmitResponseDto responseDto) {
         Survey survey = this.getSurvey(id);
-        Subfactor subfactor = survey.getSubfactorById(responseDto.getSubfactorId());
-        
-        Response response = Response.createResponse(subfactor, responseDto.getFacilitatingFactor(), responseDto.getPriority(), responseDto.getComment());
-        subfactor.setResponse(response);
+        Response response = survey.saveResponse(responseDto.getSubfactorId(), responseDto.getFacilitatingFactor(),
+                responseDto.getPriority(), responseDto.getComment());
 
         surveyRepository.save(survey);
         return response;
