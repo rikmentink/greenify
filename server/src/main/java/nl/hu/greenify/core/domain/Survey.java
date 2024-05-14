@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.ToString;
+import nl.hu.greenify.core.domain.factor.Subfactor;
 
 @Entity
 @Getter
@@ -57,6 +58,14 @@ public class Survey extends Template {
 
     public Long getPhaseId() {
         return phase.getId();
+    }
+
+    public Subfactor getSubfactorById(Long id) {
+        return this.getCategories().stream()
+                .flatMap(category -> category.getFactors().stream())
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getId().equals(id))
+                .findFirst().orElse(null);
     }
 
     private static List<Category> cloneCategories(List<Category> templateCategories) {
