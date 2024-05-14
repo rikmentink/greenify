@@ -1,7 +1,6 @@
 package nl.hu.greenify.core.domain;
 
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
-import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
@@ -13,7 +12,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,11 +34,9 @@ public class ResponseTest {
         // Given:
         Subfactor subfactor = new Subfactor(1L, "title", 1, true);
         factor.addSubfactor(subfactor);
-        Response response = new Response(subfactor);
 
         // When:
-        response.setFacilitatingFactor(facilitatingFactor);
-        response.setPriority(priority);
+        Response response = Response.createResponse(subfactor, facilitatingFactor, priority, "");
         double actualScore = response.getScore();
 
         // Then:
@@ -103,11 +99,9 @@ public class ResponseTest {
         // Given:
         Subfactor subfactor = new Subfactor(1L, "title", 1, true);
         factor.addSubfactor(subfactor);
-        Response response = new Response(subfactor);
 
         // When:
-        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
-        response.setPriority(Priority.TOP_PRIORITY);
+        Response response = Response.createResponse(subfactor, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null);
         double actualScore = response.getScore();
 
         // Then:
@@ -120,11 +114,9 @@ public class ResponseTest {
         // Given:
         Subfactor subfactor = new Subfactor(1L, "title", 1, false);
         factor.addSubfactor(subfactor);
-        Response response = new Response(subfactor);
 
         // When:
-        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
-        response.setPriority(Priority.TOP_PRIORITY);
+        Response response = Response.createResponse(subfactor, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null);
         double actualScore = response.getScore();
 
         // Then:

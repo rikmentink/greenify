@@ -61,6 +61,7 @@ public class Response {
             subfactor
         );
         response.subfactor.setResponse(response);
+        response.calculateScore();
         return response;
     }
 

@@ -111,45 +111,14 @@ public class SurveyReportServiceTest {
     }
 
     void setupResponses() {
-        Response response = new Response(this.subfactor1Survey1);
-        response.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
-        response.setPriority(Priority.TOP_PRIORITY);
-        this.subfactor1Survey1.setResponse(response);
-
-        Response response2 = new Response(this.subfactor2Survey1);
-        response2.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
-        response2.setPriority(Priority.LITTLE_PRIORITY);
-        subfactor2Survey1.setResponse(response2);
-
-        Response response3 = new Response(this.subfactor3Survey1);
-        response3.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
-        response3.setPriority(Priority.TOP_PRIORITY);
-        subfactor3Survey1.setResponse(response3);
-
-        Response response4 = new Response(this.subfactor4Survey1);
-        response4.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
-        response4.setPriority(Priority.LITTLE_PRIORITY);
-        subfactor4Survey1.setResponse(response4);
-
-        Response response5 = new Response(this.subfactor1Survey2);
-        response5.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
-        response5.setPriority(Priority.TOP_PRIORITY);
-        subfactor1Survey2.setResponse(response5);
-
-        Response response6 = new Response(this.subfactor2Survey2);
-        response6.setFacilitatingFactor(FacilitatingFactor.AGREE);
-        response6.setPriority(Priority.LITTLE_PRIORITY);
-        subfactor2Survey2.setResponse(response6);
-
-        Response response7 = new Response(this.subfactor3Survey2);
-        response7.setFacilitatingFactor(FacilitatingFactor.TOTALLY_AGREE);
-        response7.setPriority(Priority.LITTLE_PRIORITY);
-        subfactor3Survey2.setResponse(response7);
-
-        Response response8 = new Response(this.subfactor4Survey2);
-        response8.setFacilitatingFactor(FacilitatingFactor.DISAGREE);
-        response8.setPriority(Priority.TOP_PRIORITY);
-        subfactor4Survey2.setResponse(response8);
+        Response response1 = Response.createResponse(subfactor1Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null);
+        Response response2 = Response.createResponse(subfactor2Survey1, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, null);
+        Response response3 = Response.createResponse(subfactor3Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null);
+        Response response4 = Response.createResponse(subfactor4Survey1, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, null);
+        Response response5 = Response.createResponse(subfactor1Survey2, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null);
+        Response response6 = Response.createResponse(subfactor2Survey2, FacilitatingFactor.AGREE, Priority.LITTLE_PRIORITY, null);
+        Response response7 = Response.createResponse(subfactor3Survey2, FacilitatingFactor.TOTALLY_AGREE, Priority.LITTLE_PRIORITY, null);
+        Response response8 = Response.createResponse(subfactor4Survey2, FacilitatingFactor.DISAGREE, Priority.TOP_PRIORITY, null);
     }
 
     @Test
