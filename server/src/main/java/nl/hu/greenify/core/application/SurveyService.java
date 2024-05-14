@@ -97,10 +97,7 @@ public class SurveyService {
         Survey survey = this.getSurvey(id);
         Subfactor subfactor = survey.getSubfactorById(responseDto.getSubfactorId());
         
-        Response response = Response.createResponse(subfactor);
-        response.setFacilitatingFactor(response.getFacilitatingFactor());
-        response.setPriority(response.getPriority());
-        response.setComment(response.getComment());
+        Response response = Response.createResponse(subfactor, responseDto.getFacilitatingFactor(), responseDto.getPriority(), responseDto.getComment());
         subfactor.setResponse(response);
 
         surveyRepository.save(survey);

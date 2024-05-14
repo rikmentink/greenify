@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.ToString;
+import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
 @Entity
@@ -65,7 +66,8 @@ public class Survey extends Template {
                 .flatMap(category -> category.getFactors().stream())
                 .flatMap(factor -> factor.getSubfactors().stream())
                 .filter(subfactor -> subfactor.getId().equals(id))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElseThrow(() -> new SubfactorNotFoundException("Subfactor with ID " + id + " not found."));
     }
 
     private static List<Category> cloneCategories(List<Category> templateCategories) {
