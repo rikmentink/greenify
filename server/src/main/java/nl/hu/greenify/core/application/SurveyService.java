@@ -13,6 +13,7 @@ import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
+import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -40,6 +41,19 @@ public class SurveyService {
                 .orElseThrow(() -> new SurveyNotFoundException("Survey with ID " + id + " not found."));
     }
 
+    /**
+     * Get the questions for the given survey and category.
+     * TODO: Keep page and page size into account.
+     * 
+     * @param surveyId   The ID of the survey to get the questions for.
+     * @param categoryId The ID of the category to get the questions for.
+     * @return The questions for the given survey and category.
+     */
+    public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
+        Survey survey = this.getSurvey(surveyId);
+        return QuestionSetDto.fromEntity(survey, categoryId);
+    }
+
     public void addSurveyToPerson(Long personId, Long phaseId) {
         Phase phase = interventionService.getPhaseById(phaseId);
         Person person = personService.getPersonById(personId);
@@ -58,7 +72,6 @@ public class SurveyService {
         person.setSurveyId(newSurvey.getId());
     }
 
-
     /**
      * Creates a new survey based on the given phase.
      *
@@ -72,17 +85,9 @@ public class SurveyService {
         return surveyRepository.save(survey);
     }
 
-    /**
-     * Get the questions for the given survey and category.
-     * TODO: Keep page and page size into account.
-     * 
-     * @param surveyId   The ID of the survey to get the questions for.
-     * @param categoryId The ID of the category to get the questions for.
-     * @return The questions for the given survey and category.
-     */
-    public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
-        Survey survey = this.getSurvey(surveyId);
-        return QuestionSetDto.fromEntity(survey, categoryId);
+    public Response submitResponse(Long id, SubmitResponseDto responseDto) {
+        // TODO: Create method.
+        throw new UnsupportedOperationException("Unimplemented method 'submitResponse'");
     }
 
     public Template createDefaultTemplate() {
