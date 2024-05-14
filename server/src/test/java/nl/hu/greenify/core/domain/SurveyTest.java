@@ -12,7 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
@@ -61,7 +63,7 @@ public class SurveyTest {
     public void saveResponseShouldAddResponseToSubfactor() {
         var subfactorId = 1L;
 
-        Response response = this.survey.saveResponse(subfactorId, null, null, null);
+        Response response = this.survey.saveResponse(subfactorId, FacilitatingFactor.PENDING, Priority.PENDING, "");
         assertEquals(subfactor.getResponse(), response);
     }
 
@@ -70,15 +72,15 @@ public class SurveyTest {
     public void saveResponseShouldThrowException() {
         assertThrows(
             SubfactorNotFoundException.class, 
-            () -> this.survey.saveResponse(2L, null, null, null)
+            () -> this.survey.saveResponse(2L, FacilitatingFactor.PENDING, Priority.PENDING, "")
         );
     }
     
     @BeforeEach
     void setup() {
-        this.survey = new Survey(1L, null, null, 0, new ArrayList<>(), null);
-        this.category = new Category(1L, null, null, null, new ArrayList<>());
-        this.factor = new Factor(1L, null, 0, new ArrayList<>());
+        this.survey = new Survey(1L, "", "", 0, new ArrayList<>(), new Phase(PhaseName.INITIATION));
+        this.category = new Category(1L, "", "", "", new ArrayList<>());
+        this.factor = new Factor(1L, "", 0, new ArrayList<>());
         this.subfactor = new Subfactor(1L, "subfactor", 1, true);
         this.factor.addSubfactor(subfactor);
         this.category.addFactor(factor);
