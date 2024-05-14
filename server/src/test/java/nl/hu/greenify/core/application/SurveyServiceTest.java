@@ -2,6 +2,7 @@ package nl.hu.greenify.core.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,9 @@ import java.util.Optional;
 
 import nl.hu.greenify.core.domain.*;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.Subfactor;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +27,15 @@ import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 
 public class SurveyServiceTest {
+    private static final Long SURVEY_ID = 1L;
+    private static final Long SUBFACTOR_ID = 1L;
+
+    private Subfactor subfactor;
+    private Response response;
+    private Factor factor;
+    private Category category;
+    private Survey survey;
+
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
     private TemplateRepository templateRepository;
@@ -65,16 +78,6 @@ public class SurveyServiceTest {
             SurveyNotFoundException.class, 
             () -> surveyService.getSurvey(2L)
         );
-    }
-
-    /**
-     * createSurvey tests
-     */
-    @Test
-    @DisplayName("When creating a survey, it should be saved in the repository")
-    public void createSurveyShouldSave() {
-        surveyService.createSurvey(1L);
-        verify(surveyRepository).save(any(Survey.class));
     }
 
     /**
@@ -121,6 +124,44 @@ public class SurveyServiceTest {
         surveyService.addSurveyToPerson(1L, 2L);
     }
 
+    /**
+     * createSurvey tests
+     */
+    @Test
+    @DisplayName("When creating a survey, it should be saved in the repository")
+    public void createSurveyShouldSave() {
+        surveyService.createSurvey(1L);
+        verify(surveyRepository).save(any(Survey.class));
+    }
+
+    @Test
+    @DisplayName("When submitting a response, it should be saved in the repository")
+    public void submitResponseShouldSave() {    
+        this.response = new Response(subfactor);    
+        surveyService.submitResponse(SURVEY_ID, response);
+        assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(response));
+    }
+
+    @Test
+    @DisplayName("When submitting a response with an existing response, it should be updated")
+    public void submitResponseShouldUpdate() {
+        this.response = new Response(subfactor);
+        surveyService.submitResponse(SURVEY_ID, response);
+
+        Response newResponse = new Response(subfactor);
+        surveyService.submitResponse(SURVEY_ID, newResponse);
+        assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(newResponse));
+    }
+
+    @Test
+    @DisplayName("When submitting a response with an invalid survey id, it should throw an exception")
+    public void submitResponseShouldThrowException() {
+        assertThrows(
+            SurveyNotFoundException.class,
+            () -> surveyService.submitResponse(2L, new Response(subfactor))
+        );
+    }
+
     @BeforeEach
     public void setup() {
         this.person = new Person("John", "Doe", "johndoe@gmail.com");
@@ -128,13 +169,18 @@ public class SurveyServiceTest {
         this.intervention.addParticipant(person);
         this.intervention.addPhase(PhaseName.INITIATION);
 
+        this.subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
+        this.factor = new Factor(1L, "Factor", 1, List.of(subfactor));
+        this.category = new Category(1L, "Category", "", "", List.of(factor));
+        this.survey = new Survey(SURVEY_ID, "Survey", "Description", 1, List.of(this.category), new Phase(PhaseName.INITIATION));
+
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
         this.interventionService = mock(InterventionService.class);
         this.personService = mock(PersonService.class);
         this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService, personService);
 
-        when(surveyRepository.findById(1L)).thenReturn(Optional.of(this.getSurveyExample()));
+        when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(this.survey));
         when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
         when(interventionService.getPhaseById(2L)).thenReturn(new Phase(PhaseName.EXECUTION));
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
@@ -143,9 +189,5 @@ public class SurveyServiceTest {
 
     private Template mockTemplate() {
         return mock(Template.class);
-    }
-
-    private Survey getSurveyExample() {
-        return new Survey(1L, "Survey", "Description", 1, List.of(new Category(1L, "Category", "", "", new ArrayList<>())), new Phase(PhaseName.INITIATION));
     }
 }

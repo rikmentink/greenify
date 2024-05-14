@@ -85,7 +85,15 @@ public class SurveyService {
         return surveyRepository.save(survey);
     }
 
-    public Response submitResponse(Long id, SubmitResponseDto responseDto) {
+    /**
+     * Saves a response for the given survey.
+     * 
+     * @param id       The ID of the survey to save the response for.
+     * @param response The response to save.
+     * @return The saved response.
+     * @throws SurveyNotFoundException If the survey with the given ID is not found.
+     */
+    public Response submitResponse(Long id, Response response) {
         // TODO: Create method.
         throw new UnsupportedOperationException("Unimplemented method 'submitResponse'");
     }
