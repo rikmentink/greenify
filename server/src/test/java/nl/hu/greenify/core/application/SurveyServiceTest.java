@@ -13,9 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 import nl.hu.greenify.core.domain.*;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
+import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +32,7 @@ import nl.hu.greenify.core.data.TemplateRepository;
 public class SurveyServiceTest {
     private static final Long SURVEY_ID = 1L;
     private static final Long SUBFACTOR_ID = 1L;
+    private static final Long RESPONSE_ID = 1L;
 
     private Subfactor subfactor;
     private Response response;
@@ -137,28 +141,29 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When submitting a response, it should be saved in the repository")
     public void submitResponseShouldSave() {    
-        this.response = new Response(subfactor);    
-        surveyService.submitResponse(SURVEY_ID, response);
+        SubmitResponseDto responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
+        Response response = surveyService.submitResponse(SURVEY_ID, responseData);
         assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(response));
     }
 
     @Test
     @DisplayName("When submitting a response with an existing response, it should be updated")
     public void submitResponseShouldUpdate() {
-        this.response = new Response(subfactor);
-        surveyService.submitResponse(SURVEY_ID, response);
+        SubmitResponseDto responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
+        Response response = surveyService.submitResponse(SURVEY_ID, responseData);
 
-        Response newResponse = new Response(subfactor);
-        surveyService.submitResponse(SURVEY_ID, newResponse);
-        assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(newResponse));
+        responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
+        response = surveyService.submitResponse(SURVEY_ID, responseData);
+        assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(response));
     }
 
     @Test
     @DisplayName("When submitting a response with an invalid survey id, it should throw an exception")
     public void submitResponseShouldThrowException() {
+        SubmitResponseDto responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
         assertThrows(
             SurveyNotFoundException.class,
-            () -> surveyService.submitResponse(2L, new Response(subfactor))
+            () -> surveyService.submitResponse(2L, responseData)
         );
     }
 

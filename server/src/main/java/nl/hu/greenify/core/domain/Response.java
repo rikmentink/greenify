@@ -30,17 +30,42 @@ public class Response {
     @OneToOne
     private Subfactor subfactor;
 
-    public Response(Subfactor subfactor) {
-        this.subfactor = subfactor;
-        this.score = 0;
-        this.facilitatingFactor = FacilitatingFactor.PENDING;
-        this.priority = Priority.PENDING;
-        if (subfactor != null) {
-            this.subfactor.setResponse(this);
-        }
+    protected Response() {
     }
 
-    protected Response() {
+    private Response(double score, String comment, FacilitatingFactor facilitatingFactor, Priority priority,
+            Subfactor subfactor) {
+        this.score = score;
+        this.comment = comment;
+        this.facilitatingFactor = facilitatingFactor;
+        this.priority = priority;
+        this.subfactor = subfactor;
+    }
+
+    public Response(Long id, double score, String comment, FacilitatingFactor facilitatingFactor, Priority priority,
+            Subfactor subfactor) {
+        this.id = id;
+        this.score = score;
+        this.comment = comment;
+        this.facilitatingFactor = facilitatingFactor;
+        this.priority = priority;
+        this.subfactor = subfactor;
+    }
+
+    public static Response createResponse(Subfactor subfactor) {
+        Response response = new Response(
+            0,
+            null,
+            FacilitatingFactor.PENDING,
+            Priority.PENDING,
+            subfactor
+        );
+
+        if (subfactor != null) {
+            response.subfactor.setResponse(response);
+        }
+
+        return response;
     }
 
     private void calculateScore() {
