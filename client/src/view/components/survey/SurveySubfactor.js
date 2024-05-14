@@ -38,8 +38,16 @@ export class SurveySubfactor extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.addEventListener('answer', event => {
-            console.log(`Captured answer event for subfactor #${this.subfactor.id}: ${event.detail.question} - ${event.detail.answer}`)
             this.response[event.detail.question] = event.detail.answer;
+
+            this.dispatchEvent(new CustomEvent('updatedResponse', {
+                detail: {
+                    subfactorId: this.subfactor.id,
+                    response: this.response,
+                },
+                bubbles: true,
+                composed: true,
+            }));
         });
     }
 

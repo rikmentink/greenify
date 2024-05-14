@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
 
 import { getSurvey } from '../../services/SurveyService.js';
+import { saveResponse } from '../../services/SurveyService.js';
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
@@ -45,6 +46,19 @@ export class Survey extends LitElement {
         })
 
         // TODO: Should redirect back if the survey id is not found
+    }
+
+    async connectedCallback() {
+        super.connectedCallback();
+        this.addEventListener('updatedResponse', async (event) => {
+            const { subfactorId, response } = event.detail;
+            await saveResponse(this.id, subfactorId, response);
+        });
+    }
+
+    async disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener('updatedResponse');
     }
 
     render() {

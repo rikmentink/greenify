@@ -72,7 +72,6 @@ export class SurveyQuestion extends LitElement {
     }
 
     _selectAnswer(event) {
-        console.log(`Answered question ${event.target.name} with ${event.target.value}.`);
         this.dispatchEvent(
             new CustomEvent('answer', {
                 detail: {
