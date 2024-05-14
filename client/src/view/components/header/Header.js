@@ -14,6 +14,8 @@ export class Header extends LitElement {
             margin: 0 40px 0 30px;
             font-size: 1.3rem;
             font-weight: 700;
+            max-width: 600px;
+            word-wrap: break-word;
         }
         
         .nav-head a {
@@ -96,7 +98,7 @@ export class Header extends LitElement {
                         <button class="toggler" @click=${this.handleOffcanvasToggle}>
                             <img src="icons/menu.png" width="20" height="20"/>
                         </button>
-                        <h1 class="nav-head"><a href="/">Greenify</a></h1>
+                        <h1 class="nav-head"><a href="/">GreenIT: Een praktische tool voor succesvolle implementatie van groene interventies in zorgomgevingen</a></h1>
                         <gi-navbar>
                         </gi-navbar>
                         <profile-button @click=${this.handleProfileButtonClick}></profile-button>
