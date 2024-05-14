@@ -9,9 +9,6 @@ import nl.hu.greenify.core.domain.enums.Priority;
 @Getter
 public class SubmitResponseDto {
     @NonNull
-    private Long surveyId;
-
-    @NonNull
     private Long subfactorId;
     
     @JsonProperty("facilitating-factor")
@@ -19,8 +16,7 @@ public class SubmitResponseDto {
     private Priority priority;
     private String comment;
     
-    public SubmitResponseDto(Long surveyId, Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
-        this.surveyId = surveyId;
+    public SubmitResponseDto(Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         this.subfactorId = subfactorId;
         this.facilitatingFactor = facilitatingFactor;
         this.priority = priority;
