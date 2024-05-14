@@ -76,7 +76,7 @@ public class SurveyServiceIntegrationTest {
     @DisplayName("The same survey should not be added to a person twice")
     public void addSurveyToPersonTwice() {
         surveyService.addSurveyToPerson(person.getId(), this.phaseId1);
-
+        System.out.println(person);
         assertThrows(
             IllegalArgumentException.class,
             () -> surveyService.addSurveyToPerson(person.getId(), this.phaseId1));
