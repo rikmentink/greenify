@@ -52,19 +52,15 @@ public class Response {
         this.subfactor = subfactor;
     }
 
-    public static Response createResponse(Subfactor subfactor) {
+    public static Response createResponse(Subfactor subfactor, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         Response response = new Response(
             0,
             null,
-            FacilitatingFactor.PENDING,
-            Priority.PENDING,
+            facilitatingFactor,
+            priority,
             subfactor
         );
-
-        if (subfactor != null) {
-            response.subfactor.setResponse(response);
-        }
-
+        response.subfactor.setResponse(response);
         return response;
     }
 
@@ -81,14 +77,5 @@ public class Response {
     public void setPriority(Priority priority) {
         this.priority = priority;
         this.calculateScore();
-    }
-
-    @Override
-    public String toString() {
-        return "Response{" +
-                "id=" + id +
-                ", score=" + score +
-                ", supportingFactor=" + this.subfactor.isSupportingFactor() +
-                '}';
     }
 }
