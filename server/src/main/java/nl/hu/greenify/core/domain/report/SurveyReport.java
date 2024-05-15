@@ -145,9 +145,12 @@ public class SurveyReport implements IReport {
         Map<String, Double> categoryScores = new HashMap<>();
 
         this.getAllCategories()
-                .forEach(category -> {
-                    double maxScore = this.getMaxScoreOfCategory(category);
-                    categoryScores.put(category.getName(), maxScore);
+                .collect(Collectors.groupingBy(Category::getName))
+                .forEach((name, categories) -> {
+                    double maxScore = categories.stream()
+                            .mapToDouble(this::getMaxScoreOfCategory)
+                            .sum();
+                    categoryScores.put(name, maxScore / categories.size());
                 });
 
         return categoryScores;
