@@ -2,7 +2,6 @@ package nl.hu.greenify.core.domain.report;
 
 import nl.hu.greenify.core.domain.Response;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 public interface IReport {
@@ -10,6 +9,6 @@ public interface IReport {
     double calculateAgreementScore();
     List<String> getActionPoints();
     List<String> getComments();
-    List<Response> getResponses();
+    List<Response> getAllResponses();
 
 }

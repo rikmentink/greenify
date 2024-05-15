@@ -171,8 +171,8 @@ public class SurveyReportTest {
         // Category "name2": (2 + 1) / 2 = 1.5
 
         assertAll(
-                () -> assertEquals(4.165, surveyReport.getAverageScoreOfCategoryByName("name")),
-                () -> assertEquals(1.5, surveyReport.getAverageScoreOfCategoryByName("name2"))
+                () -> assertEquals(4.165, surveyReport.calculateAverageScoreOfCategory("name")),
+                () -> assertEquals(1.5, surveyReport.calculateAverageScoreOfCategory("name2"))
         );
     }
 
@@ -193,9 +193,9 @@ public class SurveyReportTest {
         // Factor 2 subfactor 3: (2 + 1) / 2 = 1.5
 
         assertAll(
-                () -> assertEquals(6.0, surveyReport.getAverageScoreOfSubfactor(1, 1)),
-                () -> assertEquals(2.66, surveyReport.getAverageScoreOfSubfactor(1, 2)),
-                () -> assertEquals(1.5, surveyReport.getAverageScoreOfSubfactor(2, 3))
+                () -> assertEquals(6.0, surveyReport.calculateAverageScoreOfSubfactor(1, 1)),
+                () -> assertEquals(2.66, surveyReport.calculateAverageScoreOfSubfactor(1, 2)),
+                () -> assertEquals(1.5, surveyReport.calculateAverageScoreOfSubfactor(2, 3))
         );
     }
 }
