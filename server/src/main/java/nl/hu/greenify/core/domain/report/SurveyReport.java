@@ -137,6 +137,33 @@ public class SurveyReport implements IReport {
         return categoryScores;
     }
 
+    public Map<String, Double> calculateMaxPossibleScoresOfAllCategories() {
+        Map<String, Double> categoryScores = new HashMap<>();
+
+        this.getAllCategories()
+                .forEach(category -> {
+                    double maxScore = this.getMaxScoreOfCategory(category);
+                    categoryScores.put(category.getName(), maxScore);
+                });
+
+        return categoryScores;
+    }
+
+    public Map<String, Double> calculateMaxPossibleScoresOfEachSubfactorInCategory(String categoryName) {
+        Map<String, Double> subfactorScores = new HashMap<>();
+
+        this.getAllCategories()
+                .filter(category -> category.getName().equals(categoryName))
+                .flatMap(category -> category.getFactors().stream())
+                .forEach(factor -> factor.getSubfactors()
+                        .forEach(subfactor -> {
+                            double maxScore = this.calculateMaxResponseScore();
+                            subfactorScores.put(subfactor.getTitle(), maxScore);
+                        }));
+
+        return subfactorScores;
+    }
+
     public Map<String, Double> calculateAverageScoresOfEachSubfactorInCategory(String categoryName) {
         Map<String, Double> subfactorScores = new HashMap<>();
 
