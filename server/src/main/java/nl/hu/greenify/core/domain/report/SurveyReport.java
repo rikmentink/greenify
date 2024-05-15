@@ -58,7 +58,11 @@ public class SurveyReport implements IReport {
         double maxResponseScore = calculateMaxResponseScore();
         double result = 0;
 
-        result += this.getResponsesOfCategory(category).stream().mapToDouble(response -> maxResponseScore).sum();
+        result += category.getFactors().stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getResponse() != null) // Only consider subfactors with a response! TODO: confirm if this should also be done for "PENDING" responses.
+                .mapToDouble(subfactor -> maxResponseScore)
+                .sum();
 
         return result;
     }
