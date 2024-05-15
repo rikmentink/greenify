@@ -1,8 +1,6 @@
 package nl.hu.greenify.core.domain.report;
 
-import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.Setter;
 import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Response;
@@ -10,9 +8,12 @@ import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 public class SurveyReport implements IReport {
@@ -48,7 +49,7 @@ public class SurveyReport implements IReport {
         double maxResponseScore = calculateMaxResponseScore();
         double result = 0;
 
-        result += this.getResponses().stream().mapToDouble(response -> maxResponseScore).sum();
+        result += this.getAllResponses().stream().mapToDouble(response -> maxResponseScore).sum();
 
         return result;
     }
@@ -69,9 +70,8 @@ public class SurveyReport implements IReport {
     }
 
     @Override
-    public List<Response> getResponses() {
-        List<Response> responses = phase.getSurveys().stream()
-                .flatMap(survey -> survey.getCategories().stream())
+    public List<Response> getAllResponses() {
+        List<Response> responses = this.getAllCategories()
                 .flatMap(category -> category.getFactors().stream())
                 .flatMap(factor -> factor.getSubfactors().stream())
                 .map(Subfactor::getResponse)
@@ -91,12 +91,6 @@ public class SurveyReport implements IReport {
         return responses;
     }
 
-    public double getAverageScore(Category category) {
-        List<Response> responses = getResponsesOfCategory(category);
-        double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
-        return totalScore / responses.size();
-    }
-
     /**
      * This method is used to return the average score of a category by its name. The name is
      * used to identify the category to allow for an average score to be calculated across
@@ -104,23 +98,21 @@ public class SurveyReport implements IReport {
      *
      * @return The average score of a category across all surveys in the phase.
      */
-    public double getAverageScoreOfCategoryByName(String categoryName) {
-        List<Category> categories = phase.getSurveys().stream()
-                .flatMap(survey -> survey.getCategories().stream())
+    public double calculateAverageScoreOfCategory(String categoryName) {
+        List<Category> categories = this.getAllCategories()
                 .filter(category -> category.getName().equals(categoryName))
                 .toList();
 
-        double totalScore = 0;
-        for (Category category : categories) {
-            totalScore += getAverageScore(category);
-        }
+        double totalScore = this.getAllCategories()
+                .filter(category -> category.getName().equals(categoryName))
+                .mapToDouble(this::getAverageScore)
+                .sum();
 
         return totalScore / categories.size();
     }
 
-    public double getAverageScoreOfSubfactor(int factorNumber, int subfactorNumber) {
-        List<Response> responses = phase.getSurveys().stream()
-                .flatMap(survey -> survey.getCategories().stream())
+    public double calculateAverageScoreOfSubfactor(int factorNumber, int subfactorNumber) {
+        List<Response> responses = this.getAllCategories()
                 .flatMap(category -> category.getFactors().stream())
                 .filter(factor -> factor.getNumber() == factorNumber)
                 .flatMap(factor -> factor.getSubfactors().stream())
@@ -131,5 +123,45 @@ public class SurveyReport implements IReport {
 
         double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
         return totalScore / responses.size();
+    }
+
+    public Map<String, Double> calculateAverageScoresOfAllCategories() {
+        Map<String, Double> categoryScores = new HashMap<>();
+
+        this.getAllCategories()
+                .forEach(category -> {
+                    double averageScore = this.calculateAverageScoreOfCategory(category.getName());
+                    categoryScores.put(category.getName(), averageScore);
+                });
+
+        return categoryScores;
+    }
+
+    public Map<String, Double> calculateAverageScoresOfEachSubfactorInCategory(String categoryName) {
+        Map<String, Double> subfactorScores = new HashMap<>();
+
+        this.getAllCategories()
+                .filter(category -> category.getName().equals(categoryName))
+                .flatMap(category -> category.getFactors().stream())
+                .forEach(factor -> factor.getSubfactors()
+                        .forEach(subfactor -> {
+                            double averageScore = this.calculateAverageScoreOfSubfactor(factor.getNumber(), subfactor.getNumber());
+                            subfactorScores.put(subfactor.getTitle(), averageScore);
+                        }));
+
+        return subfactorScores;
+    }
+
+    public double getAverageScore(Category category) {
+        List<Response> responses = getResponsesOfCategory(category);
+        double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
+        return totalScore / responses.size();
+    }
+
+
+
+    private Stream<Category> getAllCategories() {
+        return this.getPhase().getSurveys().stream()
+                .flatMap(survey -> survey.getCategories().stream());
     }
 }
