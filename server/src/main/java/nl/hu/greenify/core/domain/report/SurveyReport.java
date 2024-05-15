@@ -16,11 +16,8 @@ import java.util.stream.Collectors;
 
 @Getter
 public class SurveyReport implements IReport {
-    @Setter
-    @OneToOne
-    private Phase phase;
+    private final Phase phase;
 
-    @ElementCollection
     private List<String> comments;
 
     public SurveyReport(Phase phase) {
