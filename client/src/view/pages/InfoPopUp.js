@@ -6,15 +6,36 @@ export class InfoPopUp extends LitElement {
       :host {
         display: block;
       }
+      
     `];
 
     constructor() {
         super();
     }
 
+    connectedCallback() {
+        super.connectedCallback();
+        this.showDialog();
+        this.requestUpdate();
+    }
+
+    showDialog() {
+        const dialog = this.shadowRoot.querySelector('dialog');
+        dialog.showModal();
+    }
+
+    hideDialog() {
+        const dialog = this.shadowRoot.querySelector('dialog');
+        dialog.close();
+    }
+
     render() {
         return html`
-            <generic-container .sections=${this.sections}></generic-container>
+            <dialog>
+                <generic-container .sections=${this.sections}></generic-container>
+                <button class="btn btn-primary" @click="${this.hideDialog}">Sluit</button>
+            </dialog>
+            <button @click="${this.showDialog}">Open</button>
         `;
     }
 
