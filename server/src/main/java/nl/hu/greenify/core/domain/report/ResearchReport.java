@@ -32,7 +32,7 @@ public class ResearchReport implements IReport {
     }
 
     @Override
-    public List<Response> getResponses() {
+    public List<Response> getAllResponses() {
         return null;
     }
 }
