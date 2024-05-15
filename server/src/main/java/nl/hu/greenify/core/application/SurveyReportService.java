@@ -33,8 +33,18 @@ public class SurveyReportService {
         return surveyReport.calculateAverageScoresOfEachSubfactorInCategory(categoryName);
     }
 
+    public Map<String, Double> getMaxPossibleScoresOfEachSubfactorInCategory(Long phaseId, String categoryName) {
+        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
+        return surveyReport.calculateMaxPossibleScoresOfEachSubfactorInCategory(categoryName);
+    }
+
     public Map<String, Double> getAverageScoresOfAllCategoriesForPhase(Long phaseId) {
         SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
         return surveyReport.calculateAverageScoresOfAllCategories();
+    }
+
+    public Map<String, Double> getMaxPossibleScoresOfAllCategoriesForPhase(Long phaseId) {
+        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
+        return surveyReport.calculateMaxPossibleScoresOfAllCategories();
     }
 }
