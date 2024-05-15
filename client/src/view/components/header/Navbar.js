@@ -131,7 +131,7 @@ class Navbar extends LitElement {
                     <img src="icons/close.png" width="20" height="20"/>
                 </button>
             </div>
-            <gi-navbar-item url="" label="Home"></gi-navbar-item>
+            <gi-navbar-item url="home" label="Home"></gi-navbar-item>
             <gi-navbar-item url="survey" label="Survey (temp)"></gi-navbar-item>
             <profile-container></profile-container>
         </nav>
