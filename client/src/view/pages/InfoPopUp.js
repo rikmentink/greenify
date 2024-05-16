@@ -15,9 +15,12 @@ export class InfoPopUp extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this.showDialog();
-        this.requestUpdate();
+        this.requestUpdate(); // This triggers the first update/render cycle
+        setTimeout(() => {
+            this.showDialog(); // Call showDialog() after a short delay
+        }, 0);
     }
+
 
     showDialog() {
         const dialog = this.shadowRoot.querySelector('dialog');
@@ -35,7 +38,6 @@ export class InfoPopUp extends LitElement {
                 <generic-container .sections=${this.sections}></generic-container>
                 <button class="btn btn-primary" @click="${this.hideDialog}">Sluit</button>
             </dialog>
-            <button @click="${this.showDialog}">Open</button>
         `;
     }
 

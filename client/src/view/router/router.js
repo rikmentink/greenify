@@ -60,10 +60,6 @@ router.setRoutes([
         path: import.meta.env.BASE_URL + 'createphase',
         component: 'gi-createphase',
     },
-    {
-        path: import.meta.env.BASE_URL + 'popup',
-        component: 'gi-info-popup',
-    },
 ]);
 
 export default router;
