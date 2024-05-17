@@ -1,5 +1,6 @@
 import { Router } from '@vaadin/router';
 
+import { Home } from '../pages/Home';
 import { Register } from '../pages/Register';
 import { Overview } from '../pages/Overview';
 import { Login } from '../pages/Login';
@@ -19,6 +20,14 @@ router.setRoutes([
         path: import.meta.env.BASE_URL + '',
         component: 'greenify-app',
         children: [
+            {
+                path: import.meta.env.BASE_URL + '', // For direct access to the base URL
+                component: 'gi-home',
+            },
+            {
+                path: import.meta.env.BASE_URL + 'home',
+                component: 'gi-home',
+            },
             {
                 path: import.meta.env.BASE_URL + 'login',
                 component: 'gi-login',
@@ -45,7 +54,6 @@ router.setRoutes([
                 path: import.meta.env.BASE_URL + 'toolReport',
                 component: 'gi-survey-result-report',
             },
-
         ]
     },
     {
