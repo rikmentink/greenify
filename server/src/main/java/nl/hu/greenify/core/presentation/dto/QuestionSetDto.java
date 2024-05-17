@@ -3,10 +3,12 @@ package nl.hu.greenify.core.presentation.dto;
 import java.util.List;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.factor.Factor;
 
+@Getter
 @EqualsAndHashCode
 public class QuestionSetDto {
     private Long surveyId;
