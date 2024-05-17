@@ -3,6 +3,7 @@ package nl.hu.greenify.core.application;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.report.SurveyReport;
 import nl.hu.greenify.core.presentation.dto.SurveyReport.CategoryScoresDto;
+import nl.hu.greenify.core.presentation.dto.SurveyReport.SubfactorScoresDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -64,6 +65,21 @@ public class SurveyReportService {
                     double maxScore = entry.getValue();
                     double averageScore = averageScores.get(categoryName);
                     return CategoryScoresDto.fromEntity(categoryName, maxScore, averageScore);
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<SubfactorScoresDto> getSubfactorScores(Long phaseId, String categoryName) {
+        Map<String, Double> maxScores = this.getMaxPossibleScoresOfEachSubfactorInCategory(phaseId, categoryName);
+        Map<String, Double> averageScores = this.getAverageScoresOfEachSubfactorInCategory(phaseId, categoryName);
+
+        // Convert the maps to a list of SubfactorScoresDto objects, matching each subfactor name with its max and average score.
+        return maxScores.entrySet().stream()
+                .map(entry -> {
+                    String subfactorName = entry.getKey();
+                    double maxScore = entry.getValue();
+                    double averageScore = averageScores.get(subfactorName);
+                    return SubfactorScoresDto.fromEntity(subfactorName, maxScore, averageScore);
                 })
                 .collect(Collectors.toList());
     }
