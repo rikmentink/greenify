@@ -7,6 +7,7 @@ export class InterventionUsersPanel extends LitElement {
             display: grid;
             grid-template-rows: auto 1fr; 
             gap: 20px; 
+            margin-bottom: 40px;
         }
         
         .inventation-box {
