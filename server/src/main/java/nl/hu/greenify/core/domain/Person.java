@@ -18,7 +18,6 @@ public class Person {
     private String firstName;
     private String lastName;
     private String email;
-    private Long surveyId;
 
     protected Person() {
     }
@@ -31,6 +30,10 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
     }
 
     private void validateInput(String value, String fieldName) {

@@ -10,19 +10,17 @@ import lombok.Getter;
 @Getter
 public class SurveyDto {
     private Long id;
-    private String name;
-    private String description;
-    private String phase;
+    private String phaseName;
+    private String personName;
 
-    public SurveyDto(Long id, String name, String description, String phase) {
+    public SurveyDto(Long id, String phaseName, String personName) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.phase = phase;
+        this.phaseName = phaseName;
+        this.personName = personName;
     }
 
     public static SurveyDto fromEntity(Survey survey) {
-        return new SurveyDto(survey.getId(), survey.getName(), survey.getDescription(), survey.getPhase().getName().toString());
+        return new SurveyDto(survey.getId(), survey.getPhase().getName().toString(), survey.getRespondent().getFullName());
     }
 
     public static List<SurveyDto> fromEntities(List<Survey> surveys) {

@@ -1,7 +1,6 @@
 package nl.hu.greenify.core.application;
 
 import java.util.List;
-import java.util.Objects;
 
 import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
@@ -54,34 +53,18 @@ public class SurveyService {
         return QuestionSetDto.fromEntity(survey, categoryId);
     }
 
-    public void addSurveyToPerson(Long personId, Long phaseId) {
-        Phase phase = interventionService.getPhaseById(phaseId);
-        Person person = personService.getPersonById(personId);
-
-        Survey newSurvey = Survey.createSurvey(phase, this.getActiveTemplate());
-
-        if (person.getSurveyId() != null) {
-            Survey personSurvey = this.getSurvey(person.getSurveyId());
-
-            if (Objects.equals(personSurvey.getPhaseId(), newSurvey.getPhaseId())) {
-                throw new IllegalArgumentException("Person already has this survey");
-            }
-        }
-
-        // Assign the new survey to the person
-        person.setSurveyId(newSurvey.getId());
-    }
-
     /**
      * Creates a new survey based on the given phase.
      *
-     * @param phaseId The ID of the phase to create the survey for.
+     * @param phaseId            The ID of the phase to create the survey for.
+     * @param respondentPersonId The ID of the Person object of the respondent.
      * @return The created survey.
      */
-    public Survey createSurvey(Long phaseId) {
+    public Survey createSurvey(Long phaseId, Long respondentPersonId) {
         Phase phase = interventionService.getPhaseById(phaseId);
+        Person person = personService.getPersonById(respondentPersonId);
 
-        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
+        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
         return surveyRepository.save(survey);
     }
 

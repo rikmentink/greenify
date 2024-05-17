@@ -53,7 +53,8 @@ public class SurveyController extends Controller {
 
     @PostMapping(consumes="application/json", produces="application/json")
     public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
-        SurveyDto survey = SurveyDto.fromEntity(this.surveyService.createSurvey(createSurveyDto.getPhaseId()));
+        SurveyDto survey = SurveyDto.fromEntity(
+                this.surveyService.createSurvey(createSurveyDto.getPhaseId(), createSurveyDto.getPersonId()));
         return this.createResponse(survey, HttpStatus.CREATED);
     }
 
