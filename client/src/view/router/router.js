@@ -9,6 +9,7 @@ import { Intervention } from '../pages/Intervention';
 import { Survey } from '../pages/Survey';
 import { SurveyResultReport } from '../pages/SurveyResultReport';
 import { CreatePhase } from '../pages/CreatePhase';
+import { InfoPopUp } from "../pages/InfoPopUp.js";
 
 export const router = new Router(document.getElementById('outlet'), {
     baseUrl: import.meta.env.BASE_URL
@@ -45,12 +46,12 @@ router.setRoutes([
             },
             {
                 // TODO: Use form data instead of parameter in the future.
-                path: import.meta.env.BASE_URL + 'survey',
+                path: import.meta.env.BASE_URL + 'tool',
                 component: 'gi-survey',
             },
             {
                 // TODO: Include a way to determine of which phase the survey report is
-                path: import.meta.env.BASE_URL + 'surveyReport',
+                path: import.meta.env.BASE_URL + 'toolReport',
                 component: 'gi-survey-result-report',
             },
         ]
@@ -66,7 +67,7 @@ router.setRoutes([
     {
         path: import.meta.env.BASE_URL + 'createphase',
         component: 'gi-createphase',
-    }
+    },
 ]);
 
 export default router;
