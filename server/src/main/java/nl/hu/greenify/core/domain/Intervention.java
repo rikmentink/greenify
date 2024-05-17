@@ -49,8 +49,8 @@ public class Intervention {
     protected Intervention() {
     }
 
-    public void addPhase(PhaseName phaseName) {
-        this.phases.add(new Phase(phaseName));
+    public void addPhase(Phase phase) {
+        this.phases.add(phase);
     }
 
     public void addParticipant(Person person) {

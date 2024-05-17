@@ -37,8 +37,11 @@ public class InterventionService {
         if(intervention == null) {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
+        
+        Phase phase = new Phase(phaseName);
+        phaseRepository.save(phase);
 
-        intervention.addPhase(phaseName);
+        intervention.addPhase(phase);
         return interventionRepository.save(intervention);
     }
 
