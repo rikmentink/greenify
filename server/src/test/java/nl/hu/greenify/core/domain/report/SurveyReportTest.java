@@ -60,9 +60,12 @@ public class SurveyReportTest {
         // Phase creation to create surveys for based on the template:
         this.phase = new Phase(PhaseName.INITIATION);
 
+        // Person creation to set as the respondant:
+        Person person = new Person("John", "Doe", "you@example.com");
+
         // Survey creations based on templates:
-        Survey.createSurvey(phase, Template.copyOf(template));
-        Survey.createSurvey(phase, Template.copyOf(template));
+        Survey.createSurvey(phase, Template.copyOf(template), person);
+        Survey.createSurvey(phase, Template.copyOf(template), person);
 
         // Prepare subfactors that can be used to provide responses on
         setupProvideResponseSurvey1();

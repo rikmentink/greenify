@@ -96,6 +96,10 @@ public class Survey {
         return this.respondent;
     }
 
+    public void addCategory(Category category) {
+        this.categories.add(category);
+    }
+
     private static List<Category> cloneCategories(List<Category> templateCategories) {
         return templateCategories.stream()
                 .map(Category::copyOf)
