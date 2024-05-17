@@ -2,9 +2,14 @@ package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.report.SurveyReport;
+import nl.hu.greenify.core.presentation.dto.SurveyReport.CategoryScoresDto;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+@Service
 public class SurveyReportService {
 
     private final InterventionService interventionService;
@@ -46,5 +51,20 @@ public class SurveyReportService {
     public Map<String, Double> getMaxPossibleScoresOfAllCategoriesForPhase(Long phaseId) {
         SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
         return surveyReport.calculateMaxPossibleScoresOfAllCategories();
+    }
+
+    public List<CategoryScoresDto> getCategoryScores(Long phaseId) {
+        Map<String, Double> maxScores = this.getMaxPossibleScoresOfAllCategoriesForPhase(phaseId);
+        Map<String, Double> averageScores = this.getAverageScoresOfAllCategoriesForPhase(phaseId);
+
+        // Convert the maps to a list of CategoryScoresDto objects, matching each category name with its max and average score.
+        return maxScores.entrySet().stream()
+                .map(entry -> {
+                    String categoryName = entry.getKey();
+                    double maxScore = entry.getValue();
+                    double averageScore = averageScores.get(categoryName);
+                    return CategoryScoresDto.fromEntity(categoryName, maxScore, averageScore);
+                })
+                .collect(Collectors.toList());
     }
 }
