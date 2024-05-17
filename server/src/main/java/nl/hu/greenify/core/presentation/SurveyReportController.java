@@ -2,6 +2,7 @@ package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.SurveyReportService;
 import nl.hu.greenify.core.presentation.dto.SurveyReport.CategoryScoresDto;
+import nl.hu.greenify.core.presentation.dto.SurveyReport.SubfactorScoresDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,5 +24,11 @@ public class SurveyReportController extends Controller {
     public ResponseEntity<?> getAverageScoresOfCategoryForPhase(@PathVariable("phaseId") Long phaseId) {
         List<CategoryScoresDto> categoryScores = this.surveyReportService.getCategoryScores(phaseId);
         return this.createResponse(categoryScores);
+    }
+
+    @GetMapping(value="/{phaseId}/subfactor-scores/{categoryName}", produces="application/json")
+    public ResponseEntity<?> getAverageScoreOfSubfactorsInCategoryForPhase(@PathVariable("phaseId") Long phaseId, @PathVariable("categoryName") String categoryName) {
+        List<SubfactorScoresDto> subfactorScores = this.surveyReportService.getSubfactorScores(phaseId, categoryName);
+        return this.createResponse(subfactorScores);
     }
 }
