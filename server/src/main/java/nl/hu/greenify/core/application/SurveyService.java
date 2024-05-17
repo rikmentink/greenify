@@ -5,6 +5,8 @@ import java.util.List;
 import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
 
+import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
 import nl.hu.greenify.core.data.SurveyRepository;
@@ -61,11 +63,15 @@ public class SurveyService {
      * @return The created survey.
      */
     public Survey createSurvey(Long phaseId, Long respondentPersonId) {
-        Phase phase = interventionService.getPhaseById(phaseId);
-        Person person = personService.getPersonById(respondentPersonId);
+        try {
+            Person person = personService.getPersonById(respondentPersonId);
+            Phase phase = interventionService.getPhaseById(phaseId);
 
-        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
-        return surveyRepository.save(survey);
+            Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+            return surveyRepository.save(survey);
+        } catch (PhaseNotFoundException | PersonNotFoundException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     /**

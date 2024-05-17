@@ -1,10 +1,9 @@
 package nl.hu.greenify.core.application;
 
+import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -15,20 +14,12 @@ public class PersonService {
     }
 
     public Person getPersonById(Long id) {
-        Optional<Person> person = personRepository.findById(id);
-        if(person.isEmpty()) {
-            throw new IllegalArgumentException("Person with id " + id + " does not exist");
-        } else {
-            return person.get();
-        }
+        return personRepository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException("Person with id " + id + " does not exist"));
     }
 
     public Person getPersonByEmail(String email) {
-           Optional<Person> person = personRepository.findByEmail(email);
-            if(person.isEmpty()) {
-                throw new IllegalArgumentException("Person with email " + email + " does not exist");
-            } else {
-                return person.get();
-            }
+        return personRepository.findByEmail(email)
+                .orElseThrow(() -> new PersonNotFoundException("Person with email " + email + " does not exist"));
     }
 }
