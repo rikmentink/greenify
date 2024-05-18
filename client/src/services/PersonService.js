@@ -10,7 +10,6 @@ async function handleErrorMessages(response) {
 async function getPersonByEmail(email) {
     const response = await fetch(`${API_URL}/person/email/${email}`, {
         method: 'GET',
-        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json'
         }
