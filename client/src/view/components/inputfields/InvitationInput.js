@@ -1,4 +1,7 @@
 import {css, html, LitElement} from "lit";
+import {Task} from "@lit/task";
+import {getPersonByEmail} from "../../../services/PersonService.js";
+import {getSurvey} from "../../../services/SurveyService.js";
 
 export class InvitationInput extends LitElement {
     static styles = css`
@@ -27,6 +30,11 @@ export class InvitationInput extends LitElement {
       }
     `;
 
+    static properties = {
+        email: { type: String },
+        person: { type: Object }
+    }
+
     constructor() {
         super();
     }
@@ -36,13 +44,19 @@ export class InvitationInput extends LitElement {
 
         const emailInput = this.shadowRoot.querySelector('#email-input');
         const email = emailInput.value;
+        this.email = email;
 
         if (email === "" || !email.includes('@')) {
             this.handleException("Please enter a valid email address.");
             return;
         }
 
-        console.log("Email:", email);
+        this.data = new Task(this, {
+            task: async ([email]) => getPersonByEmail(email),
+            args: () => [this.person]
+        })
+
+        console.log("Data:", this.data);
     }
 
     handleException(message) {
