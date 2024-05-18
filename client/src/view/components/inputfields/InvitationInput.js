@@ -1,7 +1,7 @@
 import {css, html, LitElement} from "lit";
-import {Task} from "@lit/task";
 import {getPersonByEmail} from "../../../services/PersonService.js";
 import {getSurvey} from "../../../services/SurveyService.js";
+import {Task} from "@lit/task";
 
 export class InvitationInput extends LitElement {
     static styles = css`
@@ -37,6 +37,8 @@ export class InvitationInput extends LitElement {
 
     constructor() {
         super();
+        this.email = '';
+        this.person = {};
     }
 
     handleNewInvite(event) {
@@ -53,10 +55,20 @@ export class InvitationInput extends LitElement {
 
         this.data = new Task(this, {
             task: async ([email]) => getPersonByEmail(email),
-            args: () => [this.person]
-        })
-
-        console.log("Data:", this.data);
+            args: () => [this.email],
+            onComplete: (result) => {
+                this.person = result;
+                this.dispatchEvent(new CustomEvent('person-fetched', {
+                    detail: { person: this.person },
+                    bubbles: true,
+                    composed: true
+                }));
+            },
+            onError: (error) => {
+                this.handleException("Failed to fetch person data.");
+                console.error("Error fetching person data:", error);
+            }
+        });
     }
 
     handleException(message) {
