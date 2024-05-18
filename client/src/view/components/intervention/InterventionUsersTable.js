@@ -83,6 +83,21 @@ export class InterventionUsersTable extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
+        this.addEventListener('person-fetched', this.handlePersonFetched);
+    }
+
+    disconnectedCallback() {
+        this.removeEventListener('person-fetched', this.handlePersonFetched);
+        super.disconnectedCallback();
+    }
+
+    handlePersonFetched(event) {
+        const person = event.detail.person;
+        console.log('Person data received:', person);
+        // Here you can add the person to your userData and filteredUserData
+        this.userData = [...this.userData, person];
+        this.filteredUserData = [...this.userData];
+        this.requestUpdate();
     }
 
     renderUsers() {
