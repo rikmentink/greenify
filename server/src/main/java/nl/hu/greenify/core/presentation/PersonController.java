@@ -23,5 +23,10 @@ public class PersonController extends Controller {
         return this.createResponse(personDto);
     }
 
+    @GetMapping(value="/email/{email}", produces="application/json")
+    public ResponseEntity<?> getPersonByEmail(@PathVariable("email") String email) {
+        PersonDto personDto = PersonDto.fromEntity(this.personService.getPersonByEmail(email));
+        return this.createResponse(personDto);
+    }
 
 }
