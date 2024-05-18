@@ -20,3 +20,5 @@ async function getPersonByEmail(email) {
 
     return response.json();
 }
+
+export { getPersonByEmail };
