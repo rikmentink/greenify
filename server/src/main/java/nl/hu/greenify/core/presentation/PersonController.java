@@ -22,4 +22,6 @@ public class PersonController extends Controller {
         PersonDto personDto = PersonDto.fromEntity(this.personService.getPersonById(id));
         return this.createResponse(personDto);
     }
+
+
 }
