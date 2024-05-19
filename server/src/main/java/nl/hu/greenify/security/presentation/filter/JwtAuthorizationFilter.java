@@ -63,7 +63,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             return null;
         }
 
-        AccountCredentials principal = new AccountCredentials(email);
+        AccountCredentials principal = new AccountCredentials(email, authorities);
         return new UsernamePasswordAuthenticationToken(principal, null, authorities);
     }
 }
