@@ -1,5 +1,6 @@
 package nl.hu.greenify.security.config;
 
+import nl.hu.greenify.security.application.AccountService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,7 +31,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
-    private static final String LOGIN_PATH = "/login";
+    private static final String LOGIN_PATH = "/account/login";
     private static final String REGISTER_PATH = "/account/register";
 
     private Integer jwtExpirationInMs = 864000000;
@@ -47,7 +48,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain filterChain(final HttpSecurity http, final AuthenticationManager authenticationManager) throws Exception {
+    protected SecurityFilterChain filterChain(final HttpSecurity http, final AccountService accountService, final AuthenticationManager authenticationManager) throws Exception {
         http.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(r -> r
@@ -63,7 +64,7 @@ public class SecurityConfig {
                         LOGIN_PATH,
                         jwtSecret,
                         jwtExpirationInMs,
-                        authenticationManager
+                        accountService
                 ), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(new JwtAuthorizationFilter(jwtSecret, authenticationManager))
                 .sessionManagement(s -> s.sessionCreationPolicy(STATELESS));
