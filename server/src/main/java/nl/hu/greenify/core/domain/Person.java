@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,6 +20,9 @@ public class Person {
     private String firstName;
     private String lastName;
     private String email;
+
+    @OneToMany
+    private List<Survey> surveys;
 
     protected Person() {
     }

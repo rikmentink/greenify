@@ -9,6 +9,7 @@ import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
+import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.factor.Factor;
@@ -22,13 +23,16 @@ import jakarta.transaction.Transactional;
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
+    private final ResponseRepository responseRepository;
     private final InterventionService interventionService;
     private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
-            InterventionService interventionService, PersonService personService) {
+            ResponseRepository responseRepository, InterventionService interventionService,
+            PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
+        this.responseRepository = responseRepository;
         this.interventionService = interventionService;
         this.personService = personService;
     }
@@ -87,6 +91,7 @@ public class SurveyService {
         Response response = survey.saveResponse(responseDto.getSubfactorId(), responseDto.getFacilitatingFactor(),
                 responseDto.getPriority(), responseDto.getComment());
 
+        responseRepository.save(response);
         surveyRepository.save(survey);
         return response;
     }

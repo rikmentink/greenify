@@ -30,7 +30,7 @@ public class Survey {
     @OneToMany
     private List<Category> categories;
 
-    @OneToOne
+    @ManyToOne
     private Person respondent;
 
     protected Survey() {
@@ -60,6 +60,8 @@ public class Survey {
             throw new IllegalArgumentException("A phase cannot be empty or null.");
         if (activeTemplate == null || activeTemplate.getCategories() == null)
             throw new IllegalArgumentException("A template cannot be empty or null.");
+
+        // TODO: If a user already has a survey for this phase, throw an exception.
         
         return new Survey(
             phase,
