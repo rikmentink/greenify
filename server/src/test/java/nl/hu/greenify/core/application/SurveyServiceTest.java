@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
+import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 
@@ -191,9 +192,11 @@ public class SurveyServiceTest {
 
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
+        var responseRepository = mock(ResponseRepository.class);
         this.interventionService = mock(InterventionService.class);
         this.personService = mock(PersonService.class);
-        this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService, personService);
+        this.surveyService = new SurveyService(surveyRepository, templateRepository, responseRepository,
+                interventionService, personService);
 
         when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(this.survey));
         when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
