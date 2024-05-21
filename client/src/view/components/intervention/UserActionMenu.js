@@ -81,11 +81,6 @@ export class UserActionMenu extends LitElement {
         }
     }
 
-    handleInvite() {
-        // TODO: Implement handle new invite request
-        return null;
-    }
-
     handleRemoveUser() {
         // TODO: Implement handle remove user request
         return null;
@@ -103,7 +98,6 @@ export class UserActionMenu extends LitElement {
             <button class="dots-btn" @click="${this.handleMenu}"></button>
             <div class="usermenu">
                 <ul class="${this.menuVisible ? 'show-menu' : ''}">
-                    <li><button @click="${this.handleInvite()}">Opnieuw uitnodigen</button></li>
                     <li><button style="color: red;" @click="${this.handleRemoveUser()}">Verwijderen</button></li>
                 </ul>
             </div>
