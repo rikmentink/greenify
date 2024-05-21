@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -27,6 +28,13 @@ public class Person {
     protected Person() {
     }
 
+    public Person(String firstName, String lastName, String email, List<Survey> surveys) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.surveys = surveys;
+    }
+
     public Person(String firstName, String lastName, String email) {
         validateInput(firstName, "First name");
         validateInput(lastName, "Last name");
@@ -35,6 +43,7 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.surveys = new ArrayList<>();
     }
 
     public String getFullName() {
