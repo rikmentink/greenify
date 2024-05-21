@@ -20,4 +20,8 @@ public class PersonDto {
     public static PersonDto fromEntity(Person person) {
         return new PersonDto(person.getId(), person.getFirstName(), person.getLastName(), person.getEmail());
     }
+
+    public static Person toEntity(PersonDto personDto) {
+        return new Person(personDto.getFirstName(), personDto.getLastName(), personDto.getEmail());
+    }
 }
