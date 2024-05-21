@@ -67,11 +67,14 @@ public class SurveyReportServiceTest {
         this.phase = new Phase(PhaseName.INITIATION);
 
         // Person creation to set as the respondant:
-        Person person = new Person("John", "Doe", "you@example.com");
+        Person person1 = mock(Person.class);
+        Person person2 = mock(Person.class);
+        when(person1.hasSurvey(phase)).thenReturn(false);
+        when(person2.hasSurvey(phase)).thenReturn(false);
 
         // Survey creations based on templates:
-        Survey.createSurvey(phase, Template.copyOf(template), person);
-        Survey.createSurvey(phase, Template.copyOf(template), person);
+        Survey.createSurvey(phase, Template.copyOf(template), person1);
+        Survey.createSurvey(phase, Template.copyOf(template), person2);
 
         // Prepare subfactors that can be used to provide responses on
         setupProvideResponseSurvey1();
