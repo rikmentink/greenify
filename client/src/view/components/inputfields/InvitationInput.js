@@ -1,7 +1,5 @@
 import {css, html, LitElement} from "lit";
 import {getPersonByEmail} from "../../../services/PersonService.js";
-import {getSurvey} from "../../../services/SurveyService.js";
-import {Task} from "@lit/task";
 
 export class InvitationInput extends LitElement {
     static styles = css`
@@ -45,7 +43,7 @@ export class InvitationInput extends LitElement {
         event.preventDefault();
 
         const emailInput = this.shadowRoot.querySelector('#email-input');
-        const email = emailInput.value;
+        const email = emailInput.value.trim();
         this.email = email;
 
         if (email === "" || !email.includes('@')) {
@@ -53,22 +51,23 @@ export class InvitationInput extends LitElement {
             return;
         }
 
-        this.data = new Task(this, {
-            task: async ([email]) => getPersonByEmail(email),
-            args: () => [this.email],
-            onComplete: (result) => {
-                this.person = result;
-                this.dispatchEvent(new CustomEvent('person-fetched', {
-                    detail: { person: this.person },
-                    bubbles: true,
-                    composed: true
-                }));
-            },
-            onError: (error) => {
-                this.handleException("Failed to fetch person data.");
-                console.error("Error fetching person data:", error);
+        console.log(`Inviting person with email: ${email}`);
+        this.fetchPerson(email);
+    }
+
+    async fetchPerson(email) {
+        try {
+            this.person = await getPersonByEmail(email);
+            this.dispatchEvent(new CustomEvent('person-fetched', {
+                detail: { person: this.person },
+                bubbles: true,
+                composed: true
             }
-        });
+            ));
+        } catch (error) {
+            this.handleException("Failed to fetch person data.");
+            console.error("Error fetching person data:", error);
+        }
     }
 
     handleException(message) {
