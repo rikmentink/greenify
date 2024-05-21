@@ -20,9 +20,10 @@ public class PersonController extends Controller {
         return this.createResponse(personDto);
     }
 
-    @GetMapping(value="/email", produces="application/json")
-    public ResponseEntity<?> getPersonByEmail(@RequestParam String email) {
+    @GetMapping(value="/email/{email}", produces="application/json")
+    public ResponseEntity<?> getPersonByEmail(@PathVariable String email) {
         PersonDto personDto = PersonDto.fromEntity(this.personService.getPersonByEmail(email));
+        System.out.println("Fetched person's email: " + personDto.getEmail());
         return this.createResponse(personDto);
     }
 
@@ -30,6 +31,11 @@ public class PersonController extends Controller {
     public ResponseEntity<?> createPerson(@RequestBody PersonDto personDto) {
         PersonDto createdPerson = PersonDto.fromEntity(this.personService.createPerson(PersonDto.toEntity(personDto)));
         return this.createResponse(createdPerson);
+    }
+
+    @GetMapping(value="/all", produces="application/json")
+    public ResponseEntity<?> getAllPersons() {
+        return this.createResponse(PersonDto.fromEntities(this.personService.getAllPersons()));
     }
 
 }
