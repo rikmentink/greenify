@@ -20,7 +20,6 @@ export class GreenifyApp extends LitElement {
     return html`
       <main id="main-content">
         <slot></slot>
-        <gi-info-popup></gi-info-popup>
       </main>
     `
   }
