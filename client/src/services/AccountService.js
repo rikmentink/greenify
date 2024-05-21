@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api'; // for now
+const API_URL = import.meta.env.VITE_API_URL;
 
 async function handleErrorMessages(response) {
     if (!response.ok) {
