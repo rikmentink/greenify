@@ -3,7 +3,8 @@
 		"_postman_id": "1632e110-84da-4257-985f-dc022ff21d3d",
 		"name": "Greenify",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "18969589"
+		"_exporter_id": "18969589",
+		"_collection_link": "https://mantrix.postman.co/workspace/Team-Workspace~48943850-33b7-4547-8def-ababdd39b1be/collection/18969589-1632e110-84da-4257-985f-dc022ff21d3d?action=share&source=collection_link&creator=18969589"
 	},
 	"item": [
 		{
@@ -19,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"email\": \"demo@demo.com\",\"password\": \"admin\"\n}",
+							"raw": "{\n    \"email\": \"demo@demo.com\",\n    \"password\": \"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -45,7 +46,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"email\": \"demo@demo.com\",\"password\": \"admin\",\"firstName\": \"Rik\",\"lastName\": \"Mentink\"\n}",
+							"raw": "{\n    \"email\": \"demo@demo.com\",\n    \"password\": \"admin\",\n    \"firstName\": \"Rik\",\n    \"lastName\": \"Mentink\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,7 +97,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"email\": \"demo@demo.com\",\"role\": \"ROLE_MANAGER\"\n}",
+							"raw": "{\n    \"email\": \"demo@demo.com\",\n    \"role\": \"ROLE_MANAGER\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -123,7 +124,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"email\": \"demo@demo.com\",\"role\": \"ROLE_MANAGER\"\n}",
+							"raw": "{\n    \"email\": \"demo@demo.com\",\n    \"role\": \"ROLE_MANAGER\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -204,7 +205,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"name\": \"Intervention\",\"description\": \"Description\"\n}",
+							"raw": "{\n    \"adminId\": 1,\n    \"name\": \"Intervention\",\n    \"description\": \"Description\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -212,19 +213,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/intervention/create?adminId=1",
+							"raw": "{{BASE_URL}}/intervention",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"intervention",
-								"create"
-							],
-							"query": [
-								{
-									"key": "adminId",
-									"value": "1"
-								}
+								"intervention"
 							]
 						}
 					},
@@ -262,7 +256,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"phaseName\": \"INITIATION\"\n}",
+							"raw": "{\n    \"phaseName\": \"INITIATION\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -270,14 +264,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/intervention/phase/:id",
+							"raw": "{{BASE_URL}}/intervention/:id/phase",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"intervention",
-								"phase",
-								":id"
+								":id",
+								"phase"
 							],
 							"variable": [
 								{
@@ -319,19 +313,10 @@
 					"response": []
 				},
 				{
-					"name": "Create Survey",
+					"name": "Get All Surveys",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\"phaseId\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
 							"raw": "{{BASE_URL}}/survey",
 							"host": [
@@ -378,6 +363,85 @@
 									"key": "id",
 									"value": "1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Survey",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"phaseId\": 1,\n    \"personId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/survey",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"survey"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Response",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"subfactorId\": 4,\n    \"facilitating-factor\": 1,\n    \"priority\": 3,\n    \"comment\": \"Not my cup of tea\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/survey/:id/response",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"survey",
+								":id",
+								"response"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Default Template",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/survey/template/default",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"survey",
+								"template",
+								"default"
 							]
 						}
 					},
