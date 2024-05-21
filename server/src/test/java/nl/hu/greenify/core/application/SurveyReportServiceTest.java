@@ -66,9 +66,15 @@ public class SurveyReportServiceTest {
         // Phase creation to create surveys for based on the template:
         this.phase = new Phase(PhaseName.INITIATION);
 
+        // Person creation to set as the respondant:
+        Person person1 = mock(Person.class);
+        Person person2 = mock(Person.class);
+        when(person1.hasSurvey(phase)).thenReturn(false);
+        when(person2.hasSurvey(phase)).thenReturn(false);
+
         // Survey creations based on templates:
-        Survey.createSurvey(phase, Template.copyOf(template));
-        Survey.createSurvey(phase, Template.copyOf(template));
+        Survey.createSurvey(phase, Template.copyOf(template), person1);
+        Survey.createSurvey(phase, Template.copyOf(template), person2);
 
         // Prepare subfactors that can be used to provide responses on
         setupProvideResponseSurvey1();
@@ -160,6 +166,38 @@ public class SurveyReportServiceTest {
 
         // When:
         Map<String, Double> actualScores = surveyReportService.getAverageScoresOfEachSubfactorInCategory(1L, "name");
+
+        // Then:
+        assertEquals(expectedScores, actualScores);
+    }
+
+    @Test
+    @DisplayName("Test obtaining maximum possible scores of ALL categories within a phase across multiple surveys")
+    public void testMaxPossibleScoresOfAllCategoriesForPhase() {
+        // Given:
+        Map<String, Double> expectedScores = new HashMap<>();
+        // Each category has 2 subfactors with each response having a max possible score of 10.0
+        expectedScores.put("name", 20.0);
+        expectedScores.put("name2", 20.0);
+
+        // When:
+        Map<String, Double> actualScores = surveyReportService.getMaxPossibleScoresOfAllCategoriesForPhase(1L);
+
+        // Then:
+        assertEquals(expectedScores, actualScores);
+    }
+
+    @Test
+    @DisplayName("Test obtaining maximum possisble scores of ALL subfactors in a category within a phase across multiple surveys")
+    public void testMaxPossibleScoresOfEachSubfactorInCategory() {
+        // Given:
+        Map<String, Double> expectedScores = new HashMap<>();
+        // Each subfactor has a max possible score of 10.0 (5.0 x 2.0)
+        expectedScores.put("title", 10.0);
+        expectedScores.put("title2", 10.0);
+
+        // When:
+        Map<String, Double> actualScores = surveyReportService.getMaxPossibleScoresOfEachSubfactorInCategory(1L, "name");
 
         // Then:
         assertEquals(expectedScores, actualScores);

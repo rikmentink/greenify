@@ -9,7 +9,7 @@ async function handleErrorMessages(response) {
 
 
 async function login (email, password) {
-    const response = await fetch(`${API_URL}/login`, {
+    const response = await fetch(`${API_URL}/account/login`, {
         method: 'POST',
         body: JSON.stringify({ email, password })
     });

@@ -1,13 +1,15 @@
 package nl.hu.greenify.core.application;
 
 import java.util.List;
-import java.util.Objects;
 
 import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
 
+import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
+import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.factor.Factor;
@@ -21,13 +23,16 @@ import jakarta.transaction.Transactional;
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
+    private final ResponseRepository responseRepository;
     private final InterventionService interventionService;
     private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
-            InterventionService interventionService, PersonService personService) {
+            ResponseRepository responseRepository, InterventionService interventionService,
+            PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
+        this.responseRepository = responseRepository;
         this.interventionService = interventionService;
         this.personService = personService;
     }
@@ -54,35 +59,23 @@ public class SurveyService {
         return QuestionSetDto.fromEntity(survey, categoryId);
     }
 
-    public void addSurveyToPerson(Long personId, Long phaseId) {
-        Phase phase = interventionService.getPhaseById(phaseId);
-        Person person = personService.getPersonById(personId);
-
-        Survey newSurvey = Survey.createSurvey(phase, this.getActiveTemplate());
-
-        if (person.getSurveyId() != null) {
-            Survey personSurvey = this.getSurvey(person.getSurveyId());
-
-            if (Objects.equals(personSurvey.getPhaseId(), newSurvey.getPhaseId())) {
-                throw new IllegalArgumentException("Person already has this survey");
-            }
-        }
-
-        // Assign the new survey to the person
-        person.setSurveyId(newSurvey.getId());
-    }
-
     /**
      * Creates a new survey based on the given phase.
      *
-     * @param phaseId The ID of the phase to create the survey for.
+     * @param phaseId            The ID of the phase to create the survey for.
+     * @param respondentPersonId The ID of the Person object of the respondent.
      * @return The created survey.
      */
-    public Survey createSurvey(Long phaseId) {
-        Phase phase = interventionService.getPhaseById(phaseId);
+    public Survey createSurvey(Long phaseId, Long respondentPersonId) {
+        try {
+            Person person = personService.getPersonById(respondentPersonId);
+            Phase phase = interventionService.getPhaseById(phaseId);
 
-        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate());
-        return surveyRepository.save(survey);
+            Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+            return surveyRepository.save(survey);
+        } catch (PhaseNotFoundException | PersonNotFoundException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     /**
@@ -98,6 +91,7 @@ public class SurveyService {
         Response response = survey.saveResponse(responseDto.getSubfactorId(), responseDto.getFacilitatingFactor(),
                 responseDto.getPriority(), responseDto.getComment());
 
+        responseRepository.save(response);
         surveyRepository.save(survey);
         return response;
     }

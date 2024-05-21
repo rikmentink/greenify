@@ -49,8 +49,11 @@ public class Intervention {
     protected Intervention() {
     }
 
-    public void addPhase(PhaseName phaseName) {
-        this.phases.add(new Phase(phaseName));
+    public void addPhase(Phase phase) {
+        if (phase == null) {
+            throw new IllegalArgumentException("An intervention should not be able to add an invalid phase");
+        }
+        this.phases.add(phase);
     }
 
     public void addParticipant(Person person) {

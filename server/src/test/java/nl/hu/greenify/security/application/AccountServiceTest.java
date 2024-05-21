@@ -6,13 +6,17 @@ import nl.hu.greenify.security.application.exceptions.AccountAlreadyExistsExcept
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
+import nl.hu.greenify.security.domain.AccountCredentials;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +29,7 @@ public class AccountServiceTest {
     private final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
     private final AccountService accountService = new AccountService(accountRepository, passwordEncoder, greenifyRepository);
     private Person person;
+    private final List<AccountRoles> roles = List.of(AccountRoles.ROLE_USER);
 
     @BeforeEach
     void setup() {
@@ -87,6 +92,40 @@ public class AccountServiceTest {
 
         assertThrows(AccountAlreadyExistsException.class, () -> accountService.register("johndoe@gmail.com",
                 "password", "John", "doe"));
+    }
+
+    @Test
+    @DisplayName("login an account")
+    void loginToAnAccount(){
+        Account account = Account.createAccount("johndoe@gmail.com", "password", person);
+        when(accountRepository.findByEmail("johndoe@gmail.com")).thenReturn(Optional.of(account));
+        when(passwordEncoder.matches("password", account.getPassword())).thenReturn(true);
+
+        // Login to the account
+        AccountCredentials accountCredentials = accountService.login(account.getUsername(), account.getPassword());
+
+        // Verify if the account has been logged in with the correct roles
+        List<String> profileRoles = accountCredentials.authorities()
+                .stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        List<String> expectedRoles = roles
+                .stream()
+                .map(AccountRoles::toString)
+                .toList();
+
+        assertEquals(account.getUsername(), accountCredentials.email());
+        assertEquals(expectedRoles, profileRoles);
+    }
+
+    @Test
+    @DisplayName("login an account throws exception when user not found")
+    void loginToAnAccountThrowsExceptionWhenUserNotFound() {
+        when(accountRepository.findByEmail("johndoe@gmail.com")).thenReturn(Optional.empty());
+        when(passwordEncoder.matches("password", "password")).thenReturn(true);
+
+        // Login to the account, should throw an exception because the user is not found
+        assertThrows(BadCredentialsException.class, () -> accountService.login("johndoe@gmail.com", "password"));
     }
 
     @Test

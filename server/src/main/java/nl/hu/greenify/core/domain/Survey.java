@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.ToString;
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
@@ -17,7 +19,7 @@ import nl.hu.greenify.core.domain.factor.Subfactor;
 @Entity
 @Getter
 @ToString
-public class Survey extends Template {
+public class Survey {
     @Id
     @GeneratedValue
     private Long id;
@@ -25,37 +27,46 @@ public class Survey extends Template {
     @ManyToOne
     private Phase phase;
 
+    @OneToMany
+    private List<Category> categories;
+
+    @ManyToOne
+    private Person respondent;
+
     protected Survey() {
     }
 
-    private Survey(String name, String description, Integer version, List<Category> categories, Phase phase) {
-        super(name, description, version, categories);
+    private Survey(Phase phase, List<Category> categories, Person respondent) {
         this.phase = phase;
+        this.categories = categories;
+        this.respondent = respondent;
         if (phase != null) {
             phase.addSurvey(this);
         }
     }
 
-    public Survey(Long id, String name, String description, Integer version, List<Category> categories, Phase phase) {
-        super(id, name, description, version, categories);
+    public Survey(Long id, Phase phase, List<Category> categories, Person respondent) {
+        this.id = id;
         this.phase = phase;
+        this.categories = categories;
+        this.respondent = respondent;
         if (phase != null) {
             phase.addSurvey(this);
         }
     }
 
-    public static Survey createSurvey(Phase phase, Template activeTemplate) {
+    public static Survey createSurvey(Phase phase, Template activeTemplate, Person respondent) {
         if (phase == null || phase.getName() == null)
             throw new IllegalArgumentException("A phase cannot be empty or null.");
         if (activeTemplate == null || activeTemplate.getCategories() == null)
             throw new IllegalArgumentException("A template cannot be empty or null.");
+        if (respondent == null || respondent.hasSurvey(phase))
+            throw new IllegalArgumentException("A respondent cannot be empty or null or have a survey for this phase.");
         
         return new Survey(
-            activeTemplate.getName(),
-            activeTemplate.getDescription(),
-            activeTemplate.getVersion(),
+            phase,
             cloneCategories(activeTemplate.getCategories()),
-            phase
+            respondent
         );
     }
 
@@ -81,6 +92,14 @@ public class Survey extends Template {
 
         subfactor.setResponse(response);
         return response;
+    }
+
+    public Person getRespondent() {
+        return this.respondent;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 
     private static List<Category> cloneCategories(List<Category> templateCategories) {

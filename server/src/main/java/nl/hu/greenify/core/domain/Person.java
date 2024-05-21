@@ -1,5 +1,8 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,9 +21,18 @@ public class Person {
     private String firstName;
     private String lastName;
     private String email;
-    private Long surveyId;
+
+    @OneToMany
+    private List<Survey> surveys;
 
     protected Person() {
+    }
+
+    public Person(String firstName, String lastName, String email, List<Survey> surveys) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.surveys = surveys;
     }
 
     public Person(String firstName, String lastName, String email) {
@@ -31,6 +43,15 @@ public class Person {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.surveys = new ArrayList<>();
+    }
+
+    public String getFullName() {
+        return this.firstName + " " + this.lastName;
+    }
+
+    public boolean hasSurvey(Phase phase) {
+        return this.surveys.stream().anyMatch(survey -> survey.getPhase().equals(phase));
     }
 
     private void validateInput(String value, String fieldName) {

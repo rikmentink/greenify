@@ -25,7 +25,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
+import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
+import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 
@@ -39,6 +42,7 @@ public class SurveyServiceTest {
     private Factor factor;
     private Category category;
     private Survey survey;
+    private Phase phase;
 
     private SurveyService surveyService;
     private SurveyRepository surveyRepository;
@@ -103,30 +107,13 @@ public class SurveyServiceTest {
         );
     }
 
-    @Test
-    @DisplayName("A Survey should be added to a person")
-    public void addSurveyToPerson() {
-        surveyService.addSurveyToPerson(1L, 1L);
-        verify(personService).getPersonById(1L);
-    }
-
-    @Test
-    @DisplayName("The same survey should not be added to a person twice")
-    public void addSurveyToPersonTwice() {
-        surveyService.addSurveyToPerson(1L, 1L);
-        person.setSurveyId(1L);
-        assertThrows(
-            IllegalArgumentException.class,
-            () -> surveyService.addSurveyToPerson(1L, 1L)
-        );
-    }
-
-    @Test
-    @DisplayName("A survey should only be added twice if the phases are different")
-    public void addSurveyToPersonTwiceDifferentPhase() {
-        surveyService.addSurveyToPerson(1L, 1L);
-        surveyService.addSurveyToPerson(1L, 2L);
-    }
+    /**
+     * TODO: createSurvey tests
+     * 
+     * - when creating a survey, it should be saved in the repository
+     * - when creating a survey with an invalid phase id, it should throw an exception
+     * - when creating a survey with an invalid person id, it should throw an exception
+     */
 
     /**
      * createSurvey tests
@@ -134,10 +121,33 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
-        surveyService.createSurvey(1L);
+        surveyService.createSurvey(1L, 1L);
         verify(surveyRepository).save(any(Survey.class));
     }
 
+    @Test
+    @DisplayName("When creating a survey with an invalid phase id, it should throw an exception")
+    public void createSurveyShouldThrowExceptionPhase() {
+        when(interventionService.getPhaseById(2L)).thenThrow(new PhaseNotFoundException(""));
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> surveyService.createSurvey(2L, 1L)
+        );
+    }
+
+    @Test
+    @DisplayName("When creating a survey with an invalid person id, it should throw an exception")
+    public void createSurveyShouldThrowExceptionPerson() {
+        when(personService.getPersonById(2L)).thenThrow(new PersonNotFoundException(""));
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> surveyService.createSurvey(1L, 2L)
+        );
+    }
+
+    /**
+     * submitResponse tests
+     */
     @Test
     @DisplayName("When submitting a response, it should be saved in the repository")
     public void submitResponseShouldSave() {    
@@ -170,24 +180,26 @@ public class SurveyServiceTest {
     @BeforeEach
     public void setup() {
         this.person = new Person("John", "Doe", "johndoe@gmail.com");
+        this.phase = new Phase(PhaseName.INITIATION);
         this.intervention = new Intervention("Intervention", "Description", new Person("Admin", "Admin", "admin@gmail.com"));
         this.intervention.addParticipant(person);
-        this.intervention.addPhase(PhaseName.INITIATION);
+        this.intervention.addPhase(phase);
 
         this.subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
         this.factor = new Factor(1L, "Factor", 1, List.of(subfactor));
         this.category = new Category(1L, "Category", "", "", List.of(factor));
-        this.survey = new Survey(SURVEY_ID, "Survey", "Description", 1, List.of(this.category), new Phase(PhaseName.INITIATION));
+        this.survey = new Survey(SURVEY_ID, this.phase, List.of(this.category), this.person);
 
         this.surveyRepository = mock(SurveyRepository.class);
         this.templateRepository = mock(TemplateRepository.class);
+        var responseRepository = mock(ResponseRepository.class);
         this.interventionService = mock(InterventionService.class);
         this.personService = mock(PersonService.class);
-        this.surveyService = new SurveyService(surveyRepository, templateRepository, interventionService, personService);
+        this.surveyService = new SurveyService(surveyRepository, templateRepository, responseRepository,
+                interventionService, personService);
 
         when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(this.survey));
         when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
-        when(interventionService.getPhaseById(2L)).thenReturn(new Phase(PhaseName.EXECUTION));
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
         when(personService.getPersonById(1L)).thenReturn(person);
     }

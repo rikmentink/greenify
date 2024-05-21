@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.domain;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +27,7 @@ public class PhaseTest {
     @DisplayName("A phase should be able to add a survey")
     @Test
     void phaseAddSurvey() {
-        phase.addSurvey(new Survey(1L, "Survey", "Survey description", 1, null, phase));
+        Person person = new Person();
+        phase.addSurvey(new Survey(1L, phase, new ArrayList<>(), person));
     }
 }

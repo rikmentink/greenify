@@ -11,10 +11,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class SurveyReportTest {
     private Phase phase;
@@ -60,9 +64,15 @@ public class SurveyReportTest {
         // Phase creation to create surveys for based on the template:
         this.phase = new Phase(PhaseName.INITIATION);
 
+        // Person creation to set as the respondant:
+        Person person1 = mock(Person.class);
+        Person person2 = mock(Person.class);
+        when(person1.hasSurvey(phase)).thenReturn(false);
+        when(person2.hasSurvey(phase)).thenReturn(false);
+
         // Survey creations based on templates:
-        Survey.createSurvey(phase, Template.copyOf(template));
-        Survey.createSurvey(phase, Template.copyOf(template));
+        Survey.createSurvey(phase, Template.copyOf(template), person1);
+        Survey.createSurvey(phase, Template.copyOf(template), person2);
 
         // Prepare subfactors that can be used to provide responses on
         setupProvideResponseSurvey1();
@@ -197,6 +207,50 @@ public class SurveyReportTest {
                 () -> assertEquals(2.66, surveyReport.calculateAverageScoreOfSubfactor(1, 2)),
                 () -> assertEquals(1.5, surveyReport.calculateAverageScoreOfSubfactor(2, 3))
         );
+    }
+
+    @Test
+    @DisplayName("Test obtaining maximum possible scores of ALL categories within a phase across multiple surveys, but 1 category varies in response amount")
+    public void testMaxPossibleScoresOfAllCategoriesForPhase() {
+        // Given:
+        Response response = Response.createResponse(this.subfactor1Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
+        Response response2 = Response.createResponse(this.subfactor2Survey1, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, "");
+        Response response3 = Response.createResponse(this.subfactor3Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
+        Response response4 = Response.createResponse(this.subfactor4Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
+        Response response5 = Response.createResponse(this.subfactor1Survey2, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
+        Response response6 = Response.createResponse(this.subfactor2Survey2, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, "");
+        // Intentionally leaving out response7 and response8 to test the case where not all subfactors have responses
+
+
+        Map<String, Double> expectedScores = new HashMap<>();
+        // Each category has 2 subfactors with each response having a max possible score of 10.0
+        expectedScores.put("name", 20.0);
+        expectedScores.put("name2", 10.0);
+
+        // When:
+        SurveyReport surveyReport = new SurveyReport(phase);
+        Map<String, Double> actualScores = surveyReport.calculateMaxPossibleScoresOfAllCategories();
+
+        // Then:
+        assertEquals(expectedScores, actualScores);
+    }
+
+    @Test
+    @DisplayName("Test obtaining maximum possisble scores of ALL subfactors in a category within a phase across multiple surveys")
+    public void testMaxPossibleScoresOfEachSubfactorInCategory() {
+        // Given:
+        // Non-response dependant. Therefor, these will not be provided.
+        Map<String, Double> expectedScores = new HashMap<>();
+        // Each subfactor has a max possible score of 10.0 (5.0 x 2.0)
+        expectedScores.put("title", 10.0);
+        expectedScores.put("title2", 10.0);
+
+        // When:
+        SurveyReport surveyReport = new SurveyReport(phase);
+        Map<String, Double> actualScores = surveyReport.calculateMaxPossibleScoresOfEachSubfactorInCategory("name");
+
+        // Then:
+        assertEquals(expectedScores, actualScores);
     }
 }
 

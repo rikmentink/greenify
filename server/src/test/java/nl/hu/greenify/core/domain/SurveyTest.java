@@ -23,12 +23,13 @@ public class SurveyTest {
     private Category category;
     private Factor factor;
     private Subfactor subfactor;
+    private Person person;
     
     @Test
     @DisplayName("When creating a survey, it should return a survey with the given phase.")
     public void createSurveyShouldReturnSurvey() {
         Phase phase = this.mockPhase();
-        Survey survey = Survey.createSurvey(phase, this.mockTemplate());    
+        Survey survey = Survey.createSurvey(phase, this.mockTemplate(), person);    
         assertEquals(survey.getPhase(), phase);
     }
 
@@ -36,7 +37,7 @@ public class SurveyTest {
     @DisplayName("When creating a survey, it should return a survey with the given template.")
     public void createSurveyShouldReturnSurveyWithTemplate() {
         Template template = this.mockTemplate();
-        Survey survey = Survey.createSurvey(this.mockPhase(), this.mockTemplate());
+        Survey survey = Survey.createSurvey(this.mockPhase(), this.mockTemplate(), person);
         assertEquals(survey.getCategories(), template.getCategories());
     }
 
@@ -45,7 +46,7 @@ public class SurveyTest {
     public void createSurveyShouldThrowException() {
         assertThrows(
             IllegalArgumentException.class, 
-            () -> Survey.createSurvey(null, this.mockTemplate())
+            () -> Survey.createSurvey(null, this.mockTemplate(), person)
         );
     }
 
@@ -54,7 +55,28 @@ public class SurveyTest {
     public void createSurveyShouldThrowExceptionWithInvalidTemplate() {
         assertThrows(
             IllegalArgumentException.class, 
-            () -> Survey.createSurvey(this.mockPhase(), null)
+            () -> Survey.createSurvey(this.mockPhase(), null, person)
+        );
+    }
+
+    @Test
+    @DisplayName("When creating a survey with an invalid respondent, it should throw an exception.")
+    public void createSurveyShouldThrowExceptionWithInvalidRespondent() {
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> Survey.createSurvey(this.mockPhase(), this.mockTemplate(), null)
+        );
+    }
+
+    @Test
+    @DisplayName("When creating a second survey in a phase for a respondent, it should throw an exception.")
+    public void createSurveyShouldThrowExceptionWithExistingSurvey() {
+        Phase phase = this.mockPhase();
+        Person person = mock(Person.class);
+        when(person.hasSurvey(phase)).thenReturn(true);
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> Survey.createSurvey(phase, this.mockTemplate(), person)
         );
     }
 
@@ -78,7 +100,8 @@ public class SurveyTest {
     
     @BeforeEach
     void setup() {
-        this.survey = new Survey(1L, "", "", 0, new ArrayList<>(), new Phase(PhaseName.INITIATION));
+        this.person = new Person("John", "Doe", "you@example.com");
+        this.survey = new Survey(1L, new Phase(PhaseName.INITIATION), new ArrayList<>(), this.person);
         this.category = new Category(1L, "", "", "", new ArrayList<>());
         this.factor = new Factor(1L, "", 0, new ArrayList<>());
         this.subfactor = new Subfactor(1L, "subfactor", 1, true);
