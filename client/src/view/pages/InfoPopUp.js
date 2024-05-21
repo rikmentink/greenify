@@ -7,6 +7,16 @@ export class InfoPopUp extends LitElement {
         display: block;
       }
       
+      .btn {
+        color: DarkGreen;
+        background-color: white;
+        border: 2px solid #4CBB17;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      
     `];
 
     constructor() {
