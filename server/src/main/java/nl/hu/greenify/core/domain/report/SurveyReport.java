@@ -58,7 +58,11 @@ public class SurveyReport implements IReport {
         double maxResponseScore = calculateMaxResponseScore();
         double result = 0;
 
-        result += this.getResponsesOfCategory(category).stream().mapToDouble(response -> maxResponseScore).sum();
+        result += category.getFactors().stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getResponse() != null) // Only consider subfactors with a response! TODO: confirm if this should also be done for "PENDING" responses.
+                .mapToDouble(subfactor -> maxResponseScore)
+                .sum();
 
         return result;
     }
@@ -135,6 +139,36 @@ public class SurveyReport implements IReport {
                 });
 
         return categoryScores;
+    }
+
+    public Map<String, Double> calculateMaxPossibleScoresOfAllCategories() {
+        Map<String, Double> categoryScores = new HashMap<>();
+
+        this.getAllCategories()
+                .collect(Collectors.groupingBy(Category::getName))
+                .forEach((name, categories) -> {
+                    double maxScore = categories.stream()
+                            .mapToDouble(this::getMaxScoreOfCategory)
+                            .sum();
+                    categoryScores.put(name, maxScore / categories.size());
+                });
+
+        return categoryScores;
+    }
+
+    public Map<String, Double> calculateMaxPossibleScoresOfEachSubfactorInCategory(String categoryName) {
+        Map<String, Double> subfactorScores = new HashMap<>();
+
+        this.getAllCategories()
+                .filter(category -> category.getName().equals(categoryName))
+                .flatMap(category -> category.getFactors().stream())
+                .forEach(factor -> factor.getSubfactors()
+                        .forEach(subfactor -> {
+                            double maxScore = this.calculateMaxResponseScore();
+                            subfactorScores.put(subfactor.getTitle(), maxScore);
+                        }));
+
+        return subfactorScores;
     }
 
     public Map<String, Double> calculateAverageScoresOfEachSubfactorInCategory(String categoryName) {
