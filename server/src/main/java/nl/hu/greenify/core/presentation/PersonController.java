@@ -26,4 +26,10 @@ public class PersonController extends Controller {
         return this.createResponse(personDto);
     }
 
+    @PostMapping(consumes="application/json", produces="application/json")
+    public ResponseEntity<?> createPerson(@RequestBody PersonDto personDto) {
+        PersonDto createdPerson = PersonDto.fromEntity(this.personService.createPerson(PersonDto.toEntity(personDto)));
+        return this.createResponse(createdPerson);
+    }
+
 }
