@@ -31,4 +31,8 @@ public class PersonService {
                 return person.get();
             }
     }
+
+    public Person createPerson(Person person) {
+        return personRepository.save(person);
+    }
 }
