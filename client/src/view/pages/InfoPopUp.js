@@ -15,9 +15,9 @@ export class InfoPopUp extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this.requestUpdate(); // This triggers the first update/render cycle
+        this.requestUpdate();
         setTimeout(() => {
-            this.showDialog(); // Call showDialog() after a short delay
+            this.showDialog();
         }, 0);
     }
 
