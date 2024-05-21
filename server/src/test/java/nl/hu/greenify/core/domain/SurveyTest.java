@@ -69,6 +69,18 @@ public class SurveyTest {
     }
 
     @Test
+    @DisplayName("When creating a second survey in a phase for a respondent, it should throw an exception.")
+    public void createSurveyShouldThrowExceptionWithExistingSurvey() {
+        Phase phase = this.mockPhase();
+        Person person = mock(Person.class);
+        when(person.hasSurvey(phase)).thenReturn(true);
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> Survey.createSurvey(phase, this.mockTemplate(), person)
+        );
+    }
+
+    @Test
     @DisplayName("When saving a response, it should add the response to the subfactor.")
     public void saveResponseShouldAddResponseToSubfactor() {
         var subfactorId = 1L;

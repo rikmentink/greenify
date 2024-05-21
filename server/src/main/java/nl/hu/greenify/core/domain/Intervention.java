@@ -50,6 +50,9 @@ public class Intervention {
     }
 
     public void addPhase(Phase phase) {
+        if (phase == null) {
+            throw new IllegalArgumentException("An intervention should not be able to add an invalid phase");
+        }
         this.phases.add(phase);
     }
 

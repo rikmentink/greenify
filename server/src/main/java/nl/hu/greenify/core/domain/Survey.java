@@ -60,8 +60,8 @@ public class Survey {
             throw new IllegalArgumentException("A phase cannot be empty or null.");
         if (activeTemplate == null || activeTemplate.getCategories() == null)
             throw new IllegalArgumentException("A template cannot be empty or null.");
-
-        // TODO: If a user already has a survey for this phase, throw an exception.
+        if (respondent == null || respondent.hasSurvey(phase))
+            throw new IllegalArgumentException("A respondent cannot be empty or null or have a survey for this phase.");
         
         return new Survey(
             phase,

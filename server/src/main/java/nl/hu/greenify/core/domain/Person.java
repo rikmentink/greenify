@@ -41,6 +41,10 @@ public class Person {
         return this.firstName + " " + this.lastName;
     }
 
+    public boolean hasSurvey(Phase phase) {
+        return this.surveys.stream().anyMatch(survey -> survey.getPhase().equals(phase));
+    }
+
     private void validateInput(String value, String fieldName) {
         if (value == null || value.isEmpty()) {
             throw new IllegalArgumentException(fieldName + " cannot be null or empty");

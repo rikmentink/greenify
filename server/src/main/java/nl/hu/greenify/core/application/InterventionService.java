@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.application;
 
 import nl.hu.greenify.core.application.exceptions.InterventionNotFoundException;
+import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.data.InterventionRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
@@ -25,11 +26,12 @@ public class InterventionService {
     }
 
     public Intervention createIntervention(String name, String description, Long adminId) {
-        Person person = personService.getPersonById(adminId);
-        if(person == null) {
-            throw new IllegalArgumentException("Person with id " + adminId + " does not exist");
+        try {
+            Person person = personService.getPersonById(adminId);
+            return interventionRepository.save(new Intervention(name, description, person));
+        } catch (PersonNotFoundException e) {
+            throw new IllegalArgumentException("Intervention should have an existing admin");
         }
-        return interventionRepository.save(new Intervention(name, description, person));
     }
 
     public Intervention addPhase(Long id, PhaseName phaseName) {
