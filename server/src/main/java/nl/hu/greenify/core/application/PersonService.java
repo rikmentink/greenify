@@ -4,6 +4,7 @@ import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,12 +25,19 @@ public class PersonService {
     }
 
     public Person getPersonByEmail(String email) {
-           Optional<Person> person = personRepository.findByEmail(email);
-            if(person.isEmpty()) {
-                throw new IllegalArgumentException("Person with email " + email + " does not exist");
-            } else {
-                return person.get();
-            }
+        System.out.println("Fetching person by email: " + email);
+        Optional<Person> person = personRepository.findByEmail(email);
+        System.out.println("Fetched person: " + person);
+        if(person.isEmpty()) {
+            throw new IllegalArgumentException("Person with email " + email + " does not exist");
+        } else {
+            return person.get();
+        }
+    }
+
+
+    public List<Person> getAllPersons() {
+        return personRepository.findAll();
     }
 
     public Person createPerson(Person person) {
