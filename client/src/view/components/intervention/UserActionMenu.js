@@ -89,7 +89,6 @@ export class UserActionMenu extends LitElement {
     closeOtherMenus() {
         const menus = document.querySelectorAll('ul');
         menus.forEach(menu => {
-            console.log(menu)
         });
     }
 
