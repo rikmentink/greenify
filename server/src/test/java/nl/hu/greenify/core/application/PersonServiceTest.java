@@ -25,7 +25,6 @@ public class PersonServiceTest {
     @BeforeEach
     void setUp() {
         person = new Person("firstName", "lastName", "firstname@gmail.com");
-        person.setId(1L);
         person2 = new Person("firstName2", "lastName2", "firstname@gmail.com");
         person3 = new Person("firstName3", "lastName3", "person3@gmai.com");
         when(personRepository.save(person)).thenReturn(person);
