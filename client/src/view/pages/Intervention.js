@@ -9,22 +9,7 @@ export class Intervention extends LitElement {
     constructor() {
         super();
         this.interventionId = 1;
-        this.userData = [
-            {
-                name: "John Doe",
-                email: "john.doe@gmail.com",
-                progress: true,
-                lastOnline: "2024-5-5",
-                userId: 1
-            },
-            {
-                name: "Henk Jan",
-                email: "henk.jan@gmail.com",
-                progress: false,
-                lastOnline: "2024-3-5",
-                userId: 2
-            }
-        ];
+        this.userData = [];
     }
 
     connectedCallback() {
@@ -34,6 +19,12 @@ export class Intervention extends LitElement {
 
     handlePersonFetched(event) {
         const person = event.detail.person;
+
+        if(this.userData.some(user => user.userId === person.id)) {
+            alert("User is already added to this intervention.");
+            return;
+        }
+
         this.userData = [
             ...this.userData,
             {
