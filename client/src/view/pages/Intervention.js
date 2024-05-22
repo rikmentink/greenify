@@ -34,8 +34,6 @@ export class Intervention extends LitElement {
 
     handlePersonFetched(event) {
         const person = event.detail.person;
-        console.log('Person data received:', person);
-        // Add the new person to userData
         this.userData = [
             ...this.userData,
             {
