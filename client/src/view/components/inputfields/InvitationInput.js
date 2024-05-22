@@ -50,8 +50,6 @@ export class InvitationInput extends LitElement {
             this.handleException("Please enter a valid email address.");
             return;
         }
-
-        console.log(`Inviting person with email: ${email}`);
         this.fetchPerson(email);
     }
 
@@ -66,7 +64,6 @@ export class InvitationInput extends LitElement {
             ));
         } catch (error) {
             this.handleException("Failed to fetch person data.");
-            console.error("Error fetching person data:", error);
         }
     }
 
