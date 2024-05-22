@@ -2,12 +2,12 @@ package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.MailService;
 import nl.hu.greenify.core.presentation.dto.MailDto;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class MailController {
+@RequestMapping("/mail")
+public class MailController extends Controller {
 
     private final MailService mailService;
 
@@ -15,8 +15,10 @@ public class MailController {
         this.mailService = mailService;
     }
 
-    @PostMapping("/send-email")
-    public void sendEmail(@RequestBody MailDto emailDTO) {
-        mailService.sendSimpleMessage(emailDTO.getTo(), emailDTO.getSubject(), emailDTO.getBody());
+    @PostMapping(consumes="application/json", produces="application/json")
+    public ResponseEntity<?> sendEmail(@RequestBody MailDto emailDTO) {
+        return this.createResponse(
+            this.mailService.sendSimpleMessage(emailDTO.getTo(), emailDTO.getSubject(), emailDTO.getBody())
+        );
     }
 }
