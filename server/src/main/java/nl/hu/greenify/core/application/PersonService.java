@@ -30,6 +30,10 @@ public class PersonService {
     }
 
     public Person createPerson(Person person) {
+        if(personRepository.findByEmail(person.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Person with email " + person.getEmail() + " already exists");
+        }
+
         return personRepository.save(person);
     }
 }
