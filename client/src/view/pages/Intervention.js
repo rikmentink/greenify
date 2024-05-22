@@ -25,6 +25,7 @@ export class Intervention extends LitElement {
             return;
         }
 
+        alert("User added to intervention. An email has been sent to the user.")
         this.userData = [
             ...this.userData,
             {
