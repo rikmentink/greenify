@@ -66,6 +66,7 @@ export class InterventionUsersTable extends LitElement {
     updated(changedProperties) {
         if (changedProperties.has('userData')) {
             this.filteredUserData = [...this.userData];
+            this.requestUpdate();
         }
     }
 
