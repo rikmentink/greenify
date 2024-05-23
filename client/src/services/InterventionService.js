@@ -19,3 +19,5 @@ async function getInterventionById(id) {
 
     return response.json();
 }
+
+export { getInterventionById };
