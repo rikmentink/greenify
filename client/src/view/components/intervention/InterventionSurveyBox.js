@@ -203,7 +203,7 @@ export class InterventionSurveyBox extends LitElement {
         return html`
             <div class="title-container">
                 <h2>Vragenlijsten</h2>
-                <a class="start-fase-btn" href="/createphase/${this.id}">Nieuwe fase starten</a>
+                <a class="start-fase-btn" href="/createphase">Nieuwe fase starten</a>
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}
