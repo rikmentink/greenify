@@ -117,17 +117,6 @@ public class SurveyServiceIntegrationTest {
         );
     }
 
-    /**
-     * TODO: createSurvey tests
-     *
-     * - when creating a survey, it should be saved in the repository
-     * - when creating a survey with an invalid phase id, it should throw an exception
-     * - when creating a survey with an invalid person id, it should throw an exception
-     */
-
-    /**
-     * createSurvey tests
-     */
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
