@@ -59,7 +59,7 @@ public class PersonServiceTest {
     @DisplayName("Getting a person by id should be possible")
     @Test
     void getPersonById() {
-        assertDoesNotThrow(() -> personService.getPersonById(person.getId()));
+        assertDoesNotThrow(() -> personService.getPersonById(1L));
     }
 
     @DisplayName("Getting a person by id that does not exist should throw an exception")
