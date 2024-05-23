@@ -4,7 +4,7 @@ import '../components/overview/CategoryBox.js';
 export class Overview extends LitElement {
     static styles = [css`
       p, h1, h3, em {
-        color: Black;
+        color: black;
       }
 
       .grid-container {
@@ -18,7 +18,7 @@ export class Overview extends LitElement {
 
       .fase, .voortgang {
         margin-top: 0;
-        margin-left: 10px; 
+        margin-left: 10px;
       }
 
       .content {
@@ -42,7 +42,7 @@ export class Overview extends LitElement {
 
       hr.divider {
         margin-top: 25px;
-        border-color: #d4d4d4;
+        border-color: #f8f8f8;
         margin-left: 20px;
         min-height: 150px;
         flex-grow: 1;
@@ -50,27 +50,46 @@ export class Overview extends LitElement {
       }
     `];
 
-    static properties = {}
+    static properties = {
+        survey: {type: Object},
+    };
 
     constructor() {
         super();
+        this.id = 1;
+        this.categoryId = 1;
+        this.name = "Category 1";
+        this.description =;
+        this.questions = [];
+        this.data = new Task(this, {
+            task: async ([id, page, pageSize]) => getSurvey(id, categoryId, name, description, questions),
+            args: () => [this.id, this.categoryId, this.name, this.description, this.questions]
+        })
+
     }
+
+    connectedCallback() {
+        super.connectedCallback();
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+    }
+
 
     render() {
         return html`
             <div class="content">
                 <div class="title-desc">
-                    <h1>Vragenlijst Naam</h1>
-                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <h1>${this.survey.name}</h1>
+                    <p class="description">${this.survey.description}</p>
                 </div>
                 <hr class="divider">
                 <div>
                     <h3 class="algemeneinfo">Algemene Informatie</h3>
                     <div class="grid-container">
                         <em>Fase</em>
-                        <p class="fase">fase</p>
+                        <p class="fase">${this.survey.phase}</p>
                         <em>Voortgang</em>
                         <p class="voortgang">beantwoorden vragen</p>
                     </div>
@@ -78,10 +97,10 @@ export class Overview extends LitElement {
             </div>
             <h1>Categorieën</h1>
 
-            <greenify-categorybox></greenify-categorybox>
-            <greenify-categorybox></greenify-categorybox>
-
+            ${this.survey.categories.map(category => html`
+                <greenify-categorybox .category=${category}></greenify-categorybox>`)}
         `;
     }
 }
-window.customElements.define('gi-overview', Overview);
+
+customElements.define('gi-overview', Overview);

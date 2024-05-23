@@ -2,7 +2,20 @@ import { html, css, LitElement } from 'lit';
 
 export class Button extends LitElement {
     static styles = css`
-        
+      .greenify-button {
+        background-color: #0099FF;
+        border: 2px solid #fdfdfd;
+        border-radius: 5px;
+        color: #ffffff;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        width: 77vw;
+        max-width: 400px;
+        min-height: 50px;
+      }
     `;
 
     static get properties() {

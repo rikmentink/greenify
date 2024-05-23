@@ -68,6 +68,10 @@ router.setRoutes([
         path: import.meta.env.BASE_URL + 'createphase',
         component: 'gi-createphase',
     },
+    {
+        path: import.meta.env.BASE_URL + 'category',
+        component: 'gi-category',
+    }
 ]);
 
 export default router;
