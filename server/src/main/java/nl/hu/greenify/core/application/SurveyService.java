@@ -9,6 +9,7 @@ import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
+import nl.hu.greenify.core.data.CategoryRepository;
 import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
@@ -24,15 +25,17 @@ public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
     private final ResponseRepository responseRepository;
+    private final CategoryRepository categoryRepository;
     private final InterventionService interventionService;
     private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
-            ResponseRepository responseRepository, InterventionService interventionService,
-            PersonService personService) {
+            ResponseRepository responseRepository, CategoryRepository categoryRepository,
+            InterventionService interventionService, PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
         this.responseRepository = responseRepository;
+        this.categoryRepository = categoryRepository;
         this.interventionService = interventionService;
         this.personService = personService;
     }
@@ -72,6 +75,7 @@ public class SurveyService {
             Phase phase = interventionService.getPhaseById(phaseId);
 
             Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+            survey.getCategories().forEach(this::saveCategory);
             personService.savePerson(person);
             return surveyRepository.save(survey);
         } catch (PhaseNotFoundException | PersonNotFoundException e) {
@@ -100,6 +104,10 @@ public class SurveyService {
     public Template createDefaultTemplate() {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();
+    }
+
+    private Category saveCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     /**
