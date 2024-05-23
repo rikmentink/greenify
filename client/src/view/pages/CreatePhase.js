@@ -79,6 +79,9 @@ export class CreatePhase extends LitElement {
     constructor() {
         super();
         this.interventionId = 0;
+        this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
+        this.interventionName = this.intervention.name; // Fetch the name of the intervention
+        console.log(this.interventionName); // Log the intervention data to the console
     }
 
     // Render the component
@@ -86,7 +89,7 @@ export class CreatePhase extends LitElement {
         return html`
             <h1>Fase Creëren</h1>
             <div class="title-container">
-                <h1>Interventie Naam</h1>
+                <h1>${this.interventionName}</h1>
             </div>
             <div class="desc-container">
                 <p class="description">🛈 Per fase wordt er een vragenlijst beschikbaar gesteld voor alle toegevoegde gebruikers.</p>
