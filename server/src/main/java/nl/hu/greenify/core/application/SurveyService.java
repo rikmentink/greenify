@@ -72,6 +72,7 @@ public class SurveyService {
             Phase phase = interventionService.getPhaseById(phaseId);
 
             Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+            personService.savePerson(person);
             return surveyRepository.save(survey);
         } catch (PhaseNotFoundException | PersonNotFoundException e) {
             throw new IllegalArgumentException(e.getMessage());

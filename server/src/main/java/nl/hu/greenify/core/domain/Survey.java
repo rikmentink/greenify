@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.ToString;
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
@@ -25,6 +25,7 @@ public class Survey {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "phase_id")
     private Phase phase;
 
     @OneToMany
@@ -50,9 +51,6 @@ public class Survey {
         this.phase = phase;
         this.categories = categories;
         this.respondent = respondent;
-        if (phase != null) {
-            phase.addSurvey(this);
-        }
     }
 
     public static Survey createSurvey(Phase phase, Template activeTemplate, Person respondent) {
@@ -63,11 +61,14 @@ public class Survey {
         if (respondent == null || respondent.hasSurvey(phase))
             throw new IllegalArgumentException("A respondent cannot be empty or null or have a survey for this phase.");
         
-        return new Survey(
+        Survey survey = new Survey(
             phase,
             cloneCategories(activeTemplate.getCategories()),
             respondent
         );
+        respondent.addSurvey(survey);
+        phase.addSurvey(survey);
+        return survey;
     }
 
     public Long getPhaseId() {

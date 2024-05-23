@@ -22,4 +22,8 @@ public class PersonService {
         return personRepository.findByEmail(email)
                 .orElseThrow(() -> new PersonNotFoundException("Person with email " + email + " does not exist"));
     }
+
+    public Person savePerson(Person person) {
+        return personRepository.save(person);
+    }
 }
