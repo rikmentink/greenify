@@ -1,4 +1,5 @@
 import {css, html, LitElement} from "lit";
+import {getInterventionById} from "../../../services/InterventionService.js";
 export class InterventionSurveyBox extends LitElement {
     static styles = css`
         .title-container {
@@ -131,12 +132,24 @@ export class InterventionSurveyBox extends LitElement {
         id: {
             type: Number,
             reflect: true
+        },
+        intervention: {
+            type: Object
         }
+    }
+
+    async fetchIntervention() {
+        this.intervention = await getInterventionById(this.id);
+        console.log(this.intervention);
+        // Store the intervention data in sessionStorage
+        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
     constructor() {
         super();
-        this.id = 0;
+        this.id = 1;
+        this.fetchIntervention();
+
         this.surveyData = [{
             id: 1,
             name: "Vragenlijst 1",
@@ -168,6 +181,7 @@ export class InterventionSurveyBox extends LitElement {
             description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Evaluatie"
         }
+
         ];
     }
 
