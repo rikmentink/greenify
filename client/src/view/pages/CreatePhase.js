@@ -80,11 +80,10 @@ export class CreatePhase extends LitElement {
         super();
         this.interventionId = 0;
         this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
-        this.interventionName = this.intervention.name; // Fetch the name of the intervention
-        console.log(this.interventionName); // Log the intervention data to the console
+        this.interventionName = this.intervention.name;
+        console.log(this.interventionName);
     }
 
-    // Render the component
     render() {
         return html`
             <h1>Fase Creëren</h1>
