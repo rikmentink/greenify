@@ -5,6 +5,8 @@ import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PersonService {
     private final PersonRepository personRepository;
@@ -21,6 +23,14 @@ public class PersonService {
     public Person getPersonByEmail(String email) {
         return personRepository.findByEmail(email)
                 .orElseThrow(() -> new PersonNotFoundException("Person with email " + email + " does not exist"));
+    }
+
+    public List<Person> getAllPersons() {
+        return personRepository.findAll();
+    }
+
+    public Person createPerson(Person person) {
+        return personRepository.save(person);
     }
 
     public Person savePerson(Person person) {

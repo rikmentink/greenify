@@ -7,7 +7,9 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import nl.hu.greenify.security.application.AccountService;
 import nl.hu.greenify.security.domain.Account;
+import nl.hu.greenify.security.domain.AccountCredentials;
 import nl.hu.greenify.security.presentation.dto.LoginDto;
 
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
@@ -26,14 +28,13 @@ import java.util.List;
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private final String secret;
     private final Integer expirationInMs;
+    private final AccountService accountService;
 
-    private final AuthenticationManager authenticationManager;
-
-    public JwtAuthenticationFilter(String path, String secret, Integer expirationInMs, AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(String path, String secret, Integer expirationInMs, AccountService accountService) {
         super(new AntPathRequestMatcher(path));
         this.secret = secret;
         this.expirationInMs = expirationInMs;
-        this.authenticationManager = authenticationManager;
+        this.accountService = accountService;
     }
 
     @Override
@@ -43,8 +44,9 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                 .readValue(request.getInputStream(), LoginDto.class);
 
         try {
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(login.email(), login.password()));
+            var accountCredentials = accountService.login(login.email(), login.password());
+
+            return new UsernamePasswordAuthenticationToken(accountCredentials, null, accountCredentials.authorities());
         } catch (AuthenticationException e) {
             throw new AccountNotFoundException("Email or password is incorrect");
         }
@@ -53,9 +55,9 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication authentication) {
-        Account account = (Account) authentication.getPrincipal();
+        AccountCredentials account = (AccountCredentials) authentication.getPrincipal();
 
-        List<String> roles = account.getAuthorities()
+        List<String> roles = account.authorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .toList();
@@ -67,11 +69,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
                 .setHeaderParam("typ", "JWT")
                 .setIssuer("greenify-api")
                 .setAudience("greenify-app")
-                .setSubject(account.getUsername())
+                .setSubject(account.email())
                 .setExpiration(new Date(System.currentTimeMillis() + this.expirationInMs))
                 .claim("rol", roles)
-                .claim("email", account.getUsername())
-                .claim("personId", account.getPerson().getId())
+                .claim("email", account.email())
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token);

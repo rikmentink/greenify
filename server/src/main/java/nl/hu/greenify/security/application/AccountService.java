@@ -9,7 +9,9 @@ import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 
 
+import nl.hu.greenify.security.domain.AccountCredentials;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +32,17 @@ public class AccountService implements UserDetailsService {
         this.accountRepository = accountRepository;
         this.passwordEncoder = passwordEncoder;
         this.personRepository = personRepository;
+    }
+
+    public AccountCredentials login(String email, String password) {
+        Account account = this.accountRepository.findByEmail(email)
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
+
+        if (!this.passwordEncoder.matches(password, account.getPassword())) {
+            throw new BadCredentialsException("Wrong password");
+        }
+
+        return new AccountCredentials(account.getUsername(), account.getAuthorities());
     }
 
     public Account register(String email, String password, String firstName, String lastName) {

@@ -25,10 +25,6 @@ router.setRoutes([
                 component: 'gi-home',
             },
             {
-                path: import.meta.env.BASE_URL + 'home',
-                component: 'gi-home',
-            },
-            {
                 path: import.meta.env.BASE_URL + 'login',
                 component: 'gi-login',
             },

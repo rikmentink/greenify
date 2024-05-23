@@ -24,8 +24,8 @@ import jakarta.transaction.Transactional;
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
-    private final ResponseRepository responseRepository;
     private final CategoryRepository categoryRepository;
+    private final ResponseRepository responseRepository;
     private final InterventionService interventionService;
     private final PersonService personService;
 
@@ -34,8 +34,8 @@ public class SurveyService {
             InterventionService interventionService, PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
-        this.responseRepository = responseRepository;
         this.categoryRepository = categoryRepository;
+        this.responseRepository = responseRepository;
         this.interventionService = interventionService;
         this.personService = personService;
     }

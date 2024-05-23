@@ -3,6 +3,8 @@ package nl.hu.greenify.core.presentation.dto;
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Person;
 
+import java.util.List;
+
 @Getter
 public class PersonDto {
     private final Long id;
@@ -19,5 +21,13 @@ public class PersonDto {
 
     public static PersonDto fromEntity(Person person) {
         return new PersonDto(person.getId(), person.getFirstName(), person.getLastName(), person.getEmail());
+    }
+
+    public static Person toEntity(PersonDto personDto) {
+        return new Person(personDto.getFirstName(), personDto.getLastName(), personDto.getEmail());
+    }
+
+    public static Object fromEntities(List<Person> allPersons) {
+        return allPersons.stream().map(PersonDto::fromEntity);
     }
 }

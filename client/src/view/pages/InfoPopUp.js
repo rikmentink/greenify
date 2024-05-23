@@ -7,6 +7,16 @@ export class InfoPopUp extends LitElement {
         display: block;
       }
       
+      .btn {
+        color: DarkGreen;
+        background-color: white;
+        border: 2px solid #4CBB17;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      
     `];
 
     constructor() {
@@ -15,9 +25,9 @@ export class InfoPopUp extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this.requestUpdate(); // This triggers the first update/render cycle
+        this.requestUpdate();
         setTimeout(() => {
-            this.showDialog(); // Call showDialog() after a short delay
+            this.showDialog();
         }, 0);
     }
 

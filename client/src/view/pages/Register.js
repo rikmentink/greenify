@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 
 import {login, register} from '../../services/AccountService.js';
+import {InfoPopUp} from "./InfoPopUp.js";
 
 export class Register extends LitElement {
     static styles = [css`
@@ -125,7 +126,7 @@ export class Register extends LitElement {
             .then(() => login(email, password).then(
                 token => {
                     sessionStorage.setItem('token', token);
-                    window.location.href = import.meta.env.BASE_URL + 'dashboard';
+                    window.location.href = import.meta.env.BASE_URL + 'home';
                 }
             )).catch(error => {
                 this.handleErrorMessage(error.message)
@@ -145,6 +146,7 @@ export class Register extends LitElement {
     // Render the component
     render() {
         return html`
+            <gi-info-popup></gi-info-popup>
             <h1>Aanmelden</h1>
             <div class="register-container">
                 <div class="register-block">

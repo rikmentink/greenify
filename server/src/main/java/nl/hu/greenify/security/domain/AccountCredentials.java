@@ -1,3 +1,7 @@
 package nl.hu.greenify.security.domain;
 
-public record AccountCredentials(String email) {}
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Collection;
+
+public record AccountCredentials(String email, Collection<? extends GrantedAuthority> authorities) {}
