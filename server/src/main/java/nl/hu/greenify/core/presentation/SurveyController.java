@@ -47,7 +47,7 @@ public class SurveyController extends Controller {
      */
     public ResponseEntity<?> getSurveyQuestions(@PathVariable("id") Long id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
-        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId);
+        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId, page, pageSize);
         return this.createResponse(questions);
     }
 

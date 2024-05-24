@@ -51,13 +51,15 @@ public class SurveyService {
 
     /**
      * Get the questions for the given survey and category.
-     * TODO: Keep page and page size into account.
+     * TODO: Take page and page size into account.
      * 
      * @param surveyId   The ID of the survey to get the questions for.
      * @param categoryId The ID of the category to get the questions for.
+     * @param page       The page number.
+     * @param pageSize   The number of questions per page.
      * @return The questions for the given survey and category.
      */
-    public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
+    public QuestionSetDto getQuestions(Long surveyId, Long categoryId, int page, int pageSize) {
         Survey survey = this.getSurvey(surveyId);
         return QuestionSetDto.fromEntity(survey, categoryId);
     }
