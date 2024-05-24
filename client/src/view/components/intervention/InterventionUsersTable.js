@@ -70,6 +70,10 @@ export class InterventionUsersTable extends LitElement {
         }
     }
 
+    connectedCallback() {
+        super.connectedCallback();
+    }
+
     renderUsers() {
         return this.filteredUserData.map(user => {
             return html`
