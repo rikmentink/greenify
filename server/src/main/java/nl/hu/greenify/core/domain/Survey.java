@@ -91,6 +91,10 @@ public class Survey {
             facilitatingFactor, priority, comment
         );
 
+        if (subfactor.getResponse() != null) {
+            response.setId(subfactor.getResponse().getId());
+        }
+
         subfactor.setResponse(response);
         return response;
     }

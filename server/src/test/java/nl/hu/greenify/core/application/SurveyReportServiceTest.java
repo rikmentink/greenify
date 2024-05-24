@@ -73,8 +73,8 @@ public class SurveyReportServiceTest {
         when(person2.hasSurvey(phase)).thenReturn(false);
 
         // Survey creations based on templates:
-        Survey.createSurvey(phase, Template.copyOf(template), person1);
-        Survey.createSurvey(phase, Template.copyOf(template), person2);
+        Survey.createSurvey(phase, template, person1);
+        Survey.createSurvey(phase, template, person2);
 
         // Prepare subfactors that can be used to provide responses on
         setupProvideResponseSurvey1();

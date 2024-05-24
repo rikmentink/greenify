@@ -14,6 +14,7 @@ import nl.hu.greenify.core.domain.factor.Subfactor;
 public class Response {
     @Id
     @GeneratedValue
+    @Setter
     private Long id;
 
     private double score;
