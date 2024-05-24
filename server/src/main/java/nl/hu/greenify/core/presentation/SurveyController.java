@@ -63,7 +63,6 @@ public class SurveyController extends Controller {
         return this.createResponse(this.surveyService.createDefaultTemplate());
     }
 
-    // TODO: Implement DTO to prevent recursion
     @PostMapping(value="{id}/response", consumes="application/json", produces="application/json")
     public ResponseEntity<?> submitResponse(@PathVariable("id") Long id, @RequestBody SubmitResponseDto responseDto) {
         Response response = this.surveyService.submitResponse(id, responseDto);

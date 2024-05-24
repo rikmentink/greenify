@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +31,7 @@ public class Response {
     private Priority priority;
 
     @OneToOne
+    @JsonIgnore
     private Subfactor subfactor;
 
     protected Response() {
@@ -56,7 +59,7 @@ public class Response {
     public static Response createResponse(Subfactor subfactor, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         Response response = new Response(
             0,
-            null,
+            comment,
             facilitatingFactor,
             priority,
             subfactor

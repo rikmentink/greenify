@@ -3,6 +3,8 @@ package nl.hu.greenify.core.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ public class Survey {
 
     @ManyToOne
     @JoinColumn(name = "phase_id")
+    @JsonIgnore
     private Phase phase;
 
     @OneToMany
@@ -84,6 +87,9 @@ public class Survey {
                 .orElseThrow(() -> new SubfactorNotFoundException("Subfactor with ID " + id + " not found."));
     }
 
+    /**
+     * TODO: Update existing response if it exists.
+     */
     public Response saveResponse(Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         Subfactor subfactor = this.getSubfactorById(subfactorId);
         Response response = Response.createResponse(
