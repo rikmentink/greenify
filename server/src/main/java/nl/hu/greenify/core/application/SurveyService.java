@@ -9,6 +9,7 @@ import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
+import nl.hu.greenify.core.data.CategoryRepository;
 import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
@@ -23,15 +24,17 @@ import jakarta.transaction.Transactional;
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
+    private final CategoryRepository categoryRepository;
     private final ResponseRepository responseRepository;
     private final InterventionService interventionService;
     private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
-            ResponseRepository responseRepository, InterventionService interventionService,
-            PersonService personService) {
+            ResponseRepository responseRepository, CategoryRepository categoryRepository,
+            InterventionService interventionService, PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
+        this.categoryRepository = categoryRepository;
         this.responseRepository = responseRepository;
         this.interventionService = interventionService;
         this.personService = personService;
@@ -48,13 +51,15 @@ public class SurveyService {
 
     /**
      * Get the questions for the given survey and category.
-     * TODO: Keep page and page size into account.
+     * TODO: Take page and page size into account.
      * 
      * @param surveyId   The ID of the survey to get the questions for.
      * @param categoryId The ID of the category to get the questions for.
+     * @param page       The page number.
+     * @param pageSize   The number of questions per page.
      * @return The questions for the given survey and category.
      */
-    public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
+    public QuestionSetDto getQuestions(Long surveyId, Long categoryId, int page, int pageSize) {
         Survey survey = this.getSurvey(surveyId);
         return QuestionSetDto.fromEntity(survey, categoryId);
     }
@@ -72,6 +77,8 @@ public class SurveyService {
             Phase phase = interventionService.getPhaseById(phaseId);
 
             Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+            survey.getCategories().forEach(this::saveCategory); // todo: test this
+            personService.savePerson(person);
             return surveyRepository.save(survey);
         } catch (PhaseNotFoundException | PersonNotFoundException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -99,6 +106,10 @@ public class SurveyService {
     public Template createDefaultTemplate() {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();
+    }
+
+    private Category saveCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     /**

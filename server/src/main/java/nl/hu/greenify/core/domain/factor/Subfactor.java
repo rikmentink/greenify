@@ -48,7 +48,6 @@ public class Subfactor implements IFactor {
 
     public static Subfactor copyOf(Subfactor original) {
         Subfactor copy = new Subfactor();
-        copy.id = original.id;
         copy.title = original.title;
         copy.number = original.number;
         copy.isSupportingFactor = original.isSupportingFactor;

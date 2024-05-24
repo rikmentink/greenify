@@ -45,7 +45,6 @@ public class Factor implements IFactor {
 
     public static Factor copyOf(Factor original) {
         Factor copy = new Factor();
-        copy.id = original.id;
         copy.title = original.title;
         copy.number = original.number;
         // Make a deep copy of the subfactors using its static named constructor

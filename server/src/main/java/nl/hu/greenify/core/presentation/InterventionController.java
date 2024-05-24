@@ -47,7 +47,6 @@ public class InterventionController extends Controller {
      * Phase endpoints
      */
 
-    // TODO: Create a dto here to prevent recursion in the response
     @GetMapping(value="/phase/{id}", produces="application/json")
     public ResponseEntity<?> getPhaseById(@PathVariable("id") Long id) {
         return this.createResponse(this.interventionService.getPhaseById(id));

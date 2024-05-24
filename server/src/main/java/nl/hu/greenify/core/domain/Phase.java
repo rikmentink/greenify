@@ -3,6 +3,7 @@ package nl.hu.greenify.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -28,7 +29,7 @@ public class Phase {
     @Enumerated(EnumType.STRING)
     private PhaseName name;
 
-    @OneToMany
+    @OneToMany(mappedBy="phase", cascade=CascadeType.PERSIST)
     private List<Survey> surveys = new ArrayList<>();
 
     // TODO: Create static named constructor
