@@ -21,11 +21,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
+import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Response;
 import nl.hu.greenify.core.domain.Survey;
+import nl.hu.greenify.core.domain.Template;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.domain.enums.Priority;
@@ -43,19 +45,22 @@ public class SurveyServiceIntegrationTest {
     private static final Long SUBFACTOR_ANSWERED_ID = 2L;
     private static final Long RESPONSE_ID = 1L;
 
+    private Template template;
     private Survey survey;
     private SubmitResponseDto answer;
 
     @Autowired
     private SurveyService surveyService;
     @MockBean
+    private PersonService personService;
+    @MockBean
+    private InterventionService interventionService;
+    @MockBean
     private SurveyRepository surveyRepository;
     @MockBean
     private ResponseRepository responseRepository;
     @MockBean
-    private PersonService personService;
-    @MockBean
-    private InterventionService interventionService;
+    private TemplateRepository templateRepository;
 
     /**
      * createSurvey tests
@@ -152,9 +157,11 @@ public class SurveyServiceIntegrationTest {
         var factor = new Factor(1L, "Factor", 1, List.of(subfactor, subfactorWithResponse));
         var category = new Category(1L, "Category", "", "", List.of(factor));
 
+        this.template = new Template(1L, "Template", "Description", 1, List.of(category));
         this.survey = new Survey(SURVEY_ID, phase, List.of(category), person);
         this.answer = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
 
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(template));
         when(personService.getPersonById(PERSON_ID)).thenReturn(person);
         when(interventionService.getPhaseById(PHASE_ID)).thenReturn(phase);
         when(surveyRepository.save(any(Survey.class))).thenReturn(survey);
