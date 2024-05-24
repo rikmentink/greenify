@@ -21,8 +21,8 @@ public class PersonService {
     }
 
     public Person getPersonByEmail(String email) {
-        return personRepository.findByEmail(email)
-                .orElseThrow(() -> new PersonNotFoundException("Person with email " + email + " does not exist"));
+        return personRepository.findByEmail(email.toLowerCase())
+                .orElseThrow(() -> new PersonNotFoundException("Person with email " + email.toLowerCase() + " does not exist"));
     }
 
     public List<Person> getAllPersons() {

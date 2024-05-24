@@ -42,7 +42,7 @@ public class Person {
 
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.surveys = new ArrayList<>();
     }
 
@@ -61,7 +61,7 @@ public class Person {
     }
 
     private void validateEmail(String email) {
-        if (email == null || email.isEmpty() || !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+        if (email == null || email.isEmpty() || !email.toLowerCase().matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             throw new IllegalArgumentException("Invalid email format");
         }
     }

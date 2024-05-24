@@ -155,37 +155,4 @@ public class InterventionControllerIntegrationTest {
         mockMvc.perform(request)
                 .andExpect(status().isNotFound());
     }
-
-
-
-
-
-
-
-
-//    @Test
-//    @DisplayName("Fetching a nonexisting person")
-//    void getNonExistingPersonTest() throws Exception {
-//        Long id = 2L;
-//
-//        RequestBuilder request = MockMvcRequestBuilders.get("/intervention/{id}", id)
-//                .param("id", id.toString());
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isBadRequest());
-//    }
-//
-//    @Test
-//    @DisplayName("Fetching a person")
-//    void getPersonTest() throws Exception {
-//        Long id = 1L;
-//
-//        RequestBuilder request = MockMvcRequestBuilders.get("/intervention/{id}", id)
-//                .param("id", id.toString());
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.interventions").isArray())
-//                .andExpect(jsonPath("$.interventions", hasSize(1)));
-//    } for personControllerIntegrationTest
 }
