@@ -44,9 +44,6 @@ public class Survey {
         this.phase = phase;
         this.categories = categories;
         this.respondent = respondent;
-        if (phase != null) {
-            phase.addSurvey(this);
-        }
     }
 
     public Survey(Long id, Phase phase, List<Category> categories, Person respondent) {
