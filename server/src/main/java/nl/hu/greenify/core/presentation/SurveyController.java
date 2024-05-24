@@ -42,9 +42,6 @@ public class SurveyController extends Controller {
     }
 
     @GetMapping(value="/{id}/questions", produces="application/json")
-    /**
-     * TODO: Take page and pageSize into account.
-     */
     public ResponseEntity<?> getSurveyQuestions(@PathVariable("id") Long id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
         QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId, page, pageSize);

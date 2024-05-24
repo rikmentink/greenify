@@ -95,7 +95,7 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When getting questions for a survey, the survey should be fetched")
     public void getQuestionsShouldFetchSurvey() {
-        surveyService.getQuestions(1L, 1L);
+        surveyService.getQuestions(1L, 1L, 1, 1000);
         verify(surveyRepository).findById(1L);
     }
 
@@ -104,17 +104,9 @@ public class SurveyServiceTest {
     public void getQuestionsShouldThrowException() {
         assertThrows(
             SurveyNotFoundException.class, 
-            () -> surveyService.getQuestions(2L, 1L)
+            () -> surveyService.getQuestions(2L, 1L, 1, 1000)
         );
     }
-
-    /**
-     * TODO: createSurvey tests
-     * 
-     * - when creating a survey, it should be saved in the repository
-     * - when creating a survey with an invalid phase id, it should throw an exception
-     * - when creating a survey with an invalid person id, it should throw an exception
-     */
 
     /**
      * createSurvey tests
