@@ -15,6 +15,14 @@ export class Intervention extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         this.addEventListener('person-fetched', this.handlePersonFetched);
+        this.addEventListener('user-deleted', this.onUserDeleted);
+    }
+
+    onUserDeleted(event) {
+        const user = event.detail.user;
+        this.userData = this.userData.filter(userData => userData.userId !== user.userId);
+        console.log(this.userData);
+        this.requestUpdate();
     }
 
     handlePersonFetched(event) {
