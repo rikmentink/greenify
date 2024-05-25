@@ -8,7 +8,7 @@ export class InterventionSurveyBox extends LitElement {
         }
 
         .title-container h2 {
-            margin-right: 40px; 
+            margin-right: 20px; 
         }
 
         .start-fase-btn {
@@ -55,7 +55,8 @@ export class InterventionSurveyBox extends LitElement {
         }
         
         .sy-phase {
-            color: #666666;
+            font-weight: bold;
+            font-size: 1.1em;
         }
         
         .sy-description {
@@ -150,33 +151,27 @@ export class InterventionSurveyBox extends LitElement {
 
         this.surveyData = [{
             id: 1,
-            name: "Vragenlijst 1",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Research"
         }, {
             id: 2,
-            name: "Vragenlijst 2",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Implementatie"
         }, {
             id: 3,
-            name: "Vragenlijst 3",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Evaluatie"
         }, {
             id: 4,
-            name: "Vragenlijst 4",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Research"
         }, {
             id: 5,
-            name: "Vragenlijst 5",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Implementatie"
         }, {
             id: 6,
-            name: "Vragenlijst 6",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Evaluatie"
         }
 
@@ -188,7 +183,7 @@ export class InterventionSurveyBox extends LitElement {
             let progress = 60 + "%" // Placeholder for progress, need to be calculated
             return html`
                 <div class="survey-box">
-                    <p class="sy-header"><span class="sy-name">${survey.name} </span><span class="sy-phase">Fase - ${survey.phase}</span></p>
+                    <p class="sy-header"><span class="sy-phase">${survey.phase}</span></p>
                     <p class="sy-description">${survey.description}</p>
                     <div class="sy-status">
                         <a href="">Bekijk vragen &#10132;</a>
@@ -214,7 +209,7 @@ export class InterventionSurveyBox extends LitElement {
     render() {
         return html`
             <div class="title-container">
-                <h2>Vragenlijsten</h2>
+                <h2>Fases</h2>
                 <a class="start-fase-btn" href="/createphase">Nieuwe fase starten</a>
             </div>
             <div class="survey-container">
