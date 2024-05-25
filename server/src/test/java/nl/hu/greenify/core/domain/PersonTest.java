@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @DisplayName("Person Domain Test")
-public class PersonTest { //Extra tests
+public class PersonTest {
     private Person person;
 
     @BeforeEach
@@ -52,11 +52,11 @@ public class PersonTest { //Extra tests
         return Arrays.asList(new Object[][]{
                 {"example@example.com", true},
                 {"john.doe@example.com", true},
-                {"john.doe123@example.com", true},
+                {"JoHN.doe123@example.com", true},
                 {"invalid-email.com", false},
-                {"john@example", false},
+                {"joFSn@example", false},
                 {"john@example.", false},
-                {"john.example.com", false},
+                {"joSn.example.com", false},
                 {null, false},
                 {"", false}
         });

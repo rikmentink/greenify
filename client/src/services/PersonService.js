@@ -20,4 +20,17 @@ async function getPersonByEmail(email) {
     return response.json();
 }
 
-export { getPersonByEmail };
+async function getPersonById(id) {
+    const response = await fetch(`${API_URL}/person/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
+}
+
+export { getPersonByEmail, getPersonById};

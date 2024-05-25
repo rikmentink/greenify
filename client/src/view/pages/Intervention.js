@@ -9,33 +9,31 @@ export class Intervention extends LitElement {
     constructor() {
         super();
         this.interventionId = 1;
-        this.userData = [
-            {
-                name: "John Doe",
-                email: "john.doe@gmail.com",
-                progress: true,
-                lastOnline: "2024-5-5",
-                userId: 1
-            },
-            {
-                name: "Henk Jan",
-                email: "henk.jan@gmail.com",
-                progress: false,
-                lastOnline: "2024-3-5",
-                userId: 2
-            }
-        ];
+        this.userData = [];
     }
 
     connectedCallback() {
         super.connectedCallback();
         this.addEventListener('person-fetched', this.handlePersonFetched);
+        this.addEventListener('user-deleted', this.onUserDeleted);
+    }
+
+    onUserDeleted(event) {
+        const user = event.detail.user;
+        this.userData = this.userData.filter(userData => userData.userId !== user.userId);
+        console.log(this.userData);
+        this.requestUpdate();
     }
 
     handlePersonFetched(event) {
         const person = event.detail.person;
-        console.log('Person data received:', person);
-        // Add the new person to userData
+
+        if(this.userData.some(user => user.userId === person.id)) {
+            alert("Gebruiker is al toegevoegd aan de interventie.");
+            return;
+        }
+
+        alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
         this.userData = [
             ...this.userData,
             {
