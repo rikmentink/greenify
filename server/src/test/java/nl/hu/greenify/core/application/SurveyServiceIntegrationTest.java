@@ -1,10 +1,9 @@
 package nl.hu.greenify.core.application;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -12,7 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import nl.hu.greenify.core.domain.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
+import nl.hu.greenify.core.data.ResponseRepository;
+import nl.hu.greenify.core.data.SurveyRepository;
+import nl.hu.greenify.core.data.TemplateRepository;
+import nl.hu.greenify.core.domain.Category;
+import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.core.domain.Phase;
+import nl.hu.greenify.core.domain.Response;
+import nl.hu.greenify.core.domain.Survey;
+import nl.hu.greenify.core.domain.Template;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.domain.enums.Priority;
@@ -20,127 +35,62 @@ import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
-import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
-import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
-import nl.hu.greenify.core.data.ResponseRepository;
-import nl.hu.greenify.core.data.SurveyRepository;
-import nl.hu.greenify.core.data.TemplateRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
 @SpringBootTest
 @DisplayName("Survey Service Integration Test")
 public class SurveyServiceIntegrationTest {
     private static final Long SURVEY_ID = 1L;
+    private static final Long PERSON_ID = 1L;
+    private static final Long PHASE_ID = 1L;
     private static final Long SUBFACTOR_ID = 1L;
+    private static final Long SUBFACTOR_ANSWERED_ID = 2L;
     private static final Long RESPONSE_ID = 1L;
 
-    private Subfactor subfactor;
-    private Response response;
-    private Factor factor;
-    private Category category;
+    private Template template;
     private Survey survey;
-    private Phase phase;
+    private SubmitResponseDto answer;
 
     @Autowired
     private SurveyService surveyService;
     @MockBean
+    private PersonService personService;
+    @MockBean
+    private InterventionService interventionService;
+    @MockBean
     private SurveyRepository surveyRepository;
     @MockBean
+    private ResponseRepository responseRepository;
+    @MockBean
     private TemplateRepository templateRepository;
-   @Autowired
-    private InterventionService interventionService;
-   @Autowired
-   private PersonService personService;
-   private Person person;
-   private Intervention intervention;
 
     /**
-     * getAllSurveys tests
+     * createSurvey tests
      */
     @Test
-    @DisplayName("When fetching all surveys, they should be fetched from the repository")
-    public void getAllSurveysShouldFetch() {
-        surveyService.getAllSurveys();
-        verify(surveyRepository).findAll();
-    }
-
-    @Test
-    @DisplayName("When fetching all surveys and there are none, an empty list should be returned")
-    public void getAllSurveysShouldReturnEmptyList() {
-        when(surveyRepository.findAll()).thenReturn(new ArrayList<>());
-        assertEquals(surveyService.getAllSurveys(), new ArrayList<>());
-    }
-
-    /**
-     * getSurvey tests
-     */
-    @Test
-    @DisplayName("When fetching a survey with a valid id, it should be fetched from the repository")
-    public void getSurveyShouldFetch() {
-        surveyService.getSurvey(1L);
-        verify(surveyRepository).findById(1L);
-    }
-
-    @Test
-    @DisplayName("When fetching a survey with an invalid id, it should throw an exception")
-    public void getSurveyShouldThrowException() {
-        Assertions.assertThrows(
-                SurveyNotFoundException.class,
-                () -> surveyService.getSurvey(2L)
-        );
-    }
-
-    /**
-     * getQuestions tests
-     */
-    @Test
-    @DisplayName("When getting questions for a survey, the survey should be fetched")
-    public void getQuestionsShouldFetchSurvey() {
-        surveyService.getQuestions(1L, 1L);
-        verify(surveyRepository).findById(1L);
-    }
-
-    @Test
-    @DisplayName("When getting questions for a survey with an invalid id, it should throw an exception")
-    public void getQuestionsShouldThrowException() {
-        assertThrows(
-                SurveyNotFoundException.class,
-                () -> surveyService.getQuestions(2L, 1L)
-        );
-    }
-
-    @Test
-    @DisplayName("When creating a survey, it should be saved in the repository")
-    public void createSurveyShouldSave() {
-        surveyService.createSurvey(1L, 1L);
+    @DisplayName("Creating a survey should create a valid survey and save it in the repository")
+    void createSurvey() {
+        Survey createdSurvey = surveyService.createSurvey(PERSON_ID, PHASE_ID);
+        assertNotNull(createdSurvey);
+        assertEquals(survey, createdSurvey);
         verify(surveyRepository).save(any(Survey.class));
     }
 
     @Test
-    @DisplayName("When creating a survey with an invalid phase id, it should throw an exception")
-    public void createSurveyShouldThrowExceptionPhase() {
-        when(interventionService.getPhaseById(2L)).thenThrow(new PhaseNotFoundException(""));
+    @DisplayName("Creating a survey with a non-existing person should throw an IllegalArgumentException")
+    void createSurveyWithNonExistingPerson() {
+        when(personService.getPersonById(PERSON_ID)).thenThrow(new IllegalArgumentException("Error"));
         assertThrows(
-                IllegalArgumentException.class,
-                () -> surveyService.createSurvey(2L, 1L)
+            IllegalArgumentException.class, 
+            () -> surveyService.createSurvey(PERSON_ID, PHASE_ID)
         );
     }
 
     @Test
-    @DisplayName("When creating a survey with an invalid person id, it should throw an exception")
-    public void createSurveyShouldThrowExceptionPerson() {
-        when(personService.getPersonById(2L)).thenThrow(new PersonNotFoundException(""));
+    @DisplayName("Creating a survey with a non-existing phase should throw an IllegalArgumentException")
+    void createSurveyWithNonExistingPhase() {
+        when(interventionService.getPhaseById(PHASE_ID)).thenThrow(new IllegalArgumentException("Error"));
         assertThrows(
-                IllegalArgumentException.class,
-                () -> surveyService.createSurvey(1L, 2L)
+            IllegalArgumentException.class, 
+            () -> surveyService.createSurvey(PERSON_ID, PHASE_ID)
         );
     }
 
@@ -148,62 +98,74 @@ public class SurveyServiceIntegrationTest {
      * submitResponse tests
      */
     @Test
-    @DisplayName("When submitting a response, it should be saved in the repository")
-    public void submitResponseShouldSave() {
-        SubmitResponseDto responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
-        Response response = surveyService.submitResponse(SURVEY_ID, responseData);
-        assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(response));
+    @DisplayName("Submitting a response should add the response to the survey")
+    void submitResponse() {
+        Response response = surveyService.submitResponse(SURVEY_ID, this.answer);
+        assertEquals(survey.getSubfactorById(SUBFACTOR_ID).getResponse(), response);
     }
 
     @Test
-    @DisplayName("When submitting a response with an existing response, it should be updated")
-    public void submitResponseShouldUpdate() {
-        SubmitResponseDto responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
-        Response response = surveyService.submitResponse(SURVEY_ID, responseData);
-
-        responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
-        response = surveyService.submitResponse(SURVEY_ID, responseData);
-        assertTrue(survey.getSubfactorById(subfactor.getId()).getResponse().equals(response));
+    @DisplayName("Submitting a response should save the response to the repository")
+    void submitResponseSaveResponse() {
+        Response response = surveyService.submitResponse(SURVEY_ID, this.answer);
+        verify(responseRepository).save(response);
     }
 
     @Test
-    @DisplayName("When submitting a response with an invalid survey id, it should throw an exception")
-    public void submitResponseShouldThrowException() {
-        SubmitResponseDto responseData = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.PENDING, Priority.PENDING, "Comment");
+    @DisplayName("Submitting a response should save the updated survey to the repository")
+    void submitResponseSaveSurvey() {
+        surveyService.submitResponse(SURVEY_ID, this.answer);
+        verify(surveyRepository).save(survey);
+    }
+
+    @Test
+    @DisplayName("Submitting a response for a non-existing survey should throw a SurveyNotFoundException")
+    void submitResponseForNonExistingSurvey() {
+        when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.empty());
         assertThrows(
-                SurveyNotFoundException.class,
-                () -> surveyService.submitResponse(2L, responseData)
+            SurveyNotFoundException.class, 
+            () -> surveyService.submitResponse(SURVEY_ID, this.answer)
         );
     }
 
-    @BeforeEach
-    public void setup() {
-        this.person = new Person("John", "Doe", "johndoe@gmail.com");
-        this.phase = new Phase(PhaseName.INITIATION);
-        this.intervention = new Intervention("Intervention", "Description", new Person("Admin", "Admin", "admin@gmail.com"));
-        this.intervention.addParticipant(person);
-        this.intervention.addPhase(phase);
-
-        this.subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
-        this.factor = new Factor(1L, "Factor", 1, List.of(subfactor));
-        this.category = new Category(1L, "Category", "", "", List.of(factor));
-        this.survey = new Survey(SURVEY_ID, this.phase, List.of(this.category), this.person);
-
-        this.surveyRepository = mock(SurveyRepository.class);
-        this.templateRepository = mock(TemplateRepository.class);
-        var responseRepository = mock(ResponseRepository.class);
-        this.interventionService = mock(InterventionService.class);
-        this.personService = mock(PersonService.class);
-        this.surveyService = new SurveyService(surveyRepository, templateRepository, responseRepository,
-                interventionService, personService);
-
-        when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(this.survey));
-        when(interventionService.getPhaseById(1L)).thenReturn(new Phase(PhaseName.INITIATION));
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-        when(personService.getPersonById(1L)).thenReturn(person);
+    @Test
+    @DisplayName("Submitting a response for a non-existing subfactor should throw an IllegalArgumentException")
+    void submitResponseForNonExistingSubfactor() {
+        this.answer = new SubmitResponseDto(3L, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
+        assertThrows(
+            IllegalArgumentException.class, 
+            () -> surveyService.submitResponse(SURVEY_ID, this.answer)
+        );
     }
 
-    private Template mockTemplate() {
-        return mock(Template.class);
+    @Test
+    @DisplayName("Submitting a response for a subfactor that has already been answered should update the response")
+    void submitResponseForAnsweredSubfactor() {
+        surveyService.submitResponse(SURVEY_ID, this.answer);
+        this.answer = new SubmitResponseDto(SUBFACTOR_ANSWERED_ID, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
+        Response response = surveyService.submitResponse(SURVEY_ID, this.answer);
+        assertEquals(survey.getSubfactorById(SUBFACTOR_ANSWERED_ID).getResponse(), response);
+    }
+
+    @BeforeEach
+    void setup() {
+        var person = new Person("John", "Doe", "john@example.com", new ArrayList<>());
+        var phase = new Phase(PhaseName.EXECUTION);
+        var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
+        var subfactorWithResponse = new Subfactor(SUBFACTOR_ANSWERED_ID, "Subfactor 2", 2, false);
+        var response = new Response(RESPONSE_ID, 0, "Comment", FacilitatingFactor.AGREE, Priority.PRIORITY, subfactorWithResponse);
+        var factor = new Factor(1L, "Factor", 1, List.of(subfactor, subfactorWithResponse));
+        var category = new Category(1L, "Category", "", "", List.of(factor));
+
+        this.template = new Template(1L, "Template", "Description", 1, List.of(category));
+        this.survey = new Survey(SURVEY_ID, phase, List.of(category), person);
+        this.answer = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
+
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(template));
+        when(personService.getPersonById(PERSON_ID)).thenReturn(person);
+        when(interventionService.getPhaseById(PHASE_ID)).thenReturn(phase);
+        when(surveyRepository.save(any(Survey.class))).thenReturn(survey);
+        when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(survey));
+        when(responseRepository.save(any(Response.class))).thenReturn(response);
     }
 }

@@ -42,12 +42,9 @@ public class SurveyController extends Controller {
     }
 
     @GetMapping(value="/{id}/questions", produces="application/json")
-    /**
-     * TODO: Take page and pageSize into account.
-     */
     public ResponseEntity<?> getSurveyQuestions(@PathVariable("id") Long id, @RequestParam Long categoryId,
             @RequestParam int page, @RequestParam int pageSize) {
-        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId);
+        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId, page, pageSize);
         return this.createResponse(questions);
     }
 
@@ -63,7 +60,6 @@ public class SurveyController extends Controller {
         return this.createResponse(this.surveyService.createDefaultTemplate());
     }
 
-    // TODO: Implement DTO to prevent recursion
     @PostMapping(value="{id}/response", consumes="application/json", produces="application/json")
     public ResponseEntity<?> submitResponse(@PathVariable("id") Long id, @RequestBody SubmitResponseDto responseDto) {
         Response response = this.surveyService.submitResponse(id, responseDto);

@@ -3,12 +3,14 @@ package nl.hu.greenify.core.domain;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.ToString;
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
@@ -25,6 +27,8 @@ public class Survey {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "phase_id")
+    @JsonIgnore
     private Phase phase;
 
     @OneToMany
@@ -40,9 +44,6 @@ public class Survey {
         this.phase = phase;
         this.categories = categories;
         this.respondent = respondent;
-        if (phase != null) {
-            phase.addSurvey(this);
-        }
     }
 
     public Survey(Long id, Phase phase, List<Category> categories, Person respondent) {
@@ -50,9 +51,6 @@ public class Survey {
         this.phase = phase;
         this.categories = categories;
         this.respondent = respondent;
-        if (phase != null) {
-            phase.addSurvey(this);
-        }
     }
 
     public static Survey createSurvey(Phase phase, Template activeTemplate, Person respondent) {
@@ -63,11 +61,14 @@ public class Survey {
         if (respondent == null || respondent.hasSurvey(phase))
             throw new IllegalArgumentException("A respondent cannot be empty or null or have a survey for this phase.");
         
-        return new Survey(
+        Survey survey = new Survey(
             phase,
             cloneCategories(activeTemplate.getCategories()),
             respondent
         );
+        respondent.addSurvey(survey);
+        phase.addSurvey(survey);
+        return survey;
     }
 
     public Long getPhaseId() {
@@ -83,12 +84,19 @@ public class Survey {
                 .orElseThrow(() -> new SubfactorNotFoundException("Subfactor with ID " + id + " not found."));
     }
 
+    /**
+     * TODO: Update existing response if it exists.
+     */
     public Response saveResponse(Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         Subfactor subfactor = this.getSubfactorById(subfactorId);
         Response response = Response.createResponse(
             this.getSubfactorById(subfactorId), 
             facilitatingFactor, priority, comment
         );
+
+        if (subfactor.getResponse() != null) {
+            response.setId(subfactor.getResponse().getId());
+        }
 
         subfactor.setResponse(response);
         return response;

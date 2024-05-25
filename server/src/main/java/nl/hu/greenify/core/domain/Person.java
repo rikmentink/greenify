@@ -23,6 +23,7 @@ public class Person {
     private String email;
 
     @OneToMany
+    @JoinColumn(name = "person_id")
     private List<Survey> surveys;
 
     protected Person() {
@@ -48,6 +49,10 @@ public class Person {
 
     public String getFullName() {
         return this.firstName + " " + this.lastName;
+    }
+
+    public void addSurvey(Survey survey) {
+        this.surveys.add(survey);
     }
 
     public boolean hasSurvey(Phase phase) {

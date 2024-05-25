@@ -47,7 +47,6 @@ public class Category {
 
     public static Category copyOf(Category original) {
         Category copy = new Category();
-        copy.id = original.id;
         copy.name = original.name;
         copy.color = original.color;
         copy.description = original.description;
