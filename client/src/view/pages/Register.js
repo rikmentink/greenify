@@ -146,7 +146,6 @@ export class Register extends LitElement {
     // Render the component
     render() {
         return html`
-            <gi-info-popup></gi-info-popup>
             <h1>Aanmelden</h1>
             <div class="register-container">
                 <div class="register-block">
