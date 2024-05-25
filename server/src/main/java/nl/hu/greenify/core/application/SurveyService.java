@@ -52,6 +52,7 @@ public class SurveyService {
     /**
      * Get the questions for the given survey and category.
      * TODO: Take page and page size into account.
+     * TODO: Move filtering logic to service layer.
      * 
      * @param surveyId   The ID of the survey to get the questions for.
      * @param categoryId The ID of the category to get the questions for.

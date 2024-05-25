@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.presentation.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -22,7 +23,15 @@ public class QuestionSetDto {
     }
 
     public static QuestionSetDto fromEntity(Survey survey, Long categoryId) {
-        Category category = survey.getCategories().stream().filter(c -> c.getId().equals(categoryId)).findFirst()
+        if (categoryId == null) {
+            List<Factor> factors = survey.getCategories().stream()
+                    .flatMap(category -> category.getFactors().stream())
+                    .collect(Collectors.toList());
+            return new QuestionSetDto(survey.getId(), null, factors);
+        }
+        Category category = survey.getCategories().stream()
+                .filter(c -> c.getId().equals(categoryId))
+                .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
         return new QuestionSetDto(survey.getId(), category, category.getFactors());
     }

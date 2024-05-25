@@ -42,8 +42,11 @@ public class SurveyController extends Controller {
     }
 
     @GetMapping(value="/{id}/questions", produces="application/json")
-    public ResponseEntity<?> getSurveyQuestions(@PathVariable("id") Long id, @RequestParam Long categoryId,
-            @RequestParam int page, @RequestParam int pageSize) {
+    public ResponseEntity<?> getSurveyQuestions(
+            @PathVariable("id") Long id,
+            @RequestParam(required=false) Long categoryId,
+            @RequestParam(required=false) int page, 
+            @RequestParam(required=false) int pageSize) {
         QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId, page, pageSize);
         return this.createResponse(questions);
     }

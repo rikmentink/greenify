@@ -18,7 +18,6 @@ async function getSurvey(id, categoryId, page = 1, pageSize = 1000) {
     })
     .catch(error => {
       console.error(error);
-      throw error;
     });
 }
 
@@ -37,7 +36,6 @@ async function saveResponse(id, subfactorId, response) {
   })
   .catch(error => {
     console.error(error);
-    throw error;
   });
 } 
 
