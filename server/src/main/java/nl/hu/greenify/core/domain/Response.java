@@ -64,6 +64,10 @@ public class Response {
             priority,
             subfactor
         );
+        
+        if (subfactor.getResponse() != null) {
+            response.setId(subfactor.getResponse().getId());
+        }
         response.subfactor.setResponse(response);
         response.calculateScore();
         return response;

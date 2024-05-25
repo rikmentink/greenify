@@ -107,17 +107,10 @@ public class Survey {
      */
     public Response saveResponse(Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         Subfactor subfactor = this.getSubfactorById(subfactorId);
-        Response response = Response.createResponse(
+        return Response.createResponse(
             this.getSubfactorById(subfactorId), 
             facilitatingFactor, priority, comment
         );
-
-        if (subfactor.getResponse() != null) {
-            response.setId(subfactor.getResponse().getId());
-        }
-
-        subfactor.setResponse(response);
-        return response;
     }
 
     public Person getRespondent() {
