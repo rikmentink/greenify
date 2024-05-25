@@ -76,7 +76,7 @@ export class SurveyQuestion extends LitElement {
             new CustomEvent('answer', {
                 detail: {
                     question: event.target.name,
-                    answer: event.target.value
+                    answer: parseInt(event.target.value)
                 },
                 bubbles: true,
                 composed: true

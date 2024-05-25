@@ -26,7 +26,12 @@ async function saveResponse(id, subfactorId, response) {
   return fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ subfactorId, response }),
+    body: JSON.stringify({ 
+      subfactorId,
+      facilitatingFactor: response.facilitatingFactor,
+      priority: response.priority,
+      comment: response.comment
+    }),
   })
   .then(response => {
       if (!response.ok) {
