@@ -16,6 +16,7 @@ import lombok.ToString;
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.Priority;
+import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
 @Entity
@@ -73,6 +74,23 @@ public class Survey {
 
     public Long getPhaseId() {
         return phase.getId();
+    }
+
+    public Category getCategoryById(Long id) {
+        return this.getCategories().stream()
+                .filter(category -> category.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Category with ID " + id + " not found."));
+    }
+
+    public List<Factor> getAllFactors() {
+        return this.getCategories().stream()
+                .flatMap(category -> category.getFactors().stream())
+                .collect(Collectors.toList());
+    }
+
+    public List<Factor> getFactorsByCategoryId(Long categoryId) {
+        return this.getCategoryById(categoryId).getFactors();
     }
 
     public Subfactor getSubfactorById(Long id) {

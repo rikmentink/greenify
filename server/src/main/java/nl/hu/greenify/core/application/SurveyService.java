@@ -52,7 +52,6 @@ public class SurveyService {
     /**
      * Get the questions for the given survey and category.
      * TODO: Take page and page size into account.
-     * TODO: Move filtering logic to service layer.
      * 
      * @param surveyId   The ID of the survey to get the questions for.
      * @param categoryId The ID of the category to get the questions for.
@@ -62,7 +61,11 @@ public class SurveyService {
      */
     public QuestionSetDto getQuestions(Long surveyId, Long categoryId, int page, int pageSize) {
         Survey survey = this.getSurvey(surveyId);
-        return QuestionSetDto.fromEntity(survey, categoryId);
+        
+        if (categoryId == null) {
+            return QuestionSetDto.fromEntity(surveyId, null, survey.getAllFactors());
+        }
+        return QuestionSetDto.fromEntity(surveyId, survey.getCategoryById(categoryId), survey.getFactorsByCategoryId(categoryId));
     }
 
     /**
