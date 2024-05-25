@@ -13,6 +13,7 @@ import nl.hu.greenify.core.domain.factor.Factor;
 @EqualsAndHashCode
 public class QuestionSetDto {
     private Long surveyId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Category category;
     private List<Factor> factors;
 
