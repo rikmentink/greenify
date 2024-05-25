@@ -102,11 +102,7 @@ public class Survey {
                 .orElseThrow(() -> new SubfactorNotFoundException("Subfactor with ID " + id + " not found."));
     }
 
-    /**
-     * TODO: Update existing response if it exists.
-     */
     public Response saveResponse(Long subfactorId, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
-        Subfactor subfactor = this.getSubfactorById(subfactorId);
         return Response.createResponse(
             this.getSubfactorById(subfactorId), 
             facilitatingFactor, priority, comment
