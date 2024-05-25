@@ -3,19 +3,53 @@ import { GenericContainer } from "../components/containers/GenericContainer.js";
 
 export class InfoPopUp extends LitElement {
     static styles = [css`
-      :host {
-        display: block;
-      }
-      
-      .btn {
-        color: DarkGreen;
-        background-color: white;
-        border: 2px solid #4CBB17;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
-        border-radius: 5px;
-      }
+        :host {
+            display: block;
+        }
+
+        .btn {
+            color: white;
+            background-color: #4CBB17;
+            border: 2px solid #4CBB17;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bolder;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .btn:focus{
+            outline: none;
+        }
+
+        dialog {
+            border: none;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            overflow-y: auto;
+        }
+
+        dialog::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        dialog::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        dialog::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        dialog::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        @media (max-width: 600px) {
+            dialog {
+                font-size: 12px;
+            }
+        }
       
     `];
 
@@ -45,8 +79,8 @@ export class InfoPopUp extends LitElement {
     render() {
         return html`
             <dialog>
-                <generic-container .sections=${this.sections}></generic-container>
                 <button class="btn btn-primary" @click="${this.hideDialog}">Sluit</button>
+                <generic-container .sections=${this.sections}></generic-container>
             </dialog>
         `;
     }
