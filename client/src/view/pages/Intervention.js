@@ -29,11 +29,11 @@ export class Intervention extends LitElement {
         const person = event.detail.person;
 
         if(this.userData.some(user => user.userId === person.id)) {
-            alert("User is already added to this intervention.");
+            alert("Gebruiker is al toegevoegd aan de interventie.");
             return;
         }
 
-        alert("User added to intervention. An email has been sent to the user.")
+        alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
         this.userData = [
             ...this.userData,
             {
