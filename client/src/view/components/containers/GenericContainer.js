@@ -2,33 +2,43 @@ import { LitElement, html, css } from 'lit';
 
 export class GenericContainer extends LitElement {
     static styles = [css`
-      :host {
-        display: block;
-        width: 100%;
-      }
+        :host {
+            display: flex;
+            width: 750px;
+            height: 500px;
+        }
 
-      .main-block { 
-        box-shadow: rgba(0, 0, 0, 0.1) 0 4px 8px; 
-        padding: 15px; 
-        background-color: white; 
-        border-radius: 30px; display: flex; 
-        flex-direction: column; 
-        align-items: center; 
-        width: 100%; 
-      }
+        .outer-container {
+            display: flex;
+            justify-content: center;
+        }
 
-      .section {
-        margin-bottom: 20px;
-      }
+        .main-block {
+            padding: 10px;
+            background-color: white;
+            border-radius: 30px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
 
-      .title {
-        color: green;
-      }
+        .title {
+            color: #4CBB17;
+            margin: 0;
+        }
 
-      .description {
-        color: black;
-        margin-top: 5px;
-      }
+        .description {
+            color: black;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            :host {
+                width: 100%;
+                height: 500px;
+            }
+        }
     `];
 
     static properties = {
