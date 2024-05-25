@@ -8,33 +8,37 @@ async function getSurvey(id, categoryId, page = 1, pageSize = 1000) {
 
     return fetch(url, {
         method: 'GET',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
-    }).then(response => response.json())
-      .then(data => {
-        return data;
-      })
-      .catch(error => {
-        console.error(error);
-      })
-}
-
-async function saveResponse(id, subfactorId, response) {
-  console.log(`Saving response for subfactor #${subfactorId} on survey #${id}:`, response);
-  
-  const url = new URL(`${API_URL}/survey/${id}/response`);
-  return fetch(url, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ subfactorId, response }),
-  }).then(response => response.json())
-    .then(data => {
-      return data;
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Could not load survey data. HTTP Error ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
     })
     .catch(error => {
       console.error(error);
+      throw error;
     });
+}
+
+async function saveResponse(id, subfactorId, response) {
+  const url = new URL(`${API_URL}/survey/${id}/response`);
+  return fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ subfactorId, response }),
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error(`Could not save response. HTTP Error ${response.status}: ${response.statusText}`);
+      }
+      return response.json();
+  })
+  .catch(error => {
+    console.error(error);
+    throw error;
+  });
 } 
 
 export { getSurvey, saveResponse };
