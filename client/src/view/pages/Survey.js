@@ -3,6 +3,7 @@ import { Task } from "@lit/task";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
+import { InfoPopUp } from "./InfoPopUp.js";
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
@@ -63,6 +64,7 @@ export class Survey extends LitElement {
 
     render() {
         return html`
+            <gi-info-popup></gi-info-popup>
                 ${this.data.render({
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
