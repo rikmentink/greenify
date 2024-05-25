@@ -32,7 +32,11 @@ export class SurveySubfactor extends LitElement {
     constructor() {
         super();
         this.subfactor = {};
-        this.response = {};
+        this.response = {
+            facilitatingFactor: 0,
+            priority: 0,
+            comment: ''
+        };
     }
 
     async connectedCallback() {
