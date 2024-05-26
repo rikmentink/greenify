@@ -66,8 +66,8 @@ class NavbarItem extends LitElement {
 
     handleRouteChange(e) {
       const currentRoute = e.detail.location;
-      this.isCurrentPath = currentRoute.pathname === `/${this.url}`;
-      console.log(`Current path: ${currentRoute.pathname} - /${this.url}`)
+      const pathSegments = currentRoute.pathname.split('/').filter(Boolean);
+      this.isCurrentPath = pathSegments[0] === this.url;
       this.requestUpdate();
     }
 
