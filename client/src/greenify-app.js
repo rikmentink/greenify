@@ -7,6 +7,7 @@ import { ProfilePanel } from './view/components/profile/ProfilePanel';
 
 // Views
 import { Home } from './view/pages/Home';
+import { Survey } from './view/pages/Survey';
 
 /**
  * The complete app, don't remove this!
@@ -40,9 +41,15 @@ export class GreenifyApp extends LitElement {
       baseUrl: BASE_URL
     });
     router.setRoutes([
-      { path: `${BASE_URL}`, component: 'gi-home' },
-      { path: `${BASE_URL}/login`, component: 'gi-login' },
-      // TODO: Include all URLs
+      { path: '', component: 'gi-home' },
+      { path: '/login', component: 'gi-login' },
+      { path: '/login/option', component: 'gi-loginoption' },
+      { path: '/register', component: 'gi-register' },
+      { path: '/intervention/:id', component: 'gi-intervention' },
+      { path: '/intervention/:id/new-phase', component: 'gi-createphase' },
+      { path: '/phase/:id', component: 'gi-overview' },
+      { path: '/phase/:id/report', component: 'gi-survey-result-report' },
+      { path: '/survey/:id', component: 'gi-survey' },
     ])
   }
 }
