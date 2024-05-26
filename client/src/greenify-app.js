@@ -1,5 +1,6 @@
 import { LitElement, css, html } from 'lit';
 import { initRouter } from './router';
+import global from './assets/global-styles';
 
 // Components
 import { Header } from './view/components/header/Header';
@@ -14,9 +15,10 @@ import { Survey } from './view/pages/Survey';
  */
 export class GreenifyApp extends LitElement {
   static styles = [
+    global,
     css`
-      h1 {
-        color: green;
+      #outlet {
+          flex: 1 1 auto;
       }
     `];
 
