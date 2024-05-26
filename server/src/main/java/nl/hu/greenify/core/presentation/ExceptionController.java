@@ -45,6 +45,7 @@ public class ExceptionController {
         // Also, this way we can easily add more information in the future. Form validation for example.
         ObjectMapper objectMapper = new ObjectMapper();
         ObjectNode errorResponse = objectMapper.createObjectNode();
+        errorResponse.put("error", status.name().toLowerCase());
         errorResponse.put("message", errorMessage);
 
         return ResponseEntity.status(status).contentType(MediaType.APPLICATION_JSON).body(errorResponse.toString());

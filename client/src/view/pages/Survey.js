@@ -50,16 +50,19 @@ export class Survey extends LitElement {
 
         const router = getRouter();
         const id = router.location.params.id;
+        
+        // TODO: Why does it not wait for the promise to resolve? 
+        // Now the body is empty and doesn't contain an error property.
         const survey = await this._fetchData(id);
-        if (survey.hasOwnProperty('error') && survey.error === 'unauthorized') {
+        if (survey.hasOwnProperty('error')) {
             console.warning('Unauthorized access to survey. Redirecting to home page.')
             router.navigate('/');
+        } else {
+            this.addEventListener('updatedResponse', async (event) => {
+                const { subfactorId, response } = event.detail;
+                await saveResponse(this.id, subfactorId, response);
+            });
         }
-
-        this.addEventListener('updatedResponse', async (event) => {
-            const { subfactorId, response } = event.detail;
-            await saveResponse(this.id, subfactorId, response);
-        });
     }
 
     async disconnectedCallback() {
@@ -72,10 +75,13 @@ export class Survey extends LitElement {
             task: async ([id, page, pageSize]) => getSurvey(id, page, pageSize),
             args: () => [id, this.page, this.pageSize]
         });
-        return this.data.run();
+        return await this.data.run();
     }
 
     render() {
+        // if (this.data._value.error) {
+        //     return html`<p>An error occured while loading the questions: ${this.data.message}</p>`;
+        // }
         return html`
             <gi-info-popup></gi-info-popup>
                 ${this.data.render({
