@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
+import { getRouter } from "../../router.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
@@ -38,19 +39,23 @@ export class Survey extends LitElement {
 
     constructor() {
         super();
-        this.id = 102;
+        this.id = 0;
         this.page = 1;
         this.pageSize = 10; // TODO: This should be dynamic
-        this.data = new Task(this, {
-            task: async ([id, page, pageSize]) => getSurvey(id, page, pageSize),
-            args: () => [this.id, this.page, this.pageSize]
-        })
-
-        // TODO: Should redirect back if the survey id is not found
+        this.data = []
     }
 
     async connectedCallback() {
         super.connectedCallback();
+
+        const router = getRouter();
+        const id = router.location.params.id;
+        const survey = await this._fetchData(id);
+        if (survey.hasOwnProperty('error') && survey.error === 'unauthorized') {
+            console.warning('Unauthorized access to survey. Redirecting to home page.')
+            router.navigate('/');
+        }
+
         this.addEventListener('updatedResponse', async (event) => {
             const { subfactorId, response } = event.detail;
             await saveResponse(this.id, subfactorId, response);
@@ -60,6 +65,14 @@ export class Survey extends LitElement {
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('updatedResponse');
+    }
+
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id, page, pageSize]) => getSurvey(id, page, pageSize),
+            args: () => [id, this.page, this.pageSize]
+        });
+        return this.data.run();
     }
 
     render() {

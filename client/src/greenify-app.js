@@ -1,5 +1,5 @@
 import { LitElement, css, html } from 'lit';
-import { Router } from '@vaadin/router';
+import { initRouter } from './router';
 
 // Components
 import { Header } from './view/components/header/Header';
@@ -36,21 +36,7 @@ export class GreenifyApp extends LitElement {
   }
 
   firstUpdated() {
-    const BASE_URL = import.meta.env.BASE_URL;
-    const router = new Router(this.shadowRoot.getElementById('outlet'), {
-      baseUrl: BASE_URL
-    });
-    router.setRoutes([
-      { path: '', component: 'gi-home' },
-      { path: '/login', component: 'gi-login' },
-      { path: '/login/option', component: 'gi-loginoption' },
-      { path: '/register', component: 'gi-register' },
-      { path: '/intervention/:id', component: 'gi-intervention' },
-      { path: '/intervention/:id/new-phase', component: 'gi-createphase' },
-      { path: '/phase/:id', component: 'gi-overview' },
-      { path: '/phase/:id/report', component: 'gi-survey-result-report' },
-      { path: '/survey/:id', component: 'gi-survey' },
-    ])
+    initRouter(this.shadowRoot.getElementById('outlet'));
   }
 }
 
