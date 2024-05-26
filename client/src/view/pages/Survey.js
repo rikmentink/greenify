@@ -47,17 +47,8 @@ export class Survey extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-
-        const router = getRouter();
-        const id = router.location.params.id;
-        
-        // TODO: Why does it not wait for the promise to resolve? 
-        // Now the body is empty and doesn't contain an error property.
-        const survey = await this._fetchData(id);
-        if (survey.hasOwnProperty('error')) {
-            console.warning('Unauthorized access to survey. Redirecting to home page.')
-            router.navigate('/');
-        } else {
+        this.id = getRouter().location.params.id;
+        if (this.authorizeAndRedirect()) {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
                 await saveResponse(this.id, subfactorId, response);
@@ -68,6 +59,20 @@ export class Survey extends LitElement {
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('updatedResponse');
+    }
+
+    /**
+     * TODO: Why does it not wait for the promise to resolve? 
+     * Now the body is empty and doesn't contain an error property.
+     */
+    async authorizeAndRedirect() {
+        const survey = await this._fetchData(this.id);
+        if (survey.hasOwnProperty('error')) {
+            console.warning('Unauthorized access to survey. Redirecting to home page.')
+            router.navigate('/');
+            return false;
+        }
+        return true;
     }
 
     async _fetchData(id) {
