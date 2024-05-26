@@ -20,3 +20,5 @@ async function sendMail(mail) {
 
     return response.json();
 }
+
+export { sendMail };

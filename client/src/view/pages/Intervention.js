@@ -2,6 +2,7 @@ import {css, html, LitElement} from "lit";
 import {InterventionUsersPanel} from "../components/intervention/InterventionUsersPanel.js";
 import {InterventionInformationBox} from "../components/intervention/InterventionInformationBox.js";
 import {InterventionSurveyBox} from "../components/intervention/InterventionSurveyBox.js";
+import {sendMail} from "../../services/MailService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
