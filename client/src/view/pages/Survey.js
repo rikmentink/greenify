@@ -47,7 +47,7 @@ export class Survey extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.id = getRouter().location.params.id;
+        this.id = getRouter().location.params.id || 0;
         if (this.authorizeAndRedirect()) {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
@@ -66,12 +66,17 @@ export class Survey extends LitElement {
      * Now the body is empty and doesn't contain an error property.
      */
     async authorizeAndRedirect() {
-        const survey = await this._fetchData(this.id);
-        if (survey.hasOwnProperty('error')) {
-            console.warning('Unauthorized access to survey. Redirecting to home page.')
-            router.navigate('/');
+        if (this.id == 0) {
+            window.location.href = '/';
             return false;
         }
+
+        const survey = await this._fetchData(this.id);
+        if (survey.hasOwnProperty('error')) {
+            window.location.href = '/';
+            return false;
+        }
+        
         return true;
     }
 
