@@ -84,9 +84,9 @@ export class Survey extends LitElement {
     }
 
     render() {
-        // if (this.data._value.error) {
-        //     return html`<p>An error occured while loading the questions: ${this.data.message}</p>`;
-        // }
+        if (this.data._value.error) {
+            return html`<p>An error occured while loading the questions: ${this.data._value.message}</p>`;
+        }
         return html`
             <gi-info-popup></gi-info-popup>
                 ${this.data.render({
