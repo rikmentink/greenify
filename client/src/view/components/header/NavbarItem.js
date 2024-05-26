@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { router } from '../../router/router.js';
+import { Router } from '@vaadin/router';
 
 class NavbarItem extends LitElement {
     static properties = {
@@ -46,6 +46,12 @@ class NavbarItem extends LitElement {
     }
   `;
 
+    constructor() {
+        super();
+        this.url = '';
+        this.label = '';
+        this.isCurrentPath = false;
+    }
 
     connectedCallback() {
         super.connectedCallback();
@@ -55,19 +61,19 @@ class NavbarItem extends LitElement {
     disconnectedCallback() {
         super.disconnectedCallback();
         window.removeEventListener('vaadin-router-location-changed', this.handleRouteChange.bind(this));
+        this.unsubscribe();
     }
 
-    handleRouteChange() {
-        this.requestUpdate();
-    }
-
-    isCurrentPath() {
-        return this.url === router.location.getUrl();
+    handleRouteChange(e) {
+      const currentRoute = e.detail.location;
+      this.isCurrentPath = currentRoute.pathname === `/${this.url}`;
+      console.log(`Current path: ${currentRoute.pathname} - /${this.url}`)
+      this.requestUpdate();
     }
 
     render() {
         return html`
-      <a .href=${import.meta.env.BASE_URL + this.url} class=${this.isCurrentPath() ? 'current' : ''}>${this.label}</a>
+      <a .href=${import.meta.env.BASE_URL + this.url} class=${this.isCurrentPath ? 'current' : ''}>${this.label}</a>
     `;
     }
 }
