@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -25,9 +26,11 @@ public class Response {
     private String comment;
 
     @Enumerated(EnumType.STRING)
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private FacilitatingFactor facilitatingFactor;
 
     @Enumerated(EnumType.STRING)
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private Priority priority;
 
     @OneToOne
