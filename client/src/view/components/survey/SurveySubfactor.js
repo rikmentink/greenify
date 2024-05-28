@@ -32,14 +32,23 @@ export class SurveySubfactor extends LitElement {
     constructor() {
         super();
         this.subfactor = {};
-        this.response = {};
+        this.response = {
+            facilitatingFactor: 0,
+            priority: 0,
+            comment: ''
+        };
+    }
+    
+    firstUpdated() {
+        if (this.subfactor.response) {
+            this.response = this.subfactor.response;
+        }
     }
 
     async connectedCallback() {
         super.connectedCallback();
         this.addEventListener('answer', event => {
             this.response[event.detail.question] = event.detail.answer;
-
             this.dispatchEvent(new CustomEvent('updatedResponse', {
                 detail: {
                     subfactorId: this.subfactor.id,
@@ -60,10 +69,10 @@ export class SurveySubfactor extends LitElement {
         return html`
                 <div class="subfactor__name">${this.subfactor.title}</div>
                 <div class="subfactor__question">
-                    <gi-survey-question name="facilitating-factor"></gi-survey-question>
+                    <gi-survey-question name="facilitatingFactor" .answer=${this.response.facilitatingFactor}></gi-survey-question>
                 </div>
                 <div class="subfactor__question">
-                    <gi-survey-question name="priority"></gi-survey-question>
+                    <gi-survey-question name="priority" .answer=${this.response.priority}></gi-survey-question>
                 </div>
                 <div class="subfactor__comments">FA</div>
         `

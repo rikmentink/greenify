@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
+import { getRouter } from "../../router.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
@@ -10,6 +11,7 @@ import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 export class Survey extends LitElement {
     static properties = {
         id: { type: Number },
+        categoryId: { type: Number },
         page: { type: Number },
         pageSize: { type: Number }
     }
@@ -38,23 +40,22 @@ export class Survey extends LitElement {
 
     constructor() {
         super();
-        this.id = 102;
+        this.id = 0;
+        this.categoryId = 0;
         this.page = 1;
         this.pageSize = 10; // TODO: This should be dynamic
-        this.data = new Task(this, {
-            task: async ([id, page, pageSize]) => getSurvey(id, page, pageSize),
-            args: () => [this.id, this.page, this.pageSize]
-        })
-
-        // TODO: Should redirect back if the survey id is not found
+        this.data = []
     }
 
     async connectedCallback() {
         super.connectedCallback();
-        this.addEventListener('updatedResponse', async (event) => {
-            const { subfactorId, response } = event.detail;
-            await saveResponse(this.id, subfactorId, response);
-        });
+        this.id = getRouter().location.params.id || 0;
+        if (this.authorizeAndRedirect()) {
+            this.addEventListener('updatedResponse', async (event) => {
+                const { subfactorId, response } = event.detail;
+                await saveResponse(this.id, subfactorId, response);
+            });
+        }
     }
 
     async disconnectedCallback() {
@@ -62,7 +63,39 @@ export class Survey extends LitElement {
         this.removeEventListener('updatedResponse');
     }
 
+    /**
+     * TODO: Why does it not wait for the promise to resolve? 
+     * Now the body is empty and doesn't contain an error property.
+     */
+    async authorizeAndRedirect() {
+        if (this.id == 0) {
+            window.location.href = '/';
+            return false;
+        }
+
+        const survey = await this._fetchData(this.id);
+        if (survey.hasOwnProperty('error')) {
+            window.location.href = '/';
+            return false;
+        }
+        
+        return true;
+    }
+
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id, categoryId, page, pageSize]) => getSurvey(id, categoryId, page, pageSize),
+            args: () => [id, this.categoryId, this.page, this.pageSize]
+        });
+        return await this.data.run();
+    }
+
     render() {
+        if (this.data._value.error) {
+            return html`
+                <h1>Tool</h1>
+                <p>An error occured while loading the questions: ${this.data._value.message}</p>`;
+        }
         return html`
             <gi-info-popup></gi-info-popup>
                 ${this.data.render({
@@ -70,7 +103,7 @@ export class Survey extends LitElement {
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (data) => html`
                         <a href="/intervention/${this.id}">Back to overview</a>
-                        <h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>
+                        ${data.category ? html`<h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>` : html`<h1>Tool</h1>`}
                         <div class="survey">
                             <div class="header">
                                 <div class="column">Vraag</div>

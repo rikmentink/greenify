@@ -1,6 +1,6 @@
 const questions = [
     {
-        question: "facilitating-factor",
+        question: "facilitatingFactor",
         options: [
             {
                 name: "TOTALLY_DISAGREE",

@@ -55,6 +55,7 @@ export class SurveyQuestion extends LitElement {
     }
 
     render() {
+        console.log(this.answer)
         return html`
             <div class="question" data-question="${this.name}">
                 ${this._findOptions().map(option => html`
@@ -76,7 +77,7 @@ export class SurveyQuestion extends LitElement {
             new CustomEvent('answer', {
                 detail: {
                     question: event.target.name,
-                    answer: event.target.value
+                    answer: parseInt(event.target.value)
                 },
                 bubbles: true,
                 composed: true

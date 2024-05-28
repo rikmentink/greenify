@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -25,9 +26,11 @@ public class Response {
     private String comment;
 
     @Enumerated(EnumType.STRING)
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private FacilitatingFactor facilitatingFactor;
 
     @Enumerated(EnumType.STRING)
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private Priority priority;
 
     @OneToOne
@@ -64,7 +67,11 @@ public class Response {
             priority,
             subfactor
         );
-        response.subfactor.setResponse(response);
+        
+        if (subfactor.getResponse() != null) {
+            response.setId(subfactor.getResponse().getId());
+        }
+        subfactor.setResponse(response);
         response.calculateScore();
         return response;
     }
