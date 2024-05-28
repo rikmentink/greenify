@@ -1,17 +1,16 @@
 import { LitElement, html, css } from 'lit';
+import global from '../../../assets/global-styles';
+
 import './Navbar.js';
 import './ProfileButton.js';
 import '../profile/ProfilePanel.js';
 
 export class Header extends LitElement {
-    static styles = [ css`
-        :host {
-            background-color: #4CBB17;
-            z-index: 100;
-        }
-
+    static styles = [ 
+        global,
+        css`
         .nav-head {
-            margin: 0 40px 0 30px;
+            margin-right: 2rem;
             font-size: 1.3rem;
             font-weight: 700;
             max-width: 600px;
@@ -26,6 +25,8 @@ export class Header extends LitElement {
         header {
             flex: 0 0 auto;
             padding: 2rem 0;
+            background-color: #4CBB17;
+            z-index: 100;
         }
 
         .header__content {

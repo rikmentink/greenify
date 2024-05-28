@@ -12,12 +12,9 @@ async function getSurvey(id, categoryId, page = 1, pageSize = 1000) {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error(`Could not load survey data. HTTP Error ${response.status}: ${response.statusText}`);
+            console.error(`Could not load survey data. HTTP Error ${response.status}: ${response.statusText}`);
         }
         return response.json();
-    })
-    .catch(error => {
-      console.error(error);
     });
 }
 
