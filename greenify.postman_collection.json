@@ -335,7 +335,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/survey/:id/questions?categoryId=1&page=1&pageSize=1000",
+							"raw": "{{BASE_URL}}/survey/:id/questions?page=1&pageSize=1000",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -347,7 +347,8 @@
 							"query": [
 								{
 									"key": "categoryId",
-									"value": "1"
+									"value": "1",
+									"disabled": true
 								},
 								{
 									"key": "page",
@@ -401,7 +402,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"subfactorId\": 4,\n    \"facilitating-factor\": 1,\n    \"priority\": 3,\n    \"comment\": \"Not my cup of tea\"\n}",
+							"raw": "{\n    \"subfactorId\": 1,\n    \"facilitatingFactor\": 5,\n    \"priority\": 2,\n    \"comment\": \"Very important!!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
