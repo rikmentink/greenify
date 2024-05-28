@@ -103,7 +103,7 @@ export class Survey extends LitElement {
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (data) => html`
                         <a href="/intervention/${this.id}">Back to overview</a>
-                        <h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>
+                        ${data.category ? html`<h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>` : html`<h1>Tool</h1>`}
                         <div class="survey">
                             <div class="header">
                                 <div class="column">Vraag</div>
