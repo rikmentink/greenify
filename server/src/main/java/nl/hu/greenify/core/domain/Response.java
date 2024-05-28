@@ -65,7 +65,6 @@ public class Response {
             subfactor
         );
         
-        // TODO: Why does it try to create a new response?
         if (subfactor.getResponse() != null) {
             response.setId(subfactor.getResponse().getId());
         }
