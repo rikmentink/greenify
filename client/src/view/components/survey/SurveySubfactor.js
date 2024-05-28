@@ -38,6 +38,12 @@ export class SurveySubfactor extends LitElement {
             comment: ''
         };
     }
+    
+    firstUpdated() {
+        if (this.subfactor.response) {
+            this.response = this.subfactor.response;
+        }
+    }
 
     async connectedCallback() {
         super.connectedCallback();
@@ -63,10 +69,10 @@ export class SurveySubfactor extends LitElement {
         return html`
                 <div class="subfactor__name">${this.subfactor.title}</div>
                 <div class="subfactor__question">
-                    <gi-survey-question name="facilitatingFactor"></gi-survey-question>
+                    <gi-survey-question name="facilitatingFactor" .answer=${this.response.facilitatingFactor}></gi-survey-question>
                 </div>
                 <div class="subfactor__question">
-                    <gi-survey-question name="priority"></gi-survey-question>
+                    <gi-survey-question name="priority" .answer=${this.response.priority}></gi-survey-question>
                 </div>
                 <div class="subfactor__comments">FA</div>
         `
