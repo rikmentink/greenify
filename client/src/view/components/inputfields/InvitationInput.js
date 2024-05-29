@@ -58,7 +58,7 @@ export class InvitationInput extends LitElement {
             this.person = await getPersonByEmail(email);
             this.dispatchEvent(new CustomEvent('person-fetched', {
                 detail: { person: this.person },
-                bubbles: true,
+                bubbles: false,
                 composed: true
             }
             ));

@@ -97,8 +97,7 @@ export class UserActionMenu extends LitElement {
     }
 
     handleRemoveUser() {
-       this.fetchUser();
-       console.log("Sending event!")
+       console.log("User wordt verwijderd")
     }
 
     closeOtherMenus() {

@@ -2,6 +2,7 @@ import {css, html, LitElement} from "lit";
 import {InterventionUsersPanel} from "../components/intervention/InterventionUsersPanel.js";
 import {InterventionInformationBox} from "../components/intervention/InterventionInformationBox.js";
 import {InterventionSurveyBox} from "../components/intervention/InterventionSurveyBox.js";
+import {sendMail} from "../../services/MailService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -34,6 +35,13 @@ export class Intervention extends LitElement {
         }
 
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
+
+        sendMail({
+            to: person.email,
+            subject: "U bent uitgenodigd bij een interventie",
+            body: `U bent toegevoegd aan interventie ${this.interventionId}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
+        });
+
         this.userData = [
             ...this.userData,
             {
@@ -44,7 +52,8 @@ export class Intervention extends LitElement {
                 userId: person.id
             }
         ];
-        this.requestUpdate();
+        // this.requestUpdate();
+        window.location.reload();
     }
 
     render() {
