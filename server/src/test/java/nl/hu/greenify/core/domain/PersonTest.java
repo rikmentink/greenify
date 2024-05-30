@@ -23,19 +23,19 @@ public class PersonTest {
     @Test
     @DisplayName("User should have a first name")
     void userFirstName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, null, "Doe", "JohnDoe@gmail.com", new ArrayList<>()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson(null, "Doe", "JohnDoe@gmail.com"));
     }
 
     @Test
     @DisplayName("User should have a last name")
     void userLastName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, "John", null, "JohnDoe@Gmail.com", new ArrayList<>()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson("John", null, "JohnDoe@Gmail.com"));
     }
 
     @Test
     @DisplayName("User should have an email")
     void userEmail() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, "John", "Doe", null, new ArrayList<>()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson("John", "Doe", null));
     }
 
     @ParameterizedTest
@@ -43,9 +43,9 @@ public class PersonTest {
     @MethodSource("emailProvider")
     void userValidEmailParameterized(String email, boolean expected) {
         if (!expected) {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, "John", "Doe", email, new ArrayList<>()));
+            Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson("John", "Doe", email));
         } else {
-            new Person(2L, "John", "Doe", email, new ArrayList<>());
+            Person.createPerson("John", "Doe", email);
         }
     }
 

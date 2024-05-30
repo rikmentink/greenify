@@ -25,7 +25,7 @@ public class InterventionTest {
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(1L, null, "Watering the plants", person, new ArrayList<>(), new ArrayList<>()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Intervention.createIntervention(null, "Watering the plants", person));
     }
 
     @DisplayName("An intervention should be able to add a phase")
@@ -64,7 +64,7 @@ public class InterventionTest {
     @DisplayName("An intervention should have an admin")
     @Test
     void interventionAdmin() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(1L, "Garden", "Watering the plants", null, new ArrayList<>(), new ArrayList<>()));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Intervention.createIntervention("Garden", "Watering the plants", null));
     }
 
     @DisplayName("An intervention should be able to add a participant")

@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 
 public class AccountTest {
 
@@ -18,7 +20,7 @@ public class AccountTest {
 
     @BeforeEach
     void setup() {
-        person = new Person("John", "Doe", "john@gmail.com");
+        person = new Person(1L, "John", "Doe", "john@gmail.com", new ArrayList<>());
     }
 
     @Test

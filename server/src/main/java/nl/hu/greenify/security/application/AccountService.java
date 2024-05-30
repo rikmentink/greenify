@@ -56,7 +56,7 @@ public class AccountService implements UserDetailsService {
         String encodedPassword = this.passwordEncoder.encode(password);
 
         // Create a new person
-        Person person = new Person(firstName, lastName, email);
+        Person person = Person.createPerson(firstName, lastName, email);
         this.personRepository.save(person);
 
         // Create a new user
