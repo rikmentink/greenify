@@ -4,11 +4,15 @@ import global from './assets/global-styles';
 
 // Components
 import { Header } from './view/components/header/Header';
-import { ProfilePanel } from './view/components/profile/ProfilePanel';
+import { ProfilePanel } from "./view/components/profile/ProfilePanel.js";
 
 // Views
 import { Home } from './view/pages/Home';
 import { Survey } from './view/pages/Survey';
+import { Login } from "./view/pages/Login.js";
+import { LoginOption } from "./view/pages/LoginOption.js";
+import { Register } from "./view/pages/Register.js";
+import { Intervention } from "./view/pages/Intervention.js";
 
 /**
  * The complete app, don't remove this!
@@ -29,7 +33,6 @@ export class GreenifyApp extends LitElement {
   render() {
     return html`
       <gi-header></gi-header>
-      <profile-panel></profile-panel>
 
       <div id="main-content" class="container">
         <main id="outlet"/>
