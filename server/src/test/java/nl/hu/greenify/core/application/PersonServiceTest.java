@@ -3,6 +3,7 @@ package nl.hu.greenify.core.application;
 import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.security.application.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,9 @@ import static org.mockito.Mockito.when;
 @DisplayName("Person Service Test")
 public class PersonServiceTest {
     private final PersonRepository personRepository = mock(PersonRepository.class);
-    private final PersonService personService = new PersonService(personRepository);
+
+    private final AccountService accountService = mock(AccountService.class);
+    private final PersonService personService = new PersonService(personRepository, accountService);
     private Person person;
     private Person person2;
     private Person person3;
