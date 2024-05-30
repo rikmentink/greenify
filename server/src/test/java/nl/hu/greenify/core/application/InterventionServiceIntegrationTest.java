@@ -45,8 +45,7 @@ public class InterventionServiceIntegrationTest {
         person.setId(1L);
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);
-        Phase phase = new Phase(PhaseName.PLANNING);
-        phase.setId(1L);
+        Phase phase = new Phase(1L, PhaseName.PLANNING);
 
         when(interventionRepository.findById(1L)).thenReturn(java.util.Optional.of(i));
         when(phaseRepository.findById(1L)).thenReturn(java.util.Optional.of(phase));

@@ -43,7 +43,7 @@ public class InterventionServiceTest {
         when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
         when(interventionRepository.findById(i.getId())).thenReturn(Optional.ofNullable(i));
-        when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(PhaseName.PLANNING)));
+        when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(1L, PhaseName.PLANNING)));
         when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
     }
 

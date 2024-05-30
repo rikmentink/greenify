@@ -40,7 +40,7 @@ public class InterventionService {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
         
-        Phase phase = new Phase(phaseName);
+        Phase phase = Phase.createPhase(phaseName);
         phaseRepository.save(phase);
 
         intervention.addPhase(phase);

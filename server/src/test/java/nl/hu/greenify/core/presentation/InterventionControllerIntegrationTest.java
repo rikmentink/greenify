@@ -49,7 +49,7 @@ public class InterventionControllerIntegrationTest {
         i.setId(1L);
 
         when(interventionRepository.findById(1L)).thenReturn(Optional.of(i));
-        when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(PhaseName.PLANNING)));
+        when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(1L, PhaseName.PLANNING)));
         when(personService.getPersonById(1L)).thenReturn(person);
     }
 

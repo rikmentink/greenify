@@ -12,12 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 
 @Getter
-@Setter
 @Entity
 @EqualsAndHashCode
 @ToString
@@ -32,15 +30,24 @@ public class Phase {
     @OneToMany(mappedBy="phase", cascade=CascadeType.PERSIST)
     private List<Survey> surveys = new ArrayList<>();
 
-    // TODO: Create static named constructor
-    public Phase(PhaseName name) {
-        if(name == null) {
-            throw new IllegalArgumentException("Phase should have a name");
-        }
+    protected Phase() {
+    }
+
+    private Phase(PhaseName name) {
         this.name = name;
     }
 
-    protected Phase() {
+    public Phase(Long id, PhaseName name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public static Phase createPhase(PhaseName name) {
+        if(name == null) {
+            throw new IllegalArgumentException("Phase should have a name");
+        }
+        
+        return new Phase(name);
     }
 
     public void addSurvey(Survey survey) {
