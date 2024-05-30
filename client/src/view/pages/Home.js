@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit";
 import {MyInterventionsBox} from "../components/home/MyInterventionsBox.js";
+import {getCurrentPerson} from "../../services/PersonService.js";
 
 export class Home extends LitElement {
     static styles = [css`
@@ -28,12 +29,23 @@ export class Home extends LitElement {
 
     constructor() {
         super();
-        this.userData = {
-            id: 1,
-            name: "John Doe",
-            email: "john@gmail.com",
+        this.userData = {};
+        this.fetchCurrentPerson();
+    }
+
+    async fetchCurrentPerson() {
+        this.userData = await getCurrentPerson();
+        this.requestUpdate()
+    }
+
+    homePageUserInfo() {
+        if (this.userData.firstName && this.userData.lastName) {
+            return `${this.userData.firstName} ${this.userData.lastName}`;
+        } else {
+            return "Geen gebruiker gevonden...";
         }
     }
+
 
     connectedCallback() {
         super.connectedCallback();
@@ -43,7 +55,7 @@ export class Home extends LitElement {
         return html`
             <div class="home-header">
                 <h1>Welkom</h1>
-                <h2>${this.userData.name}</h2>
+                <h2>${this.homePageUserInfo()}</h2>
             </div>
             <my-intervention-box .userId=${this.userData.id}></my-intervention-box>
         `;
