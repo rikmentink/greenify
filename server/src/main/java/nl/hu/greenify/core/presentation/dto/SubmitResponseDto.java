@@ -19,4 +19,13 @@ public class SubmitResponseDto {
         this.priority = priority;
         this.comment = comment;
     }
+
+    public String toJsonString() {
+        return "{" +
+                "\"subfactorId\":" + subfactorId + "," +
+                "\"facilitatingFactor\":\"" + facilitatingFactor + "\"," +
+                "\"priority\":\"" + priority + "\"," +
+                "\"comment\":\"" + comment + "\"" +
+                "}";
+    }
 }

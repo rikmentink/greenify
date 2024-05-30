@@ -1,7 +1,6 @@
 package nl.hu.greenify.core.presentation;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -19,11 +18,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import nl.hu.greenify.core.application.SurveyService;
 import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
+import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.presentation.dto.CreateSurveyDto;
+import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,48 +53,55 @@ public class SurveyControllerIntegrationTest {
     }
 
     /**
-     * createSurvey tests
-    */
+     * getSurvey tests
+     */
 
     @Test
-    @DisplayName("Creating a survey should return a new survey")
-    void createSurveyShouldReturnOk() throws Exception {
-        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenReturn(this.survey);
+    @DisplayName("Getting all surveys should return 200")
+    void getAllSurveysShouldReturnOk() throws Exception {
+        when(surveyService.getAllSurveys()).thenReturn(new ArrayList<>());
 
-        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
-        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
-                .contentType("application/json")
-                .content(dto.toJsonString());
+        RequestBuilder request = MockMvcRequestBuilders.get("/survey");
 
         mockMvc.perform(request)
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Creating a survey with invalid phase should return 400")
-    void createSurveyWithInvalidPhaseShouldReturnNotFound() throws Exception {
-        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenThrow(new IllegalArgumentException(""));
+    @DisplayName("Getting all surveys while no surveys are available should return 200")
+    void getAllSurveysWhileNoSurveysAreAvailableShouldReturnOk() throws Exception {
+        when(surveyService.getAllSurveys()).thenReturn(new ArrayList<>());
 
-        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
-        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
-                .contentType("application/json")
-                .content(dto.toJsonString());
+        RequestBuilder request = MockMvcRequestBuilders.get("/survey");
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isOk());
+    }
+
+    /**
+     * getSurvey tests
+     */
+
+    @Test
+    @DisplayName("Getting a survey should return 200")
+    void getSurveyShouldReturnOk() throws Exception {
+        when(surveyService.getSurvey(SURVEY_ID)).thenReturn(this.survey);
+
+        RequestBuilder request = MockMvcRequestBuilders.get("/survey/" + SURVEY_ID);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Creating a survey with invalid person should return 400")
-    void createSurveyWithInvalidPersonShouldReturnNotFound() throws Exception {
-        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenThrow(new IllegalArgumentException(""));
+    @DisplayName("Getting a survey with invalid id should return 404")
+    void getSurveyWithInvalidIdShouldReturnNotFound() throws Exception {
+        when(surveyService.getSurvey(SURVEY_ID)).thenThrow(new PersonNotFoundException(""));
 
-        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
-        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
-                .contentType("application/json")
-                .content(dto.toJsonString());
+        RequestBuilder request = MockMvcRequestBuilders.get("/survey/" + SURVEY_ID);
+
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     /**
@@ -180,4 +190,95 @@ public class SurveyControllerIntegrationTest {
     //     mockMvc.perform(request)
     //             .andExpect(status().isOk());
     // }
+
+    /**
+     * createSurvey tests
+    */
+
+    @Test
+    @DisplayName("Creating a survey should return a new survey")
+    void createSurveyShouldReturnOk() throws Exception {
+        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenReturn(this.survey);
+
+        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
+        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
+                .contentType("application/json")
+                .content(dto.toJsonString());
+
+        mockMvc.perform(request)
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("Creating a survey with invalid phase should return 400")
+    void createSurveyWithInvalidPhaseShouldReturnNotFound() throws Exception {
+        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenThrow(new IllegalArgumentException(""));
+
+        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
+        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
+                .contentType("application/json")
+                .content(dto.toJsonString());
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Creating a survey with invalid person should return 400")
+    void createSurveyWithInvalidPersonShouldReturnNotFound() throws Exception {
+        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenThrow(new IllegalArgumentException(""));
+
+        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
+        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
+                .contentType("application/json")
+                .content(dto.toJsonString());
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
+    /**
+     * submitResponse tests
+     */
+    
+    @Test
+    @DisplayName("Submitting a response should return 200")
+    void submitResponseShouldReturnOk() throws Exception {
+        SubmitResponseDto dto = new SubmitResponseDto(1L, FacilitatingFactor.PENDING, Priority.PENDING, "");
+        when(surveyService.submitResponse(SURVEY_ID, dto)).thenReturn(null);
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/survey/" + SURVEY_ID + "/response")
+                .contentType("application/json")
+                .content(dto.toJsonString());
+
+        mockMvc.perform(request)
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @DisplayName("Submitting a response with invalid survey id should return 404")
+    void submitResponseWithInvalidSurveyIdShouldReturnNotFound() throws Exception {
+        SubmitResponseDto dto = new SubmitResponseDto(1L, FacilitatingFactor.PENDING, Priority.PENDING, "");
+        when(surveyService.submitResponse(SURVEY_ID, dto)).thenThrow(new SurveyNotFoundException(""));
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/survey/" + SURVEY_ID + "/response")
+                .contentType("application/json")
+                .content(dto.toJsonString());
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("Submitting a response with invalid subfactor id should return 400")
+    void submitResponseWithInvalidSubfactorIdShouldReturnBadRequest() throws Exception {
+        SubmitResponseDto dto = new SubmitResponseDto(0L, FacilitatingFactor.PENDING, Priority.PENDING, "");
+        when(surveyService.submitResponse(SURVEY_ID, dto)).thenThrow(new IllegalArgumentException(""));
+
+        RequestBuilder request = MockMvcRequestBuilders.post("/survey/" + SURVEY_ID + "/response")
+                .contentType("application/json")
+                .content(dto.toJsonString());
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
 }
