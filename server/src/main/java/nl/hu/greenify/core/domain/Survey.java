@@ -109,10 +109,6 @@ public class Survey {
         );
     }
 
-    public Person getRespondent() {
-        return this.respondent;
-    }
-
     public void addCategory(Category category) {
         this.categories.add(category);
     }

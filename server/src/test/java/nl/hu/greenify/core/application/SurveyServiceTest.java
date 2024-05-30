@@ -108,6 +108,13 @@ public class SurveyServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("When getting questions for a survey with an invalid category id, it should return all factors")
+    public void getQuestionsShouldReturnAllFactors() {
+        var questionSet = surveyService.getQuestions(1L, 0L, 1, 1000);
+        assertEquals(questionSet.getFactors().size(), 1);
+    }
+
     /**
      * createSurvey tests
      */
@@ -168,6 +175,24 @@ public class SurveyServiceTest {
             SurveyNotFoundException.class,
             () -> surveyService.submitResponse(2L, responseData)
         );
+    }
+
+    /**
+     * createDefaultTemplate tests
+     */
+    @Test
+    @DisplayName("When creating a default template, it should return the active template if one already exists")
+    public void createDefaultTemplateShouldReturnActive() {
+        surveyService.createDefaultTemplate();
+        verify(templateRepository).findFirstByOrderByVersionDesc();
+    }
+
+    @Test
+    @DisplayName("When creating a default template and none exists, it should create one")
+    public void createDefaultTemplateShouldCreate() {
+        when(templateRepository.count()).thenReturn(0L);
+        surveyService.createDefaultTemplate();
+        verify(templateRepository).save(any(Template.class));
     }
 
     @BeforeEach
