@@ -34,4 +34,20 @@ async function register (email, password, firstName, lastName){
     await handleErrorMessages(response);
 }
 
-export { login, register };
+async function getCurrentUser(){
+    const response = await fetch(`${API_URL}/account/current`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+
+    if (!response.ok) {
+        return null;
+    }
+
+    return response.json();
+}
+
+export { login, register, getCurrentUser };
