@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -43,8 +44,7 @@ public class InterventionControllerIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "johndoe@gmail.com");
-        person.setId(1L);
+        person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);
 

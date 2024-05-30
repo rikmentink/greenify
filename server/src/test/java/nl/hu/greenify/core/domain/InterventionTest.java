@@ -9,6 +9,8 @@ import nl.hu.greenify.core.domain.enums.PhaseName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {
     private Intervention intervention;
@@ -16,7 +18,7 @@ public class InterventionTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "johndoe@gmail.com");
+        person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
         intervention = new Intervention("Garden", "Watering the plants", person);
     }
 
@@ -68,7 +70,7 @@ public class InterventionTest {
     @DisplayName("An intervention should be able to add a participant")
     @Test
     void interventionAddParticipant() {
-        Person participant = new Person("Jane", "Doe", "Janedoe@gmail.com");
+        Person participant = new Person(2L, "Jane", "Doe", "Janedoe@gmail.com", new ArrayList<>());
         intervention.addParticipant(participant);
         assertEquals(1, intervention.getParticipants().size());
     }
@@ -76,8 +78,8 @@ public class InterventionTest {
     @DisplayName("An intervention should be able to add multiple participants")
     @Test
     void interventionAddMultipleParticipants() {
-        Person participant1 = new Person("Jane", "Doe", "Janedoe@gmail.com");
-        Person participant2 = new Person("Jack", "Doe", "jackdoe@gmail.com");
+        Person participant1 = new Person(2L, "Jane", "Doe", "Janedoe@gmail.com", new ArrayList<>());
+        Person participant2 = new Person(3L, "Jack", "Doe", "jackdoe@gmail.com", new ArrayList<>());
         intervention.addParticipant(participant1);
         intervention.addParticipant(participant2);
         assertEquals(2, intervention.getParticipants().size());

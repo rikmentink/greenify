@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,8 +33,7 @@ public class InterventionServiceTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("firstName", "lastName", "username@gmail.com");
-        person.setId(1L);
+        person = new Person(1L, "firstName", "lastName", "username@gmail.com", new ArrayList<>());
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);
 

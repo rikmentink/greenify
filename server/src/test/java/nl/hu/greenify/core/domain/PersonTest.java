@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -16,25 +17,25 @@ public class PersonTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "JohnDoe@gmail.com");
+        person = new Person(1L, "John", "Doe", "JohnDoe@gmail.com", new ArrayList<>());
     }
 
     @Test
     @DisplayName("User should have a first name")
     void userFirstName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(null, "Doe", "JohnDoe@gmail.com"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, null, "Doe", "JohnDoe@gmail.com", new ArrayList<>()));
     }
 
     @Test
     @DisplayName("User should have a last name")
     void userLastName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", null, "JohnDoe@Gmail.com"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, "John", null, "JohnDoe@Gmail.com", new ArrayList<>()));
     }
 
     @Test
     @DisplayName("User should have an email")
     void userEmail() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, "John", "Doe", null, new ArrayList<>()));
     }
 
     @ParameterizedTest
@@ -42,9 +43,9 @@ public class PersonTest {
     @MethodSource("emailProvider")
     void userValidEmailParameterized(String email, boolean expected) {
         if (!expected) {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", email));
+            Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(2L, "John", "Doe", email, new ArrayList<>()));
         } else {
-            new Person("John", "Doe", email);
+            new Person(2L, "John", "Doe", email, new ArrayList<>());
         }
     }
 

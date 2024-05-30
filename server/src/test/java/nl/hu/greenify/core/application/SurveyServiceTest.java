@@ -37,6 +37,7 @@ public class SurveyServiceTest {
     private static final Long SURVEY_ID = 1L;
     private static final Long SUBFACTOR_ID = 1L;
     private static final Long PHASE_ID = 1L;
+    private static final Long PERSON_ID = 1L;
 
     private Subfactor subfactor;
     private Factor factor;
@@ -196,9 +197,9 @@ public class SurveyServiceTest {
 
     @BeforeEach
     public void setup() {
-        this.person = new Person("John", "Doe", "johndoe@gmail.com");
+        this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
         this.phase = new Phase(PHASE_ID, PhaseName.INITIATION);
-        this.intervention = new Intervention("Intervention", "Description", new Person("Admin", "Admin", "admin@gmail.com"));
+        this.intervention = new Intervention("Intervention", "Description", person);
         this.intervention.addParticipant(person);
         this.intervention.addPhase(phase);
 
@@ -219,7 +220,7 @@ public class SurveyServiceTest {
         when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(this.survey));
         when(interventionService.getPhaseById(1L)).thenReturn(phase);
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
-        when(personService.getPersonById(1L)).thenReturn(person);
+        when(personService.getPersonById(PERSON_ID)).thenReturn(person);
     }
 
     private Template mockTemplate() {

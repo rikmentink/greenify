@@ -100,7 +100,7 @@ public class SurveyTest {
     
     @BeforeEach
     void setup() {
-        this.person = new Person("John", "Doe", "you@example.com");
+        this.person = new Person(1L, "John", "Doe", "you@example.com", new ArrayList<>());
         this.survey = new Survey(1L, new Phase(1L, PhaseName.INITIATION), new ArrayList<>(), this.person);
         this.category = new Category(1L, "", "", "", new ArrayList<>());
         this.factor = new Factor(1L, "", 0, new ArrayList<>());

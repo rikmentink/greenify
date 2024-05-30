@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,7 +42,7 @@ public class InterventionServiceIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("firstName", "lastName", "johndoe@gmail.com");
+        person = new Person(1L, "firstName", "lastName", "johndoe@gmail.com", new ArrayList<>());
         person.setId(1L);
         i = new Intervention("Intervention", "Intervention description", person);
         i.setId(1L);
