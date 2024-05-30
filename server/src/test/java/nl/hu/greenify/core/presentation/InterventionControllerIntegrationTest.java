@@ -40,15 +40,14 @@ public class InterventionControllerIntegrationTest {
     @MockBean
     private PersonService personService;
     Person person;
-    Intervention i;
+    Intervention intervention;
 
     @BeforeEach
     void setUp() {
         person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
-        i = new Intervention("Intervention", "Intervention description", person);
-        i.setId(1L);
+        intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
 
-        when(interventionRepository.findById(1L)).thenReturn(Optional.of(i));
+        when(interventionRepository.findById(1L)).thenReturn(Optional.of(intervention));
         when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(1L, PhaseName.PLANNING)));
         when(personService.getPersonById(1L)).thenReturn(person);
     }

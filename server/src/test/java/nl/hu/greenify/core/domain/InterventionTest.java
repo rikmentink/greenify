@@ -19,13 +19,13 @@ public class InterventionTest {
     @BeforeEach
     void setUp() {
         person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
-        intervention = new Intervention("Garden", "Watering the plants", person);
+        intervention = new Intervention(1L, "Garden", "Watering the plants", person, new ArrayList<>(), new ArrayList<>());
     }
 
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants", person));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(1L, null, "Watering the plants", person, new ArrayList<>(), new ArrayList<>()));
     }
 
     @DisplayName("An intervention should be able to add a phase")
@@ -64,7 +64,7 @@ public class InterventionTest {
     @DisplayName("An intervention should have an admin")
     @Test
     void interventionAdmin() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention("Garden", "Watering the plants", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(1L, "Garden", "Watering the plants", null, new ArrayList<>(), new ArrayList<>()));
     }
 
     @DisplayName("An intervention should be able to add a participant")
