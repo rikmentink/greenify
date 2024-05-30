@@ -7,14 +7,15 @@ import './ProfileFooter.js';
 export class ProfilePanel extends LitElement {
     static styles = css`
     .profile-panel {
-      position: absolute;
-      right: 0;
-      width: 210px;
-      background-color: #4CBB17;
-      color: #fff;
-      padding: 10px;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-      z-index: 10; // Index value to define which element should be on top
+        position: absolute;
+        right: 0;
+        width: 210px;
+        background-color: rgb(76, 187, 23);;
+        color: #fff;
+        padding: 10px;
+        box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5), 
+        10px 0 10px -10px rgba(0, 0, 0, 0.5), -10px 0 10px -10px rgba(0, 0, 0, 0.5);
+        z-index: 10; // Index value to define which element should be on top
     }
       
     @media (max-width: 767px) {
