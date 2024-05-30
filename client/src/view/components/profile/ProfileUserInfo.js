@@ -1,9 +1,10 @@
 import { LitElement, html, css } from 'lit';
+import { getCurrentUser } from "../../../services/AccountService.js";
 
 export class ProfileUserInfo extends LitElement {
     static styles = css`
     .user-info {
-      text-align: center;
+      text-align: left;
       margin-bottom: 10px;
     }
 
@@ -11,7 +12,7 @@ export class ProfileUserInfo extends LitElement {
       font-weight: bold;
     }
 
-    .user-group {
+    .user-email {
       font-size: 0.8em;
     }
 
@@ -27,6 +28,11 @@ export class ProfileUserInfo extends LitElement {
     constructor() {
         super();
         this.userInfo = {};
+        this.fetchCurrentUser();
+    }
+
+    async fetchCurrentUser() {
+        this.userInfo = await getCurrentUser();
     }
 
     async connectedCallback() {
@@ -46,6 +52,8 @@ export class ProfileUserInfo extends LitElement {
     render() {
         return html`
       <div class="user-info">
+        <div class="user-name">${this.userInfo.person ? `${this.userInfo.person.firstName} ${this.userInfo.person.lastName}` : ''}</div>
+        <div class="user-email">${this.userInfo.email}</div>
       </div>
       <hr/>
     `;
