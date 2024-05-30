@@ -2,12 +2,16 @@ package nl.hu.greenify.security.presentation;
 
 import nl.hu.greenify.security.application.AccountService;
 import nl.hu.greenify.security.domain.Account;
+import nl.hu.greenify.security.domain.AccountCredentials;
 import nl.hu.greenify.security.presentation.dto.AccountDto;
 import nl.hu.greenify.security.presentation.dto.RegisterDto;
 
 import nl.hu.greenify.security.presentation.dto.RoleDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +46,11 @@ public class AccountController {
     public ResponseEntity<Account> getAccount(@PathVariable String email) {
         Account account = this.accountService.getAccountByEmail(email);
         return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+
+    @GetMapping("/current")
+    public ResponseEntity<AccountDto> getCurrentAccount() {
+        Account account = this.accountService.getCurrentAccount();
+        return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
     }
 }
