@@ -33,4 +33,18 @@ async function getPersonById(id) {
     return response.json();
 }
 
-export { getPersonByEmail, getPersonById};
+async function getCurrentPerson() {
+    const response = await fetch(`${API_URL}/person/current`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
+}
+
+export { getPersonByEmail, getPersonById, getCurrentPerson};
