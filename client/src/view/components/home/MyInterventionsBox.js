@@ -75,6 +75,12 @@ export class MyInterventionsBox extends LitElement {
             font-size: 16px;
             text-decoration: none;
         }
+        
+        @media (max-width: 768px) {
+            .my-interventions-container {
+                width: 90%;
+            }
+        }
 
     ;
     `];
