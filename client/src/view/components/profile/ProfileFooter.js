@@ -25,7 +25,7 @@ export class ProfileFooter extends LitElement {
 
     handleLogoutButtonClick() {
         this.dispatchEvent(new CustomEvent('logout-button-clicked', { bubbles: true, composed: true }));
-        sessionStorage.clear();
+        localStorage.clear();
     }
 
     render() {
