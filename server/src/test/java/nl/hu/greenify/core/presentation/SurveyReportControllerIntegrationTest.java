@@ -51,66 +51,81 @@ public class SurveyReportControllerIntegrationTest {
     private ResponseRepository responseRepository;
 
     Long phaseId = 0L;
+    Long surveyId1 = 0L;
+    Long surveyId2 = 0L;
     @BeforeEach
     void setUp() {
         surveyRepository.deleteAll();
         templateRepository.deleteAll();
-        phaseRepository.deleteAll();
-        personRepository.deleteAll();
         categoryRepository.deleteAll();
+        phaseRepository.deleteAll();
         responseRepository.deleteAll();
         interventionRepository.deleteAll();
+        personRepository.deleteAll();
 
         createRepositoryData();
     }
 
     void createRepositoryData() {
+        // Create person1
+        Person person = Person.createPerson("John", "Doe", "johndoe@example.com");
+        this.personRepository.save(person);
+
+        // Create person2
+        Person person2 = Person.createPerson("Jane", "Doe", "janedoe@example.com");
+        this.personRepository.save(person2);
+
+        // Create intervention
+        Intervention intervention = Intervention.createIntervention("intervention1", "First intervention", person);
+        this.interventionRepository.save(intervention);
+
+        // Add member to intervention
+        intervention.addParticipant(person2);
+        this.interventionRepository.save(intervention);
+
         // Create subfactor
-        System.out.println("Creating subfactor");
         Subfactor subfactor = Subfactor.createSubfactor("subfactor1", 1, true);
+        Subfactor subfactor2 = Subfactor.createSubfactor("subfactor2", 2, true);
+        Subfactor subfactor3 = Subfactor.createSubfactor("subfactor3", 3, true);
 
         // Create factor
-        System.out.println("Creating factor");
         Factor factor = new Factor(1L, "factor1", 1, List.of(subfactor));
-        System.out.println("Setting resopnse to null for now");
+        subfactor.setResponse(null);
+
+        Factor factor2 = new Factor(2L, "factor2", 2, List.of(subfactor2));
+        subfactor.setResponse(null);
+
+        Factor factor3 = new Factor(3L, "factor3", 3, List.of(subfactor3));
         subfactor.setResponse(null);
 
         // Create category
-        System.out.println("Creating category");
         Category category = new Category(1L, "category1", "red", "Organizational", List.of(factor));
-        System.out.println("Saving category to repository");
         this.categoryRepository.save(category);
+
+        Category category2 = new Category(2L, "category2", "blue", "Organizational", List.of(factor2));
+        this.categoryRepository.save(category2);
+
+        Category category3 = new Category(3L, "category3", "green", "Organizational", List.of(factor3));
+        this.categoryRepository.save(category3);
 
         // Create template
         System.out.println("Creating template");
-        Template template = new Template(1L, "template1", "First template version for interventions", 1, List.of(category));
+        Template template = new Template(1L, "template1", "First template version for interventions", 1, List.of(category, category2, category3));
         System.out.println("Saving template to repository");
         this.templateRepository.save(template);
 
         // Create phase
         System.out.println("Creating phase");
-        Phase phase = new Phase(PhaseName.INITIATION);
+        Phase phase = Phase.createPhase(PhaseName.INITIATION);
         System.out.println("Saving phase to repository");
         this.phaseRepository.save(phase);
         System.out.println("Set ID of phase");
         this.phaseId = phase.getId();
 
-
-        // Create person1
-        System.out.println("Creating person");
-        Person person = new Person("John", "Doe", "johndoe@example.com");
-        System.out.println("Saving person to repository");
-        this.personRepository.save(person);
-
-        // Create person2
-        System.out.println("Creating person");
-        Person person2 = new Person("Jane", "Doe", "janedoe@example.com");
-        System.out.println("Saving person to repository");
-        this.personRepository.save(person2);
-
         // Survey creations based on template:
         System.out.println("Creating survey");
         Survey survey = Survey.createSurvey(phase, Template.copyOf(template), person);
+
         System.out.println("Creating survey");
         Survey survey2 = Survey.createSurvey(phase, Template.copyOf(template), person2);
 
@@ -121,30 +136,43 @@ public class SurveyReportControllerIntegrationTest {
         System.out.println("Saving phase to repository");
         this.phaseRepository.save(phase);
 
-        System.out.println("=====================================");
-        System.out.println(phase.getId());
+        // Save survey to repository
+        this.surveyRepository.save(survey);
+        this.surveyRepository.save(survey2);
 
-        setupProvideResponseSurvey1(survey);
-        setupProvideResponseSurvey1(survey2);
-    }
+        this.surveyId1 = survey.getId();
+        this.surveyId2 = survey2.getId();
 
-    void setupProvideResponseSurvey1(Survey survey) {
-        Subfactor subfactor = survey.getCategories().get(0).getFactors().get(0).getSubfactors().get(0);
-        // Create response
-        Response response = Response.createResponse(subfactor, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null);
-        subfactor.setResponse(response);
-        categoryRepository.save(survey.getCategories().get(0));
-        responseRepository.save(response);
+        // Create a response on the subfactor of one of the created surveys
+        Subfactor surveySubfactor = survey.getCategories().get(0).getFactors().get(0).getSubfactors().get(0);
+        Subfactor surveySubfactor2 = survey.getCategories().get(1).getFactors().get(0).getSubfactors().get(0);
+        Subfactor surveySubfactor3 = survey.getCategories().get(2).getFactors().get(0).getSubfactors().get(0);
+
+        // Create some more responses on subfactors, but through a different survey
+        Subfactor survey2Subfactor = survey2.getCategories().get(0).getFactors().get(0).getSubfactors().get(0);
+
+        // Save the response to the repository
+        this.responseRepository.save(Response.createResponse(surveySubfactor, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null));
+        this.surveyRepository.save(survey);
+
+        this.responseRepository.save(Response.createResponse(surveySubfactor2, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null));
+        this.surveyRepository.save(survey);
+
+        this.responseRepository.save(Response.createResponse(surveySubfactor3, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, null));
+        this.surveyRepository.save(survey);
+
+        this.responseRepository.save(Response.createResponse(survey2Subfactor, FacilitatingFactor.TOTALLY_AGREE, Priority.NO_PRIORITY, null));
+        this.surveyRepository.save(survey2);
     }
 
 
     @AfterEach
     void tearDown() {
-        responseRepository.deleteAll();
         surveyRepository.deleteAll();
         templateRepository.deleteAll();
         categoryRepository.deleteAll();
         phaseRepository.deleteAll();
+        responseRepository.deleteAll();
         interventionRepository.deleteAll();
         personRepository.deleteAll();
     }
@@ -171,23 +199,17 @@ public class SurveyReportControllerIntegrationTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.maxScore", is(10.0)));
-    }
-
-    @Test
-    @DisplayName("Test getting category scores for a phase")
-    public void testGetCategoryScores() throws Exception {
-        Long phaseId = this.phaseId;
-        RequestBuilder request = MockMvcRequestBuilders.get("/survey-report/{phaseId}/category-scores", phaseId)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].categoryName", is("category1")))
-                .andExpect(jsonPath("$[0].maxScore", is(10.0)))
-                .andExpect(jsonPath("$[0].averageScore", is(2.0)));
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[*].categoryName", containsInAnyOrder("category1", "category2", "category3")))
+                .andExpect(jsonPath("$[?(@.categoryName=='category1')].maxPossibleScore", contains(20.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category1')].totalScore", contains(15.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category1')].averageScore", contains(7.5)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category2')].maxPossibleScore", contains(10.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category2')].totalScore", contains(10.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category2')].averageScore", contains(10.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category3')].maxPossibleScore", contains(10.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category3')].totalScore", contains(10.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category3')].averageScore", contains(10.0)));
     }
 
     @Test
@@ -204,19 +226,7 @@ public class SurveyReportControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].subfactorName", is("subfactor1")))
-                .andExpect(jsonPath("$[0].maxScore", is(10.0)))
-                .andExpect(jsonPath("$[0].averageScore", is(2.0)));
-    }
-
-    @Test
-    @DisplayName("Troubleshooting")
-    void troubleShooting() throws Exception {
-        Long phaseId = this.phaseId;
-        RequestBuilder request = MockMvcRequestBuilders
-                .get("/survey");
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.maxScore", is(10.0)));
+                .andExpect(jsonPath("$[0].maxPossibleScore", is(10.0)))
+                .andExpect(jsonPath("$[0].averageScore", is(7.5)));
     }
 }
