@@ -153,14 +153,15 @@ public class SurveyReport implements IReport {
 
     public Map<String, Double> calculateMaxPossibleScoresOfAllCategories() {
         Map<String, Double> categoryScores = new HashMap<>();
+        Map<String, List<Category>> groupedCategories = this.getAllCategories()
+                .collect(Collectors.groupingBy(Category::getName));
 
-        this.getAllCategories()
-                .collect(Collectors.groupingBy(Category::getName))
+        groupedCategories
                 .forEach((name, categories) -> {
                     double maxScore = categories.stream()
                             .mapToDouble(this::getMaxScoreOfCategory)
                             .sum();
-                    categoryScores.put(name, maxScore / categories.size());
+                    categoryScores.put(name, maxScore);
                 });
 
         return categoryScores;
