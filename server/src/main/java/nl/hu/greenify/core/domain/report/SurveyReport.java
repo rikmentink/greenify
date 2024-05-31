@@ -209,4 +209,32 @@ public class SurveyReport implements IReport {
         return this.getPhase().getSurveys().stream()
                 .flatMap(survey -> survey.getCategories().stream());
     }
+
+    public Map<String, Double> calculateTotalScoresOfAllCategories() {
+        Map<String, Double> categoryScores = new HashMap<>();
+        Map<String, List<Category>> groupedCategories = this.getAllCategories()
+                .collect(Collectors.groupingBy(Category::getName));
+
+        groupedCategories
+                .forEach((name, categories) -> {
+                    double totalScore = categories.stream()
+                            .mapToDouble(this::getTotalScoreOfCategory)
+                            .sum();
+                    categoryScores.put(name, totalScore);
+                });
+
+        return categoryScores;
+    }
+
+    private double getTotalScoreOfCategory(Category category) {
+        double result = 0;
+
+        result += category.getFactors().stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getResponse() != null) // Only consider subfactors with a response! TODO: confirm if this should also be done for "PENDING" responses.
+                .mapToDouble(subfactor -> subfactor.getResponse().getScore())
+                .sum();
+
+        return result;
+    }
 }
