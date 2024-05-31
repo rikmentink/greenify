@@ -37,4 +37,9 @@ public class PersonController extends Controller {
         return this.createResponse(PersonDto.fromEntities(this.personService.getAllPersons()));
     }
 
+    @GetMapping(value="/current", produces="application/json")
+    public ResponseEntity<?> getCurrentPerson() {
+        return this.createResponse(PersonDto.fromEntity(this.personService.getCurrentPerson()));
+    }
+
 }

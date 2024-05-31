@@ -2,6 +2,7 @@ package nl.hu.greenify.security.presentation.dto;
 
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.core.presentation.dto.PersonDto;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.domain.AccountCredentials;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,14 +18,17 @@ public class AccountDto {
 
     private final List<GrantedAuthority> authorities;
 
-    public AccountDto(String email, List<GrantedAuthority> authorities) {
+    private final PersonDto person;
+
+    public AccountDto(String email, List<GrantedAuthority> authorities, PersonDto person) {
         this.email = email;
         this.authorities = authorities != null ? Collections.unmodifiableList(authorities) : Collections.emptyList();
+        this.person = person;
     }
 
     public static AccountDto fromEntity(Account account) {
         return new AccountDto(account.getUsername(), account.getAuthorities() != null
                 ? new ArrayList<>(account.getAuthorities())
-                : Collections.emptyList());
+                : Collections.emptyList(), PersonDto.fromEntity(account.getPerson()));
     }
 }

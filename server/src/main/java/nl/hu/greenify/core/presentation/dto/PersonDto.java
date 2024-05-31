@@ -24,7 +24,7 @@ public class PersonDto {
     }
 
     public static Person toEntity(PersonDto personDto) {
-        return new Person(personDto.getFirstName(), personDto.getLastName(), personDto.getEmail());
+        return Person.createPerson(personDto.getFirstName(), personDto.getLastName(), personDto.getEmail());
     }
 
     public static Object fromEntities(List<Person> allPersons) {

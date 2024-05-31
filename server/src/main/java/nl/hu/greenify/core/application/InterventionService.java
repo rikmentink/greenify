@@ -28,7 +28,7 @@ public class InterventionService {
     public Intervention createIntervention(String name, String description, Long adminId) {
         try {
             Person person = personService.getPersonById(adminId);
-            return interventionRepository.save(new Intervention(name, description, person));
+            return interventionRepository.save(Intervention.createIntervention(name, description, person));
         } catch (PersonNotFoundException e) {
             throw new IllegalArgumentException("Intervention should have an existing admin");
         }
@@ -40,7 +40,7 @@ public class InterventionService {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
         
-        Phase phase = new Phase(phaseName);
+        Phase phase = Phase.createPhase(phaseName);
         phaseRepository.save(phase);
 
         intervention.addPhase(phase);

@@ -64,7 +64,7 @@ public class SurveyReportServiceTest {
         Template template = new Template(1L, "name", "description", 1, List.of(categoryTemplate1, categoryTemplate2));
 
         // Phase creation to create surveys for based on the template:
-        this.phase = new Phase(PhaseName.INITIATION);
+        this.phase = new Phase(1L, PhaseName.INITIATION);
 
         // Person creation to set as the respondant:
         Person person1 = mock(Person.class);

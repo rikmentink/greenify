@@ -1,17 +1,18 @@
 import { Router } from "@vaadin/router";
+import { getCurrentUser } from "./services/AccountService.js";
 
-const BASE_URL = import.meta.env.BASE_URL;
+let BASE_URL = import.meta.env.BASE_URL;
 let router;
 
 export const initRouter = (outlet) => {
+
   router = new Router(outlet, {
     baseUrl: BASE_URL,
   });
+
   router.setRoutes([
-    { path: "", component: "gi-home" },
-    { path: "/login", component: "gi-login" },
+    { path: "", component: "gi-home", },
     { path: "/login/option", component: "gi-loginoption" },
-    { path: "/register", component: "gi-register" },
     { path: "/intervention/:id", component: "gi-intervention" },
     { path: "/intervention/:id/new-phase", component: "gi-createphase" },
     { path: "/phase/:id", component: "gi-overview" },
@@ -20,5 +21,17 @@ export const initRouter = (outlet) => {
     { path: "(.*)", action: () => window.location.href = "/" },
   ]);
 };
+
+// Fetch current user and redirect to login page if null
+getCurrentUser().then(user => {
+  if (!user) {
+    router.setRoutes([
+      { path: "", component: "gi-login", },
+      { path: "/login", component: "gi-login" },
+      { path: "/register", component: "gi-register"},
+      { path: "(.*)", action: () => window.location.href = "/" }
+    ]);
+  }
+});
 
 export const getRouter = () => router;

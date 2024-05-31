@@ -3,10 +3,12 @@ package nl.hu.greenify.core.application;
 import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
+import nl.hu.greenify.security.application.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -17,16 +19,18 @@ import static org.mockito.Mockito.when;
 @DisplayName("Person Service Test")
 public class PersonServiceTest {
     private final PersonRepository personRepository = mock(PersonRepository.class);
-    private final PersonService personService = new PersonService(personRepository);
+
+    private final AccountService accountService = mock(AccountService.class);
+    private final PersonService personService = new PersonService(personRepository, accountService);
     private Person person;
     private Person person2;
     private Person person3;
 
     @BeforeEach
     void setUp() {
-        person = new Person("firstName", "lastName", "firstname@gmail.com");
-        person2 = new Person("firstName2", "lastName2", "firstname@gmail.com");
-        person3 = new Person("firstName3", "lastName3", "person3@gmai.com");
+        person = new Person(1L, "firstName", "lastName", "firstname@gmail.com", new ArrayList<>());
+        person2 = new Person(2L, "firstName2", "lastName2", "firstname@gmail.com", new ArrayList<>());
+        person3 = new Person(3L, "firstName3", "lastName3", "person3@gmai.com", new ArrayList<>());
         when(personRepository.save(person)).thenReturn(person);
         when(personRepository.findByEmail(person.getEmail())).thenReturn(Optional.of(person));
         when(personRepository.findById(1L)).thenReturn(Optional.of(person));

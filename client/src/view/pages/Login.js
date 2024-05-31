@@ -121,7 +121,7 @@ export class Login extends LitElement {
         const password = formData.get('password');
 
         await login(email, password).then(token => {
-            sessionStorage.setItem('token', token);
+            localStorage.setItem('token', token);
             window.location.href = import.meta.env.BASE_URL + 'home';
         }).catch(error => {
             this.handleErrorMessage(error.message)

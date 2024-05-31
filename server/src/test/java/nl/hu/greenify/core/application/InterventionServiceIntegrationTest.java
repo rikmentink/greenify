@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,21 +37,18 @@ public class InterventionServiceIntegrationTest {
     @MockBean
     private PersonRepository personRepository;
     private Person person;
-    private Intervention i;
+    private Intervention intervention;
 
 
     @BeforeEach
     void setUp() {
-        person = new Person("firstName", "lastName", "johndoe@gmail.com");
-        person.setId(1L);
-        i = new Intervention("Intervention", "Intervention description", person);
-        i.setId(1L);
-        Phase phase = new Phase(PhaseName.PLANNING);
-        phase.setId(1L);
+        person = new Person(1L, "firstName", "lastName", "johndoe@gmail.com", new ArrayList<>());
+        intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
+        Phase phase = new Phase(1L, PhaseName.PLANNING);
 
-        when(interventionRepository.findById(1L)).thenReturn(java.util.Optional.of(i));
+        when(interventionRepository.findById(1L)).thenReturn(java.util.Optional.of(intervention));
         when(phaseRepository.findById(1L)).thenReturn(java.util.Optional.of(phase));
-        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(i));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(intervention));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
 
     }
@@ -71,7 +69,7 @@ public class InterventionServiceIntegrationTest {
     @Test
     void addPhase() {
         interventionService.addPhase(1L, PhaseName.PLANNING);
-        verify(interventionRepository).save(i);
+        verify(interventionRepository).save(intervention);
     }
 
     @DisplayName("When fetching a phase with a valid id, it should be fetched from the repository")
@@ -110,6 +108,6 @@ public class InterventionServiceIntegrationTest {
     @DisplayName("When fetching all interventions by a person and there are none, a list should be returned")
     @Test
     void getAllInterventionsByPersonShouldReturnEmptyList() {
-        assertEquals(interventionService.getAllInterventionsByPerson(person.getId()), List.of(i));
+        assertEquals(interventionService.getAllInterventionsByPerson(person.getId()), List.of(intervention));
     }
 }

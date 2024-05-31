@@ -5,7 +5,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import nl.hu.greenify.core.domain.enums.PhaseName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +22,37 @@ public class Intervention {
     private String name;
     private String description;
 
-    @OneToMany
-    private List<Phase> phases = new ArrayList<>();
-
     @ManyToOne
     private Person admin;
+
+    @OneToMany
+    private List<Phase> phases = new ArrayList<>();
 
     @ManyToMany
     private List<Person> participants = new ArrayList<>();
 
-    public Intervention(String name, String description, Person admin) {
+    protected Intervention() {
+    }
+
+    private Intervention(String name, String description, Person admin, List<Phase> phases, List<Person> participants) {
+        this.name = name;
+        this.description = description;
+        this.admin = admin;
+        this.phases = phases;
+        this.participants = participants;
+    }
+
+    public Intervention(Long id, String name, String description, Person admin, List<Phase> phases,
+            List<Person> participants) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.admin = admin;
+        this.phases = phases;
+        this.participants = participants;
+    }
+
+    public static Intervention createIntervention(String name, String description, Person admin) {
         if (name == null) {
             throw new IllegalArgumentException("Intervention should have a name");
         }
@@ -41,12 +61,7 @@ public class Intervention {
             throw new IllegalArgumentException("Intervention should have an admin");
         }
 
-        this.name = name;
-        this.description = description;
-        this.admin = admin;
-    }
-
-    protected Intervention() {
+        return new Intervention(name, description, admin, new ArrayList<>(), new ArrayList<>());
     }
 
     public void addPhase(Phase phase) {

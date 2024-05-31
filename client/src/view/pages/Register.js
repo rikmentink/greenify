@@ -125,7 +125,7 @@ export class Register extends LitElement {
         await register(email, password, firstName, lastName)
             .then(() => login(email, password).then(
                 token => {
-                    sessionStorage.setItem('token', token);
+                    localStorage.setItem('token', token);
                     window.location.href = import.meta.env.BASE_URL + 'home';
                 }
             )).catch(error => {
