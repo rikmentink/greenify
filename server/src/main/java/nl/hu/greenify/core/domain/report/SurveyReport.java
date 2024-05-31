@@ -105,16 +105,20 @@ public class SurveyReport implements IReport {
      * @return The average score of a category across all surveys in the phase.
      */
     public double calculateAverageScoreOfCategory(String categoryName) {
-        List<Category> categories = this.getAllCategories()
+        List<Response> responses = this.getAllCategories()
                 .filter(category -> category.getName().equals(categoryName))
+                .flatMap(category -> category.getFactors().stream())
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .map(Subfactor::getResponse)
+                .filter(Objects::nonNull)
                 .toList();
 
-        double totalScore = this.getAllCategories()
-                .filter(category -> category.getName().equals(categoryName))
-                .mapToDouble(this::getAverageScore)
-                .sum();
+        if (responses.isEmpty()) {
+            return 0;
+        }
 
-        return totalScore / categories.size();
+        double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
+        return totalScore / responses.size();
     }
 
     public double calculateAverageScoreOfSubfactor(int factorNumber, int subfactorNumber) {
