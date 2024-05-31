@@ -27,7 +27,7 @@ public class Survey {
     @JsonIgnore
     private Phase phase;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Category> categories;
 
     @ManyToOne
