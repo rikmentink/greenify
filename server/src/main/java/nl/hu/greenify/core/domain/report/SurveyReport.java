@@ -131,6 +131,10 @@ public class SurveyReport implements IReport {
                 .filter(Objects::nonNull)
                 .toList();
 
+        if (responses.isEmpty()) {
+            return 0;
+        }
+
         double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
         return totalScore / responses.size();
     }
