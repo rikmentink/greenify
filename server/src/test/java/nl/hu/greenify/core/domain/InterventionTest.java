@@ -9,6 +9,8 @@ import nl.hu.greenify.core.domain.enums.PhaseName;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.ArrayList;
+
 @DisplayName("Intervention Domain Test")
 public class InterventionTest {
     private Intervention intervention;
@@ -16,20 +18,20 @@ public class InterventionTest {
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "johndoe@gmail.com");
-        intervention = new Intervention("Garden", "Watering the plants", person);
+        person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
+        intervention = new Intervention(1L, "Garden", "Watering the plants", person, new ArrayList<>(), new ArrayList<>());
     }
 
     @DisplayName("Intervention should have a name")
     @Test
     void interventionName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention(null, "Watering the plants", person));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Intervention.createIntervention(null, "Watering the plants", person));
     }
 
     @DisplayName("An intervention should be able to add a phase")
     @Test
     void interventionAddPhase() {
-        Phase phase = new Phase(PhaseName.INITIATION);
+        Phase phase = new Phase(1L, PhaseName.INITIATION);
         intervention.addPhase(phase);
     }
 
@@ -42,7 +44,7 @@ public class InterventionTest {
     @DisplayName("An intervention should accept when the exact same phase is added")
     @Test
     void interventionAddDuplicatePhase() {
-        Phase phase = new Phase(PhaseName.INITIATION);
+        Phase phase = new Phase(1L, PhaseName.INITIATION);
         intervention.addPhase(phase);
         intervention.addPhase(phase);
         assertEquals(2, intervention.getPhases().size());
@@ -51,9 +53,9 @@ public class InterventionTest {
     @DisplayName("An intervention should be able to have multiple phases")
     @Test
     void interventionAddThreePhases() {
-        Phase phase1 = new Phase(PhaseName.INITIATION);
-        Phase phase2 = new Phase(PhaseName.PLANNING);
-        Phase phase3 = new Phase(PhaseName.EXECUTION);
+        Phase phase1 = new Phase(1L, PhaseName.INITIATION);
+        Phase phase2 = new Phase(2L, PhaseName.PLANNING);
+        Phase phase3 = new Phase(3L, PhaseName.EXECUTION);
         intervention.addPhase(phase1);
         intervention.addPhase(phase2);
         intervention.addPhase(phase3);
@@ -62,13 +64,13 @@ public class InterventionTest {
     @DisplayName("An intervention should have an admin")
     @Test
     void interventionAdmin() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Intervention("Garden", "Watering the plants", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Intervention.createIntervention("Garden", "Watering the plants", null));
     }
 
     @DisplayName("An intervention should be able to add a participant")
     @Test
     void interventionAddParticipant() {
-        Person participant = new Person("Jane", "Doe", "Janedoe@gmail.com");
+        Person participant = new Person(2L, "Jane", "Doe", "Janedoe@gmail.com", new ArrayList<>());
         intervention.addParticipant(participant);
         assertEquals(1, intervention.getParticipants().size());
     }
@@ -76,8 +78,8 @@ public class InterventionTest {
     @DisplayName("An intervention should be able to add multiple participants")
     @Test
     void interventionAddMultipleParticipants() {
-        Person participant1 = new Person("Jane", "Doe", "Janedoe@gmail.com");
-        Person participant2 = new Person("Jack", "Doe", "jackdoe@gmail.com");
+        Person participant1 = new Person(2L, "Jane", "Doe", "Janedoe@gmail.com", new ArrayList<>());
+        Person participant2 = new Person(3L, "Jack", "Doe", "jackdoe@gmail.com", new ArrayList<>());
         intervention.addParticipant(participant1);
         intervention.addParticipant(participant2);
         assertEquals(2, intervention.getParticipants().size());

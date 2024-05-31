@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class AccountServiceTest {
 
     @BeforeEach
     void setup() {
-        person = new Person("John", "Doe", "johndoe@gmail.com");
+        person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
     }
 
     @Test

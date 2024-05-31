@@ -7,11 +7,15 @@ public class CreateSurveyDto {
     private Long phaseId;
     private Long personId;
 
-    public CreateSurveyDto() {
+    protected CreateSurveyDto() {
     }
 
     public CreateSurveyDto(Long phaseId, Long personId) {
         this.phaseId = phaseId;
         this.personId = personId;
+    }
+
+    public String toJsonString() {
+        return "{\"phaseId\":" + phaseId + ",\"personId\":" + personId + "}";
     }
 }

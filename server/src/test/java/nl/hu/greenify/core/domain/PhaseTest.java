@@ -15,13 +15,13 @@ public class PhaseTest {
 
     @BeforeEach
     void setUp() {
-        phase = new Phase(PhaseName.PLANNING);
+        phase = new Phase(1L, PhaseName.PLANNING);
     }
 
     @DisplayName("Phase should have a name")
     @Test
     void phaseName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Phase(null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Phase.createPhase(null));
     }
 
     @DisplayName("A phase should be able to add a survey")
