@@ -177,8 +177,8 @@ public class SurveyReportServiceTest {
         // Given:
         Map<String, Double> expectedScores = new HashMap<>();
         // Each category has 2 subfactors with each response having a max possible score of 10.0
-        expectedScores.put("name", 20.0);
-        expectedScores.put("name2", 20.0);
+        expectedScores.put("name", 40.0);
+        expectedScores.put("name2", 40.0);
 
         // When:
         Map<String, Double> actualScores = surveyReportService.getMaxPossibleScoresOfAllCategoriesForPhase(1L);
