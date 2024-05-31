@@ -46,10 +46,12 @@ public class SurveyReport implements IReport {
     }
 
     public double getMaxScore() {
-        double maxResponseScore = calculateMaxResponseScore();
         double result = 0;
 
-        result += this.getAllResponses().stream().mapToDouble(response -> maxResponseScore).sum();
+        result += this.getAllResponses().stream()
+                .filter(Objects::nonNull)
+                .mapToDouble(response -> calculateMaxResponseScore())
+                .sum();
 
         return result;
     }
