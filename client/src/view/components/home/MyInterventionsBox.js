@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
+import {getInterventionByPersonId} from "../../../services/InterventionService.js";
 
 export class MyInterventionsBox extends LitElement {
     static styles = [css`
@@ -97,8 +98,14 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
-    async getInterventionsByPersonId() {
+    async getInterventionsByPersonId(userId) {
+        console.log(userId)
+    }
 
+    updated(changedProperties) {
+        if (changedProperties.has('userId')) {
+            this.getInterventionsByPersonId(this.userId);
+        }
     }
 
     renderInterventions(){
