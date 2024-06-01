@@ -87,22 +87,7 @@ export class MyInterventionsBox extends LitElement {
 
     constructor() {
         super();
-        this.interventieData = [{
-            id: 1,
-            name: "Interventie 1",
-            totalSurveys: 2,
-            progress: [10],
-        }, {
-            id: 2,
-            name: "Interventie 2",
-            totalSurveys: 2,
-            progress: [20],
-        }, {
-            id: 3,
-            name: "Interventie 3",
-            totalSurveys: 3,
-            progress: [30],
-        }]
+        this.interventieData = [{}]
     }
 
     static properties = {
