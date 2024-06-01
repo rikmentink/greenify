@@ -20,4 +20,17 @@ async function getInterventionById(id) {
     return response.json();
 }
 
+async function getInterventionByPersonId(id) {
+    const response = await fetch(`${API_URL}/intervention/all/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
+}
+
 export { getInterventionById };
