@@ -99,7 +99,9 @@ export class MyInterventionsBox extends LitElement {
     }
 
     async getInterventionsByPersonId(userId) {
-        console.log(userId)
+        this.interventieData = await getInterventionByPersonId(userId);
+        console.log(this.interventieData);
+        this.requestUpdate(); // request component to update
     }
 
     updated(changedProperties) {
@@ -109,26 +111,38 @@ export class MyInterventionsBox extends LitElement {
     }
 
     renderInterventions(){
-        return this.interventieData.map(interventie => {
-            return html`
-                <div class="my-interventions-item">
-                    <div class="my-interventions-item-name">
-                        ${interventie.name}
-                    </div>
-                    <div class="my-interventions-progress-container">
-                        <div class="my-interventions-item-description">
-                            <p>Mijn progressie over ${interventie.totalSurveys} vragenlijsten</p>
+        if (this.interventieData && this.interventieData.length > 0) {
+            return this.interventieData.map(interventie => {
+                console.log(interventie);
+                return html`
+                    <div class="my-interventions-item">
+                        <div class="my-interventions-item-name">
+                            ${interventie.name}
                         </div>
-                        <div class="my-interventions-item-progress">
-                            <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${interventie.progress} .chartLabels=${["Percentage"]} .chartColors=${['#63ABFD']}></horizontal-bar-chart>
+                        <div class="my-interventions-progress-container">
+                            <div class="my-interventions-item-description">
+                                <p>Mijn progressie over ${interventie.totalSurveys} vragenlijsten</p>
+                            </div>
+                            <div class="my-interventions-item-progress">
+                                <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${interventie.progress}
+                                                      .chartLabels=${["Percentage"]}
+                                                      .chartColors=${['#63ABFD']}></horizontal-bar-chart>
+                            </div>
+                        </div>
+                        <div class="my-interventions-btn">
+                            <a href="">Bekijk</a>
                         </div>
                     </div>
-                    <div class="my-interventions-btn">
-                        <a href="">Bekijk</a>
-                    </div>
+                `;
+            });
+        }
+        return html`
+            <div class="my-interventions-item">
+                <div class="my-interventions-item-name">
+                    Geen interventies gevonden.
                 </div>
-            `;
-        });
+            </div>
+        `;
     }
 
 
