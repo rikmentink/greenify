@@ -22,7 +22,6 @@ export class Intervention extends LitElement {
     onUserDeleted(event) {
         const user = event.detail.user;
         this.userData = this.userData.filter(userData => userData.userId !== user.userId);
-        console.log(this.userData);
         this.requestUpdate();
     }
 
