@@ -33,4 +33,4 @@ async function getInterventionByPersonId(id) {
     return response.json();
 }
 
-export { getInterventionById };
+export { getInterventionById, getInterventionByPersonId};
