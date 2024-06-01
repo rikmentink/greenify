@@ -97,6 +97,10 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
+    async getInterventionsByPersonId() {
+
+    }
+
     renderInterventions(){
         return this.interventieData.map(interventie => {
             return html`
