@@ -15,6 +15,8 @@ export const initRouter = (outlet) => {
     { path: "/login/option", component: "gi-loginoption" },
     { path: "/intervention/:id", component: "gi-intervention" },
     { path: "/intervention/:id/new-phase", component: "gi-createphase" },
+    { path: "/login", component: "gi-login" },
+    { path: "/register", component: "gi-register"},
     { path: "/phase/:id", component: "gi-overview" },
     { path: "/phase/:id/report", component: "gi-survey-result-report" },
     { path: "/tool/:id", component: "gi-survey" },
