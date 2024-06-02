@@ -28,6 +28,17 @@ export class MyInterventionsBox extends LitElement {
             overflow-y: auto;
             max-height: 550px;
         }
+      
+      .bekijk-button {
+            background-color: #4CBB17;
+            color: white;
+            padding: 10px 60px 10px 60px;
+            border-radius: 25px;
+            font-size: 16px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+      }
 
         .my-interventions-item {
             padding: 10px;
@@ -110,6 +121,10 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
+    clickHandler() {
+        console.log("clicked");
+    }
+
     renderInterventions(){
         if (this.interventieData && this.interventieData.length > 0) {
             return this.interventieData.map(interventie => {
@@ -130,7 +145,7 @@ export class MyInterventionsBox extends LitElement {
                             </div>
                         </div>
                         <div class="my-interventions-btn">
-                            <a href="">Bekijk</a>
+                            <button class="bekijk-button" @click="${this.clickHandler}">Bekijk</button>
                         </div>
                     </div>
                 `;
