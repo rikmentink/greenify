@@ -54,17 +54,24 @@ public class SurveyReportService {
         return surveyReport.calculateMaxPossibleScoresOfAllCategories();
     }
 
+    private Map<String, Double> getTotalScoresOfAllCategoriesForPhase(Long phaseId) {
+        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
+        return surveyReport.calculateTotalScoresOfAllCategories();
+    }
+
     public List<CategoryScoresDto> getCategoryScores(Long phaseId) {
-        Map<String, Double> maxScores = this.getMaxPossibleScoresOfAllCategoriesForPhase(phaseId);
+        Map<String, Double> maxPossibleScores = this.getMaxPossibleScoresOfAllCategoriesForPhase(phaseId);
+        Map<String, Double> totalScores = this.getTotalScoresOfAllCategoriesForPhase(phaseId);
         Map<String, Double> averageScores = this.getAverageScoresOfAllCategoriesForPhase(phaseId);
 
         // Convert the maps to a list of CategoryScoresDto objects, matching each category name with its max and average score.
-        return maxScores.entrySet().stream()
+        return maxPossibleScores.entrySet().stream()
                 .map(entry -> {
                     String categoryName = entry.getKey();
                     double maxScore = entry.getValue();
+                    double totalScore = totalScores.get(categoryName);
                     double averageScore = averageScores.get(categoryName);
-                    return CategoryScoresDto.fromEntity(categoryName, maxScore, averageScore);
+                    return CategoryScoresDto.fromEntity(categoryName, maxScore, totalScore, averageScore);
                 })
                 .collect(Collectors.toList());
     }
