@@ -5,12 +5,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
 import nl.hu.greenify.core.application.exceptions.SubfactorNotFoundException;
@@ -32,7 +27,7 @@ public class Survey {
     @JsonIgnore
     private Phase phase;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Category> categories;
 
     @ManyToOne

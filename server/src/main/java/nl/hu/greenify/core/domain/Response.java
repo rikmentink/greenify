@@ -1,7 +1,6 @@
 package nl.hu.greenify.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -22,6 +21,8 @@ public class Response {
 
     private double score;
 
+    private boolean isForSupportingFactor;
+
     @Setter
     private String comment;
 
@@ -33,10 +34,6 @@ public class Response {
     @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private Priority priority;
 
-    @OneToOne
-    @JsonIgnore
-    private Subfactor subfactor;
-
     protected Response() {
     }
 
@@ -46,7 +43,7 @@ public class Response {
         this.comment = comment;
         this.facilitatingFactor = facilitatingFactor;
         this.priority = priority;
-        this.subfactor = subfactor;
+        this.isForSupportingFactor = subfactor.isSupportingFactor();
     }
 
     public Response(Long id, double score, String comment, FacilitatingFactor facilitatingFactor, Priority priority,
@@ -56,7 +53,7 @@ public class Response {
         this.comment = comment;
         this.facilitatingFactor = facilitatingFactor;
         this.priority = priority;
-        this.subfactor = subfactor;
+        this.isForSupportingFactor = subfactor.isSupportingFactor();
     }
 
     public static Response createResponse(Subfactor subfactor, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
@@ -77,8 +74,7 @@ public class Response {
     }
 
     private void calculateScore() {
-        boolean isSupportingFactor = this.subfactor.isSupportingFactor();
-        this.score = facilitatingFactor.getValue(isSupportingFactor) * priority.getValue();
+        this.score = facilitatingFactor.getValue(this.isForSupportingFactor) * priority.getValue();
     }
 
     public void setFacilitatingFactor(FacilitatingFactor facilitatingFactor) {
