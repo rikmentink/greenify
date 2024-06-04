@@ -1,11 +1,13 @@
 package nl.hu.greenify.core.presentation.dto;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.Priority;
 
 @Getter
+@EqualsAndHashCode
 public class SubmitResponseDto {
     @NonNull
     private Long subfactorId;

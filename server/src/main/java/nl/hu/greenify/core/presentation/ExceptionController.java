@@ -17,7 +17,7 @@ public class ExceptionController {
     
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleSurveyNotFoundException(NotFoundException exception) {
+    public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
         return createErrorResponse(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
