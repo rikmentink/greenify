@@ -4,6 +4,7 @@ import nl.hu.greenify.core.application.InterventionService;
 import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
 import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
+import nl.hu.greenify.core.presentation.dto.PhaseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

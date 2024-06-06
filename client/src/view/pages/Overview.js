@@ -1,5 +1,5 @@
-import {css, html, LitElement} from 'lit';
-import '../components/overview/CategoryBox.js';
+import { css, html, LitElement } from 'lit';
+import { getOverview } from '../../services/OverviewService.js';
 
 export class Overview extends LitElement {
     static styles = [css`
@@ -51,45 +51,45 @@ export class Overview extends LitElement {
     `];
 
     static properties = {
-        survey: {type: Object},
+        survey: { type: Object },
     };
 
     constructor() {
         super();
         this.id = 1;
-        this.categoryId = 1;
-        this.name = "Category 1";
-        this.description =;
-        this.questions = [];
-        this.data = new Task(this, {
-            task: async ([id, page, pageSize]) => getSurvey(id, categoryId, name, description, questions),
-            args: () => [this.id, this.categoryId, this.name, this.description, this.questions]
-        })
-
+        this.page = 1;
+        this.pageSize = 10;
+        this.survey = {};
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         super.connectedCallback();
+        await this.fetchSurveyData();
     }
 
-    disconnectedCallback() {
-        super.disconnectedCallback();
+    async fetchSurveyData() {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            this.id = urlParams.get('id');
+            this.survey = await getOverview(this.id, this.page, this.pageSize);
+        } catch (error) {
+            console.error('Error fetching survey data:', error);
+        }
     }
-
 
     render() {
         return html`
             <div class="content">
                 <div class="title-desc">
-                    <h1>${this.survey.name}</h1>
-                    <p class="description">${this.survey.description}</p>
+                    <h1>${this.survey.name || 'Loading...'}</h1>
+                    <p class="description">${this.survey.description || ''}</p>
                 </div>
                 <hr class="divider">
                 <div>
                     <h3 class="algemeneinfo">Algemene Informatie</h3>
                     <div class="grid-container">
                         <em>Fase</em>
-                        <p class="fase">${this.survey.phase}</p>
+                        <p class="fase">${this.survey.phase || ''}</p>
                         <em>Voortgang</em>
                         <p class="voortgang">beantwoorden vragen</p>
                     </div>
@@ -97,8 +97,8 @@ export class Overview extends LitElement {
             </div>
             <h1>Categorieën</h1>
 
-            ${this.survey.categories.map(category => html`
-                <greenify-categorybox .category=${category}></greenify-categorybox>`)}
+            ${this.survey.categories ? this.survey.categories.map(category => html`
+                <greenify-categorybox .category=${category}></greenify-categorybox>`) : html`<p>Loading categories...</p>`}
         `;
     }
 }

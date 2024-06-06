@@ -9,9 +9,12 @@ import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.presentation.dto.CategoryDto;
+import nl.hu.greenify.core.presentation.dto.PhaseDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InterventionService {

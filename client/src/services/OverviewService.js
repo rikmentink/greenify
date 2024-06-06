@@ -1,23 +1,17 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function getOverview(id, categoryId, name, description, questions) {
-    const url = new URL(`${API_URL}/overview/${id}`);
-    url.searchParams.append('categoryId', categoryId);
-    url.searchParams.append('name', name);
-    url.searchParams.append('description', description);
-    url.searchParams.append('questions', questions);
+async function getOverview(id, page = 1, pageSize = 1000) {
+    const url = new URL(`${API_URL}/phase/${id}`);
+    url.searchParams.append('page', page);
+    url.searchParams.append('pageSize', pageSize);
 
     return fetch(url, {
         method: 'GET',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
     }).then(response => response.json())
-        .then(data => {
-            return data;
-        })
         .catch(error => {
             console.error(error);
-        })
+        });
 }
 
 export { getOverview };
