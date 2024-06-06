@@ -35,7 +35,6 @@ export class Home extends LitElement {
 
     async fetchCurrentPerson() {
         this.userData = await getCurrentPerson();
-        console.log(this.userData.id)
         this.requestUpdate()
     }
 
