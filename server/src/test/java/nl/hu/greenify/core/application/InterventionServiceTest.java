@@ -39,11 +39,11 @@ public class InterventionServiceTest {
         when(personService.getPersonById(1L)).thenReturn(person);
         when(interventionRepository.save(intervention)).thenReturn(intervention);
         when(personRepository.save(person)).thenReturn(person);
-        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(intervention));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
         when(interventionRepository.findById(intervention.getId())).thenReturn(Optional.ofNullable(intervention));
         when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(1L, PhaseName.PLANNING)));
-        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(intervention));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
     }
 
     @DisplayName("Creating an intervention should be possible")
