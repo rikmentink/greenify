@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface InterventionRepository extends JpaRepository<Intervention, Long> {
     List<Intervention> findInterventionsByAdmin(Person person);
+    List<Intervention> findInterventionsByParticipantsContains(Person person);
 }
