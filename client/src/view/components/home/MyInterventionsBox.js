@@ -112,14 +112,6 @@ export class MyInterventionsBox extends LitElement {
 
     async getInterventionsByPersonId(userId) {
         this.interventieData = await getInterventionByPersonId(userId);
-        console.log(this.interventieData);
-        if(this.interventieData.length > 0){
-            console.log(this.interventieData);
-            this.loading = false;
-        } else {
-            this.loading = true;
-            console.log("No interventions found");
-        }
         this.requestUpdate();
     }
 
@@ -139,7 +131,7 @@ export class MyInterventionsBox extends LitElement {
                         </div>
                         <div class="my-interventions-progress-container">
                             <div class="my-interventions-item-description">
-                                <p>Mijn progressie over ${interventie.surveyAmount} vragenlijsten</p>
+                                <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
                             </div>
                             <div class="my-interventions-item-progress">
                                 <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${interventie.progress}
