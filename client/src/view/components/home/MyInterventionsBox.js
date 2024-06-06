@@ -99,7 +99,8 @@ export class MyInterventionsBox extends LitElement {
 
     constructor() {
         super();
-        this.interventieData = [{}]
+        this.interventieData = [{}];
+        this.loading = true;
     }
 
     static properties = {
@@ -112,7 +113,14 @@ export class MyInterventionsBox extends LitElement {
     async getInterventionsByPersonId(userId) {
         this.interventieData = await getInterventionByPersonId(userId);
         console.log(this.interventieData);
-        this.requestUpdate(); // request component to update
+        if(this.interventieData.length > 0){
+            console.log(this.interventieData);
+            this.loading = false;
+        } else {
+            this.loading = true;
+            console.log("No interventions found");
+        }
+        this.requestUpdate();
     }
 
     updated(changedProperties) {
@@ -121,14 +129,9 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
-    clickHandler() {
-        console.log("clicked");
-    }
-
     renderInterventions(){
         if (this.interventieData && this.interventieData.length > 0) {
             return this.interventieData.map(interventie => {
-                console.log(interventie);
                 return html`
                     <div class="my-interventions-item">
                         <div class="my-interventions-item-name">
@@ -136,7 +139,7 @@ export class MyInterventionsBox extends LitElement {
                         </div>
                         <div class="my-interventions-progress-container">
                             <div class="my-interventions-item-description">
-                                <p>Mijn progressie over ${interventie.totalSurveys} vragenlijsten</p>
+                                <p>Mijn progressie over ${interventie.surveyAmount} vragenlijsten</p>
                             </div>
                             <div class="my-interventions-item-progress">
                                 <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${interventie.progress}
@@ -145,13 +148,15 @@ export class MyInterventionsBox extends LitElement {
                             </div>
                         </div>
                         <div class="my-interventions-btn">
-                            <button class="bekijk-button" @click="${this.clickHandler}">Bekijk</button>
+                            <button class="bekijk-button">Bekijk</button>
                         </div>
                     </div>
                 `;
             });
         }
         return html`
+            
+            
             <div class="my-interventions-item">
                 <div class="my-interventions-item-name">
                     Geen interventies gevonden.
