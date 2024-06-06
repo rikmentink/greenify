@@ -51,7 +51,6 @@ export class Intervention extends LitElement {
                 userId: person.id
             }
         ];
-        // this.requestUpdate();
         window.location.reload();
     }
 
