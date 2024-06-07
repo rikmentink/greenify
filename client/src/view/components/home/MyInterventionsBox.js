@@ -112,6 +112,7 @@ export class MyInterventionsBox extends LitElement {
 
     async getInterventionsByPersonId(userId) {
         this.interventieData = await getInterventionByPersonId(userId);
+        this.loading = false;
         this.requestUpdate();
     }
 
@@ -122,39 +123,42 @@ export class MyInterventionsBox extends LitElement {
     }
 
     renderInterventions(){
+        if (this.loading) {  // If loading, don't render the chart
+            return html`Loading...`;
+        }
+
         if (this.interventieData && this.interventieData.length > 0) {
             return this.interventieData.map(interventie => {
+                let progress = Array.isArray(interventie.progress) ? interventie.progress : [interventie.progress];
                 return html`
-                    <div class="my-interventions-item">
-                        <div class="my-interventions-item-name">
-                            ${interventie.name}
+                <div class="my-interventions-item">
+                    <div class="my-interventions-item-name">
+                        ${interventie.name}
+                    </div>
+                    <div class="my-interventions-progress-container">
+                        <div class="my-interventions-item-description">
+                            <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
                         </div>
-                        <div class="my-interventions-progress-container">
-                            <div class="my-interventions-item-description">
-                                <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
-                            </div>
-                            <div class="my-interventions-item-progress">
-                                <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${interventie.progress}
-                                                      .chartLabels=${["Percentage"]}
-                                                      .chartColors=${['#63ABFD']}></horizontal-bar-chart>
-                            </div>
-                        </div>
-                        <div class="my-interventions-btn">
-                            <button class="bekijk-button">Bekijk</button>
+                        <div class="my-interventions-item-progress">
+                            <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${progress}
+                                                  .chartLabels=${["Percentage"]}
+                                                  .chartColors=${['#63ABFD']}></horizontal-bar-chart>
                         </div>
                     </div>
-                `;
+                    <div class="my-interventions-btn">
+                        <button class="bekijk-button">Bekijk</button>
+                    </div>
+                </div>
+            `;
             });
         }
         return html`
-            
-            
-            <div class="my-interventions-item">
-                <div class="my-interventions-item-name">
-                    Geen interventies gevonden.
-                </div>
+        <div class="my-interventions-item">
+            <div class="my-interventions-item-name">
+                Geen interventies gevonden.
             </div>
-        `;
+        </div>
+    `;
     }
 
 
