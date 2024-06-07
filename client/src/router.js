@@ -12,7 +12,7 @@ let routes = [
 await getCurrentUser().then(user => {
   if (user) {
     routes = [
-      { path: "", component: "gi-home", },
+      { path: "", component: "gi-home" },
       { path: "/intervention/:id", component: "gi-intervention" },
       { path: "/intervention/:id/new-phase", component: "gi-createphase" },
       { path: "/phase/:id", component: "gi-overview" },
