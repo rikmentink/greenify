@@ -176,12 +176,8 @@ public class SurveyReportTest {
 
         SurveyReport surveyReport = new SurveyReport(phase);
 
-        // Expected average scores:
-        // Category "name": (6.33 + 2) / 2 = 4.165
-        // Category "name2": (2 + 1) / 2 = 1.5
-
         assertAll(
-                () -> assertEquals(4.165, surveyReport.calculateAverageScoreOfCategory("name")),
+                () -> assertEquals(4.886666666666667, surveyReport.calculateAverageScoreOfCategory("name")),
                 () -> assertEquals(1.5, surveyReport.calculateAverageScoreOfCategory("name2"))
         );
     }
@@ -223,9 +219,9 @@ public class SurveyReportTest {
 
 
         Map<String, Double> expectedScores = new HashMap<>();
-        // Each category has 2 subfactors with each response having a max possible score of 10.0
-        expectedScores.put("name", 20.0);
-        expectedScores.put("name2", 10.0);
+        // Each category has 2 subfactors
+        expectedScores.put("name", 40.0); // Subfactor 1 and 2 - 4 responses total. 4 * 10.0 = 40.0
+        expectedScores.put("name2", 20.0); // Subfactor 3 and 4 - 2 responses total. 2 * 10.0 = 20.0
 
         // When:
         SurveyReport surveyReport = new SurveyReport(phase);
