@@ -78,6 +78,17 @@ export class MyInterventionsBox extends LitElement {
             margin-right: 20px;
             margin-top: 10px;
         }
+      
+      .my-interventions-btn button {
+            background-color: #4CBB17;
+            color: white;
+            padding: 10px 60px 10px 60px;
+            border-radius: 25px;
+            font-size: 16px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+      }
         
         .my-interventions-btn a {
             background-color: #4CBB17;
@@ -131,34 +142,39 @@ export class MyInterventionsBox extends LitElement {
             return this.interventieData.map(interventie => {
                 let progress = Array.isArray(interventie.progress) ? interventie.progress : [interventie.progress];
                 return html`
-                <div class="my-interventions-item">
-                    <div class="my-interventions-item-name">
-                        ${interventie.name}
+            <div class="my-interventions-item">
+                <div class="my-interventions-item-name">
+                    ${interventie.name}
+                </div>
+                <div class="my-interventions-progress-container">
+                    <div class="my-interventions-item-description">
+                        <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
                     </div>
-                    <div class="my-interventions-progress-container">
-                        <div class="my-interventions-item-description">
-                            <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
-                        </div>
-                        <div class="my-interventions-item-progress">
-                            <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${progress}
-                                                  .chartLabels=${["Percentage"]}
-                                                  .chartColors=${['#63ABFD']}></horizontal-bar-chart>
-                        </div>
-                    </div>
-                    <div class="my-interventions-btn">
-                        <button class="bekijk-button">Bekijk</button>
+                    <div class="my-interventions-item-progress">
+                        <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${progress}
+                                              .chartLabels=${["Percentage"]}
+                                              .chartColors=${['#63ABFD']}></horizontal-bar-chart>
                     </div>
                 </div>
-            `;
+                <div class="my-interventions-btn">
+                    <button @click=${() => this.fetchIntervention(interventie)}>Bekijk</button>
+                </div>
+            </div>
+        `;
             });
         }
         return html`
-        <div class="my-interventions-item">
-            <div class="my-interventions-item-name">
-                Geen interventies gevonden.
-            </div>
+    <div class="my-interventions-item">
+        <div class="my-interventions-item-name">
+            Geen interventies gevonden.
         </div>
-    `;
+    </div>
+`;
+    }
+
+    fetchIntervention(interventie) {
+        // Fetch the intervention data here
+        console.log(interventie);
     }
 
 
