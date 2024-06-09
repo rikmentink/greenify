@@ -41,14 +41,11 @@ export class InterventionInformationBox extends LitElement {
 
     constructor() {
         super();
-        this.id = 1;
         this.interventionData = [{}]
     }
 
-    async connectedCallback() {
+    connectedCallback() {
         super.connectedCallback();
-        this.interventionData = await getInterventionById(this.id);
-        console.log(this.interventionData)
         this.loading = false;
     }
 
@@ -60,7 +57,7 @@ export class InterventionInformationBox extends LitElement {
             </div>
             <div class="information-box">
                 <h3>Algemene informatie</h3>
-                <p><span>Huidige fase: </span> ${this.interventionData.currentPhase}</p>
+                <p><span>Huidige fase: </span> ${this.interventionData.currentPhase.name}</p>
             </div>
         `;
 
