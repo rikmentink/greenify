@@ -17,13 +17,11 @@ export class InterventionUsersPanel extends LitElement {
     `;
 
     static properties = {
-        id: { type: Number, reflect: true },
         userData: { type: Array }
     };
 
     constructor() {
         super();
-        this.id = 0;
         this.userData = [];
     }
 
