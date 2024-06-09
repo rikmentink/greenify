@@ -1,6 +1,9 @@
 import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
 import {getInterventionByPersonId} from "../../../services/InterventionService.js";
+import {getRouter} from "../../../router.js";
+import {saveResponse} from "../../../services/SurveyService.js";
+import {Router} from "@vaadin/router";
 
 export class MyInterventionsBox extends LitElement {
     static styles = [css`
@@ -110,7 +113,7 @@ export class MyInterventionsBox extends LitElement {
 
     constructor() {
         super();
-        this.interventieData = [{}];
+        this.interventionData = [{}];
         this.loading = true;
     }
 
@@ -118,11 +121,15 @@ export class MyInterventionsBox extends LitElement {
         userId: {
             type: Number,
             reflect: true
-        }
+        },
+    }
+
+    async connectedCallback() {
+        super.connectedCallback();
     }
 
     async getInterventionsByPersonId(userId) {
-        this.interventieData = await getInterventionByPersonId(userId);
+        this.interventionData = await getInterventionByPersonId(userId);
         this.loading = false;
         this.requestUpdate();
     }
@@ -133,22 +140,27 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
+    fetchIntervention(intervention) {
+        sessionStorage.setItem('selectedIntervention', JSON.stringify(intervention));
+        Router.go(`/intervention/${intervention.id}`);
+    }
+
     renderInterventions(){
         if (this.loading) {  // If loading, don't render the chart
             return html`Loading...`;
         }
 
-        if (this.interventieData && this.interventieData.length > 0) {
-            return this.interventieData.map(interventie => {
-                let progress = Array.isArray(interventie.progress) ? interventie.progress : [interventie.progress];
+        if (this.interventionData && this.interventionData.length > 0) {
+            return this.interventionData.map(intervention => {
+                let progress = Array.isArray(intervention.progress) ? intervention.progress : [intervention.progress];
                 return html`
             <div class="my-interventions-item">
                 <div class="my-interventions-item-name">
-                    ${interventie.name}
+                    ${intervention.name}
                 </div>
                 <div class="my-interventions-progress-container">
                     <div class="my-interventions-item-description">
-                        <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
+                        <p>Mijn progressie over ${intervention.surveyAmount} vragenlijst(en)</p>
                     </div>
                     <div class="my-interventions-item-progress">
                         <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${progress}
@@ -157,7 +169,7 @@ export class MyInterventionsBox extends LitElement {
                     </div>
                 </div>
                 <div class="my-interventions-btn">
-                    <button @click=${() => this.fetchIntervention(interventie)}>Bekijk</button>
+                    <button @click=${() => this.fetchIntervention(intervention)}>Bekijk</button>
                 </div>
             </div>
         `;
@@ -170,16 +182,6 @@ export class MyInterventionsBox extends LitElement {
         </div>
     </div>
 `;
-    }
-
-    fetchIntervention(interventie) {
-        // Fetch the intervention data here
-        console.log(interventie);
-    }
-
-
-    connectedCallback() {
-        super.connectedCallback();
     }
 
     render() {
