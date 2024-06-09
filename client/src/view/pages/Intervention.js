@@ -11,6 +11,7 @@ export class Intervention extends LitElement {
         super();
         this.interventionId = 0;
         this.userData = [];
+        this.interventionData = [{}];
     }
 
     connectedCallback() {
@@ -20,13 +21,8 @@ export class Intervention extends LitElement {
 
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
         if (selectedIntervention) {
-            this.handleIntervention(selectedIntervention);
+           this.interventionData = selectedIntervention;
         }
-    }
-
-    handleIntervention(intervention) {
-        this.interventionData = intervention;
-        this.interventionId = intervention.id;
     }
 
     onUserDeleted(event) {
@@ -66,7 +62,7 @@ export class Intervention extends LitElement {
 
     render() {
         return html`
-            <intervention-information-box .id="${this.interventionId}"></intervention-information-box>
+            <intervention-information-box .interventionData="${this.interventionData}"></intervention-information-box>
             <intervention-survey-box .id="${this.interventionId}"></intervention-survey-box>
             <intervention-users-panel .id="${this.interventionId}" .userData="${this.userData}"></intervention-users-panel>
         `;
