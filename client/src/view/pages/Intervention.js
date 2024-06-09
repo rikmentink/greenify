@@ -9,7 +9,7 @@ export class Intervention extends LitElement {
 
     constructor() {
         super();
-        this.interventionId = 1;
+        this.interventionId = 0;
         this.userData = [];
     }
 
@@ -17,6 +17,16 @@ export class Intervention extends LitElement {
         super.connectedCallback();
         this.addEventListener('person-fetched', this.handlePersonFetched);
         this.addEventListener('user-deleted', this.onUserDeleted);
+
+        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
+        if (selectedIntervention) {
+            this.handleIntervention(selectedIntervention);
+        }
+    }
+
+    handleIntervention(intervention) {
+        this.interventionData = intervention;
+        this.interventionId = intervention.id;
     }
 
     onUserDeleted(event) {
