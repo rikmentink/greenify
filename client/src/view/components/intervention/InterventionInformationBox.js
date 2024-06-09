@@ -32,13 +32,6 @@ export class InterventionInformationBox extends LitElement {
         }
     `;
 
-    static properties = {
-        id: {
-            type: Number,
-            reflect: true
-        }
-    }
-
     constructor() {
         super();
         this.interventionData = [{}]
@@ -50,20 +43,19 @@ export class InterventionInformationBox extends LitElement {
     }
 
     renderInterventionInformation() {
-        console.log(this.interventionData)
         return html`
             <div class="description-box">
                 <p>${this.interventionData.description}</p>
             </div>
             <div class="information-box">
                 <h3>Algemene informatie</h3>
-                <p><span>Huidige fase: </span> ${this.interventionData.currentPhase.name}</p>
+                <p><span>Huidige fase: </span> ${this.interventionData.currentPhase ? this.interventionData.currentPhase.name : 'N/A'}</p>
             </div>
         `;
-
     }
 
     render() {
+        console.log(this.interventionData)
         if (!this.interventionData.name) {
             return html`<p>Loading...</p>`;
         }
