@@ -22,6 +22,7 @@ export class Intervention extends LitElement {
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
         if (selectedIntervention) {
            this.interventionData = selectedIntervention;
+           console.log(this.interventionData.participants);
         }
     }
 
@@ -64,7 +65,7 @@ export class Intervention extends LitElement {
         return html`
             <intervention-information-box .interventionData="${this.interventionData}"></intervention-information-box>
             <intervention-survey-box .id="${this.interventionId}"></intervention-survey-box>
-            <intervention-users-panel .id="${this.interventionId}" .userData="${this.userData}"></intervention-users-panel>
+            <intervention-users-panel .userData="${this.interventionData.participants}"></intervention-users-panel>
         `;
     }
 }
