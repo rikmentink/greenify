@@ -27,6 +27,10 @@ export class InterventionUsersPanel extends LitElement {
         this.userData = [];
     }
 
+    connectedCallback() {
+        super.connectedCallback();
+    }
+
     render() {
         return html`
             <h2>Gebruikers</h2>
