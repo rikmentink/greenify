@@ -10,7 +10,6 @@ import { ProfilePanel } from "./view/components/profile/ProfilePanel.js";
 import { Home } from './view/pages/Home';
 import { Survey } from './view/pages/Survey';
 import { Login } from "./view/pages/Login.js";
-import { LoginOption } from "./view/pages/LoginOption.js";
 import { Register } from "./view/pages/Register.js";
 import { Intervention } from "./view/pages/Intervention.js";
 

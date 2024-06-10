@@ -4,7 +4,7 @@ import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
 export class MyInterventionsBox extends LitElement {
     static styles = [css`
         .my-interventions-container {
-            width: 50%;
+            width: 650px;
             margin-bottom: 50px;
         }
 

@@ -3,6 +3,7 @@ package nl.hu.greenify.security.presentation;
 import nl.hu.greenify.security.application.AccountService;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.domain.AccountCredentials;
+import nl.hu.greenify.security.domain.enums.AccountRoles;
 import nl.hu.greenify.security.presentation.dto.AccountDto;
 import nl.hu.greenify.security.presentation.dto.RegisterDto;
 
@@ -51,6 +52,20 @@ public class AccountController {
     @GetMapping("/current")
     public ResponseEntity<AccountDto> getCurrentAccount() {
         Account account = this.accountService.getCurrentAccount();
+        return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
+    }
+
+    @PutMapping("/roletomanager")
+    public ResponseEntity<AccountDto> roleToManager() {
+        Account account = this.accountService.getCurrentAccount();
+        this.accountService.addRole(account.getEmail(), "ROLE_MANAGER");
+        return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
+    }
+
+    @PutMapping("/roletoparticipant")
+    public ResponseEntity<AccountDto> roleToUser() {
+        Account account = this.accountService.getCurrentAccount();
+        this.accountService.removeRole(account.getEmail(), "ROLE_MANAGER");
         return new ResponseEntity<AccountDto>(AccountDto.fromEntity(account), HttpStatus.OK);
     }
 }
