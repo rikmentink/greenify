@@ -57,7 +57,11 @@ public class InterventionService {
         if(person == null) {
             throw new IllegalArgumentException("Person with id " + id + " does not exist");
         }
-        return interventionRepository.findInterventionsByAdmin(person);
+        List<Intervention> i = interventionRepository.findInterventionsByAdmin(person);
+        List<Intervention> i2 = interventionRepository.findInterventionsByParticipantsContains(person);
+        i.addAll(i2);
+
+        return i;
     }
 
     public Intervention getInterventionById(Long id) {

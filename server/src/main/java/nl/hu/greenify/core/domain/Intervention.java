@@ -52,6 +52,31 @@ public class Intervention {
         this.participants = participants;
     }
 
+    public Phase getCurrentPhase() {
+        if(this.phases.isEmpty()) {
+            return null;
+        }
+        return this.phases.get(this.phases.size() - 1);
+    }
+
+    public List<Survey> getAllSurveysOfParticipant(Person person) {
+        if(person == null) {
+            throw new IllegalArgumentException("Person should not be null");
+        }
+
+        if(this.getCurrentPhase() == null) {
+            return new ArrayList<>();
+        }
+
+        List<Survey> surveys = new ArrayList<>();
+            for(Survey survey : this.getCurrentPhase().getSurveys()) {
+                if(survey.getRespondent().equals(person)) {
+                    surveys.add(survey);
+                }
+            }
+        return surveys;
+    }
+
     public static Intervention createIntervention(String name, String description, Person admin) {
         if (name == null) {
             throw new IllegalArgumentException("Intervention should have a name");

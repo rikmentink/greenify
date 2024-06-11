@@ -48,9 +48,9 @@ public class InterventionServiceIntegrationTest {
 
         when(interventionRepository.findById(1L)).thenReturn(java.util.Optional.of(intervention));
         when(phaseRepository.findById(1L)).thenReturn(java.util.Optional.of(phase));
-        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(List.of(intervention));
+        when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
+        when(interventionRepository.findInterventionsByParticipantsContains(person)).thenReturn(new ArrayList<>());
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
-
     }
 
     @DisplayName("Creating an intervention should be possible")

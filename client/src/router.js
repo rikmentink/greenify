@@ -26,9 +26,8 @@ export const initRouter = (outlet) => {
   router = new Router(outlet, {
     baseUrl: BASE_URL,
   });
-
+  
   router.setRoutes(routes);
-};
-
+}
 
 export const getRouter = () => router;
