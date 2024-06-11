@@ -4,6 +4,7 @@ import {InterventionInformationBox} from "../components/intervention/Interventio
 import {InterventionSurveyBox} from "../components/intervention/InterventionSurveyBox.js";
 import {sendMail} from "../../services/MailService.js";
 import {addParticipantToIntervention} from "../../services/InterventionService.js";
+import {getInterventionById} from "../../services/InterventionService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -32,18 +33,17 @@ export class Intervention extends LitElement {
         this.requestUpdate();
     }
 
-    handlePersonFetched(event) {
+    async handlePersonFetched(event) {
         const person = event.detail.person;
         console.log(person);
 
         addParticipantToIntervention(this.interventionData.id, person.id);
+        this.interventionData = await getInterventionById(this.interventionData.id);
 
-        if(this.userData.some(user => user.userId === person.id)) {
-            alert("Gebruiker is al toegevoegd aan de interventie.");
-            return;
-        }
+        this.userData = this.interventionData.participants;
 
         console.log(this.interventionData);
+        console.log(this.userData);
 
 
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
@@ -70,7 +70,7 @@ export class Intervention extends LitElement {
         return html`
             <intervention-information-box .interventionData="${this.interventionData}"></intervention-information-box>
             <intervention-survey-box .id="${this.interventionData.id}"></intervention-survey-box>
-            <intervention-users-panel .userData="${this.interventionData.participants}"></intervention-users-panel>
+            <intervention-users-panel .userData="${this.userData}"></intervention-users-panel>
         `;
     }
 }
