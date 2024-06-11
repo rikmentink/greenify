@@ -3,6 +3,7 @@ package nl.hu.greenify.core.presentation.dto;
 import lombok.Getter;
 import nl.hu.greenify.core.domain.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,26 +17,28 @@ public class InterventionDto {
     private final Phase currentPhase;
     private final int surveyAmount;
     private final double totalSurveyProgress;
+    private final List<Person> participants;
 
-    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress) {
+    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.currentPhase = currentPhase;
         this.surveyAmount = surveyAmount;
         this.totalSurveyProgress = totalSurveyProgress;
+        this.participants = participants;
     }
 
 
     public static InterventionDto fromEntity(Intervention intervention, Person person) {
         if(intervention.getCurrentPhase() == null) {
-           return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0);
+           return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>());
         }
 
         List<Survey> surveys = intervention.getAllSurveysOfParticipant(person);
         int surveyAmount = surveys.size() + 1;
 
-        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculateProgress(surveys));
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculateProgress(surveys), intervention.getParticipants());
     }
 
     public static List<InterventionDto> fromEntities(List<Intervention> interventions, Person person) {
