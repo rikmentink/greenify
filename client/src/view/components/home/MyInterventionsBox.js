@@ -8,7 +8,7 @@ import {Router} from "@vaadin/router";
 export class MyInterventionsBox extends LitElement {
     static styles = [css`
         .my-interventions-container {
-            width: 50%;
+            width: 650px;
             margin-bottom: 50px;
         }
 
