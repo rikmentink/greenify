@@ -34,6 +34,11 @@ public class InterventionController extends Controller {
         return this.createResponse(this.interventionService.getInterventionById(id));
     }
 
+    @PostMapping(value="/{id}/person/{personId}", produces="application/json")
+    public ResponseEntity<?> addParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
+        return this.createResponse(this.interventionService.addParticipant(id, personId), HttpStatus.CREATED);
+    }
+
     @GetMapping("/all/{id}")
     public ResponseEntity<?> getAllInterventionsByPerson(@PathVariable("id") Long id) {
         List<Intervention> i = this.interventionService.getAllInterventionsByPerson(id);
