@@ -34,6 +34,18 @@ public class InterventionService {
         }
     }
 
+    public Intervention addParticipant(Long id, Long personId) {
+        Intervention intervention = getInterventionById(id);
+        Person person = personService.getPersonById(personId);
+
+        if(person == null) {
+            throw new IllegalArgumentException("Person with id " + personId + " does not exist");
+        }
+
+        intervention.addParticipant(person);
+        return interventionRepository.save(intervention);
+    }
+
     public Intervention addPhase(Long id, PhaseName phaseName) {
         Intervention intervention = getInterventionById(id);
         if(intervention == null) {
