@@ -3,6 +3,7 @@ import {InterventionUsersPanel} from "../components/intervention/InterventionUse
 import {InterventionInformationBox} from "../components/intervention/InterventionInformationBox.js";
 import {InterventionSurveyBox} from "../components/intervention/InterventionSurveyBox.js";
 import {sendMail} from "../../services/MailService.js";
+import {addParticipantToIntervention} from "../../services/InterventionService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -22,7 +23,6 @@ export class Intervention extends LitElement {
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
         if (selectedIntervention) {
            this.interventionData = selectedIntervention;
-           console.log(this.interventionData.participants);
         }
     }
 
@@ -34,18 +34,24 @@ export class Intervention extends LitElement {
 
     handlePersonFetched(event) {
         const person = event.detail.person;
+        console.log(person);
+
+        addParticipantToIntervention(this.interventionData.id, person.id);
 
         if(this.userData.some(user => user.userId === person.id)) {
             alert("Gebruiker is al toegevoegd aan de interventie.");
             return;
         }
 
+        console.log(this.interventionData);
+
+
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 
         sendMail({
             to: person.email,
             subject: "U bent uitgenodigd bij een interventie",
-            body: `U bent toegevoegd aan interventie ${this.interventionId}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
+            body: `U bent toegevoegd aan interventie ${this.interventionData.id}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
         });
 
         this.userData = [
@@ -58,13 +64,12 @@ export class Intervention extends LitElement {
                 userId: person.id
             }
         ];
-        window.location.reload();
     }
 
     render() {
         return html`
             <intervention-information-box .interventionData="${this.interventionData}"></intervention-information-box>
-            <intervention-survey-box .id="${this.interventionId}"></intervention-survey-box>
+            <intervention-survey-box .id="${this.interventionData.id}"></intervention-survey-box>
             <intervention-users-panel .userData="${this.interventionData.participants}"></intervention-users-panel>
         `;
     }
