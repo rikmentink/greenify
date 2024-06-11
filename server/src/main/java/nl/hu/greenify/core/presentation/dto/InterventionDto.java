@@ -15,15 +15,15 @@ public class InterventionDto {
     private final String description;
     private final Phase currentPhase;
     private final int surveyAmount;
-    private final double progress;
+    private final double totalSurveyProgress;
 
-    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double progress) {
+    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.currentPhase = currentPhase;
         this.surveyAmount = surveyAmount;
-        this.progress = progress;
+        this.totalSurveyProgress = totalSurveyProgress;
     }
 
 
