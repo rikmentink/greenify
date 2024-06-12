@@ -1,6 +1,7 @@
 import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
 import {getInterventionByPersonId} from "../../../services/InterventionService.js";
+import {Router} from "@vaadin/router";
 
 export class MyInterventionsBox extends LitElement {
     static styles = [css`
@@ -127,13 +128,10 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
-    handleIntervention(intervention) {
-        this.dispatchEvent(new CustomEvent('intervention-selected', {
-            detail: { intervention },
-            bubbles: true,
-            composed: true
-        }));
-    }
+   fetchIntervention(intervention) {
+        sessionStorage.setItem('selectedIntervention', JSON.stringify(intervention));
+        Router.go(`/intervention/${this.interventieData.id}`);
+   }
 
     renderInterventions(){
         if (this.loading) {  // If loading, don't render the chart
@@ -159,7 +157,7 @@ export class MyInterventionsBox extends LitElement {
                         </div>
                     </div>
                     <div class="my-interventions-btn">
-                        <a class="bekijk-button" href="intervention/${interventie.id}">Bekijk</a>
+                        <button class="bekijk-button" @click="${() => this.fetchIntervention(interventie)}">Bekijk</button>
                     </div>
                 </div>
             `;
