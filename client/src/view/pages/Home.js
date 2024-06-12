@@ -81,7 +81,7 @@ export class Home extends LitElement {
                 <h2>${this.homePageUserInfo()}</h2>
             </div>
             <div class="home-container">
-                <my-intervention-box .userId=${this.userData.id}></my-intervention-box>
+                <my-intervention-box .userId=${this.userData.person.id}></my-intervention-box>
                 ${this.renderCreateInterventionBox()}
             </div>
         `;
