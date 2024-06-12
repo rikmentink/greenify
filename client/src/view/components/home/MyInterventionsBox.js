@@ -115,7 +115,7 @@ export class MyInterventionsBox extends LitElement {
     }
 
     async getInterventionsByPersonId(userId) {
-        this.interventionData = await getInterventionByPersonId(userId);
+        this.interventieData = await getInterventionByPersonId(userId);
         this.loading = false;
         this.userId = userId;
         this.requestUpdate();
@@ -127,9 +127,12 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
-    fetchIntervention(intervention) {
-        sessionStorage.setItem('selectedIntervention', JSON.stringify(intervention));
-        Router.go(`/intervention/${intervention.id}`);
+    handleIntervention(intervention) {
+        this.dispatchEvent(new CustomEvent('intervention-selected', {
+            detail: { intervention },
+            bubbles: true,
+            composed: true
+        }));
     }
 
     renderInterventions(){
