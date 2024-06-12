@@ -113,6 +113,7 @@ export class MyInterventionsBox extends LitElement {
     async getInterventionsByPersonId(userId) {
         this.interventieData = await getInterventionByPersonId(userId);
         this.loading = false;
+        this.userId = userId;
         this.requestUpdate();
     }
 
@@ -146,7 +147,7 @@ export class MyInterventionsBox extends LitElement {
                         </div>
                     </div>
                     <div class="my-interventions-btn">
-                        <button class="bekijk-button">Bekijk</button>
+                        <a class="bekijk-button" href="intervention/${interventie.id}">Bekijk</a>
                     </div>
                 </div>
             `;
