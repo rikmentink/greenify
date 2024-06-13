@@ -18,8 +18,9 @@ public class InterventionDto {
     private final int surveyAmount;
     private final double totalSurveyProgress;
     private final List<Person> participants;
+    private final List<Phase> phases;
 
-    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants) {
+    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants, List<Phase> phases) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -27,18 +28,19 @@ public class InterventionDto {
         this.surveyAmount = surveyAmount;
         this.totalSurveyProgress = totalSurveyProgress;
         this.participants = participants;
+        this.phases = phases;
     }
 
 
     public static InterventionDto fromEntity(Intervention intervention, Person person) {
         if(intervention.getCurrentPhase() == null) {
-           return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>());
+           return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>(), new ArrayList<>());
         }
 
         List<Survey> surveys = intervention.getAllSurveysOfParticipant(person);
         int surveyAmount = surveys.size() + 1;
 
-        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculatePersonalProgress(surveys), intervention.getParticipants());
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculatePersonalProgress(surveys), intervention.getParticipants(), intervention.getPhases());
     }
 
     public static List<InterventionDto> fromEntities(List<Intervention> interventions, Person person) {
