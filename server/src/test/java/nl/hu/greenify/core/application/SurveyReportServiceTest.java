@@ -173,4 +173,20 @@ public class SurveyReportServiceTest {
         // Then:
         assertEquals(expectedScores, actualScores);
     }
+
+    @Test
+    @DisplayName("Test obtaining total scores of ALL categories within a phase across multiple surveys")
+    public void testTotalScoresOfAllCategoriesForPhase() {
+        // Given:
+        Map<String, Double> expectedScores = new HashMap<>();
+        // The total score is calculated based on the responses provided in the setupResponses() method
+        expectedScores.put("name", 27.98); // total score for category "name"
+        expectedScores.put("name2", 16.65); // total score for category "name2"
+
+        // When:
+        Map<String, Double> actualScores = surveyReportService.getTotalScoresOfAllCategoriesForPhase(1L);
+
+        // Then:
+        assertEquals(expectedScores, actualScores);
+    }
 }
