@@ -141,6 +141,7 @@ export class InterventionSurveyBox extends LitElement {
 
     async fetchIntervention() {
         this.intervention = await getInterventionById(this.id);
+        console.log(this.intervention);
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
