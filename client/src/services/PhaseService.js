@@ -8,7 +8,7 @@ async function handleErrorMessages(response) {
 }
 
 async function getPhaseById(id) {
-    const response = await fetch(`${API_URL}/phase/${id}`, {
+    const response = await fetch(`${API_URL}/intervention/phase/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

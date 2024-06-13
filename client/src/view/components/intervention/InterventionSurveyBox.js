@@ -1,5 +1,7 @@
 import {css, html, LitElement} from "lit";
 import {getInterventionById} from "../../../services/InterventionService.js";
+import {getPhaseById} from "../../../services/PhaseService.js";
+
 export class InterventionSurveyBox extends LitElement {
     static styles = css`
         .title-container {
@@ -136,33 +138,42 @@ export class InterventionSurveyBox extends LitElement {
         },
         intervention: {
             type: Object
+        },
+        loading: {
+            type: Boolean
         }
-    }
-
-    async fetchIntervention() {
-        this.intervention = await getInterventionById(this.id);
-        this.surveyData = this.intervention.allSurveysOfAllPhases;
-
-        console.log(this.intervention.allSurveysOfAllPhases);
-        console.log(this.surveyData);
-        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
     constructor() {
         super();
         this.id = 1;
         this.surveyData = [];
+        this.loading = true;
         this.fetchIntervention();
-
     }
 
+
+    async fetchIntervention() {
+        this.intervention = await getInterventionById(this.id);
+        this.surveyData = await Promise.all(this.intervention.allSurveysOfAllPhases.map(async survey => {
+            survey.phase = await getPhaseById(survey.phaseId);
+            return survey;
+        }));
+
+        console.log(this.surveyData);
+
+        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
+        this.loading = false;
+    }
     renderSurveys() {
-        return this.surveyData.map(survey => {
-            let progress = 60 + "%" // Placeholder for progress, need to be calculated
-            return html`
+       if(this.loading) {
+           return html`<p>Loading...</p>`;
+       } else {
+           return this.surveyData.map(survey => {
+               let progress = 60 + "%" // Placeholder for progress, need to be calculated
+               return html`
                 <div class="survey-box">
-                    <p class="sy-header"><span class="sy-phase">${survey.phase}</span></p>
-                    <p class="sy-description">${survey.description}</p>
+                    <p class="sy-header"><span class="sy-phase">${survey.phase.name}</span></p>
                     <div class="sy-status">
                         <a href="">Bekijk vragen &#10132;</a>
                         <a href="">Bekijk eindrapport &#10132;</a>
@@ -180,8 +191,8 @@ export class InterventionSurveyBox extends LitElement {
                     </div>
                 </div>
             `;
-        });
-
+           });
+       }
     }
 
     render() {
