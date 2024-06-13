@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Calculations {
-    public static double calculatePersonalProgress(List<Survey> surveys) {
+    public static double calculateProgress(List<Survey> surveys) {
         List<Factor> factors = surveys.stream()
                 .map(Survey::getCategories)
                 .flatMap(List::stream)
@@ -31,7 +31,4 @@ public class Calculations {
         return ((double) responses.size() / subfactors.size()) * 100;
     }
 
-    public static double calculatePhaseProgress() {
-        return 0;
-    }
 }
