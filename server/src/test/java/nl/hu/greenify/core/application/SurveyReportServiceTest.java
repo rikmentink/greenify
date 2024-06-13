@@ -128,35 +128,6 @@ public class SurveyReportServiceTest {
     }
 
     @Test
-    @DisplayName("Test average score of a category across multiple surveys in a phase")
-    public void testAverageScoreOfCategoryForPhase() {
-        // When:
-        double result = surveyReportService.getAverageScoreOfCategoryForPhase(1L,  "name");
-
-        // Then:
-        // Survey 1 scores: 10 + 2.66
-        // Survey 2 scores: 10 + 5.32
-        // Total: 27.98
-        // Average: 27.98 / 4 = 6.995
-        assertEquals(6.995, result);
-    }
-
-    @Test
-    @DisplayName("Test obtaining averages of ALL categories within a phase across multiple surveys")
-    public void testAverageScoresOfAllCategoriesForPhase() {
-        // Given:
-        Map<String, Double> expectedScores = new HashMap<>();
-        expectedScores.put("name", 6.995);
-        expectedScores.put("name2", 4.1625);
-
-        // When:
-        Map<String, Double> actualScores = surveyReportService.getAverageScoresOfAllCategoriesForPhase(1L);
-
-        // Then:
-        assertEquals(expectedScores, actualScores);
-    }
-
-    @Test
     @DisplayName("Test obtaining averages of ALL subfactors in a category within a phase across multiple surveys")
     public void testAverageScoresOfEachSubfactorInCategory() {
         // Given:

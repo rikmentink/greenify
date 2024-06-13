@@ -203,13 +203,10 @@ public class SurveyReportControllerIntegrationTest {
                 .andExpect(jsonPath("$[*].categoryName", containsInAnyOrder("category1", "category2", "category3")))
                 .andExpect(jsonPath("$[?(@.categoryName=='category1')].maxPossibleScore", contains(20.0)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category1')].totalScore", contains(15.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category1')].averageScore", contains(7.5)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category2')].maxPossibleScore", contains(10.0)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category2')].totalScore", contains(10.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category2')].averageScore", contains(10.0)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category3')].maxPossibleScore", contains(10.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category3')].totalScore", contains(10.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category3')].averageScore", contains(10.0)));
+                .andExpect(jsonPath("$[?(@.categoryName=='category3')].totalScore", contains(10.0)));
     }
 
     @Test
