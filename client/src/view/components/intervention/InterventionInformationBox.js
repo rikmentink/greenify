@@ -55,7 +55,6 @@ export class InterventionInformationBox extends LitElement {
     }
 
     render() {
-        console.log(this.interventionData)
         if (!this.interventionData.name) {
             return html`<p>Loading...</p>`;
         }
