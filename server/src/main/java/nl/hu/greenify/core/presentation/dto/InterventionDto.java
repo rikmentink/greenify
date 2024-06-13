@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static nl.hu.greenify.core.utils.Calculations.calculateProgress;
+import static nl.hu.greenify.core.utils.Calculations.calculatePersonalProgress;
 
 @Getter
 public class InterventionDto {
@@ -38,7 +38,7 @@ public class InterventionDto {
         List<Survey> surveys = intervention.getAllSurveysOfParticipant(person);
         int surveyAmount = surveys.size() + 1;
 
-        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculateProgress(surveys), intervention.getParticipants());
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculatePersonalProgress(surveys), intervention.getParticipants());
     }
 
     public static List<InterventionDto> fromEntities(List<Intervention> interventions, Person person) {

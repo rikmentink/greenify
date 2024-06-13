@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Calculations {
-    public static double calculateProgress(List<Survey> surveys) {
+    public static double calculatePersonalProgress(List<Survey> surveys) {
         List<Factor> factors = surveys.stream()
                 .map(Survey::getCategories)
                 .flatMap(List::stream)
