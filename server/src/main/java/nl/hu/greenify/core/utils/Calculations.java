@@ -30,4 +30,8 @@ public class Calculations {
 
         return ((double) responses.size() / subfactors.size()) * 100;
     }
+
+    public static double calculatePhaseProgress() {
+        return 0;
+    }
 }
