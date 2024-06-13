@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Setter
 @Getter

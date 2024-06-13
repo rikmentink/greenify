@@ -141,42 +141,18 @@ export class InterventionSurveyBox extends LitElement {
 
     async fetchIntervention() {
         this.intervention = await getInterventionById(this.id);
-        console.log(this.intervention);
+        this.surveyData = this.intervention.allSurveysOfAllPhases;
+        console.log(this.intervention.allSurveysOfAllPhases);
+        console.log(this.surveyData);
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
     constructor() {
         super();
         this.id = 1;
+        this.surveyData = [];
         this.fetchIntervention();
 
-        this.surveyData = [{
-            id: 1,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Research"
-        }, {
-            id: 2,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Implementatie"
-        }, {
-            id: 3,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Evaluatie"
-        }, {
-            id: 4,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Research"
-        }, {
-            id: 5,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Implementatie"
-        }, {
-            id: 6,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Evaluatie"
-        }
-
-        ];
     }
 
     renderSurveys() {
