@@ -17,9 +17,9 @@ public class InterventionDto {
     private final Phase currentPhase;
     private final int surveyAmount;
     private final double totalSurveyProgress;
+    private final double phaseProgress;
     private final List<Person> participants;
     private final List<Phase> phases;
-    private final double phaseProgress;
 
     public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants, List<Phase> phases, double phaseProgress) {
         this.id = id;
@@ -42,7 +42,11 @@ public class InterventionDto {
         List<Survey> surveys = intervention.getAllSurveysOfParticipant(person);
         int surveyAmount = surveys.size() + 1;
 
-        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, calculateProgress(surveys), intervention.getParticipants(), intervention.getPhases(), calculateProgress(intervention.getAllSurveysOfAllPhases()));
+        double surveyprogress = calculateProgress(surveys);
+        double phaseprogress = calculateProgress(intervention.getAllSurveysOfAllPhases());
+
+
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, surveyprogress, intervention.getParticipants(), intervention.getPhases(), phaseprogress);
     }
 
     public static List<InterventionDto> fromEntities(List<Intervention> interventions, Person person) {
