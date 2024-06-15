@@ -63,7 +63,7 @@ export class Home extends LitElement {
         const userRoles = this.userData.authorities.map(role => role.authority);
         if (userRoles.includes("ROLE_MANAGER")) {
             return html`
-            <create-intervention-box></create-intervention-box>
+            <create-intervention-box personId="${this.userData.person.id}"></create-intervention-box>
         `;
         }
         return html``;
