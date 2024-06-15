@@ -8,6 +8,7 @@ import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
 import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
 import nl.hu.greenify.core.presentation.dto.InterventionDto;
+import nl.hu.greenify.core.presentation.dto.PhaseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -62,6 +63,11 @@ public class InterventionController extends Controller {
     /**
      * Phase endpoints
      */
+
+    @GetMapping(value="/{id}/phases", produces="application/json")
+    public ResponseEntity<?> getPhasesByInterventionId(@PathVariable("id") Long id) {
+        return this.createResponse(PhaseDto.fromEntities(this.interventionService.getPhasesByIntervention(id)));
+    }
 
     @GetMapping(value="/phase/{id}", produces="application/json")
     public ResponseEntity<?> getPhaseById(@PathVariable("id") Long id) {
