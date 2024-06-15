@@ -46,4 +46,17 @@ async function getInterventionByPersonId(id) {
     return response.json();
 }
 
-export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention};
+async function getPhasesByInterventionId(id) {
+    const response = await fetch(`${API_URL}/intervention/${id}/phases`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
+}
+
+export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention, getPhasesByInterventionId};
