@@ -44,6 +44,13 @@ export class CreateInterventionsBox extends LitElement {
     ;
     `];
 
+    static properties = {
+        personId: {
+            type: Number,
+            reflect: true
+        }
+    }
+
     constructor() {
         super();
     }
@@ -63,7 +70,7 @@ export class CreateInterventionsBox extends LitElement {
                     <p>Bepaal welke groene interventie u wilt optimaliseren en beheer de gebruikersdie kunnen bijdragen
                         aan het invullen van de vragenlijst om de groene interventie te optimaliseren.</p>
                     <div class="create-interventions-btn-container">
-                        <a href="/create-intervention" class="create-interventions-btn">Creëer</a>
+                        <a href="/intervention/${this.personId}/new-intervention" class="create-interventions-btn">Creëer</a>
                     </div>
                 </div>
             </div>
