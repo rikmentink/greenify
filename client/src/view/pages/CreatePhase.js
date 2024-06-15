@@ -80,6 +80,7 @@ export class CreatePhase extends LitElement {
         super();
         this.interventionId = 0;
         this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
+        console.log(this.intervention);
         this.interventionName = this.intervention.name;
     }
 

@@ -35,16 +35,13 @@ export class Intervention extends LitElement {
 
     async handlePersonFetched(event) {
         const person = event.detail.person;
-        console.log(person);
 
         addParticipantToIntervention(this.interventionData.id, person.id);
         this.interventionData = await getInterventionById(this.interventionData.id);
 
         this.userData = this.interventionData.participants;
-
-        console.log(this.interventionData);
         console.log(this.userData);
-
+        console.log(this.interventionData);
 
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 
