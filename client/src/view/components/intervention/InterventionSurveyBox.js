@@ -1,5 +1,5 @@
 import {css, html, LitElement} from "lit";
-import {getInterventionById} from "../../../services/InterventionService.js";
+import {getInterventionById, getPhasesByInterventionId} from "../../../services/InterventionService.js";
 import {getPhaseById} from "../../../services/PhaseService.js";
 
 export class InterventionSurveyBox extends LitElement {
@@ -147,20 +147,22 @@ export class InterventionSurveyBox extends LitElement {
     constructor() {
         super();
         this.id = 1;
-        this.surveyData = [];
+        this.phaseData = [];
         this.loading = true;
         this.fetchIntervention();
     }
 
 
     async fetchIntervention() {
-        this.intervention = await getInterventionById(this.id);
-        this.surveyData = await Promise.all(this.intervention.allSurveysOfAllPhases.map(async survey => {
-            survey.phase = await getPhaseById(survey.phaseId);
-            return survey;
-        }));
+        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
+        if (selectedIntervention) {
+            this.interventionData = selectedIntervention;
+        }
 
-        console.log(this.surveyData);
+        this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
+
+        console.log(this.phaseData);
+        console.log(this.interventionData);
 
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
         this.loading = false;
@@ -169,11 +171,11 @@ export class InterventionSurveyBox extends LitElement {
        if(this.loading) {
            return html`<p>Loading...</p>`;
        } else {
-           return this.surveyData.map(survey => {
+           return this.phaseData.map(phase => {
                let progress = 60 + "%" // Placeholder for progress, need to be calculated
                return html`
                 <div class="survey-box">
-                    <p class="sy-header"><span class="sy-phase">${survey.phase.name}</span></p>
+                    <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
                         <a href="">Bekijk vragen &#10132;</a>
                         <a href="">Bekijk eindrapport &#10132;</a>
