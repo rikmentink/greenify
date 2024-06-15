@@ -34,6 +34,11 @@ public class InterventionService {
         }
     }
 
+    public List<Phase> getPhasesByIntervention(Long id) {
+        Intervention intervention = getInterventionById(id);
+        return intervention.getPhases();
+    }
+
     public Intervention addParticipant(Long id, Long personId) {
         Intervention intervention = getInterventionById(id);
         Person person = personService.getPersonById(personId);
