@@ -9,6 +9,5 @@ public interface IReport {
     double calculateAgreementScore();
     List<String> getActionPoints();
     List<String> getComments();
-    List<Response> getAllResponses();
 
 }

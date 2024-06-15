@@ -201,15 +201,18 @@ public class SurveyReportControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[*].categoryName", containsInAnyOrder("category1", "category2", "category3")))
+
                 .andExpect(jsonPath("$[?(@.categoryName=='category1')].maxPossibleScore", contains(20.0)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category1')].totalScore", contains(15.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category1')].averageScore", contains(7.5)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category1')].percentage", contains(75.0)))
+
                 .andExpect(jsonPath("$[?(@.categoryName=='category2')].maxPossibleScore", contains(10.0)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category2')].totalScore", contains(10.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category2')].averageScore", contains(10.0)))
+                .andExpect(jsonPath("$[?(@.categoryName=='category2')].percentage", contains(100.0)))
+
                 .andExpect(jsonPath("$[?(@.categoryName=='category3')].maxPossibleScore", contains(10.0)))
                 .andExpect(jsonPath("$[?(@.categoryName=='category3')].totalScore", contains(10.0)))
-                .andExpect(jsonPath("$[?(@.categoryName=='category3')].averageScore", contains(10.0)));
+                .andExpect(jsonPath("$[?(@.categoryName=='category3')].percentage", contains(100.0)));
     }
 
     @Test
@@ -227,6 +230,7 @@ public class SurveyReportControllerIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].subfactorName", is("subfactor1")))
                 .andExpect(jsonPath("$[0].maxPossibleScore", is(10.0)))
-                .andExpect(jsonPath("$[0].averageScore", is(7.5)));
+                .andExpect(jsonPath("$[0].averageScore", is(7.5)))
+                .andExpect(jsonPath("$[0].percentage", is(75.0)));
     }
 }

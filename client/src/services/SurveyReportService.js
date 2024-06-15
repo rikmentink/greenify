@@ -1,33 +1,34 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function getCategoryScores(phaseId) {
-    const url = new URL(`${API_URL}/survey-report/${phaseId}/category-scores`);
-    return fetch(url, {
-        method: 'GET',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-    }).then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error(error);
-        })
+async function handleErrorMessages(response) {
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
 }
 
-async function getSubfactorScores(phaseId, categoryName) {
-    const url = new URL(`${API_URL}/survey-report/${phaseId}/subfactor-scores/${categoryName}`);
-    return fetch(url, {
+async function getCategoryScores() {
+    const response = await fetch(`${API_URL}/intervention/categoryscores`, {
         method: 'GET',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-    }).then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error(error);
-        })
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
 }
 
-export { getCategoryScores, getSubfactorScores };
+async function getSubfactorScoresOfCategory(categoryId) {
+    const response = await fetch(`${API_URL}/intervention/subfactorscores/${categoryId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
+}
