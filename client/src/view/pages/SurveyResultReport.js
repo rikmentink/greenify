@@ -138,8 +138,22 @@ export class SurveyResultReport extends LitElement {
     const element = this.shadowRoot.querySelector(".header-box-contents");
     element.scrollIntoView();
   }
-  openDialog(event) {
-    this.shadowRoot.querySelector('#dialog-title').textContent = event.detail;
+  async openDialog(event) {
+    const categoryName = event.detail;
+    this.shadowRoot.querySelector('#dialog-title').textContent = categoryName;
+
+    const subfactorScores = await getSubfactorScoresOfCategory(this.phaseId, categoryName);
+
+    // Sort the subfactor scores based on the percentage from lowest to highest
+    subfactorScores.subfactorScores.sort((a, b) => a.percentage - b.percentage);
+
+    this.barChartData = subfactorScores.subfactorScores.map(score => ({
+      description: score.subfactorName,
+      chartData: [score.averageScore],
+      chartLabels: ["Percentage"],
+      chartColors: ["purple"]
+    }));
+
     this.shadowRoot.querySelector('dialog-plain').open();
   }
 
