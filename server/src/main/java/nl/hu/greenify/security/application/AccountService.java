@@ -82,6 +82,7 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account getCurrentAccount() {
+        var test = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AccountCredentials accountCredentials = (AccountCredentials)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

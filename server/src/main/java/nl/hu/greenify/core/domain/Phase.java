@@ -53,4 +53,11 @@ public class Phase {
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
     }
+
+    public Survey getSurveyOfPerson(Person person) {
+        return this.surveys.stream()
+            .filter(survey -> survey.getRespondent().equals(person))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Person should have a survey in this phase"));
+    }
 }
