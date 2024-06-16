@@ -89,6 +89,10 @@ public class AccountService implements UserDetailsService {
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
     }
 
+    public Person getCurrentPerson() {
+        return this.getCurrentAccount().getPerson();
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findByEmail(username)
