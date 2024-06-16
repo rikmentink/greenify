@@ -88,6 +88,13 @@ public class Survey {
         return this.getCategoryById(categoryId).getFactors();
     }
 
+    public List<Subfactor> getAllSubfactors() {
+        return this.getCategories().stream()
+                .flatMap(category -> category.getFactors().stream())
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .collect(Collectors.toList());
+    }
+
     public Subfactor getSubfactorById(Long id) {
         return this.getCategories().stream()
                 .flatMap(category -> category.getFactors().stream())
@@ -106,6 +113,20 @@ public class Survey {
 
     public void addCategory(Category category) {
         this.categories.add(category);
+    }
+
+    public double getProgress() {
+        return this.categories.stream()
+                .mapToDouble(Category::getProgress)
+                .average()
+                .orElse(0);
+    }
+
+    public double getProgressByCategory(Category category) {
+        if (this.categories.contains(category) == false)
+            throw new IllegalArgumentException("Category not found in survey.");
+
+        return category.getProgress();
     }
 
     private static List<Category> cloneCategories(List<Category> templateCategories) {

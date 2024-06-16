@@ -10,6 +10,8 @@ import nl.hu.greenify.core.data.PhaseRepository;
 
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.security.application.AccountService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,8 @@ public class InterventionServiceTest {
     private final PhaseRepository phaseRepository = mock(PhaseRepository.class);
     private final PersonService personService = mock(PersonService.class);
     private final PersonRepository personRepository = mock(PersonRepository.class);
-    private final InterventionService interventionService = new InterventionService(interventionRepository, phaseRepository, personService);
+    private final AccountService accountService = mock(AccountService.class);
+    private final InterventionService interventionService = new InterventionService(accountService, personService, interventionRepository, phaseRepository);
     Person person;
     Intervention intervention;
 
