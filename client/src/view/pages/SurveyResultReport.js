@@ -5,6 +5,7 @@ import "../components/surveyReport/HeaderBox.js";
 import "../components/surveyReport/BubbleBox.js";
 import "../components/surveyReport/DialogPlain.js";
 import "../components/surveyReport/charts/HorizontalBarChart.js";
+import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/SurveyReportService.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [
@@ -104,6 +105,15 @@ export class SurveyResultReport extends LitElement {
       }
     `];
 
+  static get properties() {
+    return {
+      polarChartData: { type: Array },
+      polarChartLabels: { type: Array },
+      barChartData: { type: Array },
+      actionPointData: { type: Array }
+    };
+  }
+
   constructor() {
     super();
     this.polarChartData = [100, 80, 20, 60, 85, 30];
@@ -132,6 +142,13 @@ export class SurveyResultReport extends LitElement {
       {title: "Actiepunt 9", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
       {title: "Actiepunt 10", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."}
     ];
+  }
+
+  async connectedCallback() {
+    super.connectedCallback();
+    const categoryScores = await getCategoryScores(this.phaseId);
+    this.polarChartData = categoryScores.categoryScores.map(score => score.percentage);
+    this.polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
   }
 
   firstUpdated() {
