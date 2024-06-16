@@ -3,14 +3,12 @@ package nl.hu.greenify.core.domain;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Setter
 @Getter
 @Entity
 @EqualsAndHashCode
