@@ -4,7 +4,6 @@ import nl.hu.greenify.core.application.InterventionService;
 import nl.hu.greenify.core.application.PersonService;
 import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
-import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
 import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
