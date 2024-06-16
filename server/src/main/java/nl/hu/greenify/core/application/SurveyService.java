@@ -89,6 +89,13 @@ public class SurveyService {
         }
     }
 
+    public List<Survey> createSurveysForParticipants(Phase phase, List<Person> participants) {
+        return participants.stream()
+                .map(person -> Survey.createSurvey(phase, this.getActiveTemplate(), person))
+                .map(surveyRepository::save)
+                .toList();
+    }
+
     /**
      * Saves a response for the given survey.
      * 
