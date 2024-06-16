@@ -66,7 +66,7 @@ public class InterventionService {
         if(!intervention.getPhases().contains(phase))
             throw new IllegalArgumentException("Phase with id " + phaseId + " is not part of intervention with id " + interventionId);
 
-        Person person = accountService.getCurrentAccount().getPerson();
+        Person person = accountService.getCurrentPerson();
         if(!intervention.getParticipants().contains(person) && !intervention.getAdmin().equals(person))
             throw new IllegalArgumentException("Person with id " + person.getId() + " is not part of intervention with id " + interventionId);
         
