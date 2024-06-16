@@ -116,20 +116,10 @@ export class SurveyResultReport extends LitElement {
 
   constructor() {
     super();
-    this.polarChartData = [100, 80, 20, 60, 85, 30];
-    this.polarChartLabels = ['Kenmerken betrokken', 'De groene interventie', 'Ontwerp', 'De externe omgeving', 'De organisatie', 'Proces'];
-    this.barChartData = [
-      {description: 'Hier staat een vraag waar wat minder op gescoord is', chartData: [50], chartLabels: ["Percentage"], chartColors: ['purple']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [60], chartLabels: ["Percentage"], chartColors: ['blue']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [65], chartLabels: ["Percentage"], chartColors: ['green']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [65], chartLabels: ["Percentage"], chartColors: ['red']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [70], chartLabels: ["Percentage"], chartColors: ['orange']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [75], chartLabels: ["Percentage"], chartColors: ['pink']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['yellow']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightblue']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightgreen']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['black']},
-    ];
+    this.phaseId = 1; // TODO: Adjust based on the URL
+    this.polarChartData = [];
+    this.polarChartLabels = [];
+    this.barChartData = [];
     this.actionPointData = [
       {title: "Actiepunt 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
       {title: "Actiepunt 2", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
