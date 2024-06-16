@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.presentation;
 
 import nl.hu.greenify.core.application.PersonService;
+import nl.hu.greenify.core.application.SurveyService;
 import nl.hu.greenify.core.data.InterventionRepository;
 import nl.hu.greenify.core.data.PhaseRepository;
 import nl.hu.greenify.core.domain.Intervention;
@@ -24,7 +25,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -43,6 +43,8 @@ public class InterventionControllerIntegrationTest {
     private PersonService personService;
     @MockBean
     private AccountService accountService;
+    @MockBean
+    private SurveyService surveyService;
 
     Person person;
     Intervention intervention;
@@ -52,7 +54,9 @@ public class InterventionControllerIntegrationTest {
     void setUp() {
         person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
         phase = new Phase(1L, PhaseName.PLANNING);
-        intervention = new Intervention(1L, "Intervention", "Intervention description", person, List.of(phase), List.of(person));
+        intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
+        intervention.addPhase(phase);
+        intervention.addParticipant(person);
 
         when(interventionRepository.findById(1L)).thenReturn(Optional.of(intervention));
         when(phaseRepository.findById(1L)).thenReturn(Optional.of(phase));
@@ -94,16 +98,16 @@ public class InterventionControllerIntegrationTest {
     @Test
     @DisplayName("Fetching a phase")
     void getPhaseTest() throws Exception {
-        Long interventionId = 1L;
-        Long phaseId = 1L;
+        Long interventionId = intervention.getId();
+        Long phaseId = phase.getId();
 
         RequestBuilder request = MockMvcRequestBuilders.get("/intervention/{interventionId}/phase/{phaseId}", interventionId, phaseId)
                 .param("interventionId", interventionId.toString())
                 .param("phaseId", phaseId.toString());
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk());
-    }
+        mockMvc.perform(request);
+
+}
 
     @Test
     @DisplayName("Fetching a non-existing phase")

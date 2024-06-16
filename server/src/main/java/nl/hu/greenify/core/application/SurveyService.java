@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.hu.greenify.core.domain.*;
@@ -88,7 +89,6 @@ public class SurveyService {
     public List<Survey> createSurveysForParticipants(Phase phase, List<Person> participants) {
         return participants.stream()
                 .map(person -> this.createSurvey(phase, person))
-                .map(surveyRepository::save)
                 .toList();
     }
 
