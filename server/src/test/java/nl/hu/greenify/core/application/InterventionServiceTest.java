@@ -30,7 +30,8 @@ public class InterventionServiceTest {
     private final PersonService personService = mock(PersonService.class);
     private final PersonRepository personRepository = mock(PersonRepository.class);
     private final AccountService accountService = mock(AccountService.class);
-    private final InterventionService interventionService = new InterventionService(accountService, personService, interventionRepository, phaseRepository);
+    private final SurveyService surveyService = mock(SurveyService.class);
+    private final InterventionService interventionService = new InterventionService(accountService, personService, surveyService, interventionRepository, phaseRepository);
     Person person;
     Intervention intervention;
 
@@ -66,6 +67,13 @@ public class InterventionServiceTest {
     void addPhase() {
         interventionService.addPhase(1L, PhaseName.PLANNING);
         verify(interventionRepository).save(intervention);
+    }
+
+    @DisplayName("When adding a phase to an intervention, a survey should be created for each participant")
+    @Test
+    void addPhaseShouldCreateSurveys() {
+        interventionService.addPhase(1L, PhaseName.PLANNING);
+        verify(surveyService).createSurveysForParticipants(any(), eq(intervention.getParticipants()));
     }
 
     @DisplayName("When fetching a phase with a valid id, it should be fetched from the repository")

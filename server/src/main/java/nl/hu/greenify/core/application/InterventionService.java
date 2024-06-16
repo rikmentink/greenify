@@ -20,14 +20,16 @@ import java.util.List;
 public class InterventionService {
     private final AccountService accountService;
     private final PersonService personService;
+    private final SurveyService surveyService;
 
     private final InterventionRepository interventionRepository;
     private final PhaseRepository phaseRepository;
 
-    public InterventionService(AccountService accountService, PersonService personService,
+    public InterventionService(AccountService accountService, PersonService personService, SurveyService surveyService,
             InterventionRepository interventionRepository, PhaseRepository phaseRepository) {
         this.accountService = accountService;
         this.personService = personService;
+        this.surveyService = surveyService;
         this.interventionRepository = interventionRepository;
         this.phaseRepository = phaseRepository;
     }
@@ -49,6 +51,8 @@ public class InterventionService {
         
         Phase phase = Phase.createPhase(phaseName);
         phaseRepository.save(phase);
+
+        surveyService.createSurveysForParticipants(phase, intervention.getParticipants());
 
         intervention.addPhase(phase);
         return interventionRepository.save(intervention);
