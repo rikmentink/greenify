@@ -5,8 +5,6 @@ import java.util.List;
 import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
 
-import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
-import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
 import nl.hu.greenify.core.data.CategoryRepository;
@@ -26,17 +24,15 @@ public class SurveyService {
     private final TemplateRepository templateRepository;
     private final CategoryRepository categoryRepository;
     private final ResponseRepository responseRepository;
-    private final InterventionService interventionService;
     private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
             ResponseRepository responseRepository, CategoryRepository categoryRepository,
-            InterventionService interventionService, PersonService personService) {
+            PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
         this.categoryRepository = categoryRepository;
         this.responseRepository = responseRepository;
-        this.interventionService = interventionService;
         this.personService = personService;
     }
 
@@ -75,23 +71,23 @@ public class SurveyService {
      * @param respondentPersonId The ID of the Person object of the respondent.
      * @return The created survey.
      */
-    public Survey createSurvey(Long phaseId, Long respondentPersonId) {
-        try {
-            Person person = personService.getPersonById(respondentPersonId);
-            Phase phase = interventionService.getPhaseById(phaseId);
+    public Survey createSurvey(Phase phase, Person person) {
+        if (phase == null)
+            throw new IllegalArgumentException("Survey should have a phase.");
+            
+        if (person == null)
+            throw new IllegalArgumentException("Survey should have a person.");
+            
+        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+        survey.getCategories().forEach(this::saveCategory); // todo: test this
 
-            Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
-            survey.getCategories().forEach(this::saveCategory); // todo: test this
-            personService.savePerson(person);
-            return surveyRepository.save(survey);
-        } catch (PhaseNotFoundException | PersonNotFoundException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        personService.savePerson(person);
+        return surveyRepository.save(survey);
     }
 
     public List<Survey> createSurveysForParticipants(Phase phase, List<Person> participants) {
         return participants.stream()
-                .map(person -> Survey.createSurvey(phase, this.getActiveTemplate(), person))
+                .map(person -> this.createSurvey(phase, person))
                 .map(surveyRepository::save)
                 .toList();
     }
