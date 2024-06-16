@@ -30,9 +30,4 @@ public class ResearchReport implements IReport {
     public List<String> getComments() {
         return null;
     }
-
-    @Override
-    public List<Response> getAllResponses() {
-        return null;
-    }
 }
