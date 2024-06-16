@@ -9,7 +9,7 @@ import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.presentation.dto.PhaseProgressDto;
+import nl.hu.greenify.core.presentation.dto.overview.PhaseProgressDto;
 import nl.hu.greenify.security.application.AccountService;
 
 import org.springframework.stereotype.Service;
