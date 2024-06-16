@@ -46,6 +46,8 @@ public class SurveyServiceIntegrationTest {
     private static final Long RESPONSE_ID = 1L;
 
     private Template template;
+    private Person participant;
+    private Phase phase;
     private Survey survey;
     private SubmitResponseDto answer;
 
@@ -62,35 +64,54 @@ public class SurveyServiceIntegrationTest {
     @MockBean
     private TemplateRepository templateRepository;
 
+    @BeforeEach
+    void setup() {
+        this.participant = new Person(PERSON_ID, "John", "Doe", "john@example.com", new ArrayList<>());
+        this.phase = new Phase(PHASE_ID, PhaseName.EXECUTION);
+        var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
+        var subfactorWithResponse = new Subfactor(SUBFACTOR_ANSWERED_ID, "Subfactor 2", 2, false);
+        var response = new Response(RESPONSE_ID, 0, "Comment", FacilitatingFactor.AGREE, Priority.PRIORITY, subfactorWithResponse);
+        var factor = new Factor(1L, "Factor", 1, List.of(subfactor, subfactorWithResponse));
+        var category = new Category(1L, "Category", "", "", List.of(factor));
+
+        this.template = new Template(1L, "Template", "Description", 1, List.of(category));
+        this.survey = new Survey(SURVEY_ID, phase, List.of(category), participant);
+        this.answer = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
+
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(template));
+        when(surveyRepository.save(any(Survey.class))).thenReturn(survey);
+        when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(survey));
+        when(responseRepository.save(any(Response.class))).thenReturn(response);
+    }
+
     /**
      * createSurvey tests
      */
     @Test
     @DisplayName("Creating a survey should create a valid survey and save it in the repository")
     void createSurvey() {
-        Survey createdSurvey = surveyService.createSurvey(PERSON_ID, PHASE_ID);
+        Survey createdSurvey = surveyService.createSurvey(this.phase, this.participant);
         assertNotNull(createdSurvey);
         assertEquals(survey, createdSurvey);
         verify(surveyRepository).save(any(Survey.class));
     }
 
     @Test
-    @DisplayName("Creating a survey with a non-existing person should throw an IllegalArgumentException")
-    void createSurveyWithNonExistingPerson() {
-        when(personService.getPersonById(PERSON_ID)).thenThrow(new IllegalArgumentException("Error"));
+    @DisplayName("Creating a survey without a participant should throw an IllegalArgumentException")
+    void createSurveyWithoutParticipant() {
         assertThrows(
             IllegalArgumentException.class, 
-            () -> surveyService.createSurvey(PERSON_ID, PHASE_ID)
+            () -> surveyService.createSurvey(this.phase, null)
         );
     }
 
     @Test
-    @DisplayName("Creating a survey with a non-existing phase should throw an IllegalArgumentException")
-    void createSurveyWithNonExistingPhase() {
+    @DisplayName("Creating a survey without a phase should throw an IllegalArgumentException")
+    void createSurveyWithoutPhase() {
         when(interventionService.getPhaseById(PHASE_ID)).thenThrow(new IllegalArgumentException("Error"));
         assertThrows(
             IllegalArgumentException.class, 
-            () -> surveyService.createSurvey(PERSON_ID, PHASE_ID)
+            () -> surveyService.createSurvey(null, this.participant)
         );
     }
 
@@ -145,27 +166,5 @@ public class SurveyServiceIntegrationTest {
         this.answer = new SubmitResponseDto(SUBFACTOR_ANSWERED_ID, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
         Response response = surveyService.submitResponse(SURVEY_ID, this.answer);
         assertEquals(survey.getSubfactorById(SUBFACTOR_ANSWERED_ID).getResponse(), response);
-    }
-
-    @BeforeEach
-    void setup() {
-        var person = new Person(PERSON_ID, "John", "Doe", "john@example.com", new ArrayList<>());
-        var phase = new Phase(PHASE_ID, PhaseName.EXECUTION);
-        var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
-        var subfactorWithResponse = new Subfactor(SUBFACTOR_ANSWERED_ID, "Subfactor 2", 2, false);
-        var response = new Response(RESPONSE_ID, 0, "Comment", FacilitatingFactor.AGREE, Priority.PRIORITY, subfactorWithResponse);
-        var factor = new Factor(1L, "Factor", 1, List.of(subfactor, subfactorWithResponse));
-        var category = new Category(1L, "Category", "", "", List.of(factor));
-
-        this.template = new Template(1L, "Template", "Description", 1, List.of(category));
-        this.survey = new Survey(SURVEY_ID, phase, List.of(category), person);
-        this.answer = new SubmitResponseDto(SUBFACTOR_ID, FacilitatingFactor.AGREE, Priority.PRIORITY, "Comment");
-
-        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(template));
-        when(personService.getPersonById(PERSON_ID)).thenReturn(person);
-        when(interventionService.getPhaseById(PHASE_ID)).thenReturn(phase);
-        when(surveyRepository.save(any(Survey.class))).thenReturn(survey);
-        when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(survey));
-        when(responseRepository.save(any(Response.class))).thenReturn(response);
     }
 }

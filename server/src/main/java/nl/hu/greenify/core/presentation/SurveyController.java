@@ -1,6 +1,5 @@
 package nl.hu.greenify.core.presentation;
 
-import nl.hu.greenify.core.presentation.dto.CreateSurveyDto;
 import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
 import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 import nl.hu.greenify.core.presentation.dto.SurveyDto;
@@ -49,13 +48,6 @@ public class SurveyController extends Controller {
             @RequestParam(required=false) int pageSize) {
         QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId, page, pageSize);
         return this.createResponse(questions);
-    }
-
-    @PostMapping(consumes="application/json", produces="application/json")
-    public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
-        SurveyDto survey = SurveyDto.fromEntity(
-                this.surveyService.createSurvey(createSurveyDto.getPhaseId(), createSurveyDto.getPersonId()));
-        return this.createResponse(survey, HttpStatus.CREATED);
     }
 
     @PostMapping(value="/template/default", produces="application/json")

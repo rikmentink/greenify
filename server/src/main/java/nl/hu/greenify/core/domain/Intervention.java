@@ -86,7 +86,9 @@ public class Intervention {
             throw new IllegalArgumentException("Intervention should have an admin");
         }
 
-        return new Intervention(name, description, admin, new ArrayList<>(), List.of(admin));
+        List<Person> participants = new ArrayList<>();
+        participants.add(admin);
+        return new Intervention(name, description, admin, new ArrayList<>(), participants);
     }
 
     public void addPhase(Phase phase) {

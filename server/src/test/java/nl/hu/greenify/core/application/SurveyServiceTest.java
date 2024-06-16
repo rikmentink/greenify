@@ -28,8 +28,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
-import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
@@ -38,7 +36,6 @@ import nl.hu.greenify.core.data.TemplateRepository;
 @ExtendWith(MockitoExtension.class)
 public class SurveyServiceTest {
     private static final Long PERSON_ID = 1L;
-    private static final Long INTERVENTION_ID = 1L;
     private static final Long PHASE_ID = 1L;
     private static final Long SURVEY_ID = 1L;
     private static final Long CATEGORY_ID = 1L;
@@ -71,7 +68,6 @@ public class SurveyServiceTest {
     public void setup() {
         this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
         this.phase = new Phase(PHASE_ID, PhaseName.INITIATION);
-        var intervention = new Intervention(INTERVENTION_ID, "Intervention", "Description", this.person, List.of(this.phase), List.of(this.person));
 
         var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
         var factor = new Factor(FACTOR_ID, "Factor", 1, List.of(subfactor));
@@ -152,33 +148,27 @@ public class SurveyServiceTest {
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
     public void createSurveyShouldSave() {
-        when(personService.getPersonById(PERSON_ID)).thenReturn(person);
-        when(interventionService.getPhaseById(PHASE_ID)).thenReturn(phase);
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
-        surveyService.createSurvey(1L, 1L);
+        surveyService.createSurvey(this.phase, this.person);
         verify(surveyRepository).save(any(Survey.class));
     }
 
     @Test
-    @DisplayName("When creating a survey with an invalid phase id, it should throw an exception")
+    @DisplayName("When creating a survey without a phase, it should throw an exception")
     public void createSurveyShouldThrowExceptionPhase() {
-        when(personService.getPersonById(PERSON_ID)).thenReturn(person);
-
-        when(interventionService.getPhaseById(2L)).thenThrow(new PhaseNotFoundException(""));
         assertThrows(
             IllegalArgumentException.class, 
-            () -> surveyService.createSurvey(2L, 1L)
+            () -> surveyService.createSurvey(null, this.person)
         );
     }
 
     @Test
-    @DisplayName("When creating a survey with an invalid person id, it should throw an exception")
+    @DisplayName("When creating a survey without a person, it should throw an exception")
     public void createSurveyShouldThrowExceptionPerson() {
-        when(personService.getPersonById(2L)).thenThrow(new PersonNotFoundException(""));
         assertThrows(
             IllegalArgumentException.class, 
-            () -> surveyService.createSurvey(1L, 2L)
+            () -> surveyService.createSurvey(phase, null)
         );
     }
 
