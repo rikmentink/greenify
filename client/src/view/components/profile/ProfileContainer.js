@@ -3,11 +3,12 @@ import { LitElement, html, css } from 'lit';
 import './ProfileHeader.js';
 import './ProfileUserInfo.js';
 import './ProfileFooter.js';
+import globalStyles from "../../../assets/global-styles.js";
 
 export class ProfileContainer extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
     .profile-container {
-      background-color: #4CBB17;
+      background-color: var(--color-primary);
       color: #fff;
     }
       
@@ -16,7 +17,7 @@ export class ProfileContainer extends LitElement {
           display: none; 
         }
     }
-  `;
+  `];
 
 
     render() {

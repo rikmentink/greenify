@@ -1,12 +1,13 @@
 import { LitElement, html, css } from 'lit';
 import {getRouter} from "../../router.js";
 import {createInterventionWithPhase} from "../../services/InterventionService.js";
+import globalStyles from "../../assets/global-styles.js";
 
 export class CreateIntervention extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         
         h1{
-            color: #4CBB17;
+            color: var(--color-primary);
         }
 
         *:focus {
@@ -34,12 +35,12 @@ export class CreateIntervention extends LitElement {
             border: 0;
             height: 40px;
             box-sizing: border-box;
-            border-bottom: #4CBB17 2px solid;
+            border-bottom: var(--color-primary) 2px solid;
         }
         
         button[type=submit] {
             width: 100%;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             padding: 18px 80px;
             margin: 8px 0;
@@ -56,7 +57,7 @@ export class CreateIntervention extends LitElement {
         
         p {
             font-size: 12px;
-            color: #4CBB17;
+            color: var(--color-primary);
             margin-top: -6px;
         }
         
@@ -95,7 +96,7 @@ export class CreateIntervention extends LitElement {
             display: inline-block;
             width: 20px;
             height: 20px;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             text-align: center;
             border-radius: 50%;

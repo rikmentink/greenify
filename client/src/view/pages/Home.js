@@ -3,9 +3,10 @@ import {MyInterventionsBox} from "../components/home/MyInterventionsBox.js";
 import {CreateInterventionsBox} from "../components/home/CreateInterventionBox.js";
 import {getCurrentPerson} from "../../services/PersonService.js";
 import {getCurrentUser} from "../../services/AccountService.js";
+import globalStyles from "../../assets/global-styles.js";
 
 export class Home extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         .home-header h1, h2{
             font-weight: normal;
             margin: 0;
@@ -24,7 +25,7 @@ export class Home extends LitElement {
             margin-top: 20px;
             line-height: 1.1;
             padding-bottom: 10px;
-            border-bottom: #4CBB17 1px solid;
+            border-bottom: var(--color-primary) 1px solid;
         }
 
         .home-container {
