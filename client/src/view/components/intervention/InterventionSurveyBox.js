@@ -1,7 +1,8 @@
 import {css, html, LitElement} from "lit";
 import {getInterventionById} from "../../../services/InterventionService.js";
+import globalStyles from "../../../assets/global-styles.js";
 export class InterventionSurveyBox extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
         .title-container {
             display: flex;
             align-items: center;
@@ -18,7 +19,7 @@ export class InterventionSurveyBox extends LitElement {
             font-weight: bold;
             border: none;
             cursor: pointer;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             text-decoration: none;
             display: inline-block; 
@@ -70,7 +71,7 @@ export class InterventionSurveyBox extends LitElement {
         }
         
         .sy-status a {
-            color: #4CBB17;
+            color: var(--color-primary);
             text-decoration: none;
             font-weight: bold;
             margin-bottom: 10px;
@@ -94,7 +95,7 @@ export class InterventionSurveyBox extends LitElement {
 
         .progress {
             height: 100%;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             border-radius: 5px;
         }
 
@@ -127,7 +128,7 @@ export class InterventionSurveyBox extends LitElement {
         .survey-container::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.4);
         }
-    `;
+    `];
 
     static properties = {
         id: {

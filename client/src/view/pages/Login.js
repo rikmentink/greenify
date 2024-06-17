@@ -1,12 +1,13 @@
 import { LitElement, html, css } from 'lit';
 
 import { login } from '../../services/AccountService.js';
+import globalStyles from "../../assets/global-styles.js";
 
 export class Login extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
 
         h1 {
-            color: #4CBB17;
+            color: var(--color-primary);
         }
 
         *:focus {
@@ -34,7 +35,7 @@ export class Login extends LitElement {
             border: 0;
             height: 40px;
             box-sizing: border-box;
-            border-bottom: #4CBB17 2px solid;
+            border-bottom: var(--color-primary) 2px solid;
         }
 
         button, a {
@@ -50,12 +51,12 @@ export class Login extends LitElement {
 
         .register-btn {
             background-color: white;
-            color: #4CBB17;
-            border: #4CBB17 2px solid;
+            color: var(--color-primary);
+            border: var(--color-primary) 2px solid;
         }
 
         .login-btn {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
         }
 
@@ -65,7 +66,7 @@ export class Login extends LitElement {
 
         p {
             font-size: 12px;
-            color: #4CBB17;
+            color: var(--color-primary);
             margin-top: -6px;
         }
 
