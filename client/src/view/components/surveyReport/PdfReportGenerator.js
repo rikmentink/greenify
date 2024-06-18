@@ -4,6 +4,7 @@ import { render } from 'lit-html';
 import html2pdf from 'html2pdf.js';
 import globalStyles from "../../../assets/global-styles.js";
 import {PdfReportTemplate} from "./PdfReportTemplate.js";
+import {getCategoryScores, getSubfactorScoresOfCategory} from "../../../services/SurveyReportService.js";
 
 export class PdfReportGenerator extends LitElement {
 
@@ -16,14 +17,24 @@ export class PdfReportGenerator extends LitElement {
         `,
     ];
 
-    /**
-     * Fetches data for the report.
-     *
-     * @private
-     * @returns {Promise} A promise that resolves with the fetched data.
-     */
     _fetchData = new Task(this, {
-        task: async () => await getCategoryScores(),
+        task: async () => {
+            const categoryScores = await getCategoryScores(1); // TODO: Replace PhaseID with actual ID
+            const subfactorScores = [];
+
+            for (let categoryName in categoryScores.categoryScores) {
+                try {
+                    subfactorScores[categoryName] = await getSubfactorScoresOfCategory(1, categoryName); // TODO: Replace PhaseID with actual ID
+                } catch (error) {
+                    console.error(`Failed to fetch subfactor scores for category ${categoryName}:`, error);
+                }
+            }
+
+            return {
+                categoryScores: categoryScores.categoryScores,
+                subfactorScores: subfactorScores
+            };
+        },
         args: () => []
     });
 
