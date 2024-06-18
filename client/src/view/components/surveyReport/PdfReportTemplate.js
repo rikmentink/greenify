@@ -15,19 +15,16 @@ export class PdfReportTemplate extends LitElement {
                 }
 
                 .section {
-                    display: grid;
-                    grid-template-columns: repeat(12, 1fr);
-                    gap: 1rem;
-                    margin-bottom: 1rem;
+                  display: block;
+                  margin-bottom: 1rem;
                 }
 
                 .col {
                     display: block;
-                    grid-column: span 6;
                 }
 
                 .col.full {
-                    grid-column: span 12;
+                    width: 100%;
                 }
 
                 .col > h2 {
@@ -103,30 +100,12 @@ export class PdfReportTemplate extends LitElement {
                 p {
                     margin: 0;
                 }
+              
+              h3 {
+                color: var(--color-primary);
+              }
             `,
         ];
-    }
-
-    /**
-     * Renders the formatted date.
-     *
-     * @private
-     * @param {Date} date - The date to be formatted.
-     * @returns {string} The formatted date in the format "DD-MM-YYYY".
-     */
-    _renderDate(date) {
-        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
-    }
-
-    /**
-     * Formats a monetary amount.
-     *
-     * @private
-     * @param {number} amount - The amount to be formatted.
-     * @returns {string} The formatted monetary amount.
-     */
-    _formatMonetary(amount) {
-        return `€ ${amount.toFixed(2).replace('.', ',').replace(',00', ',-')}`;
     }
 
     /**
@@ -142,84 +121,39 @@ export class PdfReportTemplate extends LitElement {
 
     async render() {
         return html`
-            <h1>Management report</h1>
-            <p>Period ${this._renderDate(this.period.startDate)} - ${this._renderDate(this.period.endDate)}</p>
-            <div class="section">
-                <div class="col">
-                    <h2>Commuting</h2>
-                    <h3>CO2 Emissions</h3>
-                    <div class="datalist">
-                        <dl>
-                            <dt>Total CO2 emissions</dt>
-                            <dd>${this.data.emissions.commute.total} kg</dd>
-                        </dl>
-                        <dl>
-                            <dt>Average per kilometer</dt>
-                            <dd>${this.data.emissions.commute.average_per_km} kg</dd>
-                        </dl>
+            <h1>Survey report</h1>
+            <p>Phase: phase_name_1</p>
+            ${this.data.categoryScores.map((categoryScore, index) => html`
+                <div class="section">
+                    <h2>${categoryScore.categoryName}</h2>
+                    <div class="col full">
+                        <h3>Category Scores</h3>
+                        <div class="datalist">
+                            <dl>
+                                <dt>Max Possible Score</dt>
+                                <dd>${categoryScore.maxPossibleScore}</dd>
+                                <dt>Total Score</dt>
+                                <dd>${categoryScore.totalScore}</dd>
+                                <dt>Percentage</dt>
+                                <dd>${categoryScore.percentage}%</dd>
+                            </dl>
+                        </div>
                     </div>
-                    <h3>Travel Costs</h3>
-                    <div class="datalist">
-                        <dl>
-                            <dt>Total travel costs</dt>
-                            <dd>${this._formatMonetary(this.data.costs.commute.total)}</dd>
-                        </dl>
-                        <dl>
-                            <dt>Average per trip</dt>
-                            <dd>${this._formatMonetary(this.data.costs.commute.average_per_trip)}</dd>
-                        </dl>
-                    </div>
-                </div>
 
-                <div class="col">
-                    <h2>Business Trips</h2>
-                    <h3>CO2 Emissions</h3>
-                    <div class="datalist">
-                        <dl>
-                            <dt>Total CO2 emissions</dt>
-                            <dd>${this.data.emissions.trips.total} kg</dd>
-                        </dl>
-                        <dl>
-                            <dt>Average per kilometer</dt>
-                            <dd>${this.data.emissions.trips.average_per_km} kg</dd>
-                        </dl>
-                    </div>
-                    <h3>Travel Costs</h3>
-                    <div class="datalist">
-                        <dl class="datalist">
-                            <dt>Total travel costs</dt>
-                            <dd>${this._formatMonetary(this.data.costs.trips.total)}</dd>
-                        </dl>
-                        <dl>
-                            <dt>Average per trip</dt>
-                            <dd>${this._formatMonetary(this.data.costs.trips.average_per_trip)}</dd>
-                        </dl>
+                    <div class="col full">
+                        <h3>Subfactor Scores</h3>
+                        ${this.data.subfactorScores[index].subfactorScores.map(subfactorScore => html`
+                            <h4>${subfactorScore.subfactorName}</h4>
+                            <div class="datalist">
+                                <dl>
+                                    <dt>Agreement percentage</dt>
+                                    <dd>${subfactorScore.percentage}%</dd>
+                                </dl>
+                            </div>
+                        `)}
                     </div>
                 </div>
-            </div>
-            <div class="section">    
-                <div class="col full">
-                    <h2>Travel Options</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Vehicle</th>
-                                <th>Average emissions</th>
-                                <th>Average costs</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${this.data.travel_options.map(vehicle => html`
-                                <tr>
-                                    <td>${vehicle.name}</td>
-                                    <td>${vehicle.average_emissions_per_km} g/km</td>
-                                    <td>${vehicle.average_cost_per_km}</td>
-                                </tr>
-                            `)}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            `)}
             <style>
                 ${this._getStyles()}
             </style>
