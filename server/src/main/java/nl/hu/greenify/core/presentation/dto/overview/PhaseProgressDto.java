@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.presentation.dto.overview;
 
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.Getter;
@@ -21,14 +22,14 @@ public class PhaseProgressDto {
         this.categories = categories;
     }
 
-    public static PhaseProgressDto fromEntities(Intervention intervention, Phase phase, List<Person> participants) {
+    public static PhaseProgressDto fromEntities(Intervention intervention, Phase phase, List<Person> participants, Person currentUser) {
         if (phase.getSurveys().isEmpty())
             throw new IllegalArgumentException("Phase should have at least one survey");
 
         return new PhaseProgressDto(
                 phase.getId(),
                 phase.getName().getValue(),
-                ParticipantDto.fromEntities(phase, participants),
+                ParticipantDto.fromEntities(phase, participants, currentUser),
                 CategoryDto.fromEntities(phase.getSurveys().get(0)));
     }
 
@@ -39,7 +40,7 @@ public class PhaseProgressDto {
         return new PhaseProgressDto(
                 phase.getId(),
                 phase.getName().getValue(),
-                ParticipantDto.fromEntities(phase, List.of(participant)),
+                Arrays.asList(ParticipantDto.fromEntity(phase, participant, true)),
                 CategoryDto.fromEntities(phase.getSurveys().get(0)));
     }
 }

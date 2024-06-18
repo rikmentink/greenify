@@ -75,7 +75,7 @@ public class InterventionService {
             throw new IllegalArgumentException("Person with id " + person.getId() + " is not part of intervention with id " + interventionId);
         
         if (intervention.getAdmin().equals(person)) {
-            return PhaseProgressDto.fromEntities(intervention, phase, intervention.getParticipants());
+            return PhaseProgressDto.fromEntities(intervention, phase, intervention.getParticipants(), person);
         }
         
         return PhaseProgressDto.fromEntity(intervention, phase, person);
