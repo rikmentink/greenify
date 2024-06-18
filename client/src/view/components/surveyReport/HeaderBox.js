@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
+import globalStyles from "../../../assets/global-styles.js";
 
 export default class HeaderBox extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
       .container {
         background-color: #fff;
         border-radius: 10px;
@@ -11,12 +12,12 @@ export default class HeaderBox extends LitElement {
       }
 
       .header {
-        background-color: green;
+        background-color: var(--color-primary);
         color: #fff;
         padding: 5px;
         border-radius: 8px 8px 0 0;
       }
-    `;
+    `];
 
     render() {
         return html`

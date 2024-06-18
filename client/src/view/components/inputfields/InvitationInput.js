@@ -1,8 +1,9 @@
 import {css, html, LitElement} from "lit";
 import {getPersonByEmail} from "../../../services/PersonService.js";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class InvitationInput extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
       form {
         display: flex;
         align-items: center;
@@ -17,7 +18,7 @@ export class InvitationInput extends LitElement {
 
       .invite-btn {
         padding: 5px 35px;
-        background-color: #4CBB17;
+        background-color: var(--color-primary);
         color: #fff;
         border: none;
         cursor: pointer;
@@ -26,7 +27,7 @@ export class InvitationInput extends LitElement {
       .invite-btn:focus, input:focus {
         outline: none;
       }
-    `;
+    `];
 
     static properties = {
         email: { type: String },

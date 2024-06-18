@@ -1,15 +1,16 @@
 import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class CreateInterventionsBox extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         .create-interventions-container {
             width: 60%;
             margin-bottom: 50px;
         }
 
         .create-interventions-header {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             margin-top: 25px;
             border-radius: 5px 5px 0 0;
@@ -34,7 +35,7 @@ export class CreateInterventionsBox extends LitElement {
         }
 
         .create-interventions-btn {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             padding: 10px 50px 10px 50px;
             border-radius: 25px;
@@ -43,6 +44,13 @@ export class CreateInterventionsBox extends LitElement {
         }
     ;
     `];
+
+    static properties = {
+        personId: {
+            type: Number,
+            reflect: true
+        }
+    }
 
     constructor() {
         super();
@@ -63,7 +71,7 @@ export class CreateInterventionsBox extends LitElement {
                     <p>Bepaal welke groene interventie u wilt optimaliseren en beheer de gebruikersdie kunnen bijdragen
                         aan het invullen van de vragenlijst om de groene interventie te optimaliseren.</p>
                     <div class="create-interventions-btn-container">
-                        <a href="/create-intervention" class="create-interventions-btn">Creëer</a>
+                        <a href="/intervention/${this.personId}/new-intervention" class="create-interventions-btn">Creëer</a>
                     </div>
                 </div>
             </div>

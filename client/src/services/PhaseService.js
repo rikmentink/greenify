@@ -7,6 +7,18 @@ async function handleErrorMessages(response) {
     }
 }
 
+async function createPhase(id, phaseName, description) {
+    const response = await fetch(`${API_URL}/intervention/${id}/phase`, {
+        method: 'POST',
+        body: JSON.stringify({phaseName, description}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+}
+
 async function getPhaseById(id) {
     const response = await fetch(`${API_URL}/intervention/phase/${id}`, {
         method: 'GET',
@@ -20,4 +32,4 @@ async function getPhaseById(id) {
     return response.json();
 }
 
-export { getPhaseById };
+export { getPhaseById, createPhase};

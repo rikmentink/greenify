@@ -1,33 +1,22 @@
 const API_URL = import.meta.env.VITE_API_URL;
+import {DummyCategoryScores, DummySubfactorScores, DummySubfactorScores2} from "../data/SurveyReport.js";
 
-async function getCategoryScores(phaseId) {
-    const url = new URL(`${API_URL}/survey-report/${phaseId}/category-scores`);
-    return fetch(url, {
-        method: 'GET',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-    }).then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error(error);
-        })
+async function handleErrorMessages(response) {
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
 }
 
-async function getSubfactorScores(phaseId, categoryName) {
-    const url = new URL(`${API_URL}/survey-report/${phaseId}/subfactor-scores/${categoryName}`);
-    return fetch(url, {
-        method: 'GET',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-    }).then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => {
-            console.error(error);
-        })
+export async function getCategoryScores(phaseId) {
+    return DummyCategoryScores;
 }
 
-export { getCategoryScores, getSubfactorScores };
+export async function getSubfactorScoresOfCategory(phaseId, categoryName) {
+
+    // TODO: Perform actual API call. If-statement is to test updating of charts dynamically
+    if (categoryName === "Dummy Category 2") {
+        return DummySubfactorScores2;
+    }
+    return DummySubfactorScores;
+}

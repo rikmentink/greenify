@@ -2,16 +2,17 @@ import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
 import {getInterventionByPersonId} from "../../../services/InterventionService.js";
 import {Router} from "@vaadin/router";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class MyInterventionsBox extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         .my-interventions-container {
             width: 650px;
             margin-bottom: 50px;
         }
 
         .my-interventions-header {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             margin-top: 25px;
             border-radius: 5px 5px 0 0;
@@ -31,7 +32,7 @@ export class MyInterventionsBox extends LitElement {
         }
       
       .bekijk-button {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             padding: 10px 60px 10px 60px;
             border-radius: 25px;
@@ -81,7 +82,7 @@ export class MyInterventionsBox extends LitElement {
         }
         
         .my-interventions-btn a {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             padding: 10px 60px 10px 60px;
             border-radius: 25px;
