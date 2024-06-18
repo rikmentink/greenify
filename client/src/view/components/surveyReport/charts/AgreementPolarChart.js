@@ -23,9 +23,24 @@ export class AgreementPolarChart extends LitElement {
         this.chartLabels = [];
     }
 
-    firstUpdated() {
+    updated(changedProperties) {
+        if (changedProperties.has('chartData') || changedProperties.has('chartLabels')) {
+            this.updateChart();
+        }
+    }
+
+    firstUpdated(_changedProperties) {
+        this.updateChart();
+    }
+
+    updateChart() {
         const ctx = this.shadowRoot.getElementById('polarChart');
-        const chart = new Chart(ctx, {
+
+        if (this.chart) {
+            this.chart.destroy(); // Destroy chart if it already exists, required for updating the chart
+        }
+
+        this.chart = new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: this.chartLabels,
@@ -67,7 +82,7 @@ export class AgreementPolarChart extends LitElement {
                 },
                 onClick: (event, elements) => {
                     if (elements.length) {
-                        const label = chart.data.labels[elements[0].index];
+                        const label = this.chart.data.labels[elements[0].index];
                         this.dispatchEvent(new CustomEvent('chart-click', { detail: label }));
                     }
 

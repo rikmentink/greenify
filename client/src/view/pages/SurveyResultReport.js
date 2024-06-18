@@ -5,6 +5,7 @@ import "../components/surveyReport/HeaderBox.js";
 import "../components/surveyReport/BubbleBox.js";
 import "../components/surveyReport/DialogPlain.js";
 import "../components/surveyReport/charts/HorizontalBarChart.js";
+import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/SurveyReportService.js";
 import globalStyles from "../../assets/global-styles.js";
 
 export class SurveyResultReport extends LitElement {
@@ -105,22 +106,21 @@ export class SurveyResultReport extends LitElement {
       }
     `];
 
+  static get properties() {
+    return {
+      polarChartData: { type: Array },
+      polarChartLabels: { type: Array },
+      barChartData: { type: Array },
+      actionPointData: { type: Array }
+    };
+  }
+
   constructor() {
     super();
-    this.polarChartData = [100, 80, 20, 60, 85, 30];
-    this.polarChartLabels = ['Kenmerken betrokken', 'De groene interventie', 'Ontwerp', 'De externe omgeving', 'De organisatie', 'Proces'];
-    this.barChartData = [
-      {description: 'Hier staat een vraag waar wat minder op gescoord is', chartData: [50], chartLabels: ["Percentage"], chartColors: ['purple']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [60], chartLabels: ["Percentage"], chartColors: ['blue']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [65], chartLabels: ["Percentage"], chartColors: ['green']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [65], chartLabels: ["Percentage"], chartColors: ['red']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [70], chartLabels: ["Percentage"], chartColors: ['orange']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [75], chartLabels: ["Percentage"], chartColors: ['pink']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['yellow']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightblue']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['lightgreen']},
-      {description: 'Hier staat nog een vraag waar wat minder op gescoord is', chartData: [80], chartLabels: ["Percentage"], chartColors: ['black']},
-    ];
+    this.phaseId = 1; // TODO: Adjust based on the URL
+    this.polarChartData = [];
+    this.polarChartLabels = [];
+    this.barChartData = [];
     this.actionPointData = [
       {title: "Actiepunt 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
       {title: "Actiepunt 2", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
@@ -135,12 +135,33 @@ export class SurveyResultReport extends LitElement {
     ];
   }
 
+  async connectedCallback() {
+    super.connectedCallback();
+    const categoryScores = await getCategoryScores(this.phaseId);
+    this.polarChartData = categoryScores.categoryScores.map(score => score.percentage);
+    this.polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
+  }
+
   firstUpdated() {
     const element = this.shadowRoot.querySelector(".header-box-contents");
     element.scrollIntoView();
   }
-  openDialog(event) {
-    this.shadowRoot.querySelector('#dialog-title').textContent = event.detail;
+  async openDialog(event) {
+    const categoryName = event.detail;
+    this.shadowRoot.querySelector('#dialog-title').textContent = categoryName;
+
+    const subfactorScores = await getSubfactorScoresOfCategory(this.phaseId, categoryName);
+
+    // Sort the subfactor scores based on the percentage from lowest to highest
+    subfactorScores.subfactorScores.sort((a, b) => a.percentage - b.percentage);
+
+    this.barChartData = subfactorScores.subfactorScores.map(score => ({
+      description: score.subfactorName,
+      chartData: [score.averageScore],
+      chartLabels: ["Percentage"],
+      chartColors: ["purple"]
+    }));
+
     this.shadowRoot.querySelector('dialog-plain').open();
   }
 
