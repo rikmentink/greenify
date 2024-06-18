@@ -2,6 +2,14 @@ import { css, html, LitElement } from 'lit';
 import { getOverview } from '../../services/OverviewService.js';
 
 export class Overview extends LitElement {
+    /**
+     * TODO: Make dynamic
+     * 
+     * 1. Retrieve phase ID from URL
+     * 2. Fetch data from API asynchronously
+     * 3. Render data in the template
+     */
+    
     static styles = [css`
       p, h1, h3, em {
         color: black;
