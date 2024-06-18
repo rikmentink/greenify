@@ -159,6 +159,7 @@ export class CategoryBox extends LitElement {
 
     constructor() {
         super();
+        // TODO: Pass the survey ID of this user
         this.category = {};
     }
 
@@ -179,10 +180,10 @@ export class CategoryBox extends LitElement {
                         </div>
                     </div>
                     <div class="questions-container">
-                        ${this.category.questions.map((category, question, index) =>
+                        ${this.category.subfactors.map((subfactor) =>
                                 html`
                                     <div class="my-question-btn">
-                                        <a href="/questionid/${category.questionId}/category/${category.id}">${category.id}</a>
+                                        <a href="/tool/1?categoryId=${this.category.id}">${subfactor.number}</a>
                                     </div>`)}
                     </div>
                 </div>
@@ -198,4 +199,4 @@ export class CategoryBox extends LitElement {
     
 }
 
-customElements.define('greenify-categorybox', CategoryBox);
+customElements.define('gi-categorybox', CategoryBox);

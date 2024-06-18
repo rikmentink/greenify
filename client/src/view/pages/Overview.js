@@ -5,6 +5,8 @@ import { getRouter } from "../../router.js";
 import { getOverview } from '../../services/OverviewService.js';
 import global from '../../assets/global-styles.js';
 
+import { CategoryBox } from '../components/overview/CategoryBox.js';
+
 export class Overview extends LitElement {
     static styles = [
       global,
@@ -94,25 +96,21 @@ export class Overview extends LitElement {
     }
 
     render() {
-        if (this.data._value.error) {
-            return html`
-                <h1>Overview</h1>
-                <p>An error occured while loading the questions: ${this.data._value.message}</p>`;
-        }
         return this.data.render({
             loading: () => html`<p>Loading...</p>`,
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
             complete: (data) => html`
                 <div class="content">
                     <div class="title-desc">
-                        <h1>${data.name}</h1>
+                        <h1>Vragenlijst</h1>
+                        <p>Vul hier de vragen in.</p>
                     </div>
                     <hr class="divider">
                     <div>
                         <h3 class="algemeneinfo">Algemene Informatie</h3>
                         <div class="grid-container">
                             <em>Fase</em>
-                            <p class="fase">${data.name || ''}</p>
+                            <p class="fase">${data.name}</p>
                             <em>Voortgang</em>
                             <p class="voortgang">beantwoorden vragen</p>
                         </div>
@@ -121,7 +119,7 @@ export class Overview extends LitElement {
                 <h1>Categorieën</h1>
 
                 ${data.categories ? data.categories.map(category => html`
-                    <greenify-categorybox .category=${category}></greenify-categorybox>`) : html`<p>Loading categories...</p>`}
+                    <gi-categorybox .category=${category}></gi-categorybox>`) : html`<p>Loading categories...</p>`}
             `
         });
     }
