@@ -6,10 +6,19 @@ import nl.hu.greenify.core.data.InterventionRepository;
 import nl.hu.greenify.core.data.PersonRepository;
 
 import nl.hu.greenify.core.data.PhaseRepository;
+import nl.hu.greenify.core.data.TemplateRepository;
+import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
+import nl.hu.greenify.core.domain.Response;
+import nl.hu.greenify.core.domain.Template;
+import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.domain.enums.Priority;
+import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.Subfactor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,9 +27,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,21 +47,35 @@ public class InterventionServiceIntegrationTest {
     private PhaseRepository phaseRepository;
     @MockBean
     private PersonRepository personRepository;
+    @MockBean
+    private TemplateRepository templateRepository;
+
+    private Template template;
     private Person person;
     private Intervention intervention;
-
+    private Phase phase;
 
     @BeforeEach
     void setUp() {
-        person = new Person(1L, "firstName", "lastName", "johndoe@gmail.com", new ArrayList<>());
-        intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
-        Phase phase = new Phase(1L, PhaseName.PLANNING);
+        this.person = new Person(1L, "firstName", "lastName", "johndoe@gmail.com", new ArrayList<>());
+        this.intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), Arrays.asList(person));
+        this.phase = new Phase(1L, PhaseName.PLANNING);
+        Intervention interventionWithPhase = new Intervention(1L, "Intervention", "Intervention description", person, Arrays.asList(phase), Arrays.asList(person));
+        
+        var subfactor = new Subfactor(1L, "Subfactor", 1, true);
+        var factor = new Factor(1L, "Factor", 1, Arrays.asList(subfactor));
+        var category = new Category(1L, "Category", "", "", List.of(factor));
+        var template = new Template(1L, "Template", "Description", 1, List.of(category));
 
         when(interventionRepository.findById(1L)).thenReturn(java.util.Optional.of(intervention));
-        when(phaseRepository.findById(1L)).thenReturn(java.util.Optional.of(phase));
         when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
         when(interventionRepository.findInterventionsByParticipantsContains(person)).thenReturn(new ArrayList<>());
+        when(interventionRepository.save(any(Intervention.class))).thenReturn(interventionWithPhase);
+        when(phaseRepository.findById(1L)).thenReturn(java.util.Optional.of(phase));
+        when(phaseRepository.save(any(Phase.class))).thenReturn(phase);
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
+        when(personRepository.save(any(Person.class))).thenReturn(person);
+        when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(java.util.Optional.of(template));
     }
 
     @DisplayName("Creating an intervention should be possible")
@@ -69,7 +94,7 @@ public class InterventionServiceIntegrationTest {
     @Test
     void addPhase() {
         interventionService.addPhase(1L, PhaseName.PLANNING);
-        verify(interventionRepository).save(intervention);
+        assertTrue(intervention.getPhases().contains(this.phase));
     }
 
     @DisplayName("When fetching a phase with a valid id, it should be fetched from the repository")

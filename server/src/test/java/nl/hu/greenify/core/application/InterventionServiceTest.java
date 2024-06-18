@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Intervention Service Test")
@@ -34,15 +36,18 @@ public class InterventionServiceTest {
     private final InterventionService interventionService = new InterventionService(accountService, personService, surveyService, interventionRepository, phaseRepository);
     Person person;
     Intervention intervention;
+    Phase phase;
 
     @BeforeEach
     void setUp() {
         person = new Person(1L, "firstName", "lastName", "username@gmail.com", new ArrayList<>());
         intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
+        phase = new Phase(1L, PhaseName.PLANNING);
 
         when(personService.getPersonById(1L)).thenReturn(person);
         when(interventionRepository.save(intervention)).thenReturn(intervention);
         when(personRepository.save(person)).thenReturn(person);
+        when(phaseRepository.save(any(Phase.class))).thenReturn(phase);
         when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
         when(interventionRepository.findById(intervention.getId())).thenReturn(Optional.ofNullable(intervention));

@@ -147,10 +147,12 @@ public class SurveyServiceTest {
      */
     @Test
     @DisplayName("When creating a survey, it should be saved in the repository")
+    // TODO: Fix this failure
     public void createSurveyShouldSave() {
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
+        var newPerson = new Person(2L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
 
-        surveyService.createSurvey(this.phase, this.person);
+        surveyService.createSurvey(this.phase, newPerson);
         verify(surveyRepository).save(any(Survey.class));
     }
 

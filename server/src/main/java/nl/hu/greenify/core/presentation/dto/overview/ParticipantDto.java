@@ -29,7 +29,7 @@ public class ParticipantDto {
     }
 
     public static ParticipantDto fromEntity(Phase phase, Person participant) {
-        Survey survey = phase.getSurveyOfPerson(participant);
+        Survey survey = phase.getSurveyOfPerson(participant).orElseThrow(() -> new IllegalArgumentException("Participant has no survey in this phase"));
         return new ParticipantDto(
                 participant.getId(),
                 participant.getFullName(),

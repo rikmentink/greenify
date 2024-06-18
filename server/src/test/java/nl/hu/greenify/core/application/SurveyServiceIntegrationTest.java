@@ -90,7 +90,8 @@ public class SurveyServiceIntegrationTest {
     @Test
     @DisplayName("Creating a survey should create a valid survey and save it in the repository")
     void createSurvey() {
-        Survey createdSurvey = surveyService.createSurvey(this.phase, this.participant);
+        Person newParticipant = new Person(2L, "Jane", "Doe", "jane@example.com", new ArrayList<>());
+        Survey createdSurvey = surveyService.createSurvey(this.phase, newParticipant);
         assertNotNull(createdSurvey);
         assertEquals(survey, createdSurvey);
         verify(surveyRepository).save(any(Survey.class));
