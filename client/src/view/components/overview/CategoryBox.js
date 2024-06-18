@@ -153,17 +153,25 @@ export class CategoryBox extends LitElement {
       }
     `;
 
-    static properties = {
-        category: { type: Object },
-    };
-
     constructor() {
         super();
-        // TODO: Pass the survey ID of this user
         this.category = {};
+        this.progress = [];
+    }
+
+    _getProgress() {
+      if (!this.progress) {
+        throw new Error('Progress is not set');
+      }
+      return this.progress.filter((participant) => participant.isCurrentUser)[0];
     }
 
     render() {
+      /**
+       * TODO: Color the my-question-btn green based on the progress of the user. If both questions have been answered.
+       * TODO: Make the progress bar dynamic based on the progress of the user.
+       * TODO: Make the progress label dynamic based on the progress of the user.
+       */
         return html`
             <div class="rectangle">
                 <div class="title-description">
