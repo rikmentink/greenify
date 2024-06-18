@@ -19,7 +19,6 @@ await getCurrentUser().then(user => {
       { path: "/phase/:id", component: "gi-overview" },
       { path: "/phase/:id/report", component: "gi-survey-result-report" },
       { path: "/tool/:id", component: "gi-survey" },
-      { path: "/createphase", component: "gi-createphase" },
       { path: "(.*)", action: () => window.location.href = "/" }];
   }
 });

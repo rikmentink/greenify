@@ -1,8 +1,6 @@
 import {css, html, LitElement} from "lit";
 import {getInterventionById, getPhasesByInterventionId} from "../../../services/InterventionService.js";
 import {getPhaseById} from "../../../services/PhaseService.js";
-
-import {getInterventionById} from "../../../services/InterventionService.js";
 import globalStyles from "../../../assets/global-styles.js";
 export class InterventionSurveyBox extends LitElement {
     static styles = [globalStyles, css`

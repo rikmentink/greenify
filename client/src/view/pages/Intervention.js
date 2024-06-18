@@ -5,6 +5,8 @@ import {InterventionSurveyBox} from "../components/intervention/InterventionSurv
 import {sendMail} from "../../services/MailService.js";
 import {addParticipantToIntervention} from "../../services/InterventionService.js";
 import {getInterventionById} from "../../services/InterventionService.js";
+import {Task} from "@lit/task";
+import {getSurvey} from "../../services/SurveyService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -14,23 +16,34 @@ export class Intervention extends LitElement {
         this.interventionId = 0;
         this.userData = [];
         this.interventionData = [{}];
+        this.data = {};
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         super.connectedCallback();
         this.addEventListener('person-fetched', this.handlePersonFetched);
         this.addEventListener('user-deleted', this.onUserDeleted);
 
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
         if (selectedIntervention) {
-           this.interventionData = selectedIntervention;
+           this.interventionId = selectedIntervention.id;
         }
+
+        this._fetchData(this.interventionId);
     }
 
     onUserDeleted(event) {
         const user = event.detail.user;
         this.userData = this.userData.filter(userData => userData.userId !== user.userId);
         this.requestUpdate();
+    }
+
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id]) => getInterventionById(id),
+            args: () => [id]
+        });
+        return await this.data.run();
     }
 
     async handlePersonFetched(event) {
@@ -40,8 +53,7 @@ export class Intervention extends LitElement {
         this.interventionData = await getInterventionById(this.interventionData.id);
 
         this.userData = this.interventionData.participants;
-        console.log(this.userData);
-        console.log(this.interventionData);
+        console.log("Participants: " + this.userData);
 
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 
@@ -65,10 +77,14 @@ export class Intervention extends LitElement {
 
     render() {
         return html`
-            <intervention-information-box .interventionData="${this.interventionData}"></intervention-information-box>
-            <intervention-survey-box .id="${this.interventionData.id}"></intervention-survey-box>
-            <intervention-users-panel .userData="${this.userData}"></intervention-users-panel>
-        `;
+            ${this.data.render({
+                complete:  (data) => html`
+                <intervention-information-box .interventionData="${data}"></intervention-information-box>
+                <intervention-survey-box .id="${data.id}"></intervention-survey-box>
+                <intervention-users-panel .userData="${data.participants}"></intervention-users-panel>
+            `,
+            })}
+        `
     }
 }
 

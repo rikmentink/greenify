@@ -46,7 +46,7 @@ async function getInterventionByPersonId(id) {
     return response.json();
 }
 
-async function createInterventionWithPhase(adminId, name, description, phaseInformation, phaseName) {
+async function createInterventionWithPhase(adminId, name, description) {
     const response = await fetch(`${API_URL}/intervention`, {
         method: 'POST',
         body: JSON.stringify({adminId, name, description}),
