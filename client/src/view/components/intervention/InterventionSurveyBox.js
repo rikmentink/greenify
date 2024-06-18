@@ -172,7 +172,7 @@ export class InterventionSurveyBox extends LitElement {
            return html`<p>Loading...</p>`;
        } else {
            return this.phaseData.map(phase => {
-               let progress = 60 + "%" // Placeholder for progress, need to be calculated
+               let progress = phase.progress + "%" // Placeholder for progress, need to be calculated
                return html`
                 <div class="survey-box">
                     <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
@@ -185,7 +185,7 @@ export class InterventionSurveyBox extends LitElement {
                             <p class="progress-label">Nog ... vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${phase.progress}" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
