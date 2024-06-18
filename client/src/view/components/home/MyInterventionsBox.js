@@ -142,7 +142,6 @@ export class MyInterventionsBox extends LitElement {
         if (this.interventieData && this.interventieData.length > 0) {
             return this.interventieData.map(interventie => {
                 let progress = Array.isArray(interventie.totalSurveyProgress) ? interventie.totalSurveyProgress : [interventie.totalSurveyProgress];
-                console.log(progress)
                 return html`
                 <div class="my-interventions-item">
                     <div class="my-interventions-item-name">
