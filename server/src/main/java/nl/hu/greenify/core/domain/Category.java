@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import nl.hu.greenify.core.domain.factor.Factor;
+import nl.hu.greenify.core.domain.factor.Subfactor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -61,5 +63,27 @@ public class Category {
 
     public void addFactor(Factor factor) {
         this.factors.add(factor);
+    }
+
+    public double getProgress() {
+        List<Factor> factors = this.getFactors();
+
+        int totalSubfactors = factors.stream()
+                .mapToInt(factor -> factor.getSubfactors().size())
+                .sum();
+
+        int completedSubfactors = factors.stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getResponse() != null)
+                .collect(Collectors.toList())
+                .size();
+
+        return (double) completedSubfactors / totalSubfactors;
+    }
+
+    public List<Subfactor> getSubfactors() {
+        return this.factors.stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .collect(Collectors.toList());
     }
 }

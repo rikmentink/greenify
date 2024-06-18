@@ -64,14 +64,19 @@ public class InterventionController extends Controller {
      * Phase endpoints
      */
 
+    @GetMapping(value="/phase/{id}", produces="application/json")
+    public ResponseEntity<?> getPhaseById(@PathVariable("id") Long id) {
+        return this.createResponse(this.interventionService.getPhaseById(id));
+    }
+
     @GetMapping(value="/{id}/phases", produces="application/json")
     public ResponseEntity<?> getPhasesByInterventionId(@PathVariable("id") Long id) {
         return this.createResponse(PhaseDto.fromEntities(this.interventionService.getPhasesByIntervention(id)));
     }
 
-    @GetMapping(value="/phase/{id}", produces="application/json")
-    public ResponseEntity<?> getPhaseById(@PathVariable("id") Long id) {
-        return this.createResponse(this.interventionService.getPhaseById(id));
+    @GetMapping(value="/{interventionId}/phase/{phaseId}", produces="application/json")
+    public ResponseEntity<?> getPhaseProgress(@PathVariable("interventionId") Long interventionId, @PathVariable("phaseId") Long phaseId) {
+        return this.createResponse(this.interventionService.getPhaseProgress(interventionId, phaseId));
     }
 
     @PostMapping(value="/{id}/phase", consumes="application/json", produces="application/json")

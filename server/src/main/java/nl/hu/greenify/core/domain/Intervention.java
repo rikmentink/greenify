@@ -1,6 +1,5 @@
 package nl.hu.greenify.core.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -94,7 +93,9 @@ public class Intervention {
             throw new IllegalArgumentException("Intervention should have an admin");
         }
 
-        return new Intervention(name, description, admin, new ArrayList<>(), new ArrayList<>());
+        List<Person> participants = new ArrayList<>();
+        participants.add(admin);
+        return new Intervention(name, description, admin, new ArrayList<>(), participants);
     }
 
     public void addPhase(Phase phase) {

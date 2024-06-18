@@ -3,6 +3,8 @@ package nl.hu.greenify.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,6 +26,7 @@ public class Person {
 
     @OneToMany
     @JoinColumn(name = "person_id")
+    @JsonIgnore
     private List<Survey> surveys;
 
     protected Person() {

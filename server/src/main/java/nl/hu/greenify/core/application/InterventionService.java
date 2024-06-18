@@ -9,19 +9,28 @@ import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
+import nl.hu.greenify.core.presentation.dto.overview.PhaseProgressDto;
+import nl.hu.greenify.security.application.AccountService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class InterventionService {
-    private final InterventionRepository interventionRepository;
+    private final AccountService accountService;
     private final PersonService personService;
+    private final SurveyService surveyService;
+
+    private final InterventionRepository interventionRepository;
     private final PhaseRepository phaseRepository;
 
-    public InterventionService(InterventionRepository interventionRepository, PhaseRepository phaseRepository, PersonService personService) {
-        this.interventionRepository = interventionRepository;
+    public InterventionService(AccountService accountService, PersonService personService, SurveyService surveyService,
+            InterventionRepository interventionRepository, PhaseRepository phaseRepository) {
+        this.accountService = accountService;
         this.personService = personService;
+        this.surveyService = surveyService;
+        this.interventionRepository = interventionRepository;
         this.phaseRepository = phaseRepository;
     }
 
@@ -51,22 +60,42 @@ public class InterventionService {
         return interventionRepository.save(intervention);
     }
 
-    public Intervention addPhase(Long id, PhaseName phaseName) {
+    public Phase addPhase(Long id, PhaseName phaseName) {
         Intervention intervention = getInterventionById(id);
         if(intervention == null) {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
         
         Phase phase = Phase.createPhase(phaseName);
-        phaseRepository.save(phase);
+        phase = phaseRepository.save(phase);
+        surveyService.createSurveysForParticipants(phase, intervention.getParticipants());
 
         intervention.addPhase(phase);
-        return interventionRepository.save(intervention);
+        interventionRepository.save(intervention);
+        return phase;
     }
 
     public Phase getPhaseById(Long id) {
         return phaseRepository.findById(id)
                 .orElseThrow(() -> new PhaseNotFoundException("Phase with id " + id + " does not exist"));
+    }
+
+    public PhaseProgressDto getPhaseProgress(Long interventionId, Long phaseId) {
+        Intervention intervention = this.getInterventionById(interventionId);
+        Phase phase = this.getPhaseById(phaseId);
+
+        if(!intervention.getPhases().contains(phase))
+            throw new IllegalArgumentException("Phase with id " + phaseId + " is not part of intervention with id " + interventionId);
+
+        Person person = accountService.getCurrentPerson();
+        if(!intervention.getParticipants().contains(person) && !intervention.getAdmin().equals(person))
+            throw new IllegalArgumentException("Person with id " + person.getId() + " is not part of intervention with id " + interventionId);
+
+        if (intervention.getAdmin().equals(person)) {
+            return PhaseProgressDto.fromEntities(intervention, phase, intervention.getParticipants());
+        }
+
+        return PhaseProgressDto.fromEntity(intervention, phase, person);
     }
 
     public List<Intervention> getAllInterventionsByPerson(Long id) {
