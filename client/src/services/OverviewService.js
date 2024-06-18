@@ -1,9 +1,12 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function getOverview(id) {
-    return fetch(`${API_URL}/phase/${phaseId}`, {
+async function getOverview(interventionId, phaseId) {
+    return fetch(`${API_URL}/intervention/${interventionId}/phase/${phaseId}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Content-Type': 'application/json' 
+        },
     })
     .then(response => {
         if (!response.ok) {

@@ -1,10 +1,13 @@
 import { css, html, LitElement } from 'lit';
+import { Task } from "@lit/task";
+import { getRouter } from "../../router.js";
+
 import { getOverview } from '../../services/OverviewService.js';
-import { globalStyles } from '../../assets/global-styles.js';
+import global from '../../assets/global-styles.js';
 
 export class Overview extends LitElement {
     static styles = [
-      globalStyles,
+      global,
       css`
       p, h1, h3, em {
         color: black;
@@ -53,29 +56,28 @@ export class Overview extends LitElement {
       }
     `];
 
-    static properties = {
-        id: { type: Number },
-    };
-
     constructor() {
         super();
-        this.id = 0;
+        this.interventionId = 0;
+        this.phaseId = 0;
         this.data = {};
     }
 
     async connectedCallback() {
       super.connectedCallback();
-      this.id = getRouter().location.params.id || 0;
+      this.interventionId = getRouter().location.params.interventionId || 0;
+      this.phaseId = getRouter().location.params.phaseId || 0;
+      this.authorizeAndRedirect();
     }
 
     async authorizeAndRedirect() {
-        if (this.id == 0) {
+        if (this.interventionId == 0 || this.phaseId == 0) {
             window.location.href = '/';
             return false;
         }
 
-        const survey = await this._fetchData(this.id);
-        if (survey.hasOwnProperty('error')) {
+        const phase = await this._fetchData(this.interventionId, this.phaseId);
+        if (phase.hasOwnProperty('error')) {
             window.location.href = '/';
             return false;
         }
@@ -83,10 +85,10 @@ export class Overview extends LitElement {
         return true;
     }
 
-    async _fetchData(id) {
+    async _fetchData(interventionId, phaseId) {
         this.data = new Task(this, {
-            task: async ([id]) => getOverview(id),
-            args: () => [id]
+            task: async ([interventionId, phaseId]) => getOverview(interventionId, phaseId),
+            args: () => [interventionId, phaseId]
         });
         return await this.data.run();
     }
@@ -97,33 +99,31 @@ export class Overview extends LitElement {
                 <h1>Overview</h1>
                 <p>An error occured while loading the questions: ${this.data._value.message}</p>`;
         }
-        console.log(this.data);
-        return html`
-          <h1>Overview</h1>
-          <p>done.</p>
-        `
-        // return html`
-        //     <div class="content">
-        //         <div class="title-desc">
-        //             <h1>${this.survey.name || 'Loading...'}</h1>
-        //             <p class="description">${this.survey.description || ''}</p>
-        //         </div>
-        //         <hr class="divider">
-        //         <div>
-        //             <h3 class="algemeneinfo">Algemene Informatie</h3>
-        //             <div class="grid-container">
-        //                 <em>Fase</em>
-        //                 <p class="fase">${this.survey.phase || ''}</p>
-        //                 <em>Voortgang</em>
-        //                 <p class="voortgang">beantwoorden vragen</p>
-        //             </div>
-        //         </div>
-        //     </div>
-        //     <h1>Categorieën</h1>
+        return this.data.render({
+            loading: () => html`<p>Loading...</p>`,
+            error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
+            complete: (data) => html`
+                <div class="content">
+                    <div class="title-desc">
+                        <h1>${data.name}</h1>
+                    </div>
+                    <hr class="divider">
+                    <div>
+                        <h3 class="algemeneinfo">Algemene Informatie</h3>
+                        <div class="grid-container">
+                            <em>Fase</em>
+                            <p class="fase">${data.name || ''}</p>
+                            <em>Voortgang</em>
+                            <p class="voortgang">beantwoorden vragen</p>
+                        </div>
+                    </div>
+                </div>
+                <h1>Categorieën</h1>
 
-        //     ${this.survey.categories ? this.survey.categories.map(category => html`
-        //         <greenify-categorybox .category=${category}></greenify-categorybox>`) : html`<p>Loading categories...</p>`}
-        // `;
+                ${data.categories ? data.categories.map(category => html`
+                    <greenify-categorybox .category=${category}></greenify-categorybox>`) : html`<p>Loading categories...</p>`}
+            `
+        });
     }
 }
 

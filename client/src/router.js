@@ -16,7 +16,7 @@ await getCurrentUser().then(user => {
       { path: "/intervention/:id", component: "gi-intervention" },
       { path: "/intervention/:id/new-phase", component: "gi-createphase" },
       { path: "/intervention/:id/new-intervention", component: "gi-createintervention" },
-      { path: "/phase/:id", component: "gi-overview" },
+      { path: "/intervention/:interventionId/phase/:phaseId", component: "gi-overview" },
       { path: "/phase/:id/report", component: "gi-survey-result-report" },
       { path: "/tool/:id", component: "gi-survey" },
       { path: "(.*)", action: () => window.location.href = "/" }];
