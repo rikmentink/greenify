@@ -51,11 +51,10 @@ public class InterventionService {
         
         Phase phase = Phase.createPhase(phaseName);
         phase = phaseRepository.save(phase);
-        
-        intervention.addPhase(phase);
-        intervention = interventionRepository.save(intervention);
-        
         surveyService.createSurveysForParticipants(phase, intervention.getParticipants());
+
+        intervention.addPhase(phase);
+        interventionRepository.save(intervention);
         return phase;
     }
 

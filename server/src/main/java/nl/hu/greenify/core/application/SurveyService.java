@@ -78,12 +78,16 @@ public class SurveyService {
             
         if (person == null)
             throw new IllegalArgumentException("Survey should have a person.");
+        
+        if (phase.getSurveyOfPerson(person).isPresent())
+            throw new IllegalArgumentException("Person already has a survey for this phase.");
             
         Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
         survey.getCategories().forEach(this::saveCategory); // todo: test this
 
+        survey = surveyRepository.save(survey);
         personService.savePerson(person);
-        return surveyRepository.save(survey);
+        return survey;
     }
 
     public List<Survey> createSurveysForParticipants(Phase phase, List<Person> participants) {
