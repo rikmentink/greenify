@@ -1,7 +1,8 @@
 import {css, html, LitElement} from "lit";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class BubbleBox extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
       .flex-col-container {
         display: flex;
         flex-direction: column;
@@ -19,7 +20,7 @@ export class BubbleBox extends LitElement {
         font-weight: bold;
         text-align: center;
         color: white;
-        background-color: green;
+        background-color: var(--color-primary);
         border-radius: 35px;
         margin-left: -8px;
       }
@@ -39,7 +40,7 @@ export class BubbleBox extends LitElement {
         border-width: 0.8px;
         background-color: #f8fcff;
       }
-    `;
+    `];
 
     constructor() {
         super();

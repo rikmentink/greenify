@@ -3,14 +3,15 @@ import { LitElement, html, css } from 'lit';
 import './ProfileHeader.js';
 import './ProfileUserInfo.js';
 import './ProfileFooter.js';
+import globalStyles from "../../../assets/global-styles.js";
 
 export class ProfilePanel extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
     .profile-panel {
         position: absolute;
         right: 0;
         width: 210px;
-        background-color: rgb(76, 187, 23);;
+        background-color: var(--color-primary);
         color: #fff;
         padding: 10px;
         box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5), 
@@ -23,7 +24,7 @@ export class ProfilePanel extends LitElement {
           display: none; /* Hide the panel on screens smaller than 768px wide */
         }
     }
-  `;
+  `];
 
     static get properties() {
         return {

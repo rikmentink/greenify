@@ -1,16 +1,17 @@
 import { LitElement, html, css } from 'lit';
 import { GenericContainer } from "../components/containers/GenericContainer.js";
+import globalStyles from "../../assets/global-styles.js";
 
 export class InfoPopUp extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         :host {
             display: block;
         }
 
         .btn {
             color: white;
-            background-color: #4CBB17;
-            border: 2px solid #4CBB17;
+            background-color: var(--color-primary);
+            border: 2px solid var(--color-primary);
             padding: 10px 20px;
             font-size: 16px;
             font-weight: bolder;

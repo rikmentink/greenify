@@ -1,8 +1,9 @@
 import { LitElement, html, css } from 'lit';
 import {changeRoleToManager, changeRoleToParticipant, getCurrentUser} from "../../../services/AccountService.js";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class ProfileFooter extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
         .footer {
             margin: 20px 0 10px 0;
             display: flex;
@@ -11,7 +12,7 @@ export class ProfileFooter extends LitElement {
 
         .logout-button, .role-button {
             font-size: 14px;
-            color: #4CBB17;
+            color: var(--color-primary);
             font-weight: bold;
             border-radius: 25px;
             cursor: pointer;
@@ -25,7 +26,7 @@ export class ProfileFooter extends LitElement {
             color: gray;
         }
         
-  `;
+  `];
 
     constructor() {
         super();

@@ -26,7 +26,7 @@ export class Header extends LitElement {
             header {
                 flex: 0 0 auto;
                 padding: 1rem 0;
-                background-color: #4CBB17;
+                background-color: var(--color-primary);
                 z-index: 100;
             }
 

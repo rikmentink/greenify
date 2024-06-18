@@ -1,7 +1,8 @@
 import { LitElement, html, css } from 'lit';
+import globalStyles from "../../../assets/global-styles.js";
 
 export class GenericContainer extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         :host {
             display: flex;
             width: 750px;
@@ -24,7 +25,7 @@ export class GenericContainer extends LitElement {
         }
 
         .title {
-            color: #4CBB17;
+            color: var(--color-primary);
             margin: 0;
         }
 
