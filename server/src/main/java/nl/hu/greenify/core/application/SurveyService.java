@@ -1,14 +1,14 @@
 package nl.hu.greenify.core.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
 
-import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
-import nl.hu.greenify.core.application.exceptions.PhaseNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
 import nl.hu.greenify.core.application.exceptions.TemplateNotFoundException;
+import nl.hu.greenify.core.data.CategoryRepository;
 import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
@@ -23,17 +23,17 @@ import jakarta.transaction.Transactional;
 public class SurveyService {
     private final SurveyRepository surveyRepository;
     private final TemplateRepository templateRepository;
+    private final CategoryRepository categoryRepository;
     private final ResponseRepository responseRepository;
-    private final InterventionService interventionService;
     private final PersonService personService;
 
     public SurveyService(SurveyRepository surveyRepository, TemplateRepository templateRepository,
-            ResponseRepository responseRepository, InterventionService interventionService,
+            ResponseRepository responseRepository, CategoryRepository categoryRepository,
             PersonService personService) {
         this.surveyRepository = surveyRepository;
         this.templateRepository = templateRepository;
+        this.categoryRepository = categoryRepository;
         this.responseRepository = responseRepository;
-        this.interventionService = interventionService;
         this.personService = personService;
     }
 
@@ -48,15 +48,21 @@ public class SurveyService {
 
     /**
      * Get the questions for the given survey and category.
-     * TODO: Keep page and page size into account.
+     * TODO: Take page and page size into account.
      * 
      * @param surveyId   The ID of the survey to get the questions for.
      * @param categoryId The ID of the category to get the questions for.
+     * @param page       The page number.
+     * @param pageSize   The number of questions per page.
      * @return The questions for the given survey and category.
      */
-    public QuestionSetDto getQuestions(Long surveyId, Long categoryId) {
+    public QuestionSetDto getQuestions(Long surveyId, Long categoryId, int page, int pageSize) {
         Survey survey = this.getSurvey(surveyId);
-        return QuestionSetDto.fromEntity(survey, categoryId);
+        
+        if (categoryId == null || categoryId == 0) {
+            return QuestionSetDto.fromEntity(surveyId, null, survey.getAllFactors());
+        }
+        return QuestionSetDto.fromEntity(surveyId, survey.getCategoryById(categoryId), survey.getFactorsByCategoryId(categoryId));
     }
 
     /**
@@ -66,16 +72,28 @@ public class SurveyService {
      * @param respondentPersonId The ID of the Person object of the respondent.
      * @return The created survey.
      */
-    public Survey createSurvey(Long phaseId, Long respondentPersonId) {
-        try {
-            Person person = personService.getPersonById(respondentPersonId);
-            Phase phase = interventionService.getPhaseById(phaseId);
+    public Survey createSurvey(Phase phase, Person person) {
+        if (phase == null)
+            throw new IllegalArgumentException("Survey should have a phase.");
+            
+        if (person == null)
+            throw new IllegalArgumentException("Survey should have a person.");
+        
+        if (phase.getSurveyOfPerson(person).isPresent())
+            throw new IllegalArgumentException("Person already has a survey for this phase.");
+            
+        Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
+        survey.getCategories().forEach(this::saveCategory); // todo: test this
 
-            Survey survey = Survey.createSurvey(phase, this.getActiveTemplate(), person);
-            return surveyRepository.save(survey);
-        } catch (PhaseNotFoundException | PersonNotFoundException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
+        survey = surveyRepository.save(survey);
+        personService.savePerson(person);
+        return survey;
+    }
+
+    public List<Survey> createSurveysForParticipants(Phase phase, List<Person> participants) {
+        return participants.stream()
+                .map(person -> this.createSurvey(phase, person))
+                .toList();
     }
 
     /**
@@ -99,6 +117,10 @@ public class SurveyService {
     public Template createDefaultTemplate() {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();
+    }
+
+    private Category saveCategory(Category category) {
+        return categoryRepository.save(category);
     }
 
     /**

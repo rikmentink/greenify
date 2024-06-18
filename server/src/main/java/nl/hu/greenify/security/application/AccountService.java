@@ -12,6 +12,7 @@ import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 import nl.hu.greenify.security.domain.AccountCredentials;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -55,7 +56,7 @@ public class AccountService implements UserDetailsService {
         String encodedPassword = this.passwordEncoder.encode(password);
 
         // Create a new person
-        Person person = new Person(firstName, lastName, email);
+        Person person = Person.createPerson(firstName, lastName, email);
         this.personRepository.save(person);
 
         // Create a new user
@@ -78,6 +79,18 @@ public class AccountService implements UserDetailsService {
     public Account getAccountByEmail(String email) {
         return accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+    }
+
+    public Account getCurrentAccount() {
+        AccountCredentials accountCredentials = (AccountCredentials)
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        return accountRepository.findByEmail(accountCredentials.email())
+                .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+    }
+
+    public Person getCurrentPerson() {
+        return this.getCurrentAccount().getPerson();
     }
 
     @Override

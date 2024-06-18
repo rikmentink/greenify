@@ -1,30 +1,30 @@
 import {css, html, LitElement} from "lit";
 import {InvitationInput} from "../inputfields/InvitationInput.js";
 import {InterventionUsersTable} from "./InterventionUsersTable.js";
+
 export class InterventionUsersPanel extends LitElement {
     static styles = css`
-        .user-container {
-            display: grid;
-            grid-template-rows: auto 1fr; 
-            gap: 20px; 
-            margin-bottom: 40px;
-        }
-        
-        .inventation-box {
-            width: 40%;
-        }
+      .user-container {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        gap: 20px;
+        margin-bottom: 40px;
+      }
+
+      .inventation-box {
+        width: 40%;
+      }
     `;
 
     static properties = {
-        id: {
-            type: Number,
-            reflect: true
-        }
-    }
+        id: { type: Number, reflect: true },
+        userData: { type: Array }
+    };
 
     constructor() {
         super();
         this.id = 0;
+        this.userData = [];
     }
 
     render() {
@@ -35,7 +35,7 @@ export class InterventionUsersPanel extends LitElement {
                     <invitation-input></invitation-input>
                 </div>
                 <div class="users-table">
-                    <intervention-users-table .interventionId="${this.id}"></intervention-users-table>
+                    <intervention-users-table .userData="${this.userData}"></intervention-users-table>
                 </div>
             </div>
         `;

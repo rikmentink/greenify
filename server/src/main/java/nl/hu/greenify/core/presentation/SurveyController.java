@@ -1,6 +1,5 @@
 package nl.hu.greenify.core.presentation;
 
-import nl.hu.greenify.core.presentation.dto.CreateSurveyDto;
 import nl.hu.greenify.core.presentation.dto.QuestionSetDto;
 import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 import nl.hu.greenify.core.presentation.dto.SurveyDto;
@@ -42,20 +41,13 @@ public class SurveyController extends Controller {
     }
 
     @GetMapping(value="/{id}/questions", produces="application/json")
-    /**
-     * TODO: Take page and pageSize into account.
-     */
-    public ResponseEntity<?> getSurveyQuestions(@PathVariable("id") Long id, @RequestParam Long categoryId,
-            @RequestParam int page, @RequestParam int pageSize) {
-        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId);
+    public ResponseEntity<?> getSurveyQuestions(
+            @PathVariable("id") Long id,
+            @RequestParam(required=false) Long categoryId,
+            @RequestParam(required=false) int page, 
+            @RequestParam(required=false) int pageSize) {
+        QuestionSetDto questions = this.surveyService.getQuestions(id, categoryId, page, pageSize);
         return this.createResponse(questions);
-    }
-
-    @PostMapping(consumes="application/json", produces="application/json")
-    public ResponseEntity<?> createSurvey(@RequestBody CreateSurveyDto createSurveyDto) {
-        SurveyDto survey = SurveyDto.fromEntity(
-                this.surveyService.createSurvey(createSurveyDto.getPhaseId(), createSurveyDto.getPersonId()));
-        return this.createResponse(survey, HttpStatus.CREATED);
     }
 
     @PostMapping(value="/template/default", produces="application/json")
@@ -63,7 +55,6 @@ public class SurveyController extends Controller {
         return this.createResponse(this.surveyService.createDefaultTemplate());
     }
 
-    // TODO: Implement DTO to prevent recursion
     @PostMapping(value="{id}/response", consumes="application/json", produces="application/json")
     public ResponseEntity<?> submitResponse(@PathVariable("id") Long id, @RequestBody SubmitResponseDto responseDto) {
         Response response = this.surveyService.submitResponse(id, responseDto);

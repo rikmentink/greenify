@@ -64,7 +64,7 @@ public class SurveyReportServiceTest {
         Template template = new Template(1L, "name", "description", 1, List.of(categoryTemplate1, categoryTemplate2));
 
         // Phase creation to create surveys for based on the template:
-        this.phase = new Phase(PhaseName.INITIATION);
+        this.phase = new Phase(1L, PhaseName.INITIATION);
 
         // Person creation to set as the respondant:
         Person person1 = mock(Person.class);
@@ -128,35 +128,6 @@ public class SurveyReportServiceTest {
     }
 
     @Test
-    @DisplayName("Test average score of a category across multiple surveys in a phase")
-    public void testAverageScoreOfCategoryForPhase() {
-        // When:
-        double result = surveyReportService.getAverageScoreOfCategoryForPhase(1L,  "name");
-
-        // Then:
-        // Survey 1 scores: 10 + 2.66
-        // Survey 2 scores: 10 + 5.32
-        // Total: 27.98
-        // Average: 27.98 / 4 = 6.995
-        assertEquals(6.995, result);
-    }
-
-    @Test
-    @DisplayName("Test obtaining averages of ALL categories within a phase across multiple surveys")
-    public void testAverageScoresOfAllCategoriesForPhase() {
-        // Given:
-        Map<String, Double> expectedScores = new HashMap<>();
-        expectedScores.put("name", 6.995);
-        expectedScores.put("name2", 4.1625);
-
-        // When:
-        Map<String, Double> actualScores = surveyReportService.getAverageScoresOfAllCategoriesForPhase(1L);
-
-        // Then:
-        assertEquals(expectedScores, actualScores);
-    }
-
-    @Test
     @DisplayName("Test obtaining averages of ALL subfactors in a category within a phase across multiple surveys")
     public void testAverageScoresOfEachSubfactorInCategory() {
         // Given:
@@ -177,8 +148,8 @@ public class SurveyReportServiceTest {
         // Given:
         Map<String, Double> expectedScores = new HashMap<>();
         // Each category has 2 subfactors with each response having a max possible score of 10.0
-        expectedScores.put("name", 20.0);
-        expectedScores.put("name2", 20.0);
+        expectedScores.put("name", 40.0);
+        expectedScores.put("name2", 40.0);
 
         // When:
         Map<String, Double> actualScores = surveyReportService.getMaxPossibleScoresOfAllCategoriesForPhase(1L);
@@ -198,6 +169,22 @@ public class SurveyReportServiceTest {
 
         // When:
         Map<String, Double> actualScores = surveyReportService.getMaxPossibleScoresOfEachSubfactorInCategory(1L, "name");
+
+        // Then:
+        assertEquals(expectedScores, actualScores);
+    }
+
+    @Test
+    @DisplayName("Test obtaining total scores of ALL categories within a phase across multiple surveys")
+    public void testTotalScoresOfAllCategoriesForPhase() {
+        // Given:
+        Map<String, Double> expectedScores = new HashMap<>();
+        // The total score is calculated based on the responses provided in the setupResponses() method
+        expectedScores.put("name", 27.98); // total score for category "name"
+        expectedScores.put("name2", 16.65); // total score for category "name2"
+
+        // When:
+        Map<String, Double> actualScores = surveyReportService.getTotalScoresOfAllCategoriesForPhase(1L);
 
         // Then:
         assertEquals(expectedScores, actualScores);

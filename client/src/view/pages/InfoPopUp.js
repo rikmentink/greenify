@@ -1,11 +1,56 @@
 import { LitElement, html, css } from 'lit';
 import { GenericContainer } from "../components/containers/GenericContainer.js";
+import globalStyles from "../../assets/global-styles.js";
 
 export class InfoPopUp extends LitElement {
-    static styles = [css`
-      :host {
-        display: block;
-      }
+    static styles = [globalStyles, css`
+        :host {
+            display: block;
+        }
+
+        .btn {
+            color: white;
+            background-color: var(--color-primary);
+            border: 2px solid var(--color-primary);
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bolder;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        
+        .btn:focus{
+            outline: none;
+        }
+
+        dialog {
+            border: none;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+            overflow-y: auto;
+        }
+
+        dialog::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        dialog::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        dialog::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        dialog::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        @media (max-width: 600px) {
+            dialog {
+                font-size: 12px;
+            }
+        }
       
     `];
 
@@ -15,9 +60,9 @@ export class InfoPopUp extends LitElement {
 
     connectedCallback() {
         super.connectedCallback();
-        this.requestUpdate(); // This triggers the first update/render cycle
+        this.requestUpdate();
         setTimeout(() => {
-            this.showDialog(); // Call showDialog() after a short delay
+            this.showDialog();
         }, 0);
     }
 
@@ -35,8 +80,8 @@ export class InfoPopUp extends LitElement {
     render() {
         return html`
             <dialog>
-                <generic-container .sections=${this.sections}></generic-container>
                 <button class="btn btn-primary" @click="${this.hideDialog}">Sluit</button>
+                <generic-container .sections=${this.sections}></generic-container>
             </dialog>
         `;
     }

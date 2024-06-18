@@ -2,16 +2,18 @@ package nl.hu.greenify.core.presentation.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Category;
-import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.factor.Factor;
 
 @Getter
 @EqualsAndHashCode
 public class QuestionSetDto {
     private Long surveyId;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Category category;
     private List<Factor> factors;
 
@@ -21,9 +23,7 @@ public class QuestionSetDto {
         this.factors = factors;
     }
 
-    public static QuestionSetDto fromEntity(Survey survey, Long categoryId) {
-        Category category = survey.getCategories().stream().filter(c -> c.getId().equals(categoryId)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
-        return new QuestionSetDto(survey.getId(), category, category.getFactors());
+    public static QuestionSetDto fromEntity(Long surveyId, Category category, List<Factor> factors) {
+        return new QuestionSetDto(surveyId, category, factors);
     }
 }

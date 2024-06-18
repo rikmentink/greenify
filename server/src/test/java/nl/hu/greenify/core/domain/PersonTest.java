@@ -7,34 +7,35 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 @DisplayName("Person Domain Test")
-public class PersonTest { //Extra tests
+public class PersonTest {
     private Person person;
 
     @BeforeEach
     void setUp() {
-        person = new Person("John", "Doe", "JohnDoe@gmail.com");
+        person = new Person(1L, "John", "Doe", "JohnDoe@gmail.com", new ArrayList<>());
     }
 
     @Test
     @DisplayName("User should have a first name")
     void userFirstName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person(null, "Doe", "JohnDoe@gmail.com"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson(null, "Doe", "JohnDoe@gmail.com"));
     }
 
     @Test
     @DisplayName("User should have a last name")
     void userLastName() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", null, "JohnDoe@Gmail.com"));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson("John", null, "JohnDoe@Gmail.com"));
     }
 
     @Test
     @DisplayName("User should have an email")
     void userEmail() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", null));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson("John", "Doe", null));
     }
 
     @ParameterizedTest
@@ -42,9 +43,9 @@ public class PersonTest { //Extra tests
     @MethodSource("emailProvider")
     void userValidEmailParameterized(String email, boolean expected) {
         if (!expected) {
-            Assertions.assertThrows(IllegalArgumentException.class, () -> new Person("John", "Doe", email));
+            Assertions.assertThrows(IllegalArgumentException.class, () -> Person.createPerson("John", "Doe", email));
         } else {
-            new Person("John", "Doe", email);
+            Person.createPerson("John", "Doe", email);
         }
     }
 
@@ -52,11 +53,11 @@ public class PersonTest { //Extra tests
         return Arrays.asList(new Object[][]{
                 {"example@example.com", true},
                 {"john.doe@example.com", true},
-                {"john.doe123@example.com", true},
+                {"JoHN.doe123@example.com", true},
                 {"invalid-email.com", false},
-                {"john@example", false},
+                {"joFSn@example", false},
                 {"john@example.", false},
-                {"john.example.com", false},
+                {"joSn.example.com", false},
                 {null, false},
                 {"", false}
         });

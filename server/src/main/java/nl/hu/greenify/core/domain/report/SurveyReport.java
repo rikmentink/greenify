@@ -45,15 +45,6 @@ public class SurveyReport implements IReport {
         return null;
     }
 
-    public double getMaxScore() {
-        double maxResponseScore = calculateMaxResponseScore();
-        double result = 0;
-
-        result += this.getAllResponses().stream().mapToDouble(response -> maxResponseScore).sum();
-
-        return result;
-    }
-
     public double getMaxScoreOfCategory(Category category) {
         double maxResponseScore = calculateMaxResponseScore();
         double result = 0;
@@ -73,48 +64,6 @@ public class SurveyReport implements IReport {
         return maxFacilitatingFactor * maxPriority;
     }
 
-    @Override
-    public List<Response> getAllResponses() {
-        List<Response> responses = this.getAllCategories()
-                .flatMap(category -> category.getFactors().stream())
-                .flatMap(factor -> factor.getSubfactors().stream())
-                .map(Subfactor::getResponse)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return responses;
-    }
-
-    public List<Response> getResponsesOfCategory(Category category) {
-        List<Response> responses = category.getFactors().stream()
-                .flatMap(factor -> factor.getSubfactors().stream())
-                .map(Subfactor::getResponse)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-        return responses;
-    }
-
-    /**
-     * This method is used to return the average score of a category by its name. The name is
-     * used to identify the category to allow for an average score to be calculated across
-     * multiple surveys.
-     *
-     * @return The average score of a category across all surveys in the phase.
-     */
-    public double calculateAverageScoreOfCategory(String categoryName) {
-        List<Category> categories = this.getAllCategories()
-                .filter(category -> category.getName().equals(categoryName))
-                .toList();
-
-        double totalScore = this.getAllCategories()
-                .filter(category -> category.getName().equals(categoryName))
-                .mapToDouble(this::getAverageScore)
-                .sum();
-
-        return totalScore / categories.size();
-    }
-
     public double calculateAverageScoreOfSubfactor(int factorNumber, int subfactorNumber) {
         List<Response> responses = this.getAllCategories()
                 .flatMap(category -> category.getFactors().stream())
@@ -125,32 +74,25 @@ public class SurveyReport implements IReport {
                 .filter(Objects::nonNull)
                 .toList();
 
+        if (responses.isEmpty()) {
+            return 0;
+        }
+
         double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
         return totalScore / responses.size();
     }
 
-    public Map<String, Double> calculateAverageScoresOfAllCategories() {
-        Map<String, Double> categoryScores = new HashMap<>();
-
-        this.getAllCategories()
-                .forEach(category -> {
-                    double averageScore = this.calculateAverageScoreOfCategory(category.getName());
-                    categoryScores.put(category.getName(), averageScore);
-                });
-
-        return categoryScores;
-    }
-
     public Map<String, Double> calculateMaxPossibleScoresOfAllCategories() {
         Map<String, Double> categoryScores = new HashMap<>();
+        Map<String, List<Category>> groupedCategories = this.getAllCategories()
+                .collect(Collectors.groupingBy(Category::getName));
 
-        this.getAllCategories()
-                .collect(Collectors.groupingBy(Category::getName))
+        groupedCategories
                 .forEach((name, categories) -> {
                     double maxScore = categories.stream()
                             .mapToDouble(this::getMaxScoreOfCategory)
                             .sum();
-                    categoryScores.put(name, maxScore / categories.size());
+                    categoryScores.put(name, maxScore);
                 });
 
         return categoryScores;
@@ -186,16 +128,36 @@ public class SurveyReport implements IReport {
         return subfactorScores;
     }
 
-    public double getAverageScore(Category category) {
-        List<Response> responses = getResponsesOfCategory(category);
-        double totalScore = responses.stream().mapToDouble(Response::getScore).sum();
-        return totalScore / responses.size();
-    }
-
-
-
     private Stream<Category> getAllCategories() {
         return this.getPhase().getSurveys().stream()
                 .flatMap(survey -> survey.getCategories().stream());
+    }
+
+    public Map<String, Double> calculateTotalScoresOfAllCategories() {
+        Map<String, Double> categoryScores = new HashMap<>();
+        Map<String, List<Category>> groupedCategories = this.getAllCategories()
+                .collect(Collectors.groupingBy(Category::getName));
+
+        groupedCategories
+                .forEach((name, categories) -> {
+                    double totalScore = categories.stream()
+                            .mapToDouble(this::getTotalScoreOfCategory)
+                            .sum();
+                    categoryScores.put(name, totalScore);
+                });
+
+        return categoryScores;
+    }
+
+    private double getTotalScoreOfCategory(Category category) {
+        double result = 0;
+
+        result += category.getFactors().stream()
+                .flatMap(factor -> factor.getSubfactors().stream())
+                .filter(subfactor -> subfactor.getResponse() != null) // Only consider subfactors with a response! TODO: confirm if this should also be done for "PENDING" responses.
+                .mapToDouble(subfactor -> subfactor.getResponse().getScore())
+                .sum();
+
+        return result;
     }
 }

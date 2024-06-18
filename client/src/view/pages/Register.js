@@ -1,12 +1,14 @@
 import { LitElement, html, css } from 'lit';
 
 import {login, register} from '../../services/AccountService.js';
+import {InfoPopUp} from "./InfoPopUp.js";
+import globalStyles from "../../assets/global-styles.js";
 
 export class Register extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         
         h1{
-            color: #4CBB17;
+            color: var(--color-primary);
         }
 
         *:focus {
@@ -34,12 +36,12 @@ export class Register extends LitElement {
             border: 0;
             height: 40px;
             box-sizing: border-box;
-            border-bottom: #4CBB17 2px solid;
+            border-bottom: var(--color-primary) 2px solid;
         }
         
         button[type=submit] {
             width: 100%;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             padding: 18px 80px;
             margin: 8px 0;
@@ -56,7 +58,7 @@ export class Register extends LitElement {
         
         p {
             font-size: 12px;
-            color: #4CBB17;
+            color: var(--color-primary);
             margin-top: -6px;
         }
         
@@ -124,7 +126,7 @@ export class Register extends LitElement {
         await register(email, password, firstName, lastName)
             .then(() => login(email, password).then(
                 token => {
-                    sessionStorage.setItem('token', token);
+                    localStorage.setItem('token', token);
                     window.location.href = import.meta.env.BASE_URL + 'home';
                 }
             )).catch(error => {

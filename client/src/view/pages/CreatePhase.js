@@ -1,9 +1,10 @@
 import { LitElement, html, css } from 'lit';
+import globalStyles from "../../assets/global-styles.js";
 
 export class CreatePhase extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         h1 {
-            color: #4CBB17;
+            color: var(--color-primary);
         }
 
         .outer-container {
@@ -39,7 +40,7 @@ export class CreatePhase extends LitElement {
             flex-direction: column;
             align-items: center;
             width: 50%;
-            border: #4CBB17 1px solid;
+            border: var(--color-primary) 1px solid;
         }
 
         .create-btn {
@@ -50,7 +51,7 @@ export class CreatePhase extends LitElement {
             border: none;
             border-radius: 40px;
             cursor: pointer;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
         }
 
@@ -79,14 +80,15 @@ export class CreatePhase extends LitElement {
     constructor() {
         super();
         this.interventionId = 0;
+        this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
+        this.interventionName = this.intervention.name;
     }
 
-    // Render the component
     render() {
         return html`
             <h1>Fase Creëren</h1>
             <div class="title-container">
-                <h1>Interventie Naam</h1>
+                <h1>${this.interventionName}</h1>
             </div>
             <div class="desc-container">
                 <p class="description">🛈 Per fase wordt er een vragenlijst beschikbaar gesteld voor alle toegevoegde gebruikers.</p>

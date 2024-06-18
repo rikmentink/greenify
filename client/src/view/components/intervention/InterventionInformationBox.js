@@ -40,8 +40,9 @@ export class InterventionInformationBox extends LitElement {
 
     constructor() {
         super();
-        this.id = 0;
+        this.id = 1;
         this.interventionData = [{
+
             id: 1,
             name: "Interventie 1",
             description: "Dit is de beschrijving van de interventie. Kan de gebruiker uiteraard ook zelf instellen. Hoort beknopt te zijn en heeft als doel om duidelijk te maken waar de interventie om draait.",

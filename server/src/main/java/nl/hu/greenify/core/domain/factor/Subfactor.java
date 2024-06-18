@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.domain.factor;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -21,6 +23,7 @@ public class Subfactor implements IFactor {
 
     @Setter
     @OneToOne
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Response response;
 
     protected Subfactor() {
@@ -48,7 +51,6 @@ public class Subfactor implements IFactor {
 
     public static Subfactor copyOf(Subfactor original) {
         Subfactor copy = new Subfactor();
-        copy.id = original.id;
         copy.title = original.title;
         copy.number = original.number;
         copy.isSupportingFactor = original.isSupportingFactor;

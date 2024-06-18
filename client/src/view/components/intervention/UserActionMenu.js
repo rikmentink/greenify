@@ -1,5 +1,6 @@
 import { css, html, LitElement } from "lit";
 import { InvitationInput } from "../inputfields/InvitationInput.js";
+import { getPersonById } from "../../../services/PersonService.js";
 
 export class UserActionMenu extends LitElement {
     static styles = css`
@@ -62,12 +63,26 @@ export class UserActionMenu extends LitElement {
 
     constructor() {
         super();
-        this.userId = 0;
-        this.menuVisible = false; // Track menu visibility
+        this.userId = 102;
+        this.menuVisible = false;
     }
 
     connectedCallback() {
         super.connectedCallback();
+    }
+
+    async fetchUser() {
+        try {
+            this.user = await getPersonById(this.userId);
+            this.dispatchEvent(new CustomEvent('user-deleted', {
+                detail: { user: this.user },
+                bubbles: true,
+                composed: true
+            }));
+
+        } catch (error) {
+            alert('Er is iets misgegaan bij het ophalen van de gebruiker.')
+        }
     }
 
     handleMenu() {
@@ -81,20 +96,13 @@ export class UserActionMenu extends LitElement {
         }
     }
 
-    handleInvite() {
-        // TODO: Implement handle new invite request
-        return null;
-    }
-
     handleRemoveUser() {
-        // TODO: Implement handle remove user request
-        return null;
+       console.log("User wordt verwijderd")
     }
 
     closeOtherMenus() {
         const menus = document.querySelectorAll('ul');
         menus.forEach(menu => {
-            console.log(menu)
         });
     }
 
@@ -103,7 +111,6 @@ export class UserActionMenu extends LitElement {
             <button class="dots-btn" @click="${this.handleMenu}"></button>
             <div class="usermenu">
                 <ul class="${this.menuVisible ? 'show-menu' : ''}">
-                    <li><button @click="${this.handleInvite()}">Opnieuw uitnodigen</button></li>
                     <li><button style="color: red;" @click="${this.handleRemoveUser()}">Verwijderen</button></li>
                 </ul>
             </div>

@@ -3,13 +3,15 @@ import { LitElement, html, css } from 'lit';
 import './NavbarItem.js';
 import '../profile/ProfileUserInfo.js';
 import '../profile/ProfileContainer.js';
+import {getCurrentUser} from "../../../services/AccountService.js";
+import globalStyles from "../../../assets/global-styles.js";
 
 class Navbar extends LitElement {
     static properties = {
         menuOpen: { type: Boolean, reflect: true },
     };
 
-    static styles = css`
+    static styles = [globalStyles, css`
     :host {
       flex: 1 1 auto;
       z-index: 100;
@@ -22,7 +24,7 @@ class Navbar extends LitElement {
       top: 0;
       bottom: 0;
       left: -100%;
-      background-color: #4CBB17;
+      background-color: var(--color-primary);
       color: #fff;
       transition: left .3s ease;
     }
@@ -49,7 +51,7 @@ class Navbar extends LitElement {
     nav {
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
       padding: 1.5rem;
     }
 
@@ -91,11 +93,33 @@ class Navbar extends LitElement {
         display: none;
       }
     }
-  `;
+  `];
 
     constructor() {
         super();
         this.menuOpen = false;
+        this.roles = [];
+        this.fetchCurrentUserRoles();
+    }
+
+    async fetchCurrentUserRoles() {
+        try {
+            const userData = await getCurrentUser();
+            this.roles = userData.authorities.map(auth => auth.authority);
+            this.requestUpdate();
+        } catch (error) {
+            console.error('Error fetching user roles:', error);
+        }
+    }
+
+    renderNavbarItems() {
+        if (Array.isArray(this.roles) && (this.roles.includes('ROLE_USER') || this.roles.includes('ROLE_ADMIN'))) {
+            return html`
+            <gi-navbar-item url="" label="Home"></gi-navbar-item>
+            <gi-navbar-item url="tool" label="Tool"></gi-navbar-item>
+        `;
+        }
+        return '';
     }
 
     connectedCallback() {
@@ -131,8 +155,7 @@ class Navbar extends LitElement {
                     <img src="icons/close.png" width="20" height="20"/>
                 </button>
             </div>
-            <gi-navbar-item url="home" label="Home"></gi-navbar-item>
-            <gi-navbar-item url="tool" label="Tool"></gi-navbar-item>
+            ${this.renderNavbarItems()}
             <profile-container></profile-container>
         </nav>
       </div>

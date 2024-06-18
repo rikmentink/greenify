@@ -57,7 +57,6 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/***")).permitAll()
                         .requestMatchers(antMatcher("/**")).permitAll()
                         .requestMatchers(antMatcher("/*")).permitAll()
-                        .requestMatchers(antMatcher("/error")).anonymous()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(

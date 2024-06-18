@@ -1,13 +1,15 @@
 import {css, html, LitElement} from "lit";
+import {getInterventionById} from "../../../services/InterventionService.js";
+import globalStyles from "../../../assets/global-styles.js";
 export class InterventionSurveyBox extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
         .title-container {
             display: flex;
             align-items: center;
         }
 
         .title-container h2 {
-            margin-right: 40px; 
+            margin-right: 20px; 
         }
 
         .start-fase-btn {
@@ -17,7 +19,7 @@ export class InterventionSurveyBox extends LitElement {
             font-weight: bold;
             border: none;
             cursor: pointer;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             text-decoration: none;
             display: inline-block; 
@@ -54,7 +56,8 @@ export class InterventionSurveyBox extends LitElement {
         }
         
         .sy-phase {
-            color: #666666;
+            font-weight: bold;
+            font-size: 1.1em;
         }
         
         .sy-description {
@@ -68,7 +71,7 @@ export class InterventionSurveyBox extends LitElement {
         }
         
         .sy-status a {
-            color: #4CBB17;
+            color: var(--color-primary);
             text-decoration: none;
             font-weight: bold;
             margin-bottom: 10px;
@@ -92,7 +95,7 @@ export class InterventionSurveyBox extends LitElement {
 
         .progress {
             height: 100%;
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             border-radius: 5px;
         }
 
@@ -125,49 +128,54 @@ export class InterventionSurveyBox extends LitElement {
         .survey-container::-webkit-scrollbar-thumb:hover {
             background-color: rgba(0, 0, 0, 0.4);
         }
-    `;
+    `];
 
     static properties = {
         id: {
             type: Number,
             reflect: true
+        },
+        intervention: {
+            type: Object
         }
+    }
+
+    async fetchIntervention() {
+        this.intervention = await getInterventionById(this.id);
+        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
     constructor() {
         super();
-        this.id = 0;
+        this.id = 1;
+        this.fetchIntervention();
+
         this.surveyData = [{
             id: 1,
-            name: "Vragenlijst 1",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Research"
         }, {
             id: 2,
-            name: "Vragenlijst 2",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Implementatie"
         }, {
             id: 3,
-            name: "Vragenlijst 3",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Evaluatie"
         }, {
             id: 4,
-            name: "Vragenlijst 4",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Research"
         }, {
             id: 5,
-            name: "Vragenlijst 5",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Implementatie"
         }, {
             id: 6,
-            name: "Vragenlijst 6",
-            description: "Dit is de beschrijving van de vragenlijst. Kan de gebruiker uiteraard ook zelf instellen.",
+            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
             phase: "Evaluatie"
         }
+
         ];
     }
 
@@ -176,7 +184,7 @@ export class InterventionSurveyBox extends LitElement {
             let progress = 60 + "%" // Placeholder for progress, need to be calculated
             return html`
                 <div class="survey-box">
-                    <p class="sy-header"><span class="sy-name">${survey.name} </span><span class="sy-phase">Fase - ${survey.phase}</span></p>
+                    <p class="sy-header"><span class="sy-phase">${survey.phase}</span></p>
                     <p class="sy-description">${survey.description}</p>
                     <div class="sy-status">
                         <a href="">Bekijk vragen &#10132;</a>
@@ -202,8 +210,8 @@ export class InterventionSurveyBox extends LitElement {
     render() {
         return html`
             <div class="title-container">
-                <h2>Vragenlijsten</h2>
-                <a class="start-fase-btn" href="/createphase/${this.id}">Nieuwe fase starten</a>
+                <h2>Fases</h2>
+                <a class="start-fase-btn" href="/createphase">Nieuwe fase starten</a>
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}

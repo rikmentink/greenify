@@ -1,15 +1,17 @@
 import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
+import {getInterventionByPersonId} from "../../../services/InterventionService.js";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class MyInterventionsBox extends LitElement {
-    static styles = [css`
+    static styles = [globalStyles, css`
         .my-interventions-container {
-            width: 50%;
+            width: 650px;
             margin-bottom: 50px;
         }
 
         .my-interventions-header {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             margin-top: 25px;
             border-radius: 5px 5px 0 0;
@@ -27,6 +29,17 @@ export class MyInterventionsBox extends LitElement {
             overflow-y: auto;
             max-height: 550px;
         }
+      
+      .bekijk-button {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 10px 60px 10px 60px;
+            border-radius: 25px;
+            font-size: 16px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+      }
 
         .my-interventions-item {
             padding: 10px;
@@ -68,12 +81,18 @@ export class MyInterventionsBox extends LitElement {
         }
         
         .my-interventions-btn a {
-            background-color: #4CBB17;
+            background-color: var(--color-primary);
             color: white;
             padding: 10px 60px 10px 60px;
             border-radius: 25px;
             font-size: 16px;
             text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .my-interventions-container {
+                width: 90%;
+            }
         }
 
     ;
@@ -81,22 +100,8 @@ export class MyInterventionsBox extends LitElement {
 
     constructor() {
         super();
-        this.interventieData = [{
-            id: 1,
-            name: "Interventie 1",
-            totalSurveys: 2,
-            progress: [10],
-        }, {
-            id: 2,
-            name: "Interventie 2",
-            totalSurveys: 2,
-            progress: [20],
-        }, {
-            id: 3,
-            name: "Interventie 3",
-            totalSurveys: 3,
-            progress: [30],
-        }]
+        this.interventieData = [{}];
+        this.loading = true;
     }
 
     static properties = {
@@ -106,27 +111,56 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
+    async getInterventionsByPersonId(userId) {
+        this.interventieData = await getInterventionByPersonId(userId);
+        this.loading = false;
+        this.userId = userId;
+        this.requestUpdate();
+    }
+
+    updated(changedProperties) {
+        if (changedProperties.has('userId')) {
+            this.getInterventionsByPersonId(this.userId);
+        }
+    }
+
     renderInterventions(){
-        return this.interventieData.map(interventie => {
-            return html`
+        if (this.loading) {  // If loading, don't render the chart
+            return html`Loading...`;
+        }
+
+        if (this.interventieData && this.interventieData.length > 0) {
+            return this.interventieData.map(interventie => {
+                let progress = Array.isArray(interventie.progress) ? interventie.progress : [interventie.progress];
+                return html`
                 <div class="my-interventions-item">
                     <div class="my-interventions-item-name">
                         ${interventie.name}
                     </div>
                     <div class="my-interventions-progress-container">
                         <div class="my-interventions-item-description">
-                            <p>Mijn progressie over ${interventie.totalSurveys} vragenlijsten</p>
+                            <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
                         </div>
                         <div class="my-interventions-item-progress">
-                            <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${interventie.progress} .chartLabels=${["Percentage"]} .chartColors=${['#63ABFD']}></horizontal-bar-chart>
+                            <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${progress}
+                                                  .chartLabels=${["Percentage"]}
+                                                  .chartColors=${['#63ABFD']}></horizontal-bar-chart>
                         </div>
                     </div>
                     <div class="my-interventions-btn">
-                        <a href="">Bekijk</a>
+                        <a class="bekijk-button" href="intervention/${interventie.id}">Bekijk</a>
                     </div>
                 </div>
             `;
-        });
+            });
+        }
+        return html`
+        <div class="my-interventions-item">
+            <div class="my-interventions-item-name">
+                Geen interventies gevonden.
+            </div>
+        </div>
+    `;
     }
 
 

@@ -3,18 +3,20 @@ import { LitElement, html, css } from 'lit';
 import './ProfileHeader.js';
 import './ProfileUserInfo.js';
 import './ProfileFooter.js';
+import globalStyles from "../../../assets/global-styles.js";
 
 export class ProfilePanel extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
     .profile-panel {
-      position: absolute;
-      right: 0;
-      width: 210px;
-      background-color: #4CBB17;
-      color: #fff;
-      padding: 10px;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
-      z-index: 10; // Index value to define which element should be on top
+        position: absolute;
+        right: 0;
+        width: 210px;
+        background-color: var(--color-primary);
+        color: #fff;
+        padding: 10px;
+        box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5), 
+        10px 0 10px -10px rgba(0, 0, 0, 0.5), -10px 0 10px -10px rgba(0, 0, 0, 0.5);
+        z-index: 10; // Index value to define which element should be on top
     }
       
     @media (max-width: 767px) {
@@ -22,7 +24,7 @@ export class ProfilePanel extends LitElement {
           display: none; /* Hide the panel on screens smaller than 768px wide */
         }
     }
-  `;
+  `];
 
     static get properties() {
         return {

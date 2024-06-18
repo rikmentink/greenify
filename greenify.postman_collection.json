@@ -12,6 +12,20 @@
 			"item": [
 				{
 					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var authHeader = pm.response.headers.get('Authorization');",
+									"var authToken = authHeader.replace('Bearer ', '');",
+									"pm.environment.set('bearerToken', authToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -28,11 +42,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{BASE_URL}}/login",
+							"raw": "{{BASE_URL}}/account/login",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
+								"account",
 								"login"
 							]
 						}
@@ -41,6 +56,20 @@
 				},
 				{
 					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var authHeader = pm.response.headers.get('Authorization');",
+									"var authToken = authHeader.replace('Bearer ', '');",
+									"pm.environment.set('bearerToken', authToken);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -250,6 +279,36 @@
 					"response": []
 				},
 				{
+					"name": "Get Phase Progress",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/intervention/:interventionId/phase/:phaseId",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"intervention",
+								":interventionId",
+								"phase",
+								":phaseId"
+							],
+							"variable": [
+								{
+									"key": "interventionId",
+									"value": "1"
+								},
+								{
+									"key": "phaseId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Add Phase",
 					"request": {
 						"method": "POST",
@@ -335,7 +394,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/survey/:id/questions?categoryId=1&page=1&pageSize=1000",
+							"raw": "{{BASE_URL}}/survey/:id/questions?categoryId=0&page=1&pageSize=1000",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -347,7 +406,7 @@
 							"query": [
 								{
 									"key": "categoryId",
-									"value": "1"
+									"value": "0"
 								},
 								{
 									"key": "page",
@@ -401,7 +460,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"subfactorId\": 4,\n    \"facilitating-factor\": 1,\n    \"priority\": 3,\n    \"comment\": \"Not my cup of tea\"\n}",
+							"raw": "{\n    \"subfactorId\": 9,\n    \"facilitatingFactor\": 3,\n    \"priority\": 2,\n    \"comment\": \"Very important!!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -450,6 +509,16 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{bearerToken}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",

@@ -1,5 +1,7 @@
 package nl.hu.greenify.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,21 +16,23 @@ import nl.hu.greenify.core.domain.factor.Subfactor;
 public class Response {
     @Id
     @GeneratedValue
+    @Setter
     private Long id;
 
     private double score;
+
+    private boolean isForSupportingFactor;
 
     @Setter
     private String comment;
 
     @Enumerated(EnumType.STRING)
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private FacilitatingFactor facilitatingFactor;
 
     @Enumerated(EnumType.STRING)
+    @JsonFormat(shape=JsonFormat.Shape.NUMBER)
     private Priority priority;
-
-    @OneToOne
-    private Subfactor subfactor;
 
     protected Response() {
     }
@@ -39,7 +43,7 @@ public class Response {
         this.comment = comment;
         this.facilitatingFactor = facilitatingFactor;
         this.priority = priority;
-        this.subfactor = subfactor;
+        this.isForSupportingFactor = subfactor.isSupportingFactor();
     }
 
     public Response(Long id, double score, String comment, FacilitatingFactor facilitatingFactor, Priority priority,
@@ -49,25 +53,28 @@ public class Response {
         this.comment = comment;
         this.facilitatingFactor = facilitatingFactor;
         this.priority = priority;
-        this.subfactor = subfactor;
+        this.isForSupportingFactor = subfactor.isSupportingFactor();
     }
 
     public static Response createResponse(Subfactor subfactor, FacilitatingFactor facilitatingFactor, Priority priority, String comment) {
         Response response = new Response(
             0,
-            null,
+            comment,
             facilitatingFactor,
             priority,
             subfactor
         );
-        response.subfactor.setResponse(response);
+        
+        if (subfactor.getResponse() != null) {
+            response.setId(subfactor.getResponse().getId());
+        }
+        subfactor.setResponse(response);
         response.calculateScore();
         return response;
     }
 
     private void calculateScore() {
-        boolean isSupportingFactor = this.subfactor.isSupportingFactor();
-        this.score = facilitatingFactor.getValue(isSupportingFactor) * priority.getValue();
+        this.score = facilitatingFactor.getValue(this.isForSupportingFactor) * priority.getValue();
     }
 
     public void setFacilitatingFactor(FacilitatingFactor facilitatingFactor) {

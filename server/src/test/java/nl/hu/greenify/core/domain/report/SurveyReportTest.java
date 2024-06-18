@@ -62,7 +62,7 @@ public class SurveyReportTest {
         Template template = new Template(1L, "name", "description", 1, List.of(categoryTemplate1, categoryTemplate2));
 
         // Phase creation to create surveys for based on the template:
-        this.phase = new Phase(PhaseName.INITIATION);
+        this.phase = new Phase(1L, PhaseName.INITIATION);
 
         // Person creation to set as the respondant:
         Person person1 = mock(Person.class);
@@ -109,25 +109,6 @@ public class SurveyReportTest {
     }
 
     @Test
-    @DisplayName("When responses are provided, the maximum possible agreement score should be calculated.")
-    void testMaxScore() {
-        Response response = Response.createResponse(this.subfactor1Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
-        Response response2 = Response.createResponse(this.subfactor2Survey1, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, "");
-
-        SurveyReport surveyReport = new SurveyReport(phase);
-
-        assertEquals(20.0, surveyReport.getMaxScore());
-    }
-
-    @Test
-    @DisplayName("When no responses are provided (yet), the maximum possible agreement score should be 0.0.")
-    void testMaximumPossibleAgreementScoreWithNoResponses() {
-        SurveyReport surveyReport = new SurveyReport(phase);
-
-        assertEquals(0.0, surveyReport.getMaxScore());
-    }
-
-    @Test
     @DisplayName("When responses are given to subfactors across multiple categories, MAXIMUM scores can be given per provided category.")
     void testMaxScorePerCategorySingleSurvey() {
         Response response = Response.createResponse(this.subfactor1Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
@@ -143,46 +124,6 @@ public class SurveyReportTest {
         assertAll(
                 () -> assertEquals(20.0, surveyReport.getMaxScoreOfCategory(category)),
                 () -> assertEquals(10.0, surveyReport.getMaxScoreOfCategory(category2))
-        );
-    }
-
-    @Test
-    @DisplayName("When responses are given to subfactors across multiple categories within a SINGLE survey, AVERAGE scores can be given per provided category.")
-    void testAverageScorePerCategorySingleSurvey() {
-        Response response = Response.createResponse(this.subfactor1Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
-        Response response2 = Response.createResponse(this.subfactor2Survey1, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, "");
-        Response response3 = Response.createResponse(this.subfactor3Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
-
-        SurveyReport surveyReport = new SurveyReport(phase);
-
-        // Get the first category of the first survey
-        Category category = phase.getSurveys().get(0).getCategories().get(0);
-        Category category2 = phase.getSurveys().get(0).getCategories().get(1);
-
-        assertAll(
-                () -> assertEquals(6.33, surveyReport.getAverageScore(category)),
-                () -> assertEquals(2.0, surveyReport.getAverageScore(category2))
-        );
-    }
-
-    @Test
-    @DisplayName("When responses are given to subfactors across multiple categories over MULTIPLE survey, AVERAGE scores can be given per provided category name.")
-    void testAverageScorePerCategoryMultipleSurveys() {
-        Response response = Response.createResponse(this.subfactor1Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
-        Response response2 = Response.createResponse(this.subfactor2Survey1, FacilitatingFactor.DISAGREE, Priority.LITTLE_PRIORITY, "");
-        Response response3 = Response.createResponse(this.subfactor3Survey1, FacilitatingFactor.TOTALLY_AGREE, Priority.TOP_PRIORITY, "");
-        Response response4 = Response.createResponse(this.subfactor1Survey2, FacilitatingFactor.DISAGREE, Priority.NO_PRIORITY, "");
-        Response response5 = Response.createResponse(this.subfactor3Survey2, FacilitatingFactor.TOTALLY_AGREE, Priority.NO_PRIORITY, "");
-
-        SurveyReport surveyReport = new SurveyReport(phase);
-
-        // Expected average scores:
-        // Category "name": (6.33 + 2) / 2 = 4.165
-        // Category "name2": (2 + 1) / 2 = 1.5
-
-        assertAll(
-                () -> assertEquals(4.165, surveyReport.calculateAverageScoreOfCategory("name")),
-                () -> assertEquals(1.5, surveyReport.calculateAverageScoreOfCategory("name2"))
         );
     }
 
@@ -223,9 +164,9 @@ public class SurveyReportTest {
 
 
         Map<String, Double> expectedScores = new HashMap<>();
-        // Each category has 2 subfactors with each response having a max possible score of 10.0
-        expectedScores.put("name", 20.0);
-        expectedScores.put("name2", 10.0);
+        // Each category has 2 subfactors
+        expectedScores.put("name", 40.0); // Subfactor 1 and 2 - 4 responses total. 4 * 10.0 = 40.0
+        expectedScores.put("name2", 20.0); // Subfactor 3 and 4 - 2 responses total. 2 * 10.0 = 20.0
 
         // When:
         SurveyReport surveyReport = new SurveyReport(phase);

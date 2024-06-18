@@ -24,16 +24,6 @@ public class SurveyReportService {
         return new SurveyReport(phase);
     }
 
-    public double getAverageScoreOfSubfactorForPhase(Long phaseId, int factorNumber, int subfactorNumber) {
-        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
-        return surveyReport.calculateAverageScoreOfSubfactor(factorNumber, subfactorNumber);
-    }
-
-    public double getAverageScoreOfCategoryForPhase(Long phaseId, String categoryName) {
-        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
-        return surveyReport.calculateAverageScoreOfCategory(categoryName);
-    }
-
     public Map<String, Double> getAverageScoresOfEachSubfactorInCategory(Long phaseId, String categoryName) {
         SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
         return surveyReport.calculateAverageScoresOfEachSubfactorInCategory(categoryName);
@@ -44,27 +34,27 @@ public class SurveyReportService {
         return surveyReport.calculateMaxPossibleScoresOfEachSubfactorInCategory(categoryName);
     }
 
-    public Map<String, Double> getAverageScoresOfAllCategoriesForPhase(Long phaseId) {
-        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
-        return surveyReport.calculateAverageScoresOfAllCategories();
-    }
-
     public Map<String, Double> getMaxPossibleScoresOfAllCategoriesForPhase(Long phaseId) {
         SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
         return surveyReport.calculateMaxPossibleScoresOfAllCategories();
     }
 
+    public Map<String, Double> getTotalScoresOfAllCategoriesForPhase(Long phaseId) {
+        SurveyReport surveyReport = getSurveyReportByPhaseId(phaseId);
+        return surveyReport.calculateTotalScoresOfAllCategories();
+    }
+
     public List<CategoryScoresDto> getCategoryScores(Long phaseId) {
-        Map<String, Double> maxScores = this.getMaxPossibleScoresOfAllCategoriesForPhase(phaseId);
-        Map<String, Double> averageScores = this.getAverageScoresOfAllCategoriesForPhase(phaseId);
+        Map<String, Double> maxPossibleScores = this.getMaxPossibleScoresOfAllCategoriesForPhase(phaseId);
+        Map<String, Double> totalScores = this.getTotalScoresOfAllCategoriesForPhase(phaseId);
 
         // Convert the maps to a list of CategoryScoresDto objects, matching each category name with its max and average score.
-        return maxScores.entrySet().stream()
+        return maxPossibleScores.entrySet().stream()
                 .map(entry -> {
                     String categoryName = entry.getKey();
                     double maxScore = entry.getValue();
-                    double averageScore = averageScores.get(categoryName);
-                    return CategoryScoresDto.fromEntity(categoryName, maxScore, averageScore);
+                    double totalScore = totalScores.get(categoryName);
+                    return CategoryScoresDto.fromEntity(categoryName, maxScore, totalScore);
                 })
                 .collect(Collectors.toList());
     }
