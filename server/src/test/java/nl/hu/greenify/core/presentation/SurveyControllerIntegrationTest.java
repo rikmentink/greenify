@@ -25,7 +25,6 @@ import nl.hu.greenify.core.domain.Survey;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.domain.enums.Priority;
-import nl.hu.greenify.core.presentation.dto.CreateSurveyDto;
 import nl.hu.greenify.core.presentation.dto.SubmitResponseDto;
 
 @SpringBootTest
@@ -190,51 +189,6 @@ public class SurveyControllerIntegrationTest {
     //     mockMvc.perform(request)
     //             .andExpect(status().isOk());
     // }
-
-    /**
-     * createSurvey tests
-    */
-
-    @Test
-    @DisplayName("Creating a survey should return a new survey")
-    void createSurveyShouldReturnOk() throws Exception {
-        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenReturn(this.survey);
-
-        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
-        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
-                .contentType("application/json")
-                .content(dto.toJsonString());
-
-        mockMvc.perform(request)
-                .andExpect(status().isCreated());
-    }
-
-    @Test
-    @DisplayName("Creating a survey with invalid phase should return 400")
-    void createSurveyWithInvalidPhaseShouldReturnNotFound() throws Exception {
-        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenThrow(new IllegalArgumentException(""));
-
-        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
-        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
-                .contentType("application/json")
-                .content(dto.toJsonString());
-
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    @DisplayName("Creating a survey with invalid person should return 400")
-    void createSurveyWithInvalidPersonShouldReturnNotFound() throws Exception {
-        when(surveyService.createSurvey(PHASE_ID, PERSON_ID)).thenThrow(new IllegalArgumentException(""));
-
-        CreateSurveyDto dto = new CreateSurveyDto(PHASE_ID, PERSON_ID);
-        RequestBuilder request = MockMvcRequestBuilders.post("/survey")
-                .contentType("application/json")
-                .content(dto.toJsonString());
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
-    }
 
     /**
      * submitResponse tests

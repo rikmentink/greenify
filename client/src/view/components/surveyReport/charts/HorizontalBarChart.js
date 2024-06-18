@@ -28,10 +28,25 @@ export class HorizontalBarChart extends LitElement {
         this.chartColors = [];
     }
 
-    firstUpdated() {
+    firstUpdated(_changedProperties) {
+        this.updateChart();
+    }
+
+    updated(changedProperties) {
+        if (changedProperties.has('chartData') || changedProperties.has('chartLabels') || changedProperties.has('chartDatasetLabel')) {
+            this.updateChart();
+        }
+    }
+
+    updateChart() {
         const ctx = this.shadowRoot.getElementById('horizontalBarChart');
+
+        if (this.chart) {
+            this.chart.destroy(); // Destroy chart if it already exists, required for updating the chart
+        }
+
         const displayLabels = !!this.chartDatasetLabel; // If there is a label, display it
-        const chart = new Chart(ctx, {
+        this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: this.chartLabels,

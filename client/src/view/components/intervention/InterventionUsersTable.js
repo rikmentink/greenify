@@ -41,7 +41,7 @@ export class InterventionUsersTable extends LitElement {
         border: #CACACA 1px solid;
         margin-right: 5px;
         background-color: white;
-        background-image: url("../../../../public/icons/search-icon.png");
+        background-image: url("/icons/search-icon.png");
         background-size: 13px;
         background-position: 10px 6px;
         background-repeat: no-repeat;

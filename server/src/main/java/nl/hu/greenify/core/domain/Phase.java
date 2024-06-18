@@ -2,6 +2,7 @@ package nl.hu.greenify.core.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -46,11 +47,17 @@ public class Phase {
         if(name == null) {
             throw new IllegalArgumentException("Phase should have a name");
         }
-        
+
         return new Phase(name);
     }
 
     public void addSurvey(Survey survey) {
         this.surveys.add(survey);
+    }
+
+    public Optional<Survey> getSurveyOfPerson(Person person) {
+        return this.surveys.stream()
+            .filter(survey -> survey.getRespondent().equals(person))
+            .findFirst();
     }
 }

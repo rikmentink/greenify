@@ -13,6 +13,7 @@ import { Login } from "./view/pages/Login.js";
 import { Register } from "./view/pages/Register.js";
 import { Intervention } from "./view/pages/Intervention.js";
 import { CreateIntervention} from "./view/pages/CreateIntervention.js";
+import { SurveyResultReport} from "./view/pages/SurveyResultReport.js";
 
 /**
  * The complete app, don't remove this!

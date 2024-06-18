@@ -3,14 +3,12 @@ package nl.hu.greenify.core.domain;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Setter
 @Getter
 @Entity
 @EqualsAndHashCode
@@ -86,7 +84,9 @@ public class Intervention {
             throw new IllegalArgumentException("Intervention should have an admin");
         }
 
-        return new Intervention(name, description, admin, new ArrayList<>(), new ArrayList<>());
+        List<Person> participants = new ArrayList<>();
+        participants.add(admin);
+        return new Intervention(name, description, admin, new ArrayList<>(), participants);
     }
 
     public void addPhase(Phase phase) {
