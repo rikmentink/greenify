@@ -75,13 +75,7 @@ public class Intervention {
             return new ArrayList<>();
         }
 
-        List<Survey> surveys = new ArrayList<>();
-            for(Survey survey : this.getCurrentPhase().getSurveys()) {
-                if(survey.getRespondent().equals(person)) {
-                    surveys.add(survey);
-                }
-            }
-        return surveys;
+        return this.getCurrentPhase().getSurveys();
     }
 
     public static Intervention createIntervention(String name, String description, Person admin) {
