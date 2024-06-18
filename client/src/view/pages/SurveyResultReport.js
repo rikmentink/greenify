@@ -6,15 +6,16 @@ import "../components/surveyReport/BubbleBox.js";
 import "../components/surveyReport/DialogPlain.js";
 import "../components/surveyReport/charts/HorizontalBarChart.js";
 import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/SurveyReportService.js";
+import globalStyles from "../../assets/global-styles.js";
 
 export class SurveyResultReport extends LitElement {
-  static styles = [
+  static styles = [globalStyles,
     css`
       :host {
           background-color: #f0f0f0;
       }
       h1 {
-        color: green;
+        color: var(--color-primary);
       }
       h2 {
         font-size: 15px;
