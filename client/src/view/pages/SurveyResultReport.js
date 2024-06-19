@@ -7,6 +7,7 @@ import "../components/surveyReport/DialogPlain.js";
 import "../components/surveyReport/charts/HorizontalBarChart.js";
 import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/SurveyReportService.js";
 import globalStyles from "../../assets/global-styles.js";
+import "../components/surveyReport/PdfReportGenerator.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [globalStyles,
@@ -168,6 +169,9 @@ export class SurveyResultReport extends LitElement {
   render() {
     return html`
       <h1>Vergroenings rapportage</h1>
+      <div class="btn-group">
+        <gi-pdf-report-generator slot="actions"></gi-pdf-report-generator>
+      </div>
       <div class="grid-container">
         <div class="grid-left-section">
           <content-box-plain class="content-box-chart">

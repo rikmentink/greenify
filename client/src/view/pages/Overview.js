@@ -1,10 +1,18 @@
-import {css, html, LitElement} from 'lit';
-import '../components/overview/CategoryBox.js';
+import { css, html, LitElement } from 'lit';
+import { Task } from "@lit/task";
+import { getRouter } from "../../router.js";
+
+import { getOverview } from '../../services/OverviewService.js';
+import global from '../../assets/global-styles.js';
+
+import { CategoryBox } from '../components/overview/CategoryBox.js';
 
 export class Overview extends LitElement {
-    static styles = [css`
+    static styles = [
+      global,
+      css`
       p, h1, h3, em {
-        color: Black;
+        color: black;
       }
 
       .grid-container {
@@ -18,7 +26,7 @@ export class Overview extends LitElement {
 
       .fase, .voortgang {
         margin-top: 0;
-        margin-left: 10px; 
+        margin-left: 10px;
       }
 
       .content {
@@ -42,7 +50,7 @@ export class Overview extends LitElement {
 
       hr.divider {
         margin-top: 25px;
-        border-color: #d4d4d4;
+        border-color: #f8f8f8;
         margin-left: 20px;
         min-height: 150px;
         flex-grow: 1;
@@ -50,38 +58,71 @@ export class Overview extends LitElement {
       }
     `];
 
-    static properties = {}
-
     constructor() {
         super();
+        this.interventionId = 0;
+        this.phaseId = 0;
+        this.data = {};
+    }
+
+    async connectedCallback() {
+      super.connectedCallback();
+      this.interventionId = getRouter().location.params.interventionId || 0;
+      this.phaseId = getRouter().location.params.phaseId || 0;
+      this.authorizeAndRedirect();
+    }
+
+    async authorizeAndRedirect() {
+        if (this.interventionId == 0 || this.phaseId == 0) {
+            window.location.href = '/';
+            return false;
+        }
+
+        const phase = await this._fetchData(this.interventionId, this.phaseId);
+        if (phase.hasOwnProperty('error')) {
+            window.location.href = '/';
+            return false;
+        }
+        
+        return true;
+    }
+
+    async _fetchData(interventionId, phaseId) {
+        this.data = new Task(this, {
+            task: async ([interventionId, phaseId]) => getOverview(interventionId, phaseId),
+            args: () => [interventionId, phaseId]
+        });
+        return await this.data.run();
     }
 
     render() {
-        return html`
-            <div class="content">
-                <div class="title-desc">
-                    <h1>Vragenlijst Naam</h1>
-                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur
-                        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-                <hr class="divider">
-                <div>
-                    <h3 class="algemeneinfo">Algemene Informatie</h3>
-                    <div class="grid-container">
-                        <em>Fase</em>
-                        <p class="fase">fase</p>
-                        <em>Voortgang</em>
-                        <p class="voortgang">beantwoorden vragen</p>
+        return this.data.render({
+            loading: () => html`<p>Loading...</p>`,
+            error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
+            complete: (data) => html`
+                <div class="content">
+                    <div class="title-desc">
+                        <h1>Vragenlijst</h1>
+                        <p>Vul hier de vragen in.</p>
+                    </div>
+                    <hr class="divider">
+                    <div>
+                        <h3 class="algemeneinfo">Algemene Informatie</h3>
+                        <div class="grid-container">
+                            <em>Fase</em>
+                            <p class="fase">${data.name}</p>
+                            <em>Voortgang</em>
+                            <p class="voortgang">beantwoorden vragen</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <h1>Categorieën</h1>
+                <h1>Categorieën</h1>
 
-            <greenify-categorybox></greenify-categorybox>
-            <greenify-categorybox></greenify-categorybox>
-
-        `;
+                ${data.categories ? data.categories.map(category => html`
+                    <gi-categorybox .progress=${data.contenders} .category=${category}></gi-categorybox>`) : html`<p>Loading categories...</p>`}
+            `
+        });
     }
 }
-window.customElements.define('gi-overview', Overview);
+
+customElements.define('gi-overview', Overview);

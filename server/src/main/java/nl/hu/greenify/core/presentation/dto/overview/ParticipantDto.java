@@ -14,22 +14,26 @@ public class ParticipantDto {
     private String name;
     private List<ProgressDto> progress;
     private List<ResponseDto> responses;
+    private boolean isCurrentUser;
 
-    protected ParticipantDto(Long id, String name, List<ProgressDto> progress, List<ResponseDto> responses) {
+    public ParticipantDto(Long id, String name, List<ProgressDto> progress, List<ResponseDto> responses,
+            boolean isCurrentUser) {
         this.id = id;
         this.name = name;
         this.progress = progress;
         this.responses = responses;
+        this.isCurrentUser = isCurrentUser;
     }
 
-    public static List<ParticipantDto> fromEntities(Phase phase, List<Person> participants) {
+    public static List<ParticipantDto> fromEntities(Phase phase, List<Person> participants, Person currentUser) {
         return participants.stream()
-                .map(person -> fromEntity(phase, person))
+                .map(person -> fromEntity(phase, person, person.equals(currentUser)))
                 .collect(Collectors.toList());
     }
 
-    public static ParticipantDto fromEntity(Phase phase, Person participant) {
-        Survey survey = phase.getSurveyOfPerson(participant).orElseThrow(() -> new IllegalArgumentException("Participant has no survey in this phase"));
+    public static ParticipantDto fromEntity(Phase phase, Person participant, boolean isCurrentUser) {
+        Survey survey = phase.getSurveyOfPerson(participant)
+                .orElseThrow(() -> new IllegalArgumentException("Participant has no survey in this phase"));
         return new ParticipantDto(
                 participant.getId(),
                 participant.getFullName(),
@@ -39,6 +43,7 @@ public class ParticipantDto {
                 survey.getAllSubfactors().stream()
                         .filter(subfactor -> subfactor.getResponse() != null)
                         .map(subfactor -> ResponseDto.fromEntity(subfactor))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList()),
+                isCurrentUser);
     }
 }
