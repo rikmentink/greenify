@@ -11,9 +11,31 @@ export class PdfReportGenerator extends LitElement {
     static styles = [
         globalStyles,
         css`
-            :host {
-                display: block;
-            }
+          :host {
+            display: block;
+          }
+
+          button {
+            background-color: #59a3d8;
+            color: white;
+            padding: 8px 35px 8px 35px;
+            border-radius: 25px;
+            font-size: 13px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+          }
+          
+          button:hover {
+            background-color: #2a7ba6;
+          }
+
+          .icon {
+            position: relative;
+            height: 1em;
+            margin-right: 5px;
+            top: 0.5px; // Vertical alignement, making it appear more centered
+          }
         `,
     ];
 
@@ -68,7 +90,10 @@ export class PdfReportGenerator extends LitElement {
 
     render() {
         return html`
-            <button @click=${this._downloadReport}>Download</button>
+            <button @click=${this._downloadReport}>
+                <img src="/icons/download-alt.svg" class="icon">
+                Download PDF rapport
+            </button>
         `;
     }
 }
