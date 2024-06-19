@@ -39,7 +39,7 @@ public class InterventionDto {
            return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>(), new ArrayList<>(), 0);
         }
 
-        List<Survey> surveys = intervention.getAllSurveysOfParticipant(person);
+        List<Survey> surveys = intervention.getSurveysOfPersonInCurrentPhase(person);
         int surveyAmount = surveys.size() + 1;
 
         double surveyprogress = calculateProgress(surveys);

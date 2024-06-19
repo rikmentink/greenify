@@ -66,7 +66,7 @@ public class Intervention {
         return surveys;
     }
 
-    public List<Survey> getAllSurveysOfParticipant(Person person) {
+    public List<Survey> getSurveysOfPersonInCurrentPhase(Person person) {
         if(person == null) {
             throw new IllegalArgumentException("Person should not be null");
         }
