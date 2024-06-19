@@ -65,7 +65,7 @@ export class Intervention extends LitElement {
         await sendMail({
             to: person.email,
             subject: "U bent uitgenodigd bij een interventie",
-            body: `U bent toegevoegd aan interventie ${this.data.value.id}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
+            body: `Beste deelnemer, \nU bent toegevoegd aan interventie: "${this.data.value.name}". Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina: [link]\n\nMet vriendelijke groet,\nDe Vrije Universiteit Amsterdam.`
         });
 
         this.userData = [
