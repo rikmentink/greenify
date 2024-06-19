@@ -14,6 +14,7 @@ import { Register } from "./view/pages/Register.js";
 import { Intervention } from "./view/pages/Intervention.js";
 import { CreateIntervention} from "./view/pages/CreateIntervention.js";
 import { SurveyResultReport} from "./view/pages/SurveyResultReport.js";
+import { Overview } from './view/pages/Overview.js';
 
 /**
  * The complete app, don't remove this!
