@@ -46,21 +46,26 @@ export class Intervention extends LitElement {
         return await this.data.run();
     }
 
+    async _addParticipantToIntervention(id, personId) {
+        new Task(this, {
+            task: async ([id, personId]) => addParticipantToIntervention(id, personId),
+            args: () => [id, personId]
+        });
+        return await this.data.run();
+    }
+
     async handlePersonFetched(event) {
         const person = event.detail.person;
-
-        addParticipantToIntervention(this.interventionData.id, person.id);
-        this.interventionData = await getInterventionById(this.interventionData.id);
-
-        this.userData = this.interventionData.participants;
-        console.log("Participants: " + this.userData);
-
+        console.log(person);
+        console.log(this.data);
+        await this._addParticipantToIntervention(this.data.value.id, person.id);
+        window.location.reload();
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 
-        sendMail({
+        await sendMail({
             to: person.email,
             subject: "U bent uitgenodigd bij een interventie",
-            body: `U bent toegevoegd aan interventie ${this.interventionData.id}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
+            body: `U bent toegevoegd aan interventie ${this.data.value.id}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
         });
 
         this.userData = [
