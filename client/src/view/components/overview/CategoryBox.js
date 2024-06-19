@@ -61,6 +61,7 @@ export class CategoryBox extends LitElement {
         font-size: 16px;
         text-decoration: none;
       }
+      
 
       .questions-container {
         display: flex;
@@ -72,7 +73,14 @@ export class CategoryBox extends LitElement {
       .my-question-btn {
         display: flex;
       }
+      .my-question-btn a.disabled {
+        background-color: grey;
+      }
 
+      .my-question-btn a.enabled {
+        background-color: #4CBB17;
+      }
+      
       .my-question-btn a {
         background-color: #4CBB17;
         color: white;
@@ -159,40 +167,60 @@ export class CategoryBox extends LitElement {
         this.progress = [];
     }
 
-    _getProgress() {
-      if (!this.progress) {
-        throw new Error('Progress is not set');
-      }
-      return this.progress.filter((participant) => participant.isCurrentUser)[0];
+    _getUserProgress() {
+        if (!this.progress) {
+            throw new Error('Progress is not set');
+        }
+        const currentUser = this.progress.find(participant => participant.isCurrentUser);
+        if (!currentUser) {
+            return 0;
+        }
+
+        const categoryProgress = currentUser.progress.find(p => p.categoryId === this.category.id);
+        if (!categoryProgress) {
+            return 0;
+        }
+
+        return categoryProgress.progress;
+    }
+
+    _isSubfactorAnswered(subfactorId) {
+        const currentUser = this.progress.find(participant => participant.isCurrentUser);
+        if (!currentUser) {
+            return false;
+        }
+
+        const response = currentUser.responses.find(response => response.subfactorId === subfactorId);
+        return response ? response.facilitatingFactor : false;
     }
 
     render() {
-      /**
-       * TODO: Color the my-question-btn green based on the progress of the user. If both questions have been answered.
-       * TODO: Make the progress bar dynamic based on the progress of the user.
-       * TODO: Make the progress label dynamic based on the progress of the user.
-       */
+        const userProgress = this._getUserProgress();
+        const totalQuestions = this.category.subfactors.length;
+        const answeredQuestions = Math.round(userProgress * totalQuestions);
+        const progressPercentage = Math.round(userProgress * 100);
+        const isCompleted = userProgress === 1;
+
         return html`
             <div class="rectangle">
                 <div class="title-description">
                     <h2 class="title">${this.category.name}</h2>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
-                            <p class="progress-label">Nog 0 vragen te gaan</p>
+                            <p class="progress-label">Nog ${totalQuestions - answeredQuestions} vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${progressPercentage}%;" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
-                            <p class="progress-label">0%</p>
+                            <p class="progress-label">${progressPercentage}%</p>
                         </div>
                     </div>
                     <div class="questions-container">
-                        ${this.category.subfactors.map((subfactor) =>
-                                html`
-                                    <div class="my-question-btn">
-                                        <a href="/tool/1?categoryId=${this.category.id}">${subfactor.number}</a>
-                                    </div>`)}
+                        ${this.category.subfactors.map((subfactor) => html`
+                            <div class="my-question-btn">
+                                <a class="${this._isSubfactorAnswered(subfactor.id) ? 'enabled' : 'disabled'}" href="/tool/1?categoryId=${this.category.id}">${subfactor.number}</a>
+                            </div>`)}
                     </div>
                 </div>
                 <div class="button-container">
