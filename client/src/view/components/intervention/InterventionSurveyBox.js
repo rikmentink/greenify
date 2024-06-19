@@ -160,10 +160,6 @@ export class InterventionSurveyBox extends LitElement {
         }
 
         this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
-
-        console.log(this.phaseData);
-        console.log(this.interventionData);
-
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
         this.loading = false;
     }
