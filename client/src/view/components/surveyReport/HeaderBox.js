@@ -9,6 +9,8 @@ export default class HeaderBox extends LitElement {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding-bottom: 5px;
         text-align: center;
+        padding-left: 0;
+        padding-right: 0;
       }
 
       .header {
