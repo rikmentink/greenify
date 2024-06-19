@@ -20,7 +20,8 @@ export class SurveyResultReport extends LitElement {
       }
       h2 {
         font-size: 15px;
-        margin: 0px;
+        margin: 0;
+        color: white;
       }
       .grid-container {
         display: grid;
