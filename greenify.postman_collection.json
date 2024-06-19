@@ -259,18 +259,23 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/intervention/phase/:id",
+							"raw": "{{BASE_URL}}/intervention/:interventionId/phase/:phaseId",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"intervention",
+								":interventionId",
 								"phase",
-								":id"
+								":phaseId"
 							],
 							"variable": [
 								{
-									"key": "id",
+									"key": "interventionId",
+									"value": "1"
+								},
+								{
+									"key": "phaseId",
 									"value": "1"
 								}
 							]
@@ -428,39 +433,13 @@
 					"response": []
 				},
 				{
-					"name": "Create Survey",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"phaseId\": 1,\n    \"personId\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASE_URL}}/survey",
-							"host": [
-								"{{BASE_URL}}"
-							],
-							"path": [
-								"survey"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Submit Response",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"subfactorId\": 9,\n    \"facilitatingFactor\": 3,\n    \"priority\": 2,\n    \"comment\": \"Very important!!\"\n}",
+							"raw": "{\n    \"subfactorId\": 1,\n    \"facilitatingFactor\": 3,\n    \"priority\": 2,\n    \"comment\": \"Very important!!\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

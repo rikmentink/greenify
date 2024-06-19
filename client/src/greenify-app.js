@@ -15,6 +15,7 @@ import { Intervention } from "./view/pages/Intervention.js";
 import { CreateIntervention} from "./view/pages/CreateIntervention.js";
 import { SurveyResultReport} from "./view/pages/SurveyResultReport.js";
 import { CreatePhase } from "./view/pages/CreatePhase.js";
+import { Overview } from './view/pages/Overview.js';
 
 /**
  * The complete app, don't remove this!

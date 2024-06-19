@@ -11,6 +11,8 @@ import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
 
 import nl.hu.greenify.security.domain.AccountCredentials;
 import nl.hu.greenify.security.domain.enums.AccountRoles;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -82,6 +84,10 @@ public class AccountService implements UserDetailsService {
     }
 
     public Account getCurrentAccount() {
+        if (SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken) {
+            throw new AccountNotFoundException("User is not authenticated");
+        }
+        
         AccountCredentials accountCredentials = (AccountCredentials)
                 SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
