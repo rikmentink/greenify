@@ -1,3 +1,5 @@
+import {createPhase} from "./PhaseService.js";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function handleErrorMessages(response) {
@@ -46,7 +48,7 @@ async function getInterventionByPersonId(id) {
     return response.json();
 }
 
-async function createInterventionWithPhase(adminId, name, description) {
+async function createInterventionWithPhase(adminId, name, description, phaseName, phaseInformation) {
     const response = await fetch(`${API_URL}/intervention`, {
         method: 'POST',
         body: JSON.stringify({adminId, name, description}),
