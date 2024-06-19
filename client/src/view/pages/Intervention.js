@@ -3,20 +3,33 @@ import {InterventionUsersPanel} from "../components/intervention/InterventionUse
 import {InterventionInformationBox} from "../components/intervention/InterventionInformationBox.js";
 import {InterventionSurveyBox} from "../components/intervention/InterventionSurveyBox.js";
 import {sendMail} from "../../services/MailService.js";
+import {addParticipantToIntervention} from "../../services/InterventionService.js";
+import {getInterventionById} from "../../services/InterventionService.js";
+import {Task} from "@lit/task";
+import {getSurvey} from "../../services/SurveyService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
 
     constructor() {
         super();
-        this.interventionId = 1;
+        this.interventionId = 0;
         this.userData = [];
+        this.interventionData = [{}];
+        this.data = {};
     }
 
-    connectedCallback() {
+    async connectedCallback() {
         super.connectedCallback();
         this.addEventListener('person-fetched', this.handlePersonFetched);
         this.addEventListener('user-deleted', this.onUserDeleted);
+
+        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
+        if (selectedIntervention) {
+           this.interventionId = selectedIntervention.id;
+        }
+
+        this._fetchData(this.interventionId);
     }
 
     onUserDeleted(event) {
@@ -25,20 +38,29 @@ export class Intervention extends LitElement {
         this.requestUpdate();
     }
 
-    handlePersonFetched(event) {
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id]) => getInterventionById(id),
+            args: () => [id]
+        });
+        return await this.data.run();
+    }
+
+    async handlePersonFetched(event) {
         const person = event.detail.person;
 
-        if(this.userData.some(user => user.userId === person.id)) {
-            alert("Gebruiker is al toegevoegd aan de interventie.");
-            return;
-        }
+        addParticipantToIntervention(this.interventionData.id, person.id);
+        this.interventionData = await getInterventionById(this.interventionData.id);
+
+        this.userData = this.interventionData.participants;
+        console.log("Participants: " + this.userData);
 
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 
         sendMail({
             to: person.email,
             subject: "U bent uitgenodigd bij een interventie",
-            body: `U bent toegevoegd aan interventie ${this.interventionId}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
+            body: `U bent toegevoegd aan interventie ${this.interventionData.id}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
         });
 
         this.userData = [
@@ -51,15 +73,18 @@ export class Intervention extends LitElement {
                 userId: person.id
             }
         ];
-        window.location.reload();
     }
 
     render() {
         return html`
-            <intervention-information-box .id="${this.interventionId}"></intervention-information-box>
-            <intervention-survey-box .id="${this.interventionId}"></intervention-survey-box>
-            <intervention-users-panel .id="${this.interventionId}" .userData="${this.userData}"></intervention-users-panel>
-        `;
+            ${this.data.render({
+                complete:  (data) => html`
+                <intervention-information-box .interventionData="${data}"></intervention-information-box>
+                <intervention-survey-box .id="${data.id}"></intervention-survey-box>
+                <intervention-users-panel .userData="${data.participants}"></intervention-users-panel>
+            `,
+            })}
+        `
     }
 }
 

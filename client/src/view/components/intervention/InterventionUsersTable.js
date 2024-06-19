@@ -78,10 +78,9 @@ export class InterventionUsersTable extends LitElement {
         return this.filteredUserData.map(user => {
             return html`
                 <tr>
-                    <td>${user.name}</td>
+                    <td>${user.firstName}</td>
                     <td><span class="email">${user.email}</span></td>
                     <td><span style="border-left: ${this.statusColor(user.progress)}">${user.progress ? "Volledig ingevuld" : "Niet gestart"}</span></td>
-                    <td>${user.lastOnline}</td>
                     <td>
                         <user-action-menu .userId="${user.userId}"></user-action-menu>
                     </td>
@@ -113,7 +112,6 @@ export class InterventionUsersTable extends LitElement {
                     <th>NAAM</th>
                     <th>E-MAILADRES</th>
                     <th>VOORUITGANG</th>
-                    <th>LAATST ONLINE</th>
                     <th>ACTIES</th>
                 </tr>
                 </thead>

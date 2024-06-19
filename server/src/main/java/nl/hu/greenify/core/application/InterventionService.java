@@ -43,6 +43,23 @@ public class InterventionService {
         }
     }
 
+    public List<Phase> getPhasesByIntervention(Long id) {
+        Intervention intervention = getInterventionById(id);
+        return intervention.getPhases();
+    }
+
+    public Intervention addParticipant(Long id, Long personId) {
+        Intervention intervention = getInterventionById(id);
+        Person person = personService.getPersonById(personId);
+
+        if(person == null) {
+            throw new IllegalArgumentException("Person with id " + personId + " does not exist");
+        }
+
+        intervention.addParticipant(person);
+        return interventionRepository.save(intervention);
+    }
+
     public Phase addPhase(Long id, PhaseName phaseName) {
         Intervention intervention = getInterventionById(id);
         if(intervention == null) {
@@ -73,11 +90,11 @@ public class InterventionService {
         Person person = accountService.getCurrentPerson();
         if(!intervention.getParticipants().contains(person) && !intervention.getAdmin().equals(person))
             throw new IllegalArgumentException("Person with id " + person.getId() + " is not part of intervention with id " + interventionId);
-        
+
         if (intervention.getAdmin().equals(person)) {
             return PhaseProgressDto.fromEntities(intervention, phase, intervention.getParticipants(), person);
         }
-        
+
         return PhaseProgressDto.fromEntity(intervention, phase, person);
     }
 

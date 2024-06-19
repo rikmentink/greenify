@@ -1,4 +1,5 @@
 import {css, html, LitElement} from "lit";
+import {getInterventionById} from "../../../services/InterventionService.js";
 export class InterventionInformationBox extends LitElement {
     static styles = css`
         .information-container {
@@ -31,41 +32,35 @@ export class InterventionInformationBox extends LitElement {
         }
     `;
 
-    static properties = {
-        id: {
-            type: Number,
-            reflect: true
-        }
-    }
-
     constructor() {
         super();
-        this.id = 1;
-        this.interventionData = [{
+        this.interventionData = [{}]
+    }
 
-            id: 1,
-            name: "Interventie 1",
-            description: "Dit is de beschrijving van de interventie. Kan de gebruiker uiteraard ook zelf instellen. Hoort beknopt te zijn en heeft als doel om duidelijk te maken waar de interventie om draait.",
-            phase: "Implementatie"
-        }]
+    connectedCallback() {
+        super.connectedCallback();
+        this.loading = false;
     }
 
     renderInterventionInformation() {
         return html`
             <div class="description-box">
-                <p>${this.interventionData[0].description}</p>
+                <p>${this.interventionData.description}</p>
             </div>
             <div class="information-box">
                 <h3>Algemene informatie</h3>
-                <p><span>Huidige fase: </span> ${this.interventionData[0].phase}</p>
+                <p><span>Huidige fase: </span> ${this.interventionData.currentPhase ? this.interventionData.currentPhase.name : 'N/A'}</p>
             </div>
         `;
-
     }
 
     render() {
+        if (!this.interventionData.name) {
+            return html`<p>Loading...</p>`;
+        }
+
         return html`
-            <h1>${this.interventionData[0].name}</h1>
+            <h1>${this.interventionData.name}</h1>
             <div class="information-container">
                 ${this.renderInterventionInformation()}
             </div>

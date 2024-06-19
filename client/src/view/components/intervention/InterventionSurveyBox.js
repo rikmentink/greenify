@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit";
-import {getInterventionById} from "../../../services/InterventionService.js";
+import {getInterventionById, getPhasesByInterventionId} from "../../../services/InterventionService.js";
+import {getPhaseById} from "../../../services/PhaseService.js";
 import globalStyles from "../../../assets/global-styles.js";
 export class InterventionSurveyBox extends LitElement {
     static styles = [globalStyles, css`
@@ -137,55 +138,44 @@ export class InterventionSurveyBox extends LitElement {
         },
         intervention: {
             type: Object
+        },
+        loading: {
+            type: Boolean
         }
-    }
-
-    async fetchIntervention() {
-        this.intervention = await getInterventionById(this.id);
-        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
     constructor() {
         super();
         this.id = 1;
+        this.phaseData = [];
+        this.loading = true;
         this.fetchIntervention();
-
-        this.surveyData = [{
-            id: 1,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Research"
-        }, {
-            id: 2,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Implementatie"
-        }, {
-            id: 3,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Evaluatie"
-        }, {
-            id: 4,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Research"
-        }, {
-            id: 5,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Implementatie"
-        }, {
-            id: 6,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Evaluatie"
-        }
-
-        ];
     }
 
+
+    async fetchIntervention() {
+        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
+        if (selectedIntervention) {
+            this.interventionData = selectedIntervention;
+        }
+
+        this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
+
+        console.log(this.phaseData);
+        console.log(this.interventionData);
+
+        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
+        this.loading = false;
+    }
     renderSurveys() {
-        return this.surveyData.map(survey => {
-            let progress = 60 + "%" // Placeholder for progress, need to be calculated
-            return html`
+       if(this.loading) {
+           return html`<p>Loading...</p>`;
+       } else {
+           return this.phaseData.map(phase => {
+               let progress = phase.progress + "%" // Placeholder for progress, need to be calculated
+               return html`
                 <div class="survey-box">
-                    <p class="sy-header"><span class="sy-phase">${survey.phase}</span></p>
-                    <p class="sy-description">${survey.description}</p>
+                    <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
                         <a href="">Bekijk vragen &#10132;</a>
                         <a href="">Bekijk eindrapport &#10132;</a>
@@ -195,7 +185,7 @@ export class InterventionSurveyBox extends LitElement {
                             <p class="progress-label">Nog ... vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${phase.progress}" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
@@ -203,8 +193,8 @@ export class InterventionSurveyBox extends LitElement {
                     </div>
                 </div>
             `;
-        });
-
+           });
+       }
     }
 
     render() {

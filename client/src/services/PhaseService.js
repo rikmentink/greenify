@@ -19,4 +19,17 @@ async function createPhase(id, phaseName, description) {
     await handleErrorMessages(response);
 }
 
-export {createPhase};
+async function getPhaseById(id) {
+    const response = await fetch(`${API_URL}/intervention/phase/${id}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
+}
+
+export { getPhaseById, createPhase};

@@ -30,4 +30,5 @@ public class Calculations {
 
         return ((double) responses.size() / subfactors.size()) * 100;
     }
+
 }
