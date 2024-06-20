@@ -147,27 +147,33 @@ export class CreatePhase extends LitElement {
 
     render() {
         return html`
-            <h1>Fase Creëren</h1>
-            <div class="title-container">
-                <h1>Naam</h1>
-            </div>
-            <div class="desc-container">
-                <p class="description">🛈 Per fase wordt er een vragenlijst beschikbaar gesteld voor alle toegevoegde gebruikers.</p>
-            </div>
-            <div class="outer-container">
-                <div class="main-block">
-                    <form id="createPhaseForm">
-                        <select name="name" id="name" class="phase-select" required>
-                            <option value="initiation">Initiation</option>
-                            <option value="planning">Planning</option>
-                            <option value="execution">Execution</option>
-                        </select>
-                        <textarea rows="2" name="description" id="description" placeholder="Beschrijving"></textarea>
-                        <div id="feedback"></div>
-                        <button class="btn" type="submit">Creëren</button>
-                    </form>
-                </div>
-            </div>
+            ${this.data.render({
+                loading: html`Loading...`,
+                complete: (intervention) => html`
+                    <div class="title-container">
+                        <h1>Fase Creëren</h1>
+                    </div>
+                    <div class="desc-container">
+                        <p class="description">🛈 Per fase wordt er een vragenlijst beschikbaar gesteld voor alle toegevoegde gebruikers.</p>
+                    </div>
+                    <div class="outer-container">
+                        <div class="main-block">
+                            <h2>${intervention.name}</h2>
+                            <form id="createPhaseForm">
+                                <select name="name" id="name" class="phase-select" required>
+                                    <option value="initiation">Initiation</option>
+                                    <option value="planning">Planning</option>
+                                    <option value="execution">Execution</option>
+                                </select>
+                                <textarea rows="2" name="description" id="description" placeholder="Beschrijving"></textarea>
+                                <div id="feedback"></div>
+                                <button class="btn" type="submit">Creëren</button>
+                            </form>
+                        </div>
+                    </div>
+                `,
+                error: (error) => html`Error: ${error}`
+            })}
         `;
     }
 }
