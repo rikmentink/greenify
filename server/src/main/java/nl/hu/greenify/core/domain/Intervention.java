@@ -24,7 +24,7 @@ public class Intervention {
     @ManyToOne
     private Person admin;
 
-    @OneToMany(mappedBy="intervention", cascade=CascadeType.PERSIST)
+    @OneToMany
     private List<Phase> phases = new ArrayList<>();
 
     @ManyToMany
