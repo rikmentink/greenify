@@ -50,6 +50,11 @@ export class Survey extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.id = getRouter().location.params.id || 0;
+        if (this.id == 0) {
+            window.location.href = '/';
+        }
+
+        await this._fetchData(this.id);
         if (this.authorizeAndRedirect()) {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
@@ -63,20 +68,14 @@ export class Survey extends LitElement {
         this.removeEventListener('updatedResponse');
     }
 
-    /**
-     * TODO: Why does it not wait for the promise to resolve? 
-     * Now the body is empty and doesn't contain an error property.
-     */
     async authorizeAndRedirect() {
-        if (this.id == 0) {
-            window.location.href = '/';
-            return false;
-        }
-
-        const survey = await this._fetchData(this.id);
-        if (survey.hasOwnProperty('error')) {
-            window.location.href = '/';
-            return false;
+        if (
+          this.data._value &&
+          this.data._value.error &&
+          this.data._value.error === "unauthorized"
+        ) {
+          window.location.href = "/";
+          return false;
         }
         
         return true;
@@ -91,35 +90,32 @@ export class Survey extends LitElement {
     }
 
     render() {
-        if (this.data._value.error) {
-            return html`
-                <h1>Tool</h1>
-                <p>An error occured while loading the questions: ${this.data._value.message}</p>`;
-        }
         return html`
             <gi-info-popup></gi-info-popup>
                 ${this.data.render({
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
-                    complete: (data) => html`
+                    complete: (survey) => html`
                         <a href="/intervention/${this.id}">Back to overview</a>
-                        ${data.category ? html`<h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>` : html`<h1>Tool</h1>`}
-                        <div class="survey">
-                            <div class="header">
-                                <div class="column">Vraag</div>
-                                <div class="column">Faciliterende factor</div>
-                                <div class="column">Prioriteit</div>
-                                <div class="column">Opmerkingen</div>
-                            </div>
-                            ${data.factors.map((factor) => html`    
-                                <div class="factor">
-                                    <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
-                                    ${factor.subfactors.map((subfactor) => html`
-                                        <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
-                                    `)}
+                        ${survey.categories.map((category) => html`
+                            <h1><strong>Domein ${category.number}</strong> - ${category.name}</h1>
+                            <div class="survey">
+                                <div class="header">
+                                    <div class="column">Vraag</div>
+                                    <div class="column">Faciliterende factor</div>
+                                    <div class="column">Prioriteit</div>
+                                    <div class="column">Opmerkingen</div>
                                 </div>
-                            `)}
-                        </div>
+                                ${category.factors.map((factor) => html`    
+                                    <div class="factor">
+                                        <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
+                                        ${factor.subfactors.map((subfactor) => html`
+                                            <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
+                                        `)}
+                                    </div>
+                                `)}
+                            </div>
+                        `)}
                     `
                 })}
         `
