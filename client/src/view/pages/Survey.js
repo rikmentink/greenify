@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
 import { getRouter } from "../../router.js";
+import global from "../../assets/global-styles.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
@@ -16,16 +17,27 @@ export class Survey extends LitElement {
         pageSize: { type: Number }
     }
 
-    static styles = css`
+    static styles = [global, css`
+        .survey {
+            margin-bottom: 2.5rem;
+        }
         .survey > .header,
-        .survey > .factor > gi-survey-subfactor {
+        .survey > .factor gi-survey-subfactor {
             display: grid;
-            grid-template-columns: 6fr 3fr 2fr 1fr;
+            grid-template-columns: 6fr 2.5fr 2fr 1fr;
             gap: 1rem;
         }
-        h1,
-        .survey > .factor > h2 {
+        h1 {
+            font-size: 1.5rem;
             font-weight: normal;
+            margin-bottom: 0;
+            color: var(--color-text);
+        }
+        .survey > .factor > h2 {
+            font-size: 1.25rem;
+            font-weight: normal;
+            margin-top: 0;
+            color: var(--color-text);
         }
         .survey > .header > .column {
             font-weight: bold;
@@ -33,10 +45,16 @@ export class Survey extends LitElement {
         .survey > .header > .column:not(:first-child) {
             text-align: center;
         }
-        .survey > .factor > gi-survey-subfactor {
+        .survey > .factor > ol {
+            padding-left: 1.25rem;
+        }
+        .survey > .factor > ol > li {
+            padding-left: .5rem;
+        }
+        .survey > .factor > ol > li > gi-survey-subfactor {
             margin-bottom: .5rem;
         }
-    `
+    `]
 
     constructor() {
         super();
@@ -50,6 +68,11 @@ export class Survey extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.id = getRouter().location.params.id || 0;
+        if (this.id == 0) {
+            window.location.href = '/';
+        }
+
+        await this._fetchData(this.id);
         if (this.authorizeAndRedirect()) {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
@@ -63,20 +86,14 @@ export class Survey extends LitElement {
         this.removeEventListener('updatedResponse');
     }
 
-    /**
-     * TODO: Why does it not wait for the promise to resolve? 
-     * Now the body is empty and doesn't contain an error property.
-     */
     async authorizeAndRedirect() {
-        if (this.id == 0) {
-            window.location.href = '/';
-            return false;
-        }
-
-        const survey = await this._fetchData(this.id);
-        if (survey.hasOwnProperty('error')) {
-            window.location.href = '/';
-            return false;
+        if (
+          this.data._value &&
+          this.data._value.error &&
+          this.data._value.error === "unauthorized"
+        ) {
+          window.location.href = "/";
+          return false;
         }
         
         return true;
@@ -91,35 +108,36 @@ export class Survey extends LitElement {
     }
 
     render() {
-        if (this.data._value.error) {
-            return html`
-                <h1>Tool</h1>
-                <p>An error occured while loading the questions: ${this.data._value.message}</p>`;
-        }
         return html`
             <gi-info-popup></gi-info-popup>
                 ${this.data.render({
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
-                    complete: (data) => html`
-                        <a href="/intervention/${this.id}">Back to overview</a>
-                        ${data.category ? html`<h1><strong>Domein ${data.category.number}</strong> - ${data.category.name}</h1>` : html`<h1>Tool</h1>`}
-                        <div class="survey">
-                            <div class="header">
-                                <div class="column">Vraag</div>
-                                <div class="column">Faciliterende factor</div>
-                                <div class="column">Prioriteit</div>
-                                <div class="column">Opmerkingen</div>
-                            </div>
-                            ${data.factors.map((factor) => html`    
-                                <div class="factor">
-                                    <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
-                                    ${factor.subfactors.map((subfactor) => html`
-                                        <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
-                                    `)}
+                    complete: (survey) => html`
+                        <a class="link" href="/intervention/${this.id}">&larr; Back to overview</a>
+                        ${survey.categories.map((category) => html`
+                            <h1><strong>Domein ${category.number}</strong> - ${category.name}</h1>
+                            <div class="survey">
+                                <div class="header">
+                                    <div class="column"></div>
+                                    <div class="column">Faciliterende factor</div>
+                                    <div class="column">Prioriteit</div>
+                                    <div class="column">Opmerkingen</div>
                                 </div>
-                            `)}
-                        </div>
+                                ${category.factors.map((factor) => html`    
+                                    <div class="factor">
+                                        <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
+                                        <ol>
+                                        ${factor.subfactors.map((subfactor) => html`
+                                            <li>
+                                                <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
+                                            </li>
+                                        `)}
+                                        </ol>
+                                    </div>
+                                `)}
+                            </div>
+                        `)}
                     `
                 })}
         `

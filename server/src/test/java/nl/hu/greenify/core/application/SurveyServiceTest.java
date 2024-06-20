@@ -134,12 +134,12 @@ public class SurveyServiceTest {
     }
 
     @Test
-    @DisplayName("When getting questions for a survey with an invalid category id, it should return all factors")
-    public void getQuestionsShouldReturnAllFactors() {
+    @DisplayName("When getting questions for a survey with an invalid category id, it should return all categories")
+    public void getQuestionsShouldReturnAllCategories() {
         when(surveyRepository.findById(SURVEY_ID)).thenReturn(Optional.of(this.survey));
         
         var questionSet = surveyService.getQuestions(SURVEY_ID, 0L, 1, 1000);
-        assertEquals(questionSet.getFactors().size(), 1);
+        assertEquals(questionSet.getCategories().size(), 1);
     }
 
     /**

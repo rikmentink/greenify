@@ -1,11 +1,4 @@
 :root {
-    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-  
-    color-scheme: light dark;
-    color: #213547;
-    background-color: #e5e5e5;
   
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -14,19 +7,31 @@
 
     --color-primary: #4CBB17;
     --color-primary-rgb: 76, 187, 23;
+    --color-text: #111;
+    --color-bg: #f6f6f6;
 }
 
 *:before, *:after, * {
     box-sizing: border-box;
 }
 
+html {
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 body {
     display: flex;
     flex-direction: column;
-
-    background-color: #f0f0f0;
     min-width: 300px;
     min-height: 100vh;
     margin: 0;
     padding: 0;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: var(--color-text);
+    background-color: var(--color-bg);
 }

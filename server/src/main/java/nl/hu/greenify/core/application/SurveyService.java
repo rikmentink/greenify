@@ -1,6 +1,7 @@
 package nl.hu.greenify.core.application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import nl.hu.greenify.core.domain.*;
@@ -60,9 +61,9 @@ public class SurveyService {
         Survey survey = this.getSurvey(surveyId);
         
         if (categoryId == null || categoryId == 0) {
-            return QuestionSetDto.fromEntity(surveyId, null, survey.getAllFactors());
+            return QuestionSetDto.fromEntity(surveyId, survey.getCategories());
         }
-        return QuestionSetDto.fromEntity(surveyId, survey.getCategoryById(categoryId), survey.getFactorsByCategoryId(categoryId));
+        return QuestionSetDto.fromEntity(surveyId, Arrays.asList(survey.getCategoryById(categoryId)));
     }
 
     /**
