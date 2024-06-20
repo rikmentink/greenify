@@ -56,6 +56,7 @@ export class Intervention extends LitElement {
 
     async handlePersonFetched(event) {
         const person = event.detail.person;
+
         console.log(person);
         console.log(this.data);
         await this._addParticipantToIntervention(this.data.value.id, person.id);
@@ -67,17 +68,6 @@ export class Intervention extends LitElement {
             subject: "U bent uitgenodigd bij een interventie",
             body: `Beste deelnemer, \nU bent toegevoegd aan interventie: "${this.data.value.name}". Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina: [link]\n\nMet vriendelijke groet,\nDe Vrije Universiteit Amsterdam.`
         });
-
-        this.userData = [
-            ...this.userData,
-            {
-                name: `${person.firstName} ${person.lastName}`,
-                email: person.email,
-                progress: false, // Hardcoded value
-                lastOnline: "2024-5-5", // Hardcoded value
-                userId: person.id
-            }
-        ];
     }
 
     render() {

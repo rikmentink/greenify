@@ -121,10 +121,6 @@ export class InterventionUsersTable extends LitElement {
         });
     }
 
-    statusColor(status) {
-        return status ? "3px solid green" : "3px solid red";
-    }
-
     searchUser(event) {
         const searchValue = event.target.value.toLowerCase();
         this.filteredUserData = this.userData.filter(user => {
