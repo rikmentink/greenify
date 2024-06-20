@@ -173,15 +173,15 @@ export class InterventionSurveyBox extends LitElement {
                 <div class="survey-box">
                     <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
-                        <a href="">Bekijk vragen &#10132;</a>
-                        <a href="">Bekijk eindrapport &#10132;</a>
+                        <a href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk vragen &#10132;</a>
+                        <a href="/phase/${phase.id}/report">Bekijk eindrapport &#10132;</a>
                     </div>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
                             <p class="progress-label">Nog ... vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${phase.progress}" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${phase.progress}%" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
