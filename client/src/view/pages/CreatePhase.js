@@ -167,7 +167,7 @@ export class CreatePhase extends LitElement {
                                 </select>
                                 <textarea rows="2" name="description" id="description" placeholder="Beschrijving"></textarea>
                                 <div id="feedback"></div>
-                                <button class="btn" type="submit">Creëren</button>
+                                <button class="btn" style="margin-top: 1rem" type="submit">Creëren</button>
                             </form>
                         </div>
                     </div>
