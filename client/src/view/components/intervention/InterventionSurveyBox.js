@@ -14,9 +14,9 @@ export class InterventionSurveyBox extends LitElement {
         }
 
         .start-fase-btn {
-            height: 25px;
-            padding: 10px 25px 10px 25px;
+            padding: 15px 25px 15px 15px;
             border-radius: 2px;
+            margin-bottom: 20px;
             font-weight: bold;
             border: none;
             cursor: pointer;
@@ -146,7 +146,7 @@ export class InterventionSurveyBox extends LitElement {
 
     constructor() {
         super();
-        this.id = 1;
+        this.id = 0;
         this.phaseData = [];
         this.loading = true;
         this.fetchIntervention();
@@ -163,6 +163,11 @@ export class InterventionSurveyBox extends LitElement {
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
         this.loading = false;
     }
+
+    handleAddPhase() {
+        console.log("Hi!");
+    }
+
     renderSurveys() {
        if(this.loading) {
            return html`<p>Loading...</p>`;
@@ -178,10 +183,9 @@ export class InterventionSurveyBox extends LitElement {
                     </div>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
-                            <p class="progress-label">Nog ... vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${phase.progress}%" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${progress}%" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
@@ -195,9 +199,9 @@ export class InterventionSurveyBox extends LitElement {
 
     render() {
         return html`
-            <div class="title-container">
+            <div class="1ntainer">
                 <h2>Fases</h2>
-                <a class="start-fase-btn" href="/createphase">Nieuwe fase starten</a>
+                <button class="start-fase-btn" @click=${this.handleAddPhase()}>Nieuwe fase starten</button>
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}

@@ -30,6 +30,7 @@ export class Intervention extends LitElement {
         }
 
         this._fetchData(this.interventionId);
+        console.log(this.data);
     }
 
     onUserDeleted(event) {
