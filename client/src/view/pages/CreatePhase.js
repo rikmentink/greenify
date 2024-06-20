@@ -1,13 +1,13 @@
 import { LitElement, html, css } from 'lit';
 import { Task } from '@lit/task';
 import { getRouter } from '../../router.js';
-import globalStyles from "../../assets/global-styles.js";
+import global from "../../assets/global-styles.js";
 
 import { getInterventionById } from '../../services/InterventionService.js';
 import { createPhase } from '../../services/PhaseService.js';
 
 export class CreatePhase extends LitElement {
-    static styles = [globalStyles, css`
+    static styles = [global, css`
         h1 {
             color: var(--color-primary);
         }
@@ -46,32 +46,6 @@ export class CreatePhase extends LitElement {
             align-items: center;
             width: 50%;
             border: var(--color-primary) 1px solid;
-        }
-
-        .create-btn {
-            padding: 10px 50px 10px 50px;
-            margin: 8px 0;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;
-            background-color: var(--color-primary);
-            color: white;
-        }
-
-        .phase-select {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            height: 40px;
-            font-size: 14px;
-            box-sizing: border-box;
-            border: lightgray 1px solid;
-        }
-        
-        .phase-select:focus {
-            outline: none;
         }
 
         form {
@@ -188,9 +162,9 @@ export class CreatePhase extends LitElement {
                             <option value="planning">Planning</option>
                             <option value="execution">Execution</option>
                         </select>
-                        <input name="description" id="description" placeholder="Beschrijving"/>
+                        <textarea rows="2" name="description" id="description" placeholder="Beschrijving"></textarea>
                         <div id="feedback"></div>
-                        <button class="create-btn" type="submit">Creëren</button>
+                        <button class="btn" type="submit">Creëren</button>
                     </form>
                 </div>
             </div>
