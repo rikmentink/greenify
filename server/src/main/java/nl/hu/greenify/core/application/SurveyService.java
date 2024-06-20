@@ -61,9 +61,9 @@ public class SurveyService {
         Survey survey = this.getSurvey(surveyId);
         
         if (categoryId == null || categoryId == 0) {
-            return QuestionSetDto.fromEntity(surveyId, survey.getCategories());
+            return QuestionSetDto.fromEntity(surveyId, survey.getPhaseId(), survey.getPhase().getInterventionId(), survey.getCategories());
         }
-        return QuestionSetDto.fromEntity(surveyId, Arrays.asList(survey.getCategoryById(categoryId)));
+        return QuestionSetDto.fromEntity(surveyId, survey.getPhaseId(), survey.getPhase().getInterventionId(), Arrays.asList(survey.getCategoryById(categoryId)));
     }
 
     /**

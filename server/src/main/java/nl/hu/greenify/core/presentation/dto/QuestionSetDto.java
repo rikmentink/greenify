@@ -12,15 +12,20 @@ import nl.hu.greenify.core.domain.Category;
 @EqualsAndHashCode
 public class QuestionSetDto {
     private Long surveyId;
+    private Long phaseId;
+    private Long interventionId;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Category> categories;
 
-    public QuestionSetDto(Long surveyId, List<Category> categories) {
+    public QuestionSetDto(Long surveyId, Long phaseId, Long interventionId, List<Category> categories) {
         this.surveyId = surveyId;
+        this.phaseId = phaseId;
+        this.interventionId = interventionId;
         this.categories = categories;
     }
 
-    public static QuestionSetDto fromEntity(Long surveyId, List<Category> categories) {
-        return new QuestionSetDto(surveyId, categories);
+    public static QuestionSetDto fromEntity(Long surveyId, Long phaseId, Long interventionId, List<Category> categories) {
+        return new QuestionSetDto(surveyId, phaseId, interventionId, categories);
     }
 }
