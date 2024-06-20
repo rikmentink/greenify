@@ -42,7 +42,7 @@ public class InterventionServiceTest {
     void setUp() {
         person = new Person(1L, "firstName", "lastName", "username@gmail.com", new ArrayList<>());
         intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
-        phase = new Phase(1L, PhaseName.PLANNING);
+        phase = new Phase(1L, PhaseName.PLANNING, "Description");
 
         when(personService.getPersonById(1L)).thenReturn(person);
         when(interventionRepository.save(intervention)).thenReturn(intervention);
@@ -51,7 +51,7 @@ public class InterventionServiceTest {
         when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
         when(personRepository.findById(1L)).thenReturn(java.util.Optional.of(person));
         when(interventionRepository.findById(intervention.getId())).thenReturn(Optional.ofNullable(intervention));
-        when(phaseRepository.findById(1L)).thenReturn(Optional.of(new Phase(1L, PhaseName.PLANNING)));
+        when(phaseRepository.findById(1L)).thenReturn(Optional.of(phase));
         when(interventionRepository.findInterventionsByAdmin(person)).thenReturn(new ArrayList<>(List.of(intervention)));
     }
 
@@ -70,14 +70,14 @@ public class InterventionServiceTest {
     @DisplayName("When adding a phase to an intervention, it should be added to the intervention")
     @Test
     void addPhase() {
-        interventionService.addPhase(1L, PhaseName.PLANNING);
+        interventionService.addPhase(1L, PhaseName.PLANNING, "Description");
         verify(interventionRepository).save(intervention);
     }
 
     @DisplayName("When adding a phase to an intervention, a survey should be created for each participant")
     @Test
     void addPhaseShouldCreateSurveys() {
-        interventionService.addPhase(1L, PhaseName.PLANNING);
+        interventionService.addPhase(1L, PhaseName.PLANNING, "Description");
         verify(surveyService).createSurveysForParticipants(any(), eq(intervention.getParticipants()));
     }
 
