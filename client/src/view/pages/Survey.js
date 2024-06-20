@@ -114,7 +114,7 @@ export class Survey extends LitElement {
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (survey) => html`
-                        <a class="link" href="/intervention/${this.id}">&larr; Back to overview</a>
+                        <a class="link" href="/intervention/${this.id}">&larr; Terug naar overzicht</a>
                         ${survey.categories.map((category) => html`
                             <h1><strong>Domein ${category.number}</strong> - ${category.name}</h1>
                             <div class="survey">
