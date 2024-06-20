@@ -51,9 +51,7 @@ export class Intervention extends LitElement {
 
         addParticipantToIntervention(this.interventionData.id, person.id);
         this.interventionData = await getInterventionById(this.interventionData.id);
-
         this.userData = this.interventionData.participants;
-        console.log("Participants: " + this.userData);
 
         alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 

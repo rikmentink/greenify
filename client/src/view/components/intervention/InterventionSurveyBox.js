@@ -161,9 +161,6 @@ export class InterventionSurveyBox extends LitElement {
 
         this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
 
-        console.log(this.phaseData);
-        console.log(this.interventionData);
-
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
         this.loading = false;
     }
@@ -201,7 +198,7 @@ export class InterventionSurveyBox extends LitElement {
         return html`
             <div class="title-container">
                 <h2>Fases</h2>
-                <a class="start-fase-btn" href="/createphase">Nieuwe fase starten</a>
+                <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/new-phase">Nieuwe fase starten</a>
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}
