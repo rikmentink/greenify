@@ -2,6 +2,7 @@ import {css, html, LitElement} from "lit";
 import {getInterventionById, getPhasesByInterventionId} from "../../../services/InterventionService.js";
 import {getPhaseById} from "../../../services/PhaseService.js";
 import globalStyles from "../../../assets/global-styles.js";
+import {Router} from "@vaadin/router";
 export class InterventionSurveyBox extends LitElement {
     static styles = [globalStyles, css`
         .title-container {
@@ -149,12 +150,15 @@ export class InterventionSurveyBox extends LitElement {
         this.id = 0;
         this.phaseData = [];
         this.loading = true;
+        this.data = {};
         this.fetchIntervention();
     }
 
 
     async fetchIntervention() {
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
+        this.data = selectedIntervention;
+
         if (selectedIntervention) {
             this.interventionData = selectedIntervention;
         }
@@ -162,10 +166,6 @@ export class InterventionSurveyBox extends LitElement {
         this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
         window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
         this.loading = false;
-    }
-
-    handleAddPhase() {
-        console.log("Hi!");
     }
 
     renderSurveys() {
@@ -201,7 +201,7 @@ export class InterventionSurveyBox extends LitElement {
         return html`
             <div class="1ntainer">
                 <h2>Fases</h2>
-                <button class="start-fase-btn" @click=${this.handleAddPhase()}>Nieuwe fase starten</button>
+                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}

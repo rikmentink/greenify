@@ -1,5 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import globalStyles from "../../assets/global-styles.js";
+import {createPhase} from "../../services/PhaseService.js";
+import {Router} from "@vaadin/router";
 
 export class CreatePhase extends LitElement {
     static styles = [globalStyles, css`
@@ -77,12 +79,41 @@ export class CreatePhase extends LitElement {
         }
     };
 
+
+
     constructor() {
         super();
         this.interventionId = 0;
-        // this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
-        console.log("Test");
-        this.interventionName = "Name";
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        this.extractUrl();
+    }
+
+    extractUrl() {
+        let url = window.location.href;
+        url = url.split('/');
+        this.interventionId = url = url[url.length - 2];
+        console.log(url);
+    }
+
+    extractInput() {
+        const PhaseEnum = {
+            INITIATION: "Initiation",
+            PLANNING: "Planning",
+            EXECUTION: "Execution"
+        };
+
+        const phaseString = this.shadowRoot.getElementById('phase').value;
+        const phaseEnum = PhaseEnum[phaseString.toUpperCase()].toUpperCase();
+
+        this.handleAddPhase(phaseEnum);
+    }
+
+    async handleAddPhase(phase) {
+        await createPhase(this.interventionId, phase);
+        Router.go(`/intervention/${this.interventionId}`);
     }
 
     render() {
@@ -97,11 +128,11 @@ export class CreatePhase extends LitElement {
             <div class="outer-container">
                 <div class="main-block">
                     <select class="phase-select" id="phase" required>
-                        <option value="phase-1">Initiation</option>
-                        <option value="phase-2">Planning</option>
-                        <option value="phase-3">Execution</option>
+                        <option value="Initiation">Initiation</option>
+                        <option value="Planning">Planning</option>
+                        <option value="Execution">Execution</option>
                     </select>
-                    <button class="create-btn" type="submit">Creëren</button>
+                    <button class="create-btn" type="submit" @click="${this.extractInput}">Creëren</button>
                 </div>
             </div>
         `;
