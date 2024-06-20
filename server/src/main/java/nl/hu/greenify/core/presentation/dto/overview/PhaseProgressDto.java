@@ -12,12 +12,15 @@ import nl.hu.greenify.core.domain.Phase;
 public class PhaseProgressDto {
     private Long id;
     private String name;
+    private String description;
     private List<ParticipantDto> contenders;
     private List<CategoryDto> categories;
 
-    public PhaseProgressDto(Long id, String name, List<ParticipantDto> contenders, List<CategoryDto> categories) {
+    public PhaseProgressDto(Long id, String name, String description, List<ParticipantDto> contenders,
+            List<CategoryDto> categories) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.contenders = contenders;
         this.categories = categories;
     }
@@ -29,6 +32,7 @@ public class PhaseProgressDto {
         return new PhaseProgressDto(
                 phase.getId(),
                 phase.getName().getValue(),
+                phase.getDescription(),
                 ParticipantDto.fromEntities(phase, participants, currentUser),
                 CategoryDto.fromEntities(phase.getSurveys().get(0)));
     }
@@ -40,6 +44,7 @@ public class PhaseProgressDto {
         return new PhaseProgressDto(
                 phase.getId(),
                 phase.getName().getValue(),
+                phase.getDescription(),
                 Arrays.asList(ParticipantDto.fromEntity(phase, participant, true)),
                 CategoryDto.fromEntities(phase.getSurveys().get(0)));
     }

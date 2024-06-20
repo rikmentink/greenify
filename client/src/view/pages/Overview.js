@@ -103,7 +103,7 @@ export class Overview extends LitElement {
                 <div class="content">
                     <div class="title-desc">
                         <h1>Vragenlijst</h1>
-                        <p>Vul hier de vragen in.</p>
+                        <p>${data.description ? data.description : 'Vul hier de vragen in.'}</p>
                     </div>
                     <hr class="divider">
                     <div>
