@@ -56,6 +56,14 @@ public class InterventionService {
             throw new IllegalArgumentException("Person with id " + personId + " does not exist");
         }
 
+        if(intervention.getParticipants().contains(person)) {
+            throw new IllegalArgumentException("Person with id " + personId + " is already a participant of intervention with id " + id);
+        }
+
+        if(intervention.getAdmin().equals(person)) {
+            throw new IllegalArgumentException("Person with id " + personId + " is the admin of intervention with id " + id);
+        }
+
         intervention.addParticipant(person);
         return interventionRepository.save(intervention);
     }
