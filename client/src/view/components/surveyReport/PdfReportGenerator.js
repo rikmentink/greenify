@@ -44,11 +44,15 @@ export class PdfReportGenerator extends LitElement {
             const categoryScores = await getCategoryScores(1); // TODO: Replace PhaseID with actual ID
             const subfactorScores = [];
 
-            for (let categoryName in categoryScores.categoryScores) {
+            for (let categoryScore of categoryScores.categoryScores) {
                 try {
-                    subfactorScores[categoryName] = await getSubfactorScoresOfCategory(1, categoryName); // TODO: Replace PhaseID with actual ID
+                    const subfactorScore = await getSubfactorScoresOfCategory(1, categoryScore.categoryName); // TODO: Replace PhaseID with actual ID
+                    subfactorScores.push({
+                        categoryName: categoryScore.categoryName,
+                        subfactorScores: subfactorScore.subfactorScores
+                    });
                 } catch (error) {
-                    console.error(`Failed to fetch subfactor scores for category ${categoryName}:`, error);
+                    console.error(`Failed to fetch subfactor scores for category ${categoryScore.categoryName}:`, error);
                 }
             }
 
