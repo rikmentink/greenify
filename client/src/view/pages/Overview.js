@@ -112,13 +112,13 @@ export class Overview extends LitElement {
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
             complete: (data) => {
                 const totalQuestions = this.getTotalQuestions(data.categories);
-                const answeredQuestions = this.getAnsweredQuestions(data.contenders, data.categories);
+                const answeredQuestions = this.getAnsweredQuestions(data.contenders);
 
                 return html`
                     <div class="content">
                         <div class="title-desc">
                             <h1>Vragenlijst</h1>
-                            <p>Vul hier de vragen in.</p>
+                            <p>Hier kunt u alle vragen en categorieën bekijken. Klik op een categorie en vraag om deze in te vullen.</p>
                         </div>
                         <hr class="divider">
                         <div>
