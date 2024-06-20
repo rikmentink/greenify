@@ -1,5 +1,10 @@
 import { LitElement, html, css } from 'lit';
+import { Task } from '@lit/task';
+import { getRouter } from '../../router.js';
 import globalStyles from "../../assets/global-styles.js";
+
+import { getInterventionById } from '../../services/InterventionService.js';
+import { createPhase } from '../../services/PhaseService.js';
 
 export class CreatePhase extends LitElement {
     static styles = [globalStyles, css`
@@ -68,6 +73,27 @@ export class CreatePhase extends LitElement {
         .phase-select:focus {
             outline: none;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            min-width: 150px;
+        }
+
+        #feedback {
+            font-size: 12px;
+            align-self: start;
+        }
+
+        #feedback.error {
+            color: red;
+        }
+
+        #feedback.success {
+            color: green;
+        }
     `]
 
     static properties = {
@@ -79,10 +105,70 @@ export class CreatePhase extends LitElement {
 
     constructor() {
         super();
-        this.interventionId = 0;
-        // this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
-        console.log("Test");
-        this.interventionName = "Name";
+        this.id = 0;
+    }
+
+    async connectedCallback() {
+        super.connectedCallback();
+        this.id = getRouter().location.params.id || 0;
+        if (this.id === 0) {
+            window.location.href = '/';
+            return;
+        }
+        
+        await this._fetchData(this.id);
+        this.shadowRoot.getElementById('createPhaseForm').addEventListener('submit', this._onSubmit.bind(this))
+    }
+
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id]) => getInterventionById(id),
+            args: () => [id]
+        });
+        return await this.data.run();
+    }
+
+    async _onSubmit(event) {
+        event.preventDefault();
+        this.shadowRoot.getElementById('feedback').innerText = '';
+        this.shadowRoot.getElementById('feedback').classList.remove('success');
+        this.shadowRoot.getElementById('feedback').classList.remove('error');
+
+        const data = this.validateForm(event);
+        await this._savePhase(data);
+    }
+
+    validateForm(event) {
+        const form = event.target;
+        const formData = new FormData(form);
+        const name = formData.get('name').toUpperCase();
+        const description = formData.get('description') || '';
+
+        if (!name) {
+            this.shadowRoot.getElementById('feedback').innerText = 'Vul alle velden in.';
+            this.shadowRoot.getElementById('feedback').classList.add('error');
+            return;
+        }
+
+        return { name, description };
+    }
+
+    async _savePhase(data) {
+        await createPhase(this.id, data.name, data.description)
+        .then((data) => {
+            console.log('Phase created:', data);
+            this.shadowRoot.getElementById('feedback').innerText = 'Fase is succesvol aangemaakt.';
+            this.shadowRoot.getElementById('feedback').classList.add('success');
+
+            setTimeout(() => {
+                window.location.href = `/intervention/${this.id}/phase/${data.id}`;
+            }, 1000);
+        })
+        .catch((error) => {
+            console.error('Error creating phase:', error);
+            this.shadowRoot.getElementById('feedback').innerText = 'Er is iets misgegaan. Probeer het opnieuw.';
+            this.shadowRoot.getElementById('feedback').classList.add('error');
+        });
     }
 
     render() {
@@ -96,12 +182,16 @@ export class CreatePhase extends LitElement {
             </div>
             <div class="outer-container">
                 <div class="main-block">
-                    <select class="phase-select" id="phase" required>
-                        <option value="phase-1">Initiation</option>
-                        <option value="phase-2">Planning</option>
-                        <option value="phase-3">Execution</option>
-                    </select>
-                    <button class="create-btn" type="submit">Creëren</button>
+                    <form id="createPhaseForm">
+                        <select name="name" id="name" class="phase-select" required>
+                            <option value="initiation">Initiation</option>
+                            <option value="planning">Planning</option>
+                            <option value="execution">Execution</option>
+                        </select>
+                        <input name="description" id="description" placeholder="Beschrijving"/>
+                        <div id="feedback"></div>
+                        <button class="create-btn" type="submit">Creëren</button>
+                    </form>
                 </div>
             </div>
         `;

@@ -8,15 +8,21 @@ async function handleErrorMessages(response) {
 }
 
 async function createPhase(id, phaseName, description) {
-    const response = await fetch(`${API_URL}/intervention/${id}/phase`, {
+    const url = new URL(`${API_URL}/intervention/${id}/phase`);
+    return fetch(url, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({phaseName, description}),
-        headers: {
-            'Content-Type': 'application/json'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Could not save response. HTTP Error ${response.status}: ${response.statusText}`);
         }
+        return response.json();
+    })
+    .catch(error => {
+        console.error(error);
     });
-
-    await handleErrorMessages(response);
 }
 
 async function getPhaseById(id) {
