@@ -59,15 +59,19 @@ export class Intervention extends LitElement {
 
         console.log(person);
         console.log(this.data);
-        await this._addParticipantToIntervention(this.data.value.id, person.id);
-        window.location.reload();
-        alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
 
-        await sendMail({
-            to: person.email,
-            subject: "U bent uitgenodigd bij een interventie",
-            body: `Beste deelnemer, \nU bent toegevoegd aan interventie: "${this.data.value.name}". Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina: [link]\n\nMet vriendelijke groet,\nDe Vrije Universiteit Amsterdam.`
-        });
+        try {
+            await this._addParticipantToIntervention(this.data.value.id, person.id);
+            window.location.reload();
+
+            await sendMail({
+                to: person.email,
+                subject: "U bent uitgenodigd bij een interventie",
+                body: `Beste deelnemer, \nU bent toegevoegd aan interventie: "${this.data.value.name}". Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina: [link]\n\nMet vriendelijke groet,\nDe Vrije Universiteit Amsterdam.`
+            });
+        } catch (error) {
+            alert("Er is iets misgegaan. Let op dat u niet dezelfde deelnemers opnieuw of de admin toevoegt.");
+        }
     }
 
     render() {
