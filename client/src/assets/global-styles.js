@@ -34,7 +34,16 @@ const global = css`
   }
 
   h1, h2 {
-    color: #4CBB17;
+    color: var(--color-primary);;
+  }
+
+  .link {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .link:hover {
+    text-decoration: underline;
   }
 `;
 

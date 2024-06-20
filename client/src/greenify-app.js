@@ -26,6 +26,7 @@ export class GreenifyApp extends LitElement {
     css`
       #outlet {
           flex: 1 1 auto;
+          margin-top: 1.5rem;
       }
     `];
 

@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { Task } from "@lit/task";
 import { getRouter } from "../../router.js";
+import global from "../../assets/global-styles.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
@@ -16,16 +17,27 @@ export class Survey extends LitElement {
         pageSize: { type: Number }
     }
 
-    static styles = css`
+    static styles = [global, css`
+        .survey {
+            margin-bottom: 2.5rem;
+        }
         .survey > .header,
-        .survey > .factor > gi-survey-subfactor {
+        .survey > .factor gi-survey-subfactor {
             display: grid;
-            grid-template-columns: 6fr 3fr 2fr 1fr;
+            grid-template-columns: 6fr 2.5fr 2fr 1fr;
             gap: 1rem;
         }
-        h1,
-        .survey > .factor > h2 {
+        h1 {
+            font-size: 1.5rem;
             font-weight: normal;
+            margin-bottom: 0;
+            color: var(--color-text);
+        }
+        .survey > .factor > h2 {
+            font-size: 1.25rem;
+            font-weight: normal;
+            margin-top: 0;
+            color: var(--color-text);
         }
         .survey > .header > .column {
             font-weight: bold;
@@ -33,10 +45,16 @@ export class Survey extends LitElement {
         .survey > .header > .column:not(:first-child) {
             text-align: center;
         }
-        .survey > .factor > gi-survey-subfactor {
+        .survey > .factor > ol {
+            padding-left: 1.25rem;
+        }
+        .survey > .factor > ol > li {
+            padding-left: .5rem;
+        }
+        .survey > .factor > ol > li > gi-survey-subfactor {
             margin-bottom: .5rem;
         }
-    `
+    `]
 
     constructor() {
         super();
@@ -96,12 +114,12 @@ export class Survey extends LitElement {
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (survey) => html`
-                        <a href="/intervention/${this.id}">Back to overview</a>
+                        <a class="link" href="/intervention/${this.id}">&larr; Back to overview</a>
                         ${survey.categories.map((category) => html`
                             <h1><strong>Domein ${category.number}</strong> - ${category.name}</h1>
                             <div class="survey">
                                 <div class="header">
-                                    <div class="column">Vraag</div>
+                                    <div class="column"></div>
                                     <div class="column">Faciliterende factor</div>
                                     <div class="column">Prioriteit</div>
                                     <div class="column">Opmerkingen</div>
@@ -109,9 +127,13 @@ export class Survey extends LitElement {
                                 ${category.factors.map((factor) => html`    
                                     <div class="factor">
                                         <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
+                                        <ol>
                                         ${factor.subfactors.map((subfactor) => html`
-                                            <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
+                                            <li>
+                                                <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
+                                            </li>
                                         `)}
+                                        </ol>
                                     </div>
                                 `)}
                             </div>
