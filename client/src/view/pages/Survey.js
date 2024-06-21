@@ -145,7 +145,7 @@ export class Survey extends LitElement {
                                         <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                         <ol>
                                         ${factor.subfactors.map((subfactor) => html`
-                                            <li id="subfactor${subfactor.number}">
+                                            <li value="${subfactor.number}" id="subfactor${subfactor.number}">
                                                 <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
                                             </li>
                                         `)}
