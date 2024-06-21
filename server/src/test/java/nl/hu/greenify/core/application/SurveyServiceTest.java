@@ -67,7 +67,7 @@ public class SurveyServiceTest {
     @BeforeEach
     public void setup() {
         this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
-        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION);
+        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description");
 
         var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
         var factor = new Factor(FACTOR_ID, "Factor", 1, List.of(subfactor));

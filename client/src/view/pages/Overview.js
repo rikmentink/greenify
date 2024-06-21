@@ -100,10 +100,11 @@ export class Overview extends LitElement {
             loading: () => html`<p>Loading...</p>`,
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
             complete: (data) => html`
+                <a href="/intervention/${this.interventionId}" class="link">&larr; Terug naar interventie</a>
                 <div class="content">
                     <div class="title-desc">
                         <h1>Vragenlijst</h1>
-                        <p>Vul hier de vragen in.</p>
+                        <p>${data.description ? data.description : 'Vul hier de vragen in.'}</p>
                     </div>
                     <hr class="divider">
                     <div>

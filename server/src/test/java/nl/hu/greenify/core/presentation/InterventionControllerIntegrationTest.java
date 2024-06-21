@@ -9,7 +9,6 @@ import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
-import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 import nl.hu.greenify.security.application.AccountService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -53,7 +52,7 @@ public class InterventionControllerIntegrationTest {
     @BeforeEach
     void setUp() {
         person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
-        phase = new Phase(1L, PhaseName.PLANNING);
+        phase = new Phase(1L, PhaseName.PLANNING, "Description");
         intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
         intervention.addPhase(phase);
         intervention.addParticipant(person);

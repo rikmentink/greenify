@@ -31,7 +31,7 @@ public class InterventionTest {
     @DisplayName("An intervention should be able to add a phase")
     @Test
     void interventionAddPhase() {
-        Phase phase = new Phase(1L, PhaseName.INITIATION);
+        Phase phase = new Phase(1L, PhaseName.INITIATION, "Description");
         intervention.addPhase(phase);
     }
 
@@ -44,7 +44,7 @@ public class InterventionTest {
     @DisplayName("An intervention should accept when the exact same phase is added")
     @Test
     void interventionAddDuplicatePhase() {
-        Phase phase = new Phase(1L, PhaseName.INITIATION);
+        Phase phase = new Phase(1L, PhaseName.INITIATION, "Description");
         intervention.addPhase(phase);
         intervention.addPhase(phase);
         assertEquals(2, intervention.getPhases().size());
@@ -53,9 +53,9 @@ public class InterventionTest {
     @DisplayName("An intervention should be able to have multiple phases")
     @Test
     void interventionAddThreePhases() {
-        Phase phase1 = new Phase(1L, PhaseName.INITIATION);
-        Phase phase2 = new Phase(2L, PhaseName.PLANNING);
-        Phase phase3 = new Phase(3L, PhaseName.EXECUTION);
+        Phase phase1 = new Phase(1L, PhaseName.INITIATION, "Description");
+        Phase phase2 = new Phase(2L, PhaseName.PLANNING, "Description");
+        Phase phase3 = new Phase(3L, PhaseName.EXECUTION, "Description");
         intervention.addPhase(phase1);
         intervention.addPhase(phase2);
         intervention.addPhase(phase3);

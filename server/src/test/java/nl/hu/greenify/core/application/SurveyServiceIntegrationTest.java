@@ -67,7 +67,7 @@ public class SurveyServiceIntegrationTest {
     @BeforeEach
     void setup() {
         this.participant = new Person(PERSON_ID, "John", "Doe", "john@example.com", new ArrayList<>());
-        this.phase = new Phase(PHASE_ID, PhaseName.EXECUTION);
+        this.phase = new Phase(PHASE_ID, PhaseName.EXECUTION, "Description");
         var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
         var subfactorWithResponse = new Subfactor(SUBFACTOR_ANSWERED_ID, "Subfactor 2", 2, false);
         var response = new Response(RESPONSE_ID, 0, "Comment", FacilitatingFactor.AGREE, Priority.PRIORITY, subfactorWithResponse);

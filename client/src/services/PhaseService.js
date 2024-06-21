@@ -7,16 +7,22 @@ async function handleErrorMessages(response) {
     }
 }
 
-async function createPhase(id, phaseName) {
-    const response = await fetch(`${API_URL}/intervention/${id}/phase`, {
+async function createPhase(id, phaseName, description) {
+    const url = new URL(`${API_URL}/intervention/${id}/phase`);
+    return fetch(url, {
         method: 'POST',
-        body: JSON.stringify({phaseName}),
-        headers: {
-            'Content-Type': 'application/json'
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({phaseName, description}),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Could not save response. HTTP Error ${response.status}: ${response.statusText}`);
         }
+        return response.json();
+    })
+    .catch(error => {
+        console.error(error);
     });
-
-    await handleErrorMessages(response);
 }
 
 async function getPhaseById(id) {
