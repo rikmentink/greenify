@@ -231,7 +231,7 @@ export class CategoryBox extends LitElement {
                 </div>
                 <div class="button-container">
                     <div class="my-category-btn">
-                        <a href="/tool/${this.surveyId}">Ga verder</a>
+                        <a href="/tool/${this.surveyId}?category=${this.category.id}">Ga verder</a>
                     </div>
                 </div>
             </div>
