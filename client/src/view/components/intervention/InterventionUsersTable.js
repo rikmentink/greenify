@@ -82,6 +82,7 @@ export class InterventionUsersTable extends LitElement {
     constructor() {
         super();
         this.userData = [];
+        this.progress = [];
         this.filteredUserData = [];
     }
 
@@ -97,27 +98,27 @@ export class InterventionUsersTable extends LitElement {
     }
 
     renderUsers() {
-        return this.filteredUserData.map(user => {
-            let progress = 60 + "%";
+        return this.filteredUserData.map((user, index) => {
+            const progress = this.progress[index];
             return html`
-                <tr>
-                    <td>${user.firstName}</td>
-                    <td><span class="email">${user.email}</span></td>
-                    <td>
-                        <div class="sy-progress-container">
-                            <div class="progress-bar">
-                                <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
-                            </div>
-                            <div class="progress-labels">
-                                <p class="progress-label">${progress}</p>
-                            </div>
+            <tr>
+                <td>${user.firstName}</td>
+                <td><span class="email">${user.email}</span></td>
+                <td>
+                    <div class="sy-progress-container">
+                        <div class="progress-bar">
+                            <div class="progress" style="width: ${progress}%" aria-label="Progression bar"></div>
                         </div>
-                    </td>
-                    <td>
-                        <user-action-menu .userId="${user.userId}"></user-action-menu>
-                    </td>
-                </tr>
-            `;
+                        <div class="progress-labels">
+                            <p class="progress-label">${progress}%</p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <user-action-menu .userId="${user.userId}"></user-action-menu>
+                </td>
+            </tr>
+        `;
         });
     }
 
