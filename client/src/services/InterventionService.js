@@ -12,8 +12,9 @@ async function getInterventionById(id) {
     const response = await fetch(`${API_URL}/intervention/${id}`, {
         method: 'GET',
         headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
-        }
+        },
     });
 
     await handleErrorMessages(response);
@@ -24,9 +25,10 @@ async function getInterventionById(id) {
 async function addParticipantToIntervention(interventionId, personId) {
 const response = await fetch(`${API_URL}/intervention/${interventionId}/person/${personId}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+         headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Content-Type': 'application/json'
+    },
     });
 
     await handleErrorMessages(response);
@@ -52,8 +54,9 @@ async function createInterventionWithPhase(adminId, name, description, phaseName
         method: 'POST',
         body: JSON.stringify({adminId, name, description}),
         headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
-        }
+        },
     });
 
     const data = await response.json();
@@ -66,8 +69,9 @@ async function getPhasesByInterventionId(id) {
     const response = await fetch(`${API_URL}/intervention/${id}/phases`, {
         method: 'GET',
         headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
-        }
+        },
     });
 
     await handleErrorMessages(response);
