@@ -134,11 +134,22 @@ export class MyInterventionsBox extends LitElement {
         Router.go(`/intervention/${intervention.id}`);
    }
 
+   filterDuplicateInterventions() {
+        let filteredInterventions = [];
+        this.interventieData.forEach(interventie => {
+            if (!filteredInterventions.some(intervention => intervention.id === interventie.id)) {
+                filteredInterventions.push(interventie);
+            }
+        });
+        this.interventieData = filteredInterventions;
+   }
+
     renderInterventions(){
         if (this.loading) {  // If loading, don't render the chart
             return html`Loading...`;
         }
 
+        this.filterDuplicateInterventions();
         if (this.interventieData && this.interventieData.length > 0) {
             return this.interventieData.map(interventie => {
                 let progress = Array.isArray(interventie.totalSurveyProgress) ? interventie.totalSurveyProgress : [interventie.totalSurveyProgress];
