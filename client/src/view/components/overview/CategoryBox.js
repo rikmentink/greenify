@@ -171,10 +171,12 @@ export class CategoryBox extends LitElement {
         if (!this.progress) {
             throw new Error('Progress is not set');
         }
-        const currentUser = this.progress.find(participant => participant.isCurrentUser);
+        const currentUser = this.progress.find(participant => participant.currentUser);
         if (!currentUser) {
             return 0;
         }
+
+        console.log(currentUser.progress)
 
         const categoryProgress = currentUser.progress.find(p => p.categoryId === this.category.id);
         if (!categoryProgress) {
@@ -185,13 +187,13 @@ export class CategoryBox extends LitElement {
     }
 
     _isSubfactorAnswered(subfactorId) {
-        const currentUser = this.progress.find(participant => participant.isCurrentUser);
+        const currentUser = this.progress.find(participant => participant.currentUser);
         if (!currentUser) {
             return false;
         }
 
         const response = currentUser.responses.find(response => response.subfactorId === subfactorId);
-        return response ? response.facilitatingFactor : false;
+        return response && response.facilitatingFactor && response.priority;
     }
 
     render() {
@@ -199,7 +201,6 @@ export class CategoryBox extends LitElement {
         const totalQuestions = this.category.subfactors.length;
         const answeredQuestions = Math.round(userProgress * totalQuestions);
         const progressPercentage = Math.round(userProgress * 100);
-        const isCompleted = userProgress === 1;
 
         return html`
             <div class="rectangle">
