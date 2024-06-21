@@ -161,10 +161,17 @@ export class CategoryBox extends LitElement {
       }
     `;
 
+    static properties = {
+        category: { type: Object },
+        progress: { type: Array },
+        surveyId: { type: Number }
+    }
+
     constructor() {
         super();
         this.category = {};
         this.progress = [];
+        this.surveyId = 0;
     }
 
     _getUserProgress() {
@@ -224,7 +231,7 @@ export class CategoryBox extends LitElement {
                 </div>
                 <div class="button-container">
                     <div class="my-category-btn">
-                        <a href="/category/">Ga verder</a>
+                        <a href="/tool/${this.surveyId}">Ga verder</a>
                     </div>
                 </div>
             </div>
