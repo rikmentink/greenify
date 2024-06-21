@@ -18,11 +18,17 @@ export class CategoryBox extends LitElement {
         min-width: 200px;
         min-height: 100px;
         width: 600px;
-        height: 200px;
+        height: 100px;
         border: #D6D6D6 2px solid;
         margin-top: 10px;
         padding: 20px;
         border-radius: 5px;
+        overflow: hidden;
+        transition: height 0.3s ease;
+      }
+
+      .rectangle.expanded {
+        height: 200px;
       }
 
       .title-description {
@@ -61,18 +67,19 @@ export class CategoryBox extends LitElement {
         font-size: 16px;
         text-decoration: none;
       }
-      
+
 
       .questions-container {
-        display: flex;
+        display: none;
         flex-direction: row;
         gap: 10px;
         margin-top: 10px;
       }
-
+      
       .my-question-btn {
         display: flex;
       }
+
       .my-question-btn a.disabled {
         background-color: grey;
       }
@@ -80,7 +87,7 @@ export class CategoryBox extends LitElement {
       .my-question-btn a.enabled {
         background-color: #4CBB17;
       }
-      
+
       .my-question-btn a {
         background-color: #4CBB17;
         color: white;
@@ -159,12 +166,41 @@ export class CategoryBox extends LitElement {
       .progress-label {
         margin: 0;
       }
+
+      .show-more {
+        color: #6e706e;
+        background-color: transparent;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .show-less {
+        color: #6e706e;
+        background-color: transparent;
+        text-decoration: none;
+        cursor: pointer;
+        display: none;
+      }
+
+      .rectangle.expanded .show-more {
+        display: none;
+      }
+
+      .rectangle.expanded .show-less {
+        display: block;
+      }
+
+      .rectangle.expanded .questions-container {
+        display: flex;
+      }
+
     `;
 
     static properties = {
         category: { type: Object },
         progress: { type: Array },
-        surveyId: { type: Number }
+        surveyId: { type: Number },
+        expanded: { type: Boolean }
     }
 
     constructor() {
@@ -172,6 +208,7 @@ export class CategoryBox extends LitElement {
         this.category = {};
         this.progress = [];
         this.surveyId = 0;
+        this.expanded = false;
     }
 
     _getUserProgress() {
@@ -201,6 +238,10 @@ export class CategoryBox extends LitElement {
         return response && response.facilitatingFactor && response.priority;
     }
 
+    _toggleExpand() {
+        this.expanded = !this.expanded;
+    }
+
     render() {
         const userProgress = this._getUserProgress();
         const totalQuestions = this.category.subfactors.length;
@@ -208,7 +249,7 @@ export class CategoryBox extends LitElement {
         const progressPercentage = Math.round(userProgress * 100);
 
         return html`
-            <div class="rectangle">
+            <div class="rectangle ${this.expanded ? 'expanded' : ''}" id="show-hide-text">
                 <div class="title-description">
                     <h2 class="title">${this.category.name}</h2>
                     <div class="sy-progress-container">
@@ -234,11 +275,11 @@ export class CategoryBox extends LitElement {
                         <a href="/tool/${this.surveyId}?category=${this.category.id}">Ga verder</a>
                     </div>
                 </div>
+                <a class="show-more" @click="${this._toggleExpand}">Bekijk Voortuigang V</a>
+                <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang Ʌ</a>
             </div>
         `;
     }
-    
-    
 }
 
 customElements.define('gi-categorybox', CategoryBox);
