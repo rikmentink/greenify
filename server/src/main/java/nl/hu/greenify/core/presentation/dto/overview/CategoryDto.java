@@ -28,7 +28,7 @@ public class CategoryDto {
                              category.getId(),
                              category.getName(),
                              subfactors.stream()
-                                    .sorted(Comparator.comparing(SubfactorDto::getId)).toList()))
+                                    .sorted(Comparator.comparing(SubfactorDto::getNumber)).toList()))
                         .collect(Collectors.toList());
     }
 }
