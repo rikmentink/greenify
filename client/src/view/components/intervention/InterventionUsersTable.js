@@ -115,7 +115,7 @@ export class InterventionUsersTable extends LitElement {
                     </div>
                 </td>
                 <td>
-                    <user-action-menu .userId="${user.userId}"></user-action-menu>
+                    <user-action-menu .userId="${user.id}"></user-action-menu>
                 </td>
             </tr>
         `;

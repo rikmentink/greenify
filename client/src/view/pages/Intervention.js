@@ -7,6 +7,7 @@ import {addParticipantToIntervention} from "../../services/InterventionService.j
 import {getInterventionById} from "../../services/InterventionService.js";
 import {Task} from "@lit/task";
 import {getSurvey} from "../../services/SurveyService.js";
+import {removePersonById} from "../../services/PersonService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -22,7 +23,7 @@ export class Intervention extends LitElement {
     async connectedCallback() {
         super.connectedCallback();
         this.addEventListener('person-fetched', this.handlePersonFetched);
-        this.addEventListener('user-deleted', this.onUserDeleted);
+        this.addEventListener('remove-user', this.onUserDeleted);
 
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
         if (selectedIntervention) {
@@ -33,10 +34,9 @@ export class Intervention extends LitElement {
         console.log(this.data);
     }
 
-    onUserDeleted(event) {
-        const user = event.detail.user;
-        this.userData = this.userData.filter(userData => userData.userId !== user.userId);
-        this.requestUpdate();
+    async onUserDeleted(event) {
+        console.log(event)
+        await removePersonById(event.detail.userId);
     }
 
     async _fetchData(id) {

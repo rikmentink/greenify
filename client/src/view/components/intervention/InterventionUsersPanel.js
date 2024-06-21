@@ -25,8 +25,6 @@ export class InterventionUsersPanel extends LitElement {
         super();
         this.userData = [];
         this.progress = [];
-        console.log(this.progress);
-        console.log(this.userData);
     }
 
     connectedCallback() {

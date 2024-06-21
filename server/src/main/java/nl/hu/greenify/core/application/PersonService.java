@@ -47,4 +47,12 @@ public class PersonService {
     public Person savePerson(Person person) {
         return personRepository.save(person);
     }
+
+    public void deletePerson(Long id) {
+      if(personRepository.existsById(id)) {
+          personRepository.deleteById(id);
+      } else {
+          throw new PersonNotFoundException("Person with id " + id + " does not exist");
+      }
+    }
 }

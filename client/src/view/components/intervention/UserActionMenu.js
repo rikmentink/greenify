@@ -1,6 +1,5 @@
 import { css, html, LitElement } from "lit";
 import { InvitationInput } from "../inputfields/InvitationInput.js";
-import { getPersonById } from "../../../services/PersonService.js";
 
 export class UserActionMenu extends LitElement {
     static styles = css`
@@ -63,26 +62,12 @@ export class UserActionMenu extends LitElement {
 
     constructor() {
         super();
-        this.userId = 102;
+        this.userId = 0;
         this.menuVisible = false;
     }
 
     connectedCallback() {
         super.connectedCallback();
-    }
-
-    async fetchUser() {
-        try {
-            this.user = await getPersonById(this.userId);
-            this.dispatchEvent(new CustomEvent('user-deleted', {
-                detail: { user: this.user },
-                bubbles: true,
-                composed: true
-            }));
-
-        } catch (error) {
-            alert('Er is iets misgegaan bij het ophalen van de gebruiker.')
-        }
     }
 
     handleMenu() {
@@ -97,7 +82,11 @@ export class UserActionMenu extends LitElement {
     }
 
     handleRemoveUser() {
-
+        this.dispatchEvent(new CustomEvent('remove-user', {
+            detail: { userId: this.userId },
+            bubbles: true,
+            composed: true
+        }));
     }
 
     closeOtherMenus() {
