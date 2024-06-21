@@ -97,6 +97,7 @@ export class UserActionMenu extends LitElement {
     }
 
     handleRemoveUser() {
+        console.log('remove user');
     }
 
     closeOtherMenus() {
@@ -110,7 +111,7 @@ export class UserActionMenu extends LitElement {
             <button class="dots-btn" @click="${this.handleMenu}"></button>
             <div class="usermenu">
                 <ul class="${this.menuVisible ? 'show-menu' : ''}">
-                    <li><button style="color: red;" @click="${this.handleRemoveUser()}">Verwijderen</button></li>
+                    <li><button style="color: red;" @click="${this.handleRemoveUser}">Verwijderen</button></li>
                 </ul>
             </div>
         `;

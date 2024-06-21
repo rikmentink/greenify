@@ -18,10 +18,10 @@ public class InterventionDto {
     private final int surveyAmount;
     private final double totalSurveyProgress;
     private final List<Person> participants;
-    private final double participantProgress;
+    private final List<Double> participantProgress;
     private final List<Phase> phases;
 
-    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants, double participantProgress, List<Phase> phases) {
+    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants, List<Double> participantProgress, List<Phase> phases) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,13 +35,17 @@ public class InterventionDto {
 
 
     public static InterventionDto fromEntity(Intervention intervention, Person person) {
+        List<Survey> surveys = intervention.getSurveysOfPersonInCurrentPhase(person);
+        double surveyProgress = calculateProgress(surveys);
+        List<Double> participantProgress = new ArrayList<>();
+
         if(intervention.getCurrentPhase() == null) {
             return createEmptyInterventionDto(intervention);
         }
 
-        List<Survey> surveys = intervention.getSurveysOfPersonInCurrentPhase(person);
-        double surveyProgress = calculateProgress(surveys);
-        double participantProgress = calculateParticipantProgress(person, intervention);
+        for(Person person2 : intervention.getParticipants()) {
+                participantProgress.add(calculateParticipantProgress(person2, intervention));
+            }
 
         return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveys.size() + 1, surveyProgress, intervention.getParticipants(), participantProgress, intervention.getPhases());
     }
@@ -51,7 +55,7 @@ public class InterventionDto {
     }
 
     private static InterventionDto createEmptyInterventionDto(Intervention intervention) {
-        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>(), 0, new ArrayList<>());
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     private static double calculateParticipantProgress(Person person, Intervention intervention) {
