@@ -176,8 +176,6 @@ export class CategoryBox extends LitElement {
             return 0;
         }
 
-        console.log(currentUser.progress)
-
         const categoryProgress = currentUser.progress.find(p => p.categoryId === this.category.id);
         if (!categoryProgress) {
             return 0;
