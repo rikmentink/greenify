@@ -79,7 +79,7 @@ export class Intervention extends LitElement {
                 complete:  (data) => html`
                 <intervention-information-box .interventionData="${data}"></intervention-information-box>
                 <intervention-survey-box .id="${data.id}"></intervention-survey-box>
-                <intervention-users-panel .userData="${data.participants}"></intervention-users-panel>
+                <intervention-users-panel .userData="${data.participants}" .progress="${data.participantProgress}"></intervention-users-panel>
             `,
             })}
         `
