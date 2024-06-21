@@ -92,7 +92,10 @@ export class PdfReportGenerator extends LitElement {
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { avoid: ['tr', 'td'] },
+            pagebreak: {
+                avoid: ['tr', 'td', 'h1', 'h2', 'h3', 'h4'],
+                before: ['.section', '.col full']
+            },
         };
 
         html2pdf().set(options).from(pdfContainer).save();
