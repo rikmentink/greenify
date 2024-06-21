@@ -49,7 +49,7 @@ export class PdfReportGenerator extends LitElement {
                     const subfactorScore = await getSubfactorScoresOfCategory(1, categoryScore.categoryName); // TODO: Replace PhaseID with actual ID
                     subfactorScores.push({
                         categoryName: categoryScore.categoryName,
-                        subfactorScores: subfactorScore.subfactorScores
+                        subfactorScores: subfactorScore.subfactorScores.sort((a, b) => a.percentage - b.percentage)
                     });
                 } catch (error) {
                     console.error(`Failed to fetch subfactor scores for category ${categoryScore.categoryName}:`, error);
