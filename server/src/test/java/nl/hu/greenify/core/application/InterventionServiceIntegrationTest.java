@@ -11,11 +11,8 @@ import nl.hu.greenify.core.domain.Category;
 import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
-import nl.hu.greenify.core.domain.Response;
 import nl.hu.greenify.core.domain.Template;
-import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
 import nl.hu.greenify.core.domain.enums.PhaseName;
-import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
 
@@ -50,7 +47,6 @@ public class InterventionServiceIntegrationTest {
     @MockBean
     private TemplateRepository templateRepository;
 
-    private Template template;
     private Person person;
     private Intervention intervention;
     private Phase phase;
@@ -59,7 +55,7 @@ public class InterventionServiceIntegrationTest {
     void setUp() {
         this.person = new Person(1L, "firstName", "lastName", "johndoe@gmail.com", new ArrayList<>());
         this.intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), Arrays.asList(person));
-        this.phase = new Phase(1L, PhaseName.PLANNING);
+        this.phase = new Phase(1L, PhaseName.PLANNING, "Description");
         Intervention interventionWithPhase = new Intervention(1L, "Intervention", "Intervention description", person, Arrays.asList(phase), Arrays.asList(person));
         
         var subfactor = new Subfactor(1L, "Subfactor", 1, true);

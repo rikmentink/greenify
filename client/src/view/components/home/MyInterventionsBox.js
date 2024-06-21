@@ -1,6 +1,7 @@
 import {css, html, LitElement} from "lit";
 import {HorizontalBarChart} from "../surveyReport/charts/HorizontalBarChart.js";
 import {getInterventionByPersonId} from "../../../services/InterventionService.js";
+import {Router} from "@vaadin/router";
 import globalStyles from "../../../assets/global-styles.js";
 
 export class MyInterventionsBox extends LitElement {
@@ -111,6 +112,10 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
+    async connectedCallback() {
+        super.connectedCallback();
+    }
+
     async getInterventionsByPersonId(userId) {
         this.interventieData = await getInterventionByPersonId(userId);
         this.loading = false;
@@ -124,6 +129,11 @@ export class MyInterventionsBox extends LitElement {
         }
     }
 
+   fetchIntervention(intervention) {
+        sessionStorage.setItem('selectedIntervention', JSON.stringify(intervention));
+        Router.go(`/intervention/${intervention.id}`);
+   }
+
     renderInterventions(){
         if (this.loading) {  // If loading, don't render the chart
             return html`Loading...`;
@@ -131,7 +141,7 @@ export class MyInterventionsBox extends LitElement {
 
         if (this.interventieData && this.interventieData.length > 0) {
             return this.interventieData.map(interventie => {
-                let progress = Array.isArray(interventie.progress) ? interventie.progress : [interventie.progress];
+                let progress = Array.isArray(interventie.totalSurveyProgress) ? interventie.totalSurveyProgress : [interventie.totalSurveyProgress];
                 return html`
                 <div class="my-interventions-item">
                     <div class="my-interventions-item-name">
@@ -148,24 +158,19 @@ export class MyInterventionsBox extends LitElement {
                         </div>
                     </div>
                     <div class="my-interventions-btn">
-                        <a class="bekijk-button" href="intervention/${interventie.id}">Bekijk</a>
+                        <button class="bekijk-button" @click="${() => this.fetchIntervention(interventie)}">Bekijk</button>
                     </div>
                 </div>
             `;
             });
         }
         return html`
-        <div class="my-interventions-item">
-            <div class="my-interventions-item-name">
-                Geen interventies gevonden.
-            </div>
+    <div class="my-interventions-item">
+        <div class="my-interventions-item-name">
+            Geen interventies gevonden.
         </div>
-    `;
-    }
-
-
-    connectedCallback() {
-        super.connectedCallback();
+    </div>
+`;
     }
 
     render() {

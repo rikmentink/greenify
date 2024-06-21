@@ -164,10 +164,10 @@ export class CreateIntervention extends LitElement {
         const formData = new FormData(form);
         const interventionName = formData.get('interventionName');
         const interventionDescription = formData.get('interventionDescription');
-        const informationPhase = formData.get('informationPhase');
+        const phaseDescription = formData.get('phaseDescription');
         const phase = formData.get('phase');
 
-        await createInterventionWithPhase(this.personId, interventionName, interventionDescription, informationPhase, phase)
+        await createInterventionWithPhase(this.personId, interventionName, interventionDescription, phase, phaseDescription)
             .then(() => {
                 window.location.href = import.meta.env.BASE_URL + 'home';
             })
@@ -202,7 +202,7 @@ export class CreateIntervention extends LitElement {
                                 <span class="info-icon">i
                                     <div class="popup">Geef een korte beschrijving van de interventie. Vermeld de belangrijkste doelstellingen en acties die worden ondernomen.</div>
                                 </span>
-                                <input class="informationPhaseField" type="text" id="informationPhase" name="informationPhase" placeholder="Informatie fase" required>
+                                <input class="phaseDescriptionField" type="text" id="phaseDescription" name="phaseDescription" placeholder="Beschrijving fase" required>
                                 <span class="info-icon">i
                                     <div class="popup">Geef hier wat extra informatie aan voor de geselecteerde fase.</div>
                                 </span>

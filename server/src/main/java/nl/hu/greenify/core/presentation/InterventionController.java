@@ -8,6 +8,7 @@ import nl.hu.greenify.core.presentation.dto.CreateInterventionDto;
 import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
 import nl.hu.greenify.core.presentation.dto.InterventionDto;
+import nl.hu.greenify.core.presentation.dto.PhaseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,11 @@ public class InterventionController extends Controller {
         return this.createResponse(this.interventionService.getInterventionById(id));
     }
 
+    @PostMapping(value="/{id}/person/{personId}", produces="application/json")
+    public ResponseEntity<?> addParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
+        return this.createResponse(this.interventionService.addParticipant(id, personId), HttpStatus.CREATED);
+    }
+
     @GetMapping("/all/{id}")
     public ResponseEntity<?> getAllInterventionsByPerson(@PathVariable("id") Long id) {
         List<Intervention> i = this.interventionService.getAllInterventionsByPerson(id);
@@ -58,6 +64,16 @@ public class InterventionController extends Controller {
      * Phase endpoints
      */
 
+    @GetMapping(value="/phase/{id}", produces="application/json")
+    public ResponseEntity<?> getPhaseById(@PathVariable("id") Long id) {
+        return this.createResponse(this.interventionService.getPhaseById(id));
+    }
+
+    @GetMapping(value="/{id}/phases", produces="application/json")
+    public ResponseEntity<?> getPhasesByInterventionId(@PathVariable("id") Long id) {
+        return this.createResponse(PhaseDto.fromEntities(this.interventionService.getPhasesByIntervention(id)));
+    }
+
     @GetMapping(value="/{interventionId}/phase/{phaseId}", produces="application/json")
     public ResponseEntity<?> getPhaseProgress(@PathVariable("interventionId") Long interventionId, @PathVariable("phaseId") Long phaseId) {
         return this.createResponse(this.interventionService.getPhaseProgress(interventionId, phaseId));
@@ -65,6 +81,6 @@ public class InterventionController extends Controller {
 
     @PostMapping(value="/{id}/phase", consumes="application/json", produces="application/json")
     public ResponseEntity<?> addPhase(@PathVariable("id") Long id, @RequestBody CreatePhaseDto createPhaseDto) {
-        return this.createResponse(this.interventionService.addPhase(id, createPhaseDto.getPhaseName()), HttpStatus.CREATED);
+        return this.createResponse(this.interventionService.addPhase(id, createPhaseDto.getPhaseName(), createPhaseDto.getDescription()), HttpStatus.CREATED);
     }
 }

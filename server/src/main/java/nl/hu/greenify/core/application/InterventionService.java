@@ -43,13 +43,38 @@ public class InterventionService {
         }
     }
 
-    public Phase addPhase(Long id, PhaseName phaseName) {
+    public List<Phase> getPhasesByIntervention(Long id) {
+        Intervention intervention = getInterventionById(id);
+        return intervention.getPhases();
+    }
+
+    public Intervention addParticipant(Long id, Long personId) {
+        Intervention intervention = getInterventionById(id);
+        Person person = personService.getPersonById(personId);
+
+        if(person == null) {
+            throw new IllegalArgumentException("Person with id " + personId + " does not exist");
+        }
+
+        if(intervention.getParticipants().contains(person)) {
+            throw new IllegalArgumentException("Person with id " + personId + " is already a participant of intervention with id " + id);
+        }
+
+        if(intervention.getAdmin().equals(person)) {
+            throw new IllegalArgumentException("Person with id " + personId + " is the admin of intervention with id " + id);
+        }
+
+        intervention.addParticipant(person);
+        return interventionRepository.save(intervention);
+    }
+
+    public Phase addPhase(Long id, PhaseName phaseName, String description) {
         Intervention intervention = getInterventionById(id);
         if(intervention == null) {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
         
-        Phase phase = Phase.createPhase(phaseName);
+        Phase phase = Phase.createPhase(phaseName, description);
         phase = phaseRepository.save(phase);
         surveyService.createSurveysForParticipants(phase, intervention.getParticipants());
 
@@ -73,11 +98,11 @@ public class InterventionService {
         Person person = accountService.getCurrentPerson();
         if(!intervention.getParticipants().contains(person) && !intervention.getAdmin().equals(person))
             throw new IllegalArgumentException("Person with id " + person.getId() + " is not part of intervention with id " + interventionId);
-        
+
         if (intervention.getAdmin().equals(person)) {
             return PhaseProgressDto.fromEntities(intervention, phase, intervention.getParticipants(), person);
         }
-        
+
         return PhaseProgressDto.fromEntity(intervention, phase, person);
     }
 

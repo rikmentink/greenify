@@ -1,8 +1,13 @@
 import { LitElement, html, css } from 'lit';
-import globalStyles from "../../assets/global-styles.js";
+import { Task } from '@lit/task';
+import { getRouter } from '../../router.js';
+import global from "../../assets/global-styles.js";
+
+import { getInterventionById } from '../../services/InterventionService.js';
+import { createPhase } from '../../services/PhaseService.js';
 
 export class CreatePhase extends LitElement {
-    static styles = [globalStyles, css`
+    static styles = [global, css`
         h1 {
             color: var(--color-primary);
         }
@@ -43,30 +48,25 @@ export class CreatePhase extends LitElement {
             border: var(--color-primary) 1px solid;
         }
 
-        .create-btn {
-            padding: 10px 50px 10px 50px;
-            margin: 8px 0;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 40px;
-            cursor: pointer;
-            background-color: var(--color-primary);
-            color: white;
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            min-width: 150px;
         }
 
-        .phase-select {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            height: 40px;
-            font-size: 14px;
-            box-sizing: border-box;
-            border: lightgray 1px solid;
+        #feedback {
+            font-size: 12px;
+            align-self: start;
         }
-        
-        .phase-select:focus {
-            outline: none;
+
+        #feedback.error {
+            color: red;
+        }
+
+        #feedback.success {
+            color: green;
         }
     `]
 
@@ -79,30 +79,105 @@ export class CreatePhase extends LitElement {
 
     constructor() {
         super();
-        this.interventionId = 0;
-        this.intervention = JSON.parse(window.sessionStorage.getItem('intervention'));
-        this.interventionName = this.intervention.name;
+        this.id = 0;
+    }
+
+    async connectedCallback() {
+        super.connectedCallback();
+        this.id = this.extractIdFromUrl();
+        if (this.id === 0) {
+            window.location.href = '/';
+            return;
+        }
+
+        await this._fetchData(this.id);
+        this.shadowRoot.getElementById('createPhaseForm').addEventListener('submit', this._onSubmit.bind(this))
+    }
+
+    extractIdFromUrl() {
+        return getRouter().location.params.id || 0;
+    }
+
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id]) => getInterventionById(id),
+            args: () => [id]
+        });
+        return await this.data.run();
+    }
+
+    async _onSubmit(event) {
+        event.preventDefault();
+        this.shadowRoot.getElementById('feedback').innerText = '';
+        this.shadowRoot.getElementById('feedback').classList.remove('success');
+        this.shadowRoot.getElementById('feedback').classList.remove('error');
+
+        const data = this.validateForm(event);
+        await this._savePhase(data);
+    }
+
+    validateForm(event) {
+        const form = event.target;
+        const formData = new FormData(form);
+        const name = formData.get('name').toUpperCase();
+        const description = formData.get('description') || '';
+
+        if (!name) {
+            this.shadowRoot.getElementById('feedback').innerText = 'Vul alle velden in.';
+            this.shadowRoot.getElementById('feedback').classList.add('error');
+            return;
+        }
+
+        return { name, description };
+    }
+
+    async _savePhase(data) {
+        await createPhase(this.id, data.name, data.description)
+        .then((data) => {
+            console.log('Phase created:', data);
+            this.shadowRoot.getElementById('feedback').innerText = 'Fase is succesvol aangemaakt.';
+            this.shadowRoot.getElementById('feedback').classList.add('success');
+
+            setTimeout(() => {
+                window.location.href = `/intervention/${this.id}/phase/${data.id}`;
+            }, 1000);
+        })
+        .catch((error) => {
+            console.error('Error creating phase:', error);
+            this.shadowRoot.getElementById('feedback').innerText = 'Er is iets misgegaan. Probeer het opnieuw.';
+            this.shadowRoot.getElementById('feedback').classList.add('error');
+        });
     }
 
     render() {
         return html`
-            <h1>Fase Creëren</h1>
-            <div class="title-container">
-                <h1>${this.interventionName}</h1>
-            </div>
-            <div class="desc-container">
-                <p class="description">🛈 Per fase wordt er een vragenlijst beschikbaar gesteld voor alle toegevoegde gebruikers.</p>
-            </div>
-            <div class="outer-container">
-                <div class="main-block">
-                    <select class="phase-select" id="phase" required>
-                        <option value="phase-1">Initiation</option>
-                        <option value="phase-2">Planning</option>
-                        <option value="phase-3">Execution</option>
-                    </select>
-                    <button class="create-btn" type="submit">Creëren</button>
-                </div>
-            </div>
+            ${this.data.render({
+                loading: html`Loading...`,
+                complete: (intervention) => html`
+                    <div class="title-container">
+                        <h1>Fase Creëren</h1>
+                    </div>
+                    <div class="desc-container">
+                        <p class="description">🛈 Per fase wordt er een vragenlijst beschikbaar gesteld voor alle toegevoegde gebruikers.</p>
+                    </div>
+                    <div class="outer-container">
+                        <div class="main-block">
+                            <h2>${intervention.name}</h2>
+                            <form id="createPhaseForm">
+                                <select name="name" id="name" class="phase-select" required>
+                                    <option value="initiation">Initiation</option>
+                                    <option value="planning">Planning</option>
+                                    <option value="execution">Execution</option>
+                                </select>
+                                <textarea rows="2" name="description" id="description" placeholder="Beschrijving"></textarea>
+                                <div id="feedback"></div>
+                                <button class="btn" style="margin-top: 1rem" type="submit">Creëren</button>
+                            </form>
+                        </div>
+                    </div>
+                `,
+                error: (error) => html`Error: ${error}`
+            })}
         `;
     }
 }

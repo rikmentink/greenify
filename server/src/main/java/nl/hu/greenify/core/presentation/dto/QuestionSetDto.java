@@ -7,23 +7,20 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import nl.hu.greenify.core.domain.Category;
-import nl.hu.greenify.core.domain.factor.Factor;
 
 @Getter
 @EqualsAndHashCode
 public class QuestionSetDto {
     private Long surveyId;
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Category category;
-    private List<Factor> factors;
+    private List<Category> categories;
 
-    public QuestionSetDto(Long surveyId, Category category, List<Factor> factors) {
+    public QuestionSetDto(Long surveyId, List<Category> categories) {
         this.surveyId = surveyId;
-        this.category = category;
-        this.factors = factors;
+        this.categories = categories;
     }
 
-    public static QuestionSetDto fromEntity(Long surveyId, Category category, List<Factor> factors) {
-        return new QuestionSetDto(surveyId, category, factors);
+    public static QuestionSetDto fromEntity(Long surveyId, List<Category> categories) {
+        return new QuestionSetDto(surveyId, categories);
     }
 }

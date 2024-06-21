@@ -47,7 +47,7 @@ public class SurveyControllerIntegrationTest {
     @BeforeEach
     void setup() {
         this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@example.com", new ArrayList<>());
-        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION);
+        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description");
         this.survey = new Survey(SURVEY_ID, this.phase, new ArrayList<>(), this.person);
     }
 

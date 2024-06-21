@@ -28,27 +28,31 @@ public class Phase {
     @Enumerated(EnumType.STRING)
     private PhaseName name;
 
+    private String description;
+
     @OneToMany(mappedBy="phase", cascade=CascadeType.PERSIST)
     private List<Survey> surveys = new ArrayList<>();
 
     protected Phase() {
     }
 
-    private Phase(PhaseName name) {
+    private Phase(PhaseName name, String description) {
         this.name = name;
+        this.description = description;
     }
 
-    public Phase(Long id, PhaseName name) {
+    public Phase(Long id, PhaseName name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
 
-    public static Phase createPhase(PhaseName name) {
+    public static Phase createPhase(PhaseName name, String description) {
         if(name == null) {
             throw new IllegalArgumentException("Phase should have a name");
         }
 
-        return new Phase(name);
+        return new Phase(name, description);
     }
 
     public void addSurvey(Survey survey) {

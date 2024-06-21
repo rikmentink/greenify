@@ -14,6 +14,7 @@ import { Register } from "./view/pages/Register.js";
 import { Intervention } from "./view/pages/Intervention.js";
 import { CreateIntervention} from "./view/pages/CreateIntervention.js";
 import { SurveyResultReport} from "./view/pages/SurveyResultReport.js";
+import { CreatePhase } from "./view/pages/CreatePhase.js";
 import { Overview } from './view/pages/Overview.js';
 
 /**
@@ -25,6 +26,7 @@ export class GreenifyApp extends LitElement {
     css`
       #outlet {
           flex: 1 1 auto;
+          margin-top: 1.5rem;
       }
     `];
 

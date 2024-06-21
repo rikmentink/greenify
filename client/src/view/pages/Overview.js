@@ -110,28 +110,25 @@ export class Overview extends LitElement {
         return this.data.render({
             loading: () => html`<p>Loading...</p>`,
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
-            complete: (data) => {
-                const totalQuestions = this.getTotalQuestions(data.categories);
-                const answeredQuestions = this.getAnsweredQuestions(data.contenders);
-
-                return html`
-                    <div class="content">
-                        <div class="title-desc">
-                            <h1>Vragenlijst</h1>
-                            <p>Hier kunt u alle vragen en categorieën bekijken. Klik op een categorie en vraag om deze in te vullen.</p>
-                        </div>
-                        <hr class="divider">
-                        <div>
-                            <h3 class="algemeneinfo">Algemene Informatie</h3>
-                            <div class="grid-container">
-                                <em>Fase</em>
-                                <p class="fase">${data.name}</p>
-                                <em>Voortgang</em>
-                                <p class="voortgang">${answeredQuestions}/${totalQuestions} beantwoorden vragen</p>
-                            </div>
+            complete: (data) => html`
+                <a href="/intervention/${this.interventionId}" class="link">&larr; Terug naar interventie</a>
+                <div class="content">
+                    <div class="title-desc">
+                        <h1>Vragenlijst</h1>
+                        <p>Hier kunt u alle vragen en categorieën bekijken. Klik op een categorie en vraag om deze in te vullen.</p>
+                    </div>
+                    <hr class="divider">
+                    <div>
+                        <h3 class="algemeneinfo">Algemene Informatie</h3>
+                        <div class="grid-container">
+                            <em>Fase</em>
+                            <p class="fase">${data.name}</p>
+                            <em>Voortgang</em>
+                            <p class="voortgang">${this.getAnsweredQuestions(data.contenders)}/${this.getTotalQuestions(data.categories)} beantwoorden vragen</p>
                         </div>
                     </div>
-                    <h1>Categorieën</h1>
+                </div>
+                <h1>Categorieën</h1>
 
                     ${data.categories ? data.categories.map(category => html`
                         <gi-categorybox .progress=${data.contenders} .category=${category}></gi-categorybox>`) : html`

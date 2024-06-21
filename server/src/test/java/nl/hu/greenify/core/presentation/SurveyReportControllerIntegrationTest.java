@@ -1,7 +1,5 @@
 package nl.hu.greenify.core.presentation;
 
-import jakarta.transaction.Transactional;
-import nl.hu.greenify.core.application.PersonService;
 import nl.hu.greenify.core.data.*;
 import nl.hu.greenify.core.domain.*;
 import nl.hu.greenify.core.domain.enums.FacilitatingFactor;
@@ -13,11 +11,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
@@ -116,7 +112,7 @@ public class SurveyReportControllerIntegrationTest {
 
         // Create phase
         System.out.println("Creating phase");
-        Phase phase = Phase.createPhase(PhaseName.INITIATION);
+        Phase phase = Phase.createPhase(PhaseName.INITIATION, "Description");
         System.out.println("Saving phase to repository");
         this.phaseRepository.save(phase);
         System.out.println("Set ID of phase");

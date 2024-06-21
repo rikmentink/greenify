@@ -3,12 +3,13 @@ package nl.hu.greenify.core.domain;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Setter
 @Getter
 @Entity
 @EqualsAndHashCode
@@ -57,7 +58,9 @@ public class Intervention {
         return this.phases.get(this.phases.size() - 1);
     }
 
-    public List<Survey> getAllSurveysOfParticipant(Person person) {
+    public List<Survey> getSurveysOfPersonInCurrentPhase(Person person) {
+        List<Survey> surveys = new ArrayList<>();
+
         if(person == null) {
             throw new IllegalArgumentException("Person should not be null");
         }
@@ -66,12 +69,12 @@ public class Intervention {
             return new ArrayList<>();
         }
 
-        List<Survey> surveys = new ArrayList<>();
-            for(Survey survey : this.getCurrentPhase().getSurveys()) {
-                if(survey.getRespondent().equals(person)) {
-                    surveys.add(survey);
-                }
+        for(Survey survey : person.getSurveys()) {
+            if(survey.getPhase().equals(this.getCurrentPhase())) {
+                surveys.add(survey);
             }
+        }
+
         return surveys;
     }
 

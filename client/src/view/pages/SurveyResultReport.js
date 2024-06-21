@@ -7,6 +7,8 @@ import "../components/surveyReport/DialogPlain.js";
 import "../components/surveyReport/charts/HorizontalBarChart.js";
 import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/SurveyReportService.js";
 import globalStyles from "../../assets/global-styles.js";
+import "../components/surveyReport/PdfReportGenerator.js";
+import {Task} from "@lit/task";
 
 export class SurveyResultReport extends LitElement {
   static styles = [globalStyles,
@@ -19,7 +21,8 @@ export class SurveyResultReport extends LitElement {
       }
       h2 {
         font-size: 15px;
-        margin: 0px;
+        margin: 0;
+        color: white;
       }
       .grid-container {
         display: grid;
@@ -137,20 +140,46 @@ export class SurveyResultReport extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
-    const categoryScores = await getCategoryScores(this.phaseId);
-    this.polarChartData = categoryScores.categoryScores.map(score => score.percentage);
-    this.polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
+    await this._fetchData.run();
   }
 
   firstUpdated() {
     const element = this.shadowRoot.querySelector(".header-box-contents");
     element.scrollIntoView();
   }
+
+  // Fetch method to replace the way data is collected for the page
+  _fetchData = new Task(this, {
+    task: async () => {
+      const categoryScores = await getCategoryScores(this.phaseId);
+      this.polarChartData = categoryScores.categoryScores.map(score => score.percentage);
+      this.polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
+    },
+    args: () => [this.phaseId]
+  });
+
+  _fetchSubfactorScores = new Task(this, {
+    // Deconstruct the categoryName array to just get the name
+    task: async ([categoryName]) => {
+      return await getSubfactorScoresOfCategory(this.phaseId, categoryName);
+    },
+    args: () => [this.currentCategoryName]
+  });
+
   async openDialog(event) {
     const categoryName = event.detail;
+    this.currentCategoryName = categoryName;
     this.shadowRoot.querySelector('#dialog-title').textContent = categoryName;
 
-    const subfactorScores = await getSubfactorScoresOfCategory(this.phaseId, categoryName);
+    // Fetch the subfactor scores for the selected category
+    let subfactorScores;
+    try {
+      await this._fetchSubfactorScores.run();
+      subfactorScores = this._fetchSubfactorScores.value;
+    } catch (error) {
+      console.error(`Failed to fetch subfactor scores for category ${categoryName}:`, error);
+      return;
+    }
 
     // Sort the subfactor scores based on the percentage from lowest to highest
     subfactorScores.subfactorScores.sort((a, b) => a.percentage - b.percentage);
@@ -168,6 +197,9 @@ export class SurveyResultReport extends LitElement {
   render() {
     return html`
       <h1>Vergroenings rapportage</h1>
+      <div class="btn-group">
+        <gi-pdf-report-generator slot="actions"></gi-pdf-report-generator>
+      </div>
       <div class="grid-container">
         <div class="grid-left-section">
           <content-box-plain class="content-box-chart">

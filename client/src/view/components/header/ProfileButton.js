@@ -28,7 +28,7 @@ export class ProfileButton extends LitElement {
     render() {
         return html`
             <button @click=${this.handleButtonClick} tabindex="0">
-                <img src="icons/profile.png" alt="Profile button icon" width="24" height="24" />
+                <img src="/icons/profile.png" alt="Profile button icon" width="24" height="24" />
             </button>
     `;
     }

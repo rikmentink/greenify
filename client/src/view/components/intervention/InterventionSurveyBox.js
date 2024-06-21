@@ -1,6 +1,8 @@
 import {css, html, LitElement} from "lit";
-import {getInterventionById} from "../../../services/InterventionService.js";
+import {getInterventionById, getPhasesByInterventionId} from "../../../services/InterventionService.js";
+import {getPhaseById} from "../../../services/PhaseService.js";
 import globalStyles from "../../../assets/global-styles.js";
+import {Router} from "@vaadin/router";
 export class InterventionSurveyBox extends LitElement {
     static styles = [globalStyles, css`
         .title-container {
@@ -13,9 +15,9 @@ export class InterventionSurveyBox extends LitElement {
         }
 
         .start-fase-btn {
-            height: 25px;
-            padding: 10px 25px 10px 25px;
+            padding: 15px 25px 15px 15px;
             border-radius: 2px;
+            margin-bottom: 20px;
             font-weight: bold;
             border: none;
             cursor: pointer;
@@ -137,65 +139,53 @@ export class InterventionSurveyBox extends LitElement {
         },
         intervention: {
             type: Object
+        },
+        loading: {
+            type: Boolean
         }
-    }
-
-    async fetchIntervention() {
-        this.intervention = await getInterventionById(this.id);
-        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
     }
 
     constructor() {
         super();
-        this.id = 1;
+        this.id = 0;
+        this.phaseData = [];
+        this.loading = true;
+        this.data = {};
         this.fetchIntervention();
+    }
 
-        this.surveyData = [{
-            id: 1,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Research"
-        }, {
-            id: 2,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Implementatie"
-        }, {
-            id: 3,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Evaluatie"
-        }, {
-            id: 4,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Research"
-        }, {
-            id: 5,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Implementatie"
-        }, {
-            id: 6,
-            description: "Dit is de beschrijving van de fase. Kan de gebruiker uiteraard ook zelf instellen.",
-            phase: "Evaluatie"
+
+    async fetchIntervention() {
+        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
+        this.data = selectedIntervention;
+
+        if (selectedIntervention) {
+            this.interventionData = selectedIntervention;
         }
 
-        ];
+        this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
+        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
+        this.loading = false;
     }
 
     renderSurveys() {
-        return this.surveyData.map(survey => {
-            let progress = 60 + "%" // Placeholder for progress, need to be calculated
-            return html`
+       if(this.loading) {
+           return html`<p>Loading...</p>`;
+       } else {
+           return this.phaseData.map(phase => {
+               let progress = phase.progress + "%" // Placeholder for progress, need to be calculated
+               return html`
                 <div class="survey-box">
-                    <p class="sy-header"><span class="sy-phase">${survey.phase}</span></p>
-                    <p class="sy-description">${survey.description}</p>
+                    <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
-                        <a href="">Bekijk vragen &#10132;</a>
-                        <a href="">Bekijk eindrapport &#10132;</a>
+                        <a href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk vragen &#10132;</a>
+                        <a href="/phase/${phase.id}/report">Bekijk eindrapport &#10132;</a>
                     </div>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
-                            <p class="progress-label">Nog ... vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${progress}%" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
@@ -203,15 +193,15 @@ export class InterventionSurveyBox extends LitElement {
                     </div>
                 </div>
             `;
-        });
-
+           });
+       }
     }
 
     render() {
         return html`
-            <div class="title-container">
+            <div class="1ntainer">
                 <h2>Fases</h2>
-                <a class="start-fase-btn" href="/createphase">Nieuwe fase starten</a>
+                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}
