@@ -50,6 +50,28 @@ export class InterventionUsersTable extends LitElement {
       input:focus {
         outline: none;
       }
+
+      .sy-progress-container {
+        align-items: center;
+        line-height: 0.1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .progress-bar {
+        width: 60%;
+        background-color: #e0e0e0;
+        height: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        display: flex;
+      }
+
+      .progress {
+        height: 100%;
+        background-color: var(--color-primary);
+        border-radius: 5px;
+      }
     `;
 
     static properties = {
@@ -76,21 +98,27 @@ export class InterventionUsersTable extends LitElement {
 
     renderUsers() {
         return this.filteredUserData.map(user => {
+            let progress = 60 + "%";
             return html`
                 <tr>
                     <td>${user.firstName}</td>
                     <td><span class="email">${user.email}</span></td>
-                    <td><span style="border-left: ${this.statusColor(user.progress)}">${user.progress ? "Volledig ingevuld" : "Niet gestart"}</span></td>
+                    <td>
+                        <div class="sy-progress-container">
+                            <div class="progress-bar">
+                                <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
+                            </div>
+                            <div class="progress-labels">
+                                <p class="progress-label">${progress}</p>
+                            </div>
+                        </div>
+                    </td>
                     <td>
                         <user-action-menu .userId="${user.userId}"></user-action-menu>
                     </td>
                 </tr>
             `;
         });
-    }
-
-    statusColor(status) {
-        return status ? "3px solid green" : "3px solid red";
     }
 
     searchUser(event) {

@@ -17,11 +17,11 @@ public class InterventionDto {
     private final Phase currentPhase;
     private final int surveyAmount;
     private final double totalSurveyProgress;
-    private final double phaseProgress;
     private final List<Person> participants;
+    private final double participantProgress;
     private final List<Phase> phases;
 
-    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants, List<Phase> phases, double phaseProgress) {
+    public InterventionDto(Long id, String name, String description, Phase currentPhase, int surveyAmount, double totalSurveyProgress, List<Person> participants, double participantProgress, List<Phase> phases) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,27 +29,40 @@ public class InterventionDto {
         this.surveyAmount = surveyAmount;
         this.totalSurveyProgress = totalSurveyProgress;
         this.participants = participants;
+        this.participantProgress = participantProgress;
         this.phases = phases;
-        this.phaseProgress = phaseProgress;
     }
 
 
     public static InterventionDto fromEntity(Intervention intervention, Person person) {
         if(intervention.getCurrentPhase() == null) {
-           return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>(), new ArrayList<>(), 0);
+            return createEmptyInterventionDto(intervention);
         }
 
-        List<Survey> surveys = intervention.getAllSurveysOfParticipant(person);
-        int surveyAmount = surveys.size() + 1;
+        List<Survey> surveys = intervention.getSurveysOfPersonInCurrentPhase(person);
+        double surveyProgress = calculateProgress(surveys);
+        double participantProgress = calculateParticipantProgress(person, intervention);
 
-        double surveyprogress = calculateProgress(surveys);
-        double phaseprogress = calculateProgress(intervention.getAllSurveysOfAllPhases());
-
-
-        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveyAmount, surveyprogress, intervention.getParticipants(), intervention.getPhases(), phaseprogress);
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), intervention.getCurrentPhase(), surveys.size() + 1, surveyProgress, intervention.getParticipants(), participantProgress, intervention.getPhases());
     }
 
     public static List<InterventionDto> fromEntities(List<Intervention> interventions, Person person) {
         return interventions.stream().map(intervention -> InterventionDto.fromEntity(intervention, person)).collect(Collectors.toList());
+    }
+
+    private static InterventionDto createEmptyInterventionDto(Intervention intervention) {
+        return new InterventionDto(intervention.getId(), intervention.getName(), intervention.getDescription(), null, 0, 0, new ArrayList<>(), 0, new ArrayList<>());
+    }
+
+    private static double calculateParticipantProgress(Person person, Intervention intervention) {
+        double participantProgress = 0;
+
+        for(Survey survey : person.getSurveys()) {
+            if(survey.getPhase().equals(intervention.getCurrentPhase())) {
+                participantProgress += calculateProgress(List.of(survey));
+            }
+        }
+
+        return participantProgress;
     }
 }

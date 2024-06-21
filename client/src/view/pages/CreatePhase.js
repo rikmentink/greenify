@@ -84,14 +84,18 @@ export class CreatePhase extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.id = getRouter().location.params.id || 0;
+        this.id = this.extractIdFromUrl();
         if (this.id === 0) {
             window.location.href = '/';
             return;
         }
-        
+
         await this._fetchData(this.id);
         this.shadowRoot.getElementById('createPhaseForm').addEventListener('submit', this._onSubmit.bind(this))
+    }
+
+    extractIdFromUrl() {
+        return getRouter().location.params.id || 0;
     }
 
     async _fetchData(id) {

@@ -30,6 +30,7 @@ export class Intervention extends LitElement {
         }
 
         this._fetchData(this.interventionId);
+        console.log(this.data);
     }
 
     onUserDeleted(event) {
@@ -46,31 +47,30 @@ export class Intervention extends LitElement {
         return await this.data.run();
     }
 
+    async _addParticipantToIntervention(id, personId) {
+        new Task(this, {
+            task: async ([id, personId]) => addParticipantToIntervention(id, personId),
+            args: () => [id, personId]
+        });
+        return await this.data.run();
+    }
+
     async handlePersonFetched(event) {
         const person = event.detail.person;
 
-        addParticipantToIntervention(this.interventionData.id, person.id);
-        this.interventionData = await getInterventionById(this.interventionData.id);
-        this.userData = this.interventionData.participants;
+        try {
+            await this._addParticipantToIntervention(this.data.value.id, person.id);
+            window.location.reload();
 
-        alert("Gebruiker is toegevoegd aan de interventie. Er is een email verstuurd naar de gebruiker.");
+            await sendMail({
+                to: person.email,
+                subject: "U bent uitgenodigd bij een interventie",
+                body: `Beste deelnemer, \nU bent toegevoegd aan interventie: "${this.data.value.name}". Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina: [link]\n\nMet vriendelijke groet,\nDe Vrije Universiteit Amsterdam.`
+            });
 
-        sendMail({
-            to: person.email,
-            subject: "U bent uitgenodigd bij een interventie",
-            body: `U bent toegevoegd aan interventie ${this.interventionData.id}. Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina. `
-        });
-
-        this.userData = [
-            ...this.userData,
-            {
-                name: `${person.firstName} ${person.lastName}`,
-                email: person.email,
-                progress: false, // Hardcoded value
-                lastOnline: "2024-5-5", // Hardcoded value
-                userId: person.id
-            }
-        ];
+        } catch (error) {
+            alert("Er is iets misgegaan. Let op dat u niet dezelfde deelnemers opnieuw of de admin toevoegt.");
+        }
     }
 
     render() {

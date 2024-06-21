@@ -58,15 +58,9 @@ public class Intervention {
         return this.phases.get(this.phases.size() - 1);
     }
 
-    public List<Survey> getAllSurveysOfAllPhases() {
+    public List<Survey> getSurveysOfPersonInCurrentPhase(Person person) {
         List<Survey> surveys = new ArrayList<>();
-        for(Phase phase : this.phases) {
-            surveys.addAll(phase.getSurveys());
-        }
-        return surveys;
-    }
 
-    public List<Survey> getAllSurveysOfParticipant(Person person) {
         if(person == null) {
             throw new IllegalArgumentException("Person should not be null");
         }
@@ -75,7 +69,13 @@ public class Intervention {
             return new ArrayList<>();
         }
 
-        return this.getCurrentPhase().getSurveys();
+        for(Survey survey : person.getSurveys()) {
+            if(survey.getPhase().equals(this.getCurrentPhase())) {
+                surveys.add(survey);
+            }
+        }
+
+        return surveys;
     }
 
     public static Intervention createIntervention(String name, String description, Person admin) {
