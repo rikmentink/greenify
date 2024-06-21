@@ -225,7 +225,7 @@ export class CategoryBox extends LitElement {
                     <div class="questions-container">
                         ${this.category.subfactors.map((subfactor) => html`
                             <div class="my-question-btn">
-                                <a class="${this._isSubfactorAnswered(subfactor.id) ? 'enabled' : 'disabled'}" href="/tool/1?categoryId=${this.category.id}">${subfactor.number}</a>
+                                <a class="${this._isSubfactorAnswered(subfactor.id) ? 'enabled' : 'disabled'}" href="/tool/1?categoryId=${this.category.id}#subfactor${subfactor.number}">${subfactor.number}</a>
                             </div>`)}
                     </div>
                 </div>

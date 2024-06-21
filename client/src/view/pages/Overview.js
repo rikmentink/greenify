@@ -69,19 +69,19 @@ export class Overview extends LitElement {
       super.connectedCallback();
       this.interventionId = getRouter().location.params.interventionId || 0;
       this.phaseId = getRouter().location.params.phaseId || 0;
+
+      await this._fetchData(this.interventionId, this.phaseId);
       this.authorizeAndRedirect();
     }
 
     async authorizeAndRedirect() {
-        if (this.interventionId == 0 || this.phaseId == 0) {
-            window.location.href = '/';
-            return false;
-        }
-
-        const phase = await this._fetchData(this.interventionId, this.phaseId);
-        if (phase.hasOwnProperty('error')) {
-            window.location.href = '/';
-            return false;
+        if (
+          this.data._value &&
+          this.data._value.error &&
+          this.data._value.error === "unauthorized"
+        ) {
+          window.location.href = "/";
+          return false;
         }
         
         return true;
