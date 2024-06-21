@@ -40,7 +40,7 @@ public class PhaseProgressDto {
                 phase.getDescription(),
                 surveyOfCurrentUser.getId(),
                 ParticipantDto.fromEntities(phase, participants, currentUser),
-                CategoryDto.fromEntities(phase.getSurveys().get(0)));
+                CategoryDto.fromEntities(surveyOfCurrentUser));
     }
 
     public static PhaseProgressDto fromEntity(Intervention intervention, Phase phase, Person participant) {

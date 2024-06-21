@@ -22,12 +22,12 @@ public class CategoryDto {
     public static List<CategoryDto> fromEntities(Survey survey) {
         if (survey.getCategories().isEmpty())
             throw new IllegalArgumentException("Survey should have at least one category");
-        List<SubfactorDto> subfactors = SubfactorDto.fromEntities(survey.getCategories().get(0).getSubfactors());
+
         return survey.getCategories().stream()
                         .map(category -> new CategoryDto(
                              category.getId(),
                              category.getName(),
-                             subfactors.stream()
+                             SubfactorDto.fromEntities(category.getSubfactors()).stream()
                                     .sorted(Comparator.comparing(SubfactorDto::getNumber)).toList()))
                         .collect(Collectors.toList());
     }
