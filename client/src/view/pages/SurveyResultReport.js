@@ -9,6 +9,7 @@ import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/
 import globalStyles from "../../assets/global-styles.js";
 import "../components/surveyReport/PdfReportGenerator.js";
 import {Task} from "@lit/task";
+import {getRouter} from "../../router.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [globalStyles,
@@ -111,6 +112,7 @@ export class SurveyResultReport extends LitElement {
 
   static get properties() {
     return {
+      phaseId : { type: Number },
       polarChartData: { type: Array },
       polarChartLabels: { type: Array },
       barChartData: { type: Array },
@@ -120,7 +122,7 @@ export class SurveyResultReport extends LitElement {
 
   constructor() {
     super();
-    this.phaseId = 1; // TODO: Adjust based on the URL
+    this.phaseId = 0;
     this.polarChartData = [];
     this.polarChartLabels = [];
     this.barChartData = [];
@@ -140,6 +142,13 @@ export class SurveyResultReport extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
+
+    // Get the phaseId from the URL and redirect to the home page if the phaseId is not found
+    this.phaseId = getRouter().location.params.id || 0;
+    if (this.phaseId == 0) {
+        window.location.href = '/';
+    }
+
     await this._fetchData.run();
   }
 
