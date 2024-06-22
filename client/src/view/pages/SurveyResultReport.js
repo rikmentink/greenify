@@ -161,8 +161,8 @@ export class SurveyResultReport extends LitElement {
   _fetchData = new Task(this, {
     task: async () => {
       const categoryScores = await getCategoryScores(this.phaseId);
-      this.polarChartData = categoryScores.categoryScores.map(score => score.percentage);
-      this.polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
+      this.polarChartData = categoryScores.map(score => score.percentage);
+      this.polarChartLabels = categoryScores.map(score => score.categoryName);
     },
     args: () => [this.phaseId]
   });
@@ -191,9 +191,9 @@ export class SurveyResultReport extends LitElement {
     }
 
     // Sort the subfactor scores based on the percentage from lowest to highest
-    subfactorScores.subfactorScores.sort((a, b) => a.percentage - b.percentage);
+    subfactorScores.sort((a, b) => a.percentage - b.percentage);
 
-    this.barChartData = subfactorScores.subfactorScores.map(score => ({
+    this.barChartData = subfactorScores.map(score => ({
       description: score.subfactorName,
       chartData: [score.averageScore],
       chartLabels: ["Percentage"],
