@@ -41,23 +41,22 @@ export class PdfReportGenerator extends LitElement {
 
     _fetchData = new Task(this, {
         task: async () => {
-            const categoryScores = await getCategoryScores(1); // TODO: Replace PhaseID with actual ID
+            const categoryScores = await getCategoryScores(52); // TODO: Replace PhaseID with actual ID
             const subfactorScores = [];
 
-            for (let categoryScore of categoryScores.categoryScores) {
+            for (let categoryScore of categoryScores) {
                 try {
-                    const subfactorScore = await getSubfactorScoresOfCategory(1, categoryScore.categoryName); // TODO: Replace PhaseID with actual ID
+                    const subfactorScore = await getSubfactorScoresOfCategory(52, categoryScore.categoryName); // TODO: Replace PhaseID with actual ID
                     subfactorScores.push({
                         categoryName: categoryScore.categoryName,
-                        subfactorScores: subfactorScore.subfactorScores
+                        subfactorScores: subfactorScore.sort((a, b) => a.percentage - b.percentage)
                     });
                 } catch (error) {
                     console.error(`Failed to fetch subfactor scores for category ${categoryScore.categoryName}:`, error);
                 }
             }
-
             return {
-                categoryScores: categoryScores.categoryScores,
+                categoryScores: categoryScores,
                 subfactorScores: subfactorScores
             };
         },
