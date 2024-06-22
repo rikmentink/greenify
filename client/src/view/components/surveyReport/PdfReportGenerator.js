@@ -5,6 +5,7 @@ import html2pdf from 'html2pdf.js';
 import globalStyles from "../../../assets/global-styles.js";
 import {PdfReportTemplate} from "./PdfReportTemplate.js";
 import {getCategoryScores, getSubfactorScoresOfCategory} from "../../../services/SurveyReportService.js";
+import {getRouter} from "../../../router.js";
 
 export class PdfReportGenerator extends LitElement {
 
@@ -39,14 +40,24 @@ export class PdfReportGenerator extends LitElement {
         `,
     ];
 
+    static properties = {
+        phaseId: { type: Number }
+    }
+
+    constructor() {
+        super();
+        this.phaseId = 0;
+    }
+
     _fetchData = new Task(this, {
         task: async () => {
-            const categoryScores = await getCategoryScores(52); // TODO: Replace PhaseID with actual ID
+            this.phaseId = getRouter().location.params.id;
+            const categoryScores = await getCategoryScores(this.phaseId);
             const subfactorScores = [];
 
             for (let categoryScore of categoryScores) {
                 try {
-                    const subfactorScore = await getSubfactorScoresOfCategory(52, categoryScore.categoryName); // TODO: Replace PhaseID with actual ID
+                    const subfactorScore = await getSubfactorScoresOfCategory(this.phaseId, categoryScore.categoryName);
                     subfactorScores.push({
                         categoryName: categoryScore.categoryName,
                         subfactorScores: subfactorScore.sort((a, b) => a.percentage - b.percentage)
