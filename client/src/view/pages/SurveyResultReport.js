@@ -203,7 +203,12 @@ export class SurveyResultReport extends LitElement {
       <div class="grid-container">
         <div class="grid-left-section">
           <content-box-plain class="content-box-chart">
-            <agreement-polar-chart .chartData=${this.polarChartData} .chartLabels=${this.polarChartLabels} @chart-click="${this.openDialog}"></agreement-polar-chart>
+            <agreement-polar-chart 
+                .chartData=${this.polarChartData} 
+                .chartLabels=${this.polarChartLabels} 
+                .chartDescription=${"Klik op een bolletje voor meer details"} 
+                @chart-click="${this.openDialog}">
+            </agreement-polar-chart>
           </content-box-plain>
         </div>
         
