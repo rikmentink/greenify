@@ -73,7 +73,7 @@ export class PdfReportGenerator extends LitElement {
 
             return {
                 categoryScores: categoryScores,
-                subfactorScores: subfactorScores
+                subfactorScores: subfactorScores,
                 polarChartData: polarChartData,
                 polarChartLabels: polarChartLabels
             };
