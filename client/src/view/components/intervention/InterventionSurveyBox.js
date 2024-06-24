@@ -168,6 +168,14 @@ export class InterventionSurveyBox extends LitElement {
         this.loading = false;
     }
 
+    showCurrentPhase(phase) {
+        if (phase === this.interventionData.currentPhase.id) {
+            return '2px solid var(--color-primary)';
+        }
+
+        return 'none'
+    }
+
     renderSurveys() {
        if(this.loading) {
            return html`<p>Loading...</p>`;
@@ -175,7 +183,7 @@ export class InterventionSurveyBox extends LitElement {
            return this.phaseData.map(phase => {
                let progress = phase.progress + "%" // Placeholder for progress, need to be calculated
                return html`
-                <div class="survey-box">
+                <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
                     <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
                         <a href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk vragen &#10132;</a>
