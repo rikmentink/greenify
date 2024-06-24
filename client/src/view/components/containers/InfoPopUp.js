@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
-import { GenericContainer } from "../components/containers/GenericContainer.js";
-import globalStyles from "../../assets/global-styles.js";
+import { GenericContainer } from "./GenericContainer.js";
+import globalStyles from "../../../assets/global-styles.js";
 
 export class InfoPopUp extends LitElement {
     static styles = [globalStyles, css`
@@ -12,11 +12,11 @@ export class InfoPopUp extends LitElement {
             color: white;
             background-color: var(--color-primary);
             border: 2px solid var(--color-primary);
-            padding: 10px 20px;
+            padding: 10px 40px;
             font-size: 16px;
             font-weight: bolder;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 20px;
         }
         
         .btn:focus{
@@ -25,25 +25,8 @@ export class InfoPopUp extends LitElement {
 
         dialog {
             border: none;
-            border-top-left-radius: 20px;
-            border-bottom-left-radius: 20px;
-            overflow-y: auto;
-        }
-
-        dialog::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        dialog::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        dialog::-webkit-scrollbar-thumb {
-            background: #888;
-        }
-
-        dialog::-webkit-scrollbar-thumb:hover {
-            background: #555;
+            border-radius: 20px;
+            font-size: 14px;
         }
         
         @media (max-width: 600px) {
@@ -69,18 +52,21 @@ export class InfoPopUp extends LitElement {
 
     showDialog() {
         const dialog = this.shadowRoot.querySelector('dialog');
-        dialog.showModal();
+        if (!localStorage.getItem('infoPopupCookie')) {
+            dialog.showModal();
+        }
     }
 
     hideDialog() {
         const dialog = this.shadowRoot.querySelector('dialog');
+        localStorage.setItem('infoPopupCookie', 'false');
         dialog.close();
     }
 
     render() {
         return html`
             <dialog>
-                <button class="btn btn-primary" @click="${this.hideDialog}">Sluit</button>
+                <button class="btn btn-primary" @click="${this.hideDialog}">Sluiten</button>
                 <generic-container .sections=${this.sections}></generic-container>
             </dialog>
         `;
@@ -93,7 +79,7 @@ export class InfoPopUp extends LitElement {
                 description: "Deze tool is bedoeld om betrokkenen rondom een groene interventie in een zorginstelling te helpen bij het goed implementeren van de groene interventie in de zorginstelling."
             },
             {
-                title: "Wat bedoelen we met implementatie:",
+                title: "Wat bedoelen we met implementatie",
                 description: "Met implementatie bedoelen we “een procesmatige en planmatige invoering van vernieuwingen en/of verbeteringen met als doel dat deze een structurele plaats krijgen in het (beroepsmatig) handelen, in het functioneren van organisatie(s) of in de structuur van de gezondheidszorg” (Grol and Wensing). In het geval van groene interventies gaat het dus om het ervoor zorgen dat een groene interventie gebruikt en onderhouden wordt zoals dat bedoeld is door de ontwikkelaars van de interventie."
             },
             {

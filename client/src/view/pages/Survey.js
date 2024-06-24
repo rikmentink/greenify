@@ -5,7 +5,7 @@ import global from "../../assets/global-styles.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
-import { InfoPopUp } from "./InfoPopUp.js";
+import { InfoPopUp } from "../components/containers/InfoPopUp.js";
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
