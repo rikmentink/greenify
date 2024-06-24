@@ -70,7 +70,6 @@ export class CategoryBox extends LitElement {
 
 
       .questions-container {
-        display: none;
         flex-direction: row;
         gap: 10px;
         margin-top: 10px;
@@ -242,11 +241,17 @@ export class CategoryBox extends LitElement {
         this.expanded = !this.expanded;
     }
 
-    render() {
+    _calculateProgressData() {
         const userProgress = this._getUserProgress();
         const totalQuestions = this.category.subfactors.length;
         const answeredQuestions = Math.round(userProgress * totalQuestions);
         const progressPercentage = Math.round(userProgress * 100);
+
+        return { totalQuestions, answeredQuestions, progressPercentage };
+    }
+
+    render() {
+        const { totalQuestions, answeredQuestions, progressPercentage } = this._calculateProgressData();
 
         return html`
             <div class="rectangle ${this.expanded ? 'expanded' : ''}" id="show-hide-text">
