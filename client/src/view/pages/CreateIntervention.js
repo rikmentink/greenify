@@ -28,7 +28,7 @@ export class CreateIntervention extends LitElement {
         }
         
         input {
-            width: 90%;
+            width: 90% !important;
             padding: 12px 20px;
             margin: 8px 0;
             display: inline-block;
@@ -125,6 +125,42 @@ export class CreateIntervention extends LitElement {
         .info-icon:hover .popup {
             display: block;
         }
+        
+        .info-icon.phasedesc {
+            top: -28px;
+        }
+        
+        .phase-description-field {
+            width: 80%;
+        }
+        
+        .phase-select {
+            height: 45px;
+        }
+        
+        dialog {
+            width: 20%;
+            height: 200px;
+            background-color: white;
+            border-radius: 20px;
+            position: fixed;
+            border: none;
+        }
+        
+        dialog p {
+            text-align: center;
+            padding-top: 30px;
+            font-size: 20px;
+            font-weight: bold;;
+        }
+        
+        .check-icon {
+            display: flex;
+            justify-content: center;
+            font-size: 50px;
+            font-weight: bolder;
+            color: var(--color-primary);
+        }
 
         @media (min-width: 992px) {
             .intervention-form {
@@ -169,11 +205,18 @@ export class CreateIntervention extends LitElement {
 
         await createInterventionWithPhase(this.personId, interventionName, interventionDescription, phase, phaseDescription)
             .then(() => {
-                window.location.href = import.meta.env.BASE_URL + 'home';
+                this.showDialog();
+                setTimeout(() => {
+                    window.location.href = import.meta.env.BASE_URL + 'home';
+                }, 1000);
             })
             .catch(error => {
                 this.handleErrorMessage(error.message);
             });
+    }
+
+    showDialog() {
+        this.shadowRoot.querySelector('dialog').showModal();
     }
 
     firstUpdated() {
@@ -194,16 +237,16 @@ export class CreateIntervention extends LitElement {
                     <form class="intervention-form">
                         <div class="input-group">
                             <div class="info-group">
-                                <input class="interventionNameField" type="text" id="interventionName" name="interventionName" placeholder="Interventie naam" required>
+                                <input class="intervention-name-field" type="text" id="interventionName" name="interventionName" placeholder="Interventie naam" required>
                                 <span class="info-icon">i
                                     <div class="popup">Geef een korte, duidelijke naam voor je interventie. Houd het beknopt maar beschrijvend. Bijvoorbeeld: "Tuin zuid".</div>
                                 </span>
-                                <input class="interventionDescriptionField" type="text" id="interventionDescription" name="interventionDescription" placeholder="Interventie beschrijving" required>
+                                <input class="intervention-description-field" type="text" id="interventionDescription" name="interventionDescription" placeholder="Interventie beschrijving" required>
                                 <span class="info-icon">i
                                     <div class="popup">Geef een korte beschrijving van de interventie. Vermeld de belangrijkste doelstellingen en acties die worden ondernomen.</div>
                                 </span>
-                                <input class="phaseDescriptionField" type="text" id="phaseDescription" name="phaseDescription" placeholder="Beschrijving fase" required>
-                                <span class="info-icon">i
+                                <textarea class="phase-description-field" id="phaseDescription" name="phaseDescription" placeholder="Beschrijving fase" required></textarea>
+                                <span class="info-icon phasedesc">i
                                     <div class="popup">Geef hier wat extra informatie aan voor de geselecteerde fase.</div>
                                 </span>
                             </div>
@@ -221,6 +264,12 @@ export class CreateIntervention extends LitElement {
                     </form>
                 </div>
             </div>
+            <dialog>
+                <p>Uw interventie is succesvol aangemaakt!</p>
+                <div class="check-icon">
+                    <span>&#10003;</span>
+                </div>
+            </dialog>
         `;
     }
 }
