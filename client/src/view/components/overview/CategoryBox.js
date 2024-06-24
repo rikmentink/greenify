@@ -70,6 +70,7 @@ export class CategoryBox extends LitElement {
 
 
       .questions-container {
+        display: none;
         flex-direction: row;
         gap: 10px;
         margin-top: 10px;
