@@ -68,8 +68,8 @@ export class PdfReportGenerator extends LitElement {
             }
 
             // Add polar chart data
-            const polarChartData = categoryScores.categoryScores.map(score => score.percentage);
-            const polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
+            const polarChartData = categoryScores.map(score => score.percentage);
+            const polarChartLabels = categoryScores.map(score => score.categoryName);
 
             return {
                 categoryScores: categoryScores,
