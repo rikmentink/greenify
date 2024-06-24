@@ -195,7 +195,7 @@ export class SurveyResultReport extends LitElement {
 
     this.barChartData = subfactorScores.map(score => ({
       description: score.subfactorName,
-      chartData: [score.averageScore],
+      chartData: [score.percentage],
       chartLabels: ["Percentage"],
       chartColors: ["purple"]
     }));
