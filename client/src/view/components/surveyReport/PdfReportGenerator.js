@@ -48,13 +48,14 @@ export class PdfReportGenerator extends LitElement {
     constructor() {
         super();
         this.phaseId = 0;
+        const urlParams = new URLSearchParams(window.location.search);
+        this.interventionName = decodeURIComponent(urlParams.get('interventionName'));
+        this.phaseName = decodeURIComponent(urlParams.get('phaseName'));
     }
 
     _fetchData = new Task(this, {
         task: async () => {
             this.phaseId = getRouter().location.params.id;
-            const phase = await getPhaseById(this.phaseId);
-            const phaseName = phase.name;
             // Include current date and time of creation
             const reportCreationDate = new Date().toLocaleString();
             const categoryScores = await getCategoryScores(this.phaseId);
@@ -77,7 +78,8 @@ export class PdfReportGenerator extends LitElement {
             const polarChartLabels = categoryScores.map(score => score.categoryName);
 
             return {
-                phaseName: phaseName,
+                phaseName: this.phaseName,
+                interventionName: this.interventionName,
                 reportCreationDate: reportCreationDate,
                 categoryScores: categoryScores,
                 subfactorScores: subfactorScores,

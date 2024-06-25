@@ -166,9 +166,11 @@ export class PdfReportTemplate extends LitElement {
         const chartImg = await this.convertChartToImage();
         return html`
             <h1>Vergroenings rapportage</h1>
-            <h1 class="reportInfo">Fase naam:</h1>
+            <h3 class="reportInfo">Interventie naam:</h3>
+            <p>${this.data.interventionName}</p>
+            <h3 class="reportInfo">Fase naam:</h3>
             <p>${this.data.phaseName}</p>
-            <h1 class="reportInfo">Rapportage aangemaakt op:</h1>
+            <h3 class="reportInfo">Rapportage aangemaakt op:</h3>
             <p>${this.data.reportCreationDate}</p>
 
             <h2>Instemmingspercentage grafiek</h2>
