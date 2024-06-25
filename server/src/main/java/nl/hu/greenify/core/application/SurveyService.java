@@ -139,34 +139,59 @@ public class SurveyService {
     private void createTemplateIfNotExists() {
         if (this.templateRepository.count() > 0) return;
 
-        Subfactor subfactor1 = Subfactor.createSubfactor("First subfactor", 1, false);
-        Subfactor subfactor2 = Subfactor.createSubfactor("Second subfactor", 2, true);
-        Subfactor subfactor3 = Subfactor.createSubfactor("Third subfactor", 3, false);
-        Subfactor subfactor4 = Subfactor.createSubfactor("Fourth subfactor", 4, true);
-        Subfactor subfactor5 = Subfactor.createSubfactor("Fifth subfactor", 5, false);
-        Subfactor subfactor6 = Subfactor.createSubfactor("Sixth subfactor", 6, true);
-        Subfactor subfactor7 = Subfactor.createSubfactor("Seventh subfactor", 7, false);
-        Subfactor subfactor8 = Subfactor.createSubfactor("Eighth subfactor", 8, true);
-        
-        Factor factor1 = Factor.createFactor("First factor", 1);
-        Factor factor2 = Factor.createFactor("Second factor", 2);
-        Factor factor3 = Factor.createFactor("Third factor", 3);
-        Factor factor4 = Factor.createFactor("Fourth factor", 4);
+        // Category 1
+        // For factor 1
+        Subfactor subfactor1 = Subfactor.createSubfactor("De betrokkenen zien de ontwikkelaar van de interventie als legitiem", 1, true);
+        Subfactor subfactor2 = Subfactor.createSubfactor("Er is transparantie in hoe de besluitvorming rondom de groene interventie is verlopen", 2, true);
+        // For factor 2
+        Subfactor subfactor3 = Subfactor.createSubfactor("Er is betrouwbaar ondersteunend bewijs voor de werking van de groene interventie. Naast wetenschappelijk bewijs kan dit bestaan uit verhalen van collega's en patiëntervaringen", 3, true);
+        Subfactor subfactor4 = Subfactor.createSubfactor("Het bewijs is gedeeld met betrokkenen", 4, true);
+
+        // Category 2
+        // For factor 3
+        Subfactor subfactor5 = Subfactor.createSubfactor("Gebruikers worden vroegtijdig betrokken bij de implementatie van de groene interventie", 5, true);
+        Subfactor subfactor6 = Subfactor.createSubfactor("Er is inzicht in de behoeften en belangen van de gebruikers van de groene interventie", 6, true);
+        Subfactor subfactor7 = Subfactor.createSubfactor("De behoeften en belangen van de gebruikers staan centraal binnen de implementatie en worden geïntegreerd in het implementatieplan en het ontwerp van de groene interventie", 7, true);
+        // For factor 4
+        Subfactor subfactor8 = Subfactor.createSubfactor("De organisatie heeft een sterk (groen) netwerk buiten de organisatie met bijvoorbeeld groene partijen, natuurexperts, vrijwilligersorganisaties, sociale initiatieven, scholen en beroepsgroepen", 8, true);
+        Subfactor subfactor9 = Subfactor.createSubfactor("De organisatie gebruikt de kennis en kunde van externe partijen en blijft op de hoogte van de laatste actuele ontwikkelingen en kennis rondom groene interventies", 9, true);
+
+        // Category 3
+        // For factor 5
+        Subfactor subfactor10 = Subfactor.createSubfactor("Organisatorische factoren als de structuur, de omvang, de mate van professionaliteit, hoe lang een organisatie bestaat zijn van positieve invloed op de implementatie van de groene interventie", 10, true);
+        // For factor 6
+        Subfactor subfactor11 = Subfactor.createSubfactor("Binnen de organisatie is er een goede samenwerking en effectieve communicatie tussen verschillende stakeholders", 11, true);
+
+        // Factors
+        Factor factor1 = Factor.createFactor("Afkomst plan", 1);
+        Factor factor2 = Factor.createFactor("Kwaliteit en sterkte bewijs", 2);
+        Factor factor3 = Factor.createFactor("Behoeften en wensen gebruikers", 3);
+        Factor factor4 = Factor.createFactor("Netwerk externe organisaties", 4);
+        Factor factor5 = Factor.createFactor("Kenmerken organisatie", 5);
+        Factor factor6 = Factor.createFactor("Samenwerking en communicatie", 6);
+
         factor1.setSubfactors(List.of(subfactor1, subfactor2));
         factor2.setSubfactors(List.of(subfactor3, subfactor4));
-        factor3.setSubfactors(List.of(subfactor5, subfactor6));
-        factor4.setSubfactors(List.of(subfactor7, subfactor8));
 
-        Category category1 = Category.createCategory("First category", "#FF0000", "This is the first category.");
-        Category category2 = Category.createCategory("Second category", "#00FF00", "This is the second category.");
+        factor3.setSubfactors(List.of(subfactor5, subfactor6, subfactor7));
+        factor4.setSubfactors(List.of(subfactor8, subfactor9));
+
+        factor5.setSubfactors(List.of(subfactor10));
+        factor6.setSubfactors(List.of(subfactor11));
+
+        // Categories
+        Category category1 = Category.createCategory("De groene interventie", "#FF0000", "Kenmerken van de groene interventie die van invloed zijn op de implementatie");
+        Category category2 = Category.createCategory("De externe omgeving", "#00FF00", "Kenmerken van de externe omgeving die van invloed zijn op de implementatie");
+        Category category3 = Category.createCategory("De organisatie", "#00FF00", "Kenmerken van de organisatie die van invloed zijn op de implementatie");
         category1.setFactors(List.of(factor1, factor2));
         category2.setFactors(List.of(factor3, factor4));
+        category3.setFactors(List.of(factor5, factor6));
 
         Template template = Template.createTemplate(
             "Default Template",
             "Should be changed for production!",
             1,
-            List.of(category1, category2)
+            List.of(category1, category2, category3)
         );
 
         this.templateRepository.save(template);
