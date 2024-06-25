@@ -7,7 +7,7 @@ public class CategoryScoresDto {
     private String categoryName;
     private double maxPossibleScore;
     private double totalScore;
-    private double percentage;
+    private int percentage;
 
     public static CategoryScoresDto fromEntity(String categoryName, double maxPossibleScore, double totalScore) {
         CategoryScoresDto dto = new CategoryScoresDto();
@@ -15,7 +15,7 @@ public class CategoryScoresDto {
         dto.maxPossibleScore = maxPossibleScore;
         dto.totalScore = totalScore;
         // Translate the total score to a percentage for better readability
-        dto.percentage = (totalScore * 100) / maxPossibleScore;
+        dto.percentage = (int)Math.round((totalScore * 100) / maxPossibleScore);
         return dto;
     }
 }
