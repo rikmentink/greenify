@@ -129,7 +129,6 @@ export class Overview extends LitElement {
                     </div>
                 </div>
                 <h1>Categorieën</h1>
-
                   ${data.categories ? data.categories.map(category => html`
                     <gi-categorybox .progress=${data.contenders} .category=${category} .surveyId=${data.surveyId}></gi-categorybox>`) : html`
                     <p>Loading categories...</p>`
