@@ -55,6 +55,6 @@ public class PhaseProgressDto {
                 phase.getDescription(),
                 surveyOfCurrentUser.getId(),
                 Arrays.asList(ParticipantDto.fromEntity(phase, participant, true)),
-                CategoryDto.fromEntities(phase.getSurveys().get(0)));
+                CategoryDto.fromEntities(surveyOfCurrentUser));
     }
 }
