@@ -7,35 +7,8 @@ async function handleErrorMessages(response) {
     }
 }
 
-async function removePersonById(id) {
-    const response = await fetch(`${API_URL}/person/${id}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-
-    await handleErrorMessages(response);
-    return response.json();
-}
-
 async function getPersonByEmail(email) {
     const response = await fetch(`${API_URL}/person/email/${email}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-
-    await handleErrorMessages(response);
-
-    return response.json();
-}
-
-async function getPersonById(id) {
-    const response = await fetch(`${API_URL}/person/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -62,4 +35,4 @@ async function getCurrentPerson() {
     return response.json();
 }
 
-export { getPersonByEmail, getPersonById, getCurrentPerson, removePersonById};
+export { getPersonByEmail, getCurrentPerson};
