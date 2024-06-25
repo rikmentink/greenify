@@ -48,10 +48,4 @@ public class PersonController extends Controller {
         return this.createResponse(PersonDto.fromEntity(this.personService.getCurrentPerson()));
     }
 
-    @DeleteMapping(value="/{id}", produces="application/json")
-    public ResponseEntity<?> deletePerson(@PathVariable Long id) {
-        this.personService.deletePerson(id);
-        return this.createResponse("Person deleted");
-    }
-
 }

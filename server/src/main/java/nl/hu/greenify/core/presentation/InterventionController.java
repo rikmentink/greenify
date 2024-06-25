@@ -47,6 +47,11 @@ public class InterventionController extends Controller {
         return this.createResponse(this.interventionService.addParticipant(id, personId), HttpStatus.CREATED);
     }
 
+    @PostMapping(value="/{id}/person/{personId}/remove", produces="application/json")
+    public ResponseEntity<?> removeParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
+        return this.createResponse(this.interventionService.removeParticipant(id, personId), HttpStatus.CREATED);
+    }
+
 //    @Secured({"ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
     @GetMapping("/all/{id}")
     public ResponseEntity<?> getAllInterventionsByPerson(@PathVariable("id") Long id) {
