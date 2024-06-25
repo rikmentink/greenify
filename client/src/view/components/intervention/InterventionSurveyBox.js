@@ -181,7 +181,7 @@ export class InterventionSurveyBox extends LitElement {
            return html`<p>Loading...</p>`;
        } else {
            return this.phaseData.map(phase => {
-               let progress = phase.progress + "%" // Placeholder for progress, need to be calculated
+               let progress = Math.round(phase.progress) + "%"
                return html`
                 <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
                     <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
