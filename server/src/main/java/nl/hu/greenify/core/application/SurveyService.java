@@ -6,6 +6,9 @@ import java.util.List;
 
 import jakarta.annotation.PostConstruct;
 import nl.hu.greenify.core.domain.*;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
@@ -116,7 +119,6 @@ public class SurveyService {
         return response;
     }
 
-    @PostConstruct // Call method only once after bean is created
     public Template createDefaultTemplate() {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();
