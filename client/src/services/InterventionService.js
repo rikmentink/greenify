@@ -36,6 +36,19 @@ const response = await fetch(`${API_URL}/intervention/${interventionId}/person/$
     return response.json();
 }
 
+async function removeParticipantFromIntervention(interventionId, personId) {
+    const response = await fetch(`${API_URL}/intervention/${interventionId}/person/${personId}/remove`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+
+    await handleErrorMessages(response);
+    return response.json();
+}
+
 async function getInterventionByPersonId(id) {
     const response = await fetch(`${API_URL}/intervention/all/${id}`, {
         method: 'GET',
@@ -79,4 +92,4 @@ async function getPhasesByInterventionId(id) {
     return response.json();
 }
 
-export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention, getPhasesByInterventionId, createInterventionWithPhase};
+export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention, getPhasesByInterventionId, createInterventionWithPhase, removeParticipantFromIntervention};
