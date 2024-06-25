@@ -66,7 +66,7 @@ export class InvitationInput extends LitElement {
             }
             ));
         } catch (error) {
-            this.handleException("Person does not exist. If the filled in email is correct, please check your inbox for an invitation.");
+            this.handleException("Person bestaat niet. Als het ingevulde email correct is, check jouw inbox voor een uitnodiging.");
         }
     }
 
