@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import jakarta.annotation.PostConstruct;
 import nl.hu.greenify.core.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -115,6 +116,7 @@ public class SurveyService {
         return response;
     }
 
+    @PostConstruct // Call method only once after bean is created
     public Template createDefaultTemplate() {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();
