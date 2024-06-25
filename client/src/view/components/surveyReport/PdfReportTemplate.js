@@ -110,6 +110,11 @@ export class PdfReportTemplate extends LitElement {
               
               img {
                 width: 100%;
+              } 
+              
+              .subfactorName {
+                font-weight: 500;
+                font-size: 0.8rem;
               }
             `,
         ];
@@ -156,7 +161,8 @@ export class PdfReportTemplate extends LitElement {
         const chartImg = await this.convertChartToImage();
         return html`
             <h1>Survey report</h1>
-            <p>Phase: phase_name_1</p>
+            <p>Phase: ${this.data.phaseName}</p>
+            <p>Report creation date: ${this.data.reportCreationDate}</p>
 
             <h2>Agreement Polar Chart</h2>
             ${chartImg}
@@ -181,13 +187,14 @@ export class PdfReportTemplate extends LitElement {
                     <div class="col full">
                         <h3>Subfactor Scores</h3>
                         ${this.data.subfactorScores[index].subfactorScores.map(subfactorScore => html`
-                            <h4>${subfactorScore.subfactorName}</h4>
+                            <p class="subfactorName">${subfactorScore.subfactorName}</p>
                             <div class="datalist">
                                 <dl>
                                     <dt>Agreement percentage</dt>
                                     <dd>${subfactorScore.percentage}%</dd>
                                 </dl>
                             </div>
+                            <br>
                         `)}
                     </div>
                 </div>
