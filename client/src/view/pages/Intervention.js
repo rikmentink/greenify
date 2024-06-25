@@ -7,7 +7,7 @@ import {addParticipantToIntervention} from "../../services/InterventionService.j
 import {getInterventionById} from "../../services/InterventionService.js";
 import {Task} from "@lit/task";
 import {getSurvey} from "../../services/SurveyService.js";
-import {removePersonById} from "../../services/PersonService.js";
+import {removeParticipantFromIntervention} from "../../services/InterventionService.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -31,12 +31,11 @@ export class Intervention extends LitElement {
         }
 
         this._fetchData(this.interventionId);
-        console.log(this.data);
     }
 
     async onUserDeleted(event) {
-        console.log(event)
-        await removePersonById(event.detail.userId);
+        await removeParticipantFromIntervention(this.data.value.id, event.detail.userId);
+        window.location.reload();
     }
 
     async _fetchData(id) {
@@ -57,8 +56,6 @@ export class Intervention extends LitElement {
 
     async handlePersonFetched(event) {
         const person = event.detail.person;
-
-        try {
             await this._addParticipantToIntervention(this.data.value.id, person.id);
             window.location.reload();
 
@@ -67,10 +64,6 @@ export class Intervention extends LitElement {
                 subject: "U bent uitgenodigd bij een interventie",
                 body: `Beste deelnemer, \nU bent toegevoegd aan interventie: "${this.data.value.name}". Indien u geen account heeft, kunt u zich aanmelden via de registreer pagina: [link]\n\nMet vriendelijke groet,\nDe Vrije Universiteit Amsterdam.`
             });
-
-        } catch (error) {
-            alert("Er is iets misgegaan. Let op dat u niet dezelfde deelnemers opnieuw of de admin toevoegt.");
-        }
     }
 
     render() {
