@@ -69,19 +69,19 @@ export class Overview extends LitElement {
       super.connectedCallback();
       this.interventionId = getRouter().location.params.interventionId || 0;
       this.phaseId = getRouter().location.params.phaseId || 0;
+
+      await this._fetchData(this.interventionId, this.phaseId);
       this.authorizeAndRedirect();
     }
 
     async authorizeAndRedirect() {
-        if (this.interventionId == 0 || this.phaseId == 0) {
-            window.location.href = '/';
-            return false;
-        }
-
-        const phase = await this._fetchData(this.interventionId, this.phaseId);
-        if (phase.hasOwnProperty('error')) {
-            window.location.href = '/';
-            return false;
+        if (
+          this.data._value &&
+          this.data._value.error &&
+          this.data._value.error === "unauthorized"
+        ) {
+          window.location.href = "/";
+          return false;
         }
         
         return true;
@@ -95,6 +95,17 @@ export class Overview extends LitElement {
         return await this.data.run();
     }
 
+    getTotalQuestions(categories) {
+        return categories.reduce((total, category) => total + category.subfactors.length, 0);
+    }
+
+    getAnsweredQuestions(contenders) {
+        const currentUser = contenders[0];
+        if (!currentUser) return 0;
+
+        return currentUser.responses.length;
+    }
+
     render() {
         return this.data.render({
             loading: () => html`<p>Loading...</p>`,
@@ -104,7 +115,7 @@ export class Overview extends LitElement {
                 <div class="content">
                     <div class="title-desc">
                         <h1>Vragenlijst</h1>
-                        <p>${data.description ? data.description : 'Vul hier de vragen in.'}</p>
+                        <p>Hier kunt u alle vragen en categorieën bekijken. Klik op een categorie en vraag om deze in te vullen.</p>
                     </div>
                     <hr class="divider">
                     <div>
@@ -113,16 +124,17 @@ export class Overview extends LitElement {
                             <em>Fase</em>
                             <p class="fase">${data.name}</p>
                             <em>Voortgang</em>
-                            <p class="voortgang">beantwoorden vragen</p>
+                            <p class="voortgang">${this.getAnsweredQuestions(data.contenders)}/${this.getTotalQuestions(data.categories)} beantwoorden vragen</p>
                         </div>
                     </div>
                 </div>
                 <h1>Categorieën</h1>
 
-                ${data.categories ? data.categories.map(category => html`
-                    <gi-categorybox .progress=${data.contenders} .category=${category}></gi-categorybox>`) : html`<p>Loading categories...</p>`}
-            `
-        });
+                  ${data.categories ? data.categories.map(category => html`
+                    <gi-categorybox .progress=${data.contenders} .category=${category} .surveyId=${data.surveyId}></gi-categorybox>`) : html`
+                    <p>Loading categories...</p>`
+                  }
+            `});
     }
 }
 

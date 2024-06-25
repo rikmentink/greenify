@@ -193,7 +193,7 @@ export class InterventionSurveyBox extends LitElement {
                         <div class="progress-labels">
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}%" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
