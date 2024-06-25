@@ -21,6 +21,8 @@ export class AgreementPolarChart extends LitElement {
         super();
         this.chartData = [];
         this.chartLabels = [];
+        this.chartDescription = '';
+        this.showDescription = false;
     }
 
     updated(changedProperties) {
@@ -38,6 +40,10 @@ export class AgreementPolarChart extends LitElement {
 
         if (this.chart) {
             this.chart.destroy(); // Destroy chart if it already exists, required for updating the chart
+        }
+
+        if (this.chartDescription !== '') {
+            this.showDescription = true; // Show description if it is not empty
         }
 
         this.chart = new Chart(ctx, {
@@ -71,6 +77,13 @@ export class AgreementPolarChart extends LitElement {
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    subtitle: {
+                        display: this.showDescription,
+                        text: this.chartDescription,
+                        font: {
+                            size: 15
+                        }
                     },
                     title: {
                         display: true,

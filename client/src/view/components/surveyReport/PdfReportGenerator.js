@@ -5,6 +5,7 @@ import html2pdf from 'html2pdf.js';
 import globalStyles from "../../../assets/global-styles.js";
 import {PdfReportTemplate} from "./PdfReportTemplate.js";
 import {getCategoryScores, getSubfactorScoresOfCategory} from "../../../services/SurveyReportService.js";
+import {getRouter} from "../../../router.js";
 
 export class PdfReportGenerator extends LitElement {
 
@@ -39,26 +40,42 @@ export class PdfReportGenerator extends LitElement {
         `,
     ];
 
+    static properties = {
+        phaseId: { type: Number }
+    }
+
+    constructor() {
+        super();
+        this.phaseId = 0;
+    }
+
     _fetchData = new Task(this, {
         task: async () => {
-            const categoryScores = await getCategoryScores(1); // TODO: Replace PhaseID with actual ID
+            this.phaseId = getRouter().location.params.id;
+            const categoryScores = await getCategoryScores(this.phaseId);
             const subfactorScores = [];
 
-            for (let categoryScore of categoryScores.categoryScores) {
+            for (let categoryScore of categoryScores) {
                 try {
-                    const subfactorScore = await getSubfactorScoresOfCategory(1, categoryScore.categoryName); // TODO: Replace PhaseID with actual ID
+                    const subfactorScore = await getSubfactorScoresOfCategory(this.phaseId, categoryScore.categoryName);
                     subfactorScores.push({
                         categoryName: categoryScore.categoryName,
-                        subfactorScores: subfactorScore.subfactorScores
+                        subfactorScores: subfactorScore.sort((a, b) => a.percentage - b.percentage)
                     });
                 } catch (error) {
                     console.error(`Failed to fetch subfactor scores for category ${categoryScore.categoryName}:`, error);
                 }
             }
 
+            // Add polar chart data
+            const polarChartData = categoryScores.map(score => score.percentage);
+            const polarChartLabels = categoryScores.map(score => score.categoryName);
+
             return {
-                categoryScores: categoryScores.categoryScores,
-                subfactorScores: subfactorScores
+                categoryScores: categoryScores,
+                subfactorScores: subfactorScores,
+                polarChartData: polarChartData,
+                polarChartLabels: polarChartLabels
             };
         },
         args: () => []
@@ -86,7 +103,10 @@ export class PdfReportGenerator extends LitElement {
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak: { avoid: ['tr', 'td'] },
+            pagebreak: {
+                avoid: ['tr', 'td', 'h1', 'h2', 'h3', 'h4'],
+                before: ['.section', '.col full']
+            },
         };
 
         html2pdf().set(options).from(pdfContainer).save();

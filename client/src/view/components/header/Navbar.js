@@ -116,7 +116,6 @@ class Navbar extends LitElement {
         if (Array.isArray(this.roles) && (this.roles.includes('ROLE_USER') || this.roles.includes('ROLE_ADMIN'))) {
             return html`
             <gi-navbar-item url="" label="Home"></gi-navbar-item>
-            <gi-navbar-item url="tool" label="Tool"></gi-navbar-item>
         `;
         }
         return '';

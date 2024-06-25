@@ -1,5 +1,8 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, render } from 'lit';
+import "./charts/AgreementPolarChart.js";
+import "./ContentBoxPlain.js";
 import globalStyles from "../../../assets/global-styles.js";
+import html2canvas from "html2canvas";
 
 export class PdfReportTemplate extends LitElement {
     static properties = {
@@ -104,6 +107,10 @@ export class PdfReportTemplate extends LitElement {
               h3 {
                 color: var(--color-primary);
               }
+              
+              img {
+                width: 100%;
+              }
             `,
         ];
     }
@@ -119,10 +126,41 @@ export class PdfReportTemplate extends LitElement {
         return this;
     }
 
+    async convertChartToImage() {
+        // Create a new chart element and append it to the body
+        const chartElement = document.createElement('div');
+        render(this.renderChart(), chartElement);
+        document.body.appendChild(chartElement);
+
+        // Timeout to ensure the chart is rendered TODO: Find a better way to do this
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        const canvas = await html2canvas(chartElement);
+        const dataUrl = canvas.toDataURL();
+        const img = new Image();
+        img.src = dataUrl;
+
+        // Remove element again after conversion
+        document.body.removeChild(chartElement);
+
+        return img;
+    }
+
+    renderChart() {
+        return html`
+            <agreement-polar-chart .chartData=${this.data.polarChartData} .chartLabels=${this.data.polarChartLabels}></agreement-polar-chart>
+        `
+    }
+
     async render() {
+        const chartImg = await this.convertChartToImage();
         return html`
             <h1>Survey report</h1>
             <p>Phase: phase_name_1</p>
+
+            <h2>Agreement Polar Chart</h2>
+            ${chartImg}
+            
             ${this.data.categoryScores.map((categoryScore, index) => html`
                 <div class="section">
                     <h2>${categoryScore.categoryName}</h2>
