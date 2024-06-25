@@ -14,7 +14,7 @@ async function getInterventionById(id) {
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
-        },
+        }
     });
 
     await handleErrorMessages(response);
@@ -69,7 +69,7 @@ async function createInterventionWithPhase(adminId, name, description, phaseName
         headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
-        },
+        }
     });
 
     const data = await response.json();
@@ -82,9 +82,9 @@ async function getPhasesByInterventionId(id) {
     const response = await fetch(`${API_URL}/intervention/${id}/phases`, {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-        },
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
     });
 
     await handleErrorMessages(response);

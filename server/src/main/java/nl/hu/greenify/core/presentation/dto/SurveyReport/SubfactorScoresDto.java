@@ -7,7 +7,7 @@ public class SubfactorScoresDto {
     private String subfactorName;
     private double maxPossibleScore;
     private double averageScore;
-    double percentage;
+    private int percentage;
 
     public static SubfactorScoresDto fromEntity(String subfactorName, double maxPossibleScore, double averageScore) {
         SubfactorScoresDto dto = new SubfactorScoresDto();
@@ -15,7 +15,7 @@ public class SubfactorScoresDto {
         dto.maxPossibleScore = maxPossibleScore;
         dto.averageScore = averageScore;
         // Translate the average score to a percentage for better readability
-        dto.percentage = (averageScore * 100) / maxPossibleScore;
+        dto.percentage = (int)Math.round((averageScore * 100) / maxPossibleScore);
         return dto;
     }
 }

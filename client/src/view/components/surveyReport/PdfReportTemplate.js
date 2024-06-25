@@ -110,6 +110,16 @@ export class PdfReportTemplate extends LitElement {
               
               img {
                 width: 100%;
+              } 
+              
+              .subfactorName {
+                font-weight: 500;
+                font-size: 0.8rem;
+              }
+              
+              .reportInfo {
+                color: dimgrey;
+                font-size: 0.9rem;
               }
             `,
         ];
@@ -155,22 +165,27 @@ export class PdfReportTemplate extends LitElement {
     async render() {
         const chartImg = await this.convertChartToImage();
         return html`
-            <h1>Survey report</h1>
-            <p>Phase: phase_name_1</p>
+            <h1>Vergroenings rapportage</h1>
+            <h3 class="reportInfo">Interventie naam:</h3>
+            <p>${this.data.interventionName}</p>
+            <h3 class="reportInfo">Fase naam:</h3>
+            <p>${this.data.phaseName}</p>
+            <h3 class="reportInfo">Rapportage aangemaakt op:</h3>
+            <p>${this.data.reportCreationDate}</p>
 
-            <h2>Agreement Polar Chart</h2>
+            <h2>Instemmingspercentage grafiek</h2>
             ${chartImg}
             
             ${this.data.categoryScores.map((categoryScore, index) => html`
                 <div class="section">
                     <h2>${categoryScore.categoryName}</h2>
                     <div class="col full">
-                        <h3>Category Scores</h3>
+                        <h3>Instemmingspercentage over gehele categorie</h3>
                         <div class="datalist">
                             <dl>
-                                <dt>Max Possible Score</dt>
+                                <dt>Maximaal te behalen score</dt>
                                 <dd>${categoryScore.maxPossibleScore}</dd>
-                                <dt>Total Score</dt>
+                                <dt>Totale score</dt>
                                 <dd>${categoryScore.totalScore}</dd>
                                 <dt>Percentage</dt>
                                 <dd>${categoryScore.percentage}%</dd>
@@ -179,15 +194,16 @@ export class PdfReportTemplate extends LitElement {
                     </div>
 
                     <div class="col full">
-                        <h3>Subfactor Scores</h3>
+                        <h3>Instemmingspercentage per vraag</h3>
                         ${this.data.subfactorScores[index].subfactorScores.map(subfactorScore => html`
-                            <h4>${subfactorScore.subfactorName}</h4>
+                            <p class="subfactorName">${subfactorScore.subfactorName}</p>
                             <div class="datalist">
                                 <dl>
-                                    <dt>Agreement percentage</dt>
+                                    <dt>Instemmingspercentage</dt>
                                     <dd>${subfactorScore.percentage}%</dd>
                                 </dl>
                             </div>
+                            <br>
                         `)}
                     </div>
                 </div>

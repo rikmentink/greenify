@@ -181,19 +181,19 @@ export class InterventionSurveyBox extends LitElement {
            return html`<p>Loading...</p>`;
        } else {
            return this.phaseData.map(phase => {
-               let progress = phase.progress + "%" // Placeholder for progress, need to be calculated
+               let progress = Math.round(phase.progress) + "%"
                return html`
                 <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
                     <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
                         <a href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk vragen &#10132;</a>
-                        <a href="/phase/${phase.id}/report">Bekijk eindrapport &#10132;</a>
+                        <a @click=${() => this.navigateToReport(phase.id, phase.name)}>Bekijk eindrapport &#10132;</a>
                     </div>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}%" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
                             <p class="progress-label">${progress}</p>
@@ -203,6 +203,12 @@ export class InterventionSurveyBox extends LitElement {
             `;
            });
        }
+    }
+
+    navigateToReport(phaseId, phaseName) {
+        const interventionNameParam = encodeURIComponent(this.interventionData.name);
+        const phaseNameParam = encodeURIComponent(phaseName);
+        Router.go(`/phase/${phaseId}/report?interventionName=${interventionNameParam}&phaseName=${phaseNameParam}`);
     }
 
     render() {

@@ -5,6 +5,7 @@ import html2pdf from 'html2pdf.js';
 import globalStyles from "../../../assets/global-styles.js";
 import {PdfReportTemplate} from "./PdfReportTemplate.js";
 import {getCategoryScores, getSubfactorScoresOfCategory} from "../../../services/SurveyReportService.js";
+import {getPhaseById} from "../../../services/PhaseService.js";
 import {getRouter} from "../../../router.js";
 
 export class PdfReportGenerator extends LitElement {
@@ -47,11 +48,16 @@ export class PdfReportGenerator extends LitElement {
     constructor() {
         super();
         this.phaseId = 0;
+        const urlParams = new URLSearchParams(window.location.search);
+        this.interventionName = decodeURIComponent(urlParams.get('interventionName'));
+        this.phaseName = decodeURIComponent(urlParams.get('phaseName'));
     }
 
     _fetchData = new Task(this, {
         task: async () => {
             this.phaseId = getRouter().location.params.id;
+            // Include current date and time of creation
+            const reportCreationDate = new Date().toLocaleString();
             const categoryScores = await getCategoryScores(this.phaseId);
             const subfactorScores = [];
 
@@ -72,6 +78,9 @@ export class PdfReportGenerator extends LitElement {
             const polarChartLabels = categoryScores.map(score => score.categoryName);
 
             return {
+                phaseName: this.phaseName,
+                interventionName: this.interventionName,
+                reportCreationDate: reportCreationDate,
                 categoryScores: categoryScores,
                 subfactorScores: subfactorScores,
                 polarChartData: polarChartData,
