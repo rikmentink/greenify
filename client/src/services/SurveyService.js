@@ -8,7 +8,10 @@ async function getSurvey(id, categoryId = 0, page = 1, pageSize = 1000) {
 
     return fetch(url, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
     })
     .then(response => {
         if (!response.ok) {
@@ -22,7 +25,10 @@ async function saveResponse(id, subfactorId, response) {
   const url = new URL(`${API_URL}/survey/${id}/response`);
   return fetch(url, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
     body: JSON.stringify({ 
       subfactorId,
       facilitatingFactor: response.facilitatingFactor,
