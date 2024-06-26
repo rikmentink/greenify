@@ -25,7 +25,7 @@ export class SurveyQuestion extends LitElement {
         }
 
         .question > .answer > label {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 300;
             line-height: 1;
         }
@@ -46,6 +46,12 @@ export class SurveyQuestion extends LitElement {
             border-color: var(--color-primary);
             background-color: rgba(var(--color-primary-rgb), .2);
         }
+      
+      .answer > label {
+        transform: rotate(-45deg) translate(40%);
+        transform-origin: 40% 100%;
+        margin-left: 1rem;
+      }
     `
 
     constructor() {
@@ -59,7 +65,7 @@ export class SurveyQuestion extends LitElement {
             <div class="question" data-question="${this.name}">
                 ${this._findOptions().map(option => html`
                     <div class="answer">
-                        <label>${option.name}</label>
+                        <label>${option.displayName}</label>
                         <input type="radio" name="${this.name}" value="${option.name}" ?checked="${this.answer === option.value}" @change=${this._selectAnswer}/>
                     </div>
                 `)}
