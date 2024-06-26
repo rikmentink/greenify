@@ -73,6 +73,7 @@ export class InterventionSurveyBox extends LitElement {
         }
         
         .sy-status a {
+            cursor: pointer;
             color: var(--color-primary);
             text-decoration: none;
             font-weight: bold;
