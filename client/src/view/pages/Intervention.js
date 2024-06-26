@@ -2,6 +2,7 @@ import {css, html, LitElement} from "lit";
 import {InterventionUsersPanel} from "../components/intervention/InterventionUsersPanel.js";
 import {InterventionInformationBox} from "../components/intervention/InterventionInformationBox.js";
 import {InterventionSurveyBox} from "../components/intervention/InterventionSurveyBox.js";
+import {getCurrentUser} from "../../services/AccountService.js";
 import {sendMail} from "../../services/MailService.js";
 import {addParticipantToIntervention} from "../../services/InterventionService.js";
 import {getInterventionById} from "../../services/InterventionService.js";
@@ -31,11 +32,19 @@ export class Intervention extends LitElement {
         }
 
         this._fetchData(this.interventionId);
+        await this._fetchCurrentAccount();
     }
 
     async onUserDeleted(event) {
         await removeParticipantFromIntervention(this.data.value.id, event.detail.userId);
         window.location.reload();
+    }
+
+    async _fetchCurrentAccount() {
+        this.userData = new Task(this, {
+            task: async () => getCurrentUser()
+        });
+        return await this.userData.run();
     }
 
     async _fetchData(id) {
@@ -66,13 +75,22 @@ export class Intervention extends LitElement {
             });
     }
 
+    renderUserPanel(data){
+        const userRoles = this.userData.value.authorities.map(role => role.authority);
+        if (this.userData.value.email === data.admin.email && userRoles.includes("ROLE_MANAGER")) {
+            return html`
+            <intervention-users-panel .userData="${data.participants}" .progress="${data.participantProgress}"></intervention-users-panel>
+        `;
+        }
+    }
+
     render() {
         return html`
             ${this.data.render({
                 complete:  (data) => html`
                 <intervention-information-box .interventionData="${data}"></intervention-information-box>
                 <intervention-survey-box .id="${data.id}"></intervention-survey-box>
-                <intervention-users-panel .userData="${data.participants}" .progress="${data.participantProgress}"></intervention-users-panel>
+                ${this.renderUserPanel(data)}
             `,
             })}
         `
