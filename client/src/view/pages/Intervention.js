@@ -35,6 +35,7 @@ export class Intervention extends LitElement {
 
     async onUserDeleted(event) {
         await removeParticipantFromIntervention(this.data.value.id, event.detail.userId);
+        window.location.reload();
     }
 
     async _fetchData(id) {
@@ -56,6 +57,7 @@ export class Intervention extends LitElement {
     async handlePersonFetched(event) {
         const person = event.detail.person;
             await this._addParticipantToIntervention(this.data.value.id, person.id);
+            window.location.reload();
 
             await sendMail({
                 to: person.email,
