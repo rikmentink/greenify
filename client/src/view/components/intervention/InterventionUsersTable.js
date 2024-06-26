@@ -99,7 +99,7 @@ export class InterventionUsersTable extends LitElement {
 
     renderUsers() {
         return this.filteredUserData.map((user, index) => {
-            const progress = this.progress[index];
+            const progress = Math.round(this.progress[index]);
             return html`
             <tr>
                 <td>${user.firstName}</td>

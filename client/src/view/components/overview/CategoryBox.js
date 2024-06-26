@@ -1,7 +1,8 @@
 import { html, css, LitElement } from 'lit';
+import globalStyles from "../../../assets/global-styles.js";
 
 export class CategoryBox extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
       p, h1, h2, h3, h4, h5, h6, em {
         color: black;
       }
@@ -60,7 +61,7 @@ export class CategoryBox extends LitElement {
       }
 
       .my-category-btn a {
-        background-color: #4CBB17;
+        background-color: var(--color-primary);
         color: white;
         padding: 10px 60px 10px 60px;
         border-radius: 2px;
@@ -85,11 +86,11 @@ export class CategoryBox extends LitElement {
       }
 
       .my-question-btn a.enabled {
-        background-color: #4CBB17;
+        background-color: var(--color-primary);
       }
 
       .my-question-btn a {
-        background-color: #4CBB17;
+        background-color: var(--color-primary);
         color: white;
         padding: 10px 17.6px;
         border-radius: 2px;
@@ -122,7 +123,7 @@ export class CategoryBox extends LitElement {
 
       .progress {
         height: 100%;
-        background-color: #4CBB17;
+        background-color: var(--color-primary)
         border-radius: 5px;
       }
 
@@ -150,7 +151,7 @@ export class CategoryBox extends LitElement {
 
       .progress {
         height: 100%;
-        background-color: #4CBB17;
+        background-color: var(--color-primary)
         border-radius: 5px;
       }
 
@@ -193,8 +194,7 @@ export class CategoryBox extends LitElement {
       .rectangle.expanded .questions-container {
         display: flex;
       }
-
-    `;
+    `];
 
     static properties = {
         category: { type: Object },
@@ -281,7 +281,7 @@ export class CategoryBox extends LitElement {
                         <a href="/tool/${this.surveyId}?category=${this.category.id}">Ga verder</a>
                     </div>
                 </div>
-                <a class="show-more" @click="${this._toggleExpand}">Bekijk Voortuigang V</a>
+                <a class="show-more" @click="${this._toggleExpand}">Bekijk Vooruitgang V</a>
                 <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang Ʌ</a>
             </div>
         `;
