@@ -14,7 +14,7 @@ public class MailConfig {
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(465); // Changed port to 465 for SSL
+        mailSender.setPort(465);
 
         mailSender.setUsername("GreenITinfo2024@gmail.com");
         mailSender.setPassword("uytj dssu zmjj tnqm");

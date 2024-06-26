@@ -119,4 +119,11 @@ public class InterventionService {
         return interventionRepository.findById(id)
                 .orElseThrow(() -> new InterventionNotFoundException(id));
     }
+
+    public Intervention removeParticipant(Long id, Long personId) {
+        Intervention intervention = getInterventionById(id);
+        Person person = personService.getPersonById(personId);
+        intervention.removeParticipant(person);
+        return interventionRepository.save(intervention);
+    }
 }

@@ -9,6 +9,7 @@ import nl.hu.greenify.core.presentation.dto.CreatePhaseDto;
 
 import nl.hu.greenify.core.presentation.dto.InterventionDto;
 import nl.hu.greenify.core.presentation.dto.PhaseDto;
+import nl.hu.greenify.security.application.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -21,10 +22,12 @@ import java.util.List;
 public class InterventionController extends Controller {
     private final InterventionService interventionService;
     private final PersonService personService;
+    private final AccountService accountService;
 
-    public InterventionController(InterventionService interventionService, PersonService personService) {
+    public InterventionController(InterventionService interventionService, PersonService personService, AccountService accountService) {
         this.interventionService = interventionService;
         this.personService = personService;
+        this.accountService = accountService;
     }
 
     /**
@@ -34,13 +37,19 @@ public class InterventionController extends Controller {
 //    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<?> getInterventionById(@PathVariable("id") Long id) {
-        return this.createResponse(this.interventionService.getInterventionById(id));
+        Person currentPerson = accountService.getCurrentPerson();
+        return this.createResponse(InterventionDto.fromEntity(this.interventionService.getInterventionById(id), currentPerson));
     }
 
 //    @Secured({"ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
     @PostMapping(value="/{id}/person/{personId}", produces="application/json")
     public ResponseEntity<?> addParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
         return this.createResponse(this.interventionService.addParticipant(id, personId), HttpStatus.CREATED);
+    }
+
+    @PostMapping(value="/{id}/person/{personId}/remove", produces="application/json")
+    public ResponseEntity<?> removeParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
+        return this.createResponse(this.interventionService.removeParticipant(id, personId), HttpStatus.CREATED);
     }
 
 //    @Secured({"ROLE_MANAGER", "ROLE_VUMEDEWERKER"})

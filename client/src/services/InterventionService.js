@@ -12,6 +12,7 @@ async function getInterventionById(id) {
     const response = await fetch(`${API_URL}/intervention/${id}`, {
         method: 'GET',
         headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
         }
     });
@@ -24,13 +25,27 @@ async function getInterventionById(id) {
 async function addParticipantToIntervention(interventionId, personId) {
 const response = await fetch(`${API_URL}/intervention/${interventionId}/person/${personId}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
+         headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+        'Content-Type': 'application/json'
+    },
     });
 
     await handleErrorMessages(response);
 
+    return response.json();
+}
+
+async function removeParticipantFromIntervention(interventionId, personId) {
+    const response = await fetch(`${API_URL}/intervention/${interventionId}/person/${personId}/remove`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+
+    await handleErrorMessages(response);
     return response.json();
 }
 
@@ -52,6 +67,7 @@ async function createInterventionWithPhase(adminId, name, description, phaseName
         method: 'POST',
         body: JSON.stringify({adminId, name, description}),
         headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
             'Content-Type': 'application/json'
         }
     });
@@ -76,4 +92,4 @@ async function getPhasesByInterventionId(id) {
     return response.json();
 }
 
-export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention, getPhasesByInterventionId, createInterventionWithPhase};
+export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention, getPhasesByInterventionId, createInterventionWithPhase, removeParticipantFromIntervention};

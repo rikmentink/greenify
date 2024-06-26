@@ -58,6 +58,16 @@ public class Intervention {
         return this.phases.get(this.phases.size() - 1);
     }
 
+    public List<Person> removeParticipant(Person person) {
+        if(person == null) {
+            throw new IllegalArgumentException("Person should not be null");
+        }
+
+        this.participants.remove(person);
+
+        return this.participants;
+    }
+
     public List<Survey> getSurveysOfPersonInCurrentPhase(Person person) {
         List<Survey> surveys = new ArrayList<>();
 
