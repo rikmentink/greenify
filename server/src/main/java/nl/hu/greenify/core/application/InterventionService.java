@@ -51,7 +51,10 @@ public class InterventionService {
     public Intervention addParticipant(Long id, Long personId) {
         Intervention intervention = getInterventionById(id);
         Person person = personService.getPersonById(personId);
-        surveyService.createSurveysForParticipants(intervention.getCurrentPhase(), List.of(person));
+
+        if(!person.hasSurvey(intervention.getCurrentPhase())) {
+            surveyService.createSurveysForParticipants(intervention.getCurrentPhase(), List.of(person));
+        }
 
         if(intervention.getParticipants().contains(person)) {
             throw new IllegalArgumentException("Person with id " + personId + " is already a participant of intervention with id " + id);
