@@ -59,8 +59,8 @@ export class SurveyQuestion extends LitElement {
             <div class="question" data-question="${this.name}">
                 ${this._findOptions().map(option => html`
                     <div class="answer">
-                        <label>${option.value}</label>
-                        <input type="radio" name="${this.name}" value="${option.value}" ?checked="${this.answer === option.value}" @change=${this._selectAnswer}/>
+                        <label>${option.name}</label>
+                        <input type="radio" name="${this.name}" value="${option.name}" ?checked="${this.answer === option.value}" @change=${this._selectAnswer}/>
                     </div>
                 `)}
             </div>
@@ -76,7 +76,7 @@ export class SurveyQuestion extends LitElement {
             new CustomEvent('answer', {
                 detail: {
                     question: event.target.name,
-                    answer: parseInt(event.target.value)
+                    answer: event.target.value
                 },
                 bubbles: true,
                 composed: true
