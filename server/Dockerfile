@@ -22,8 +22,6 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 # Set environment variables for SSL
-ARG DOMAIN
-ENV DOMAIN=${DOMAIN}
 ARG PASSWORD
 ENV PASSWORD=${SSL_KEYSTORE_PASSWORD}
 
