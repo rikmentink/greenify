@@ -1,41 +1,23 @@
-# client/Dockerfile
-
-# Use node image to build the frontend
+# Build the application using Node.js
 FROM node:18 AS build
-
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
-
-# Install dependencies
 RUN npm install
-
-# Copy the rest of the application code
 COPY . .
 
-# Set build arguments and create .env file dynamically
 ARG VITE_API_URL
 RUN echo "VITE_API_URL=${VITE_API_URL}" > .env
-
-# Verify the created .env file
 RUN cat .env
 
-# Build the application
 RUN npm run build
 
-# Use nginx image to serve the frontend
-FROM nginx:alpine
+# Serve the application
+FROM node:14-alpine
+WORKDIR /app
+COPY --from=build /app/dist /app/dist
 
-# Copy the built application from the build stage
-COPY --from=build /app/dist /usr/share/nginx/html
+RUN npm install -g serve
 
-# Copy the Nginx configuration files
-COPY .config/nginx.conf /etc/nginx/conf.d/default.conf
-
-# Expose ports
-EXPOSE 80 443
-
-# Start nginx server
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 5000
+CMD ["serve", "-s", "dist", "-l", "5000"]

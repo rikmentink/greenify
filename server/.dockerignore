@@ -2,4 +2,3 @@
 target/
 !src/
 !pom.xml
-!certs/

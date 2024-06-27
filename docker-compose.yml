@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - .config/nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - frontend_backend
+
   frontend:
     build:
       context: ./client
@@ -8,23 +22,19 @@ services:
       args:
       - VITE_BASE_URL=${BASE_URL}
       - VITE_API_URL=${API_URL}
-    depends_on:
-      - backend
     ports:
-      - "80:80"
-      - "443:443"
+      - "5000:5000"
     volumes:
       - "/etc/letsencrypt:/etc/letsencrypt"
+    networks:
+      - frontend_backend
 
   backend:
     build:
       context: ./server
       dockerfile: Dockerfile
-      args:
-        - DOMAIN=${DOMAIN}
-        - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
     ports:
-      - "8443:8443"
+      - "8080:8080"
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
@@ -36,10 +46,11 @@ services:
       - MAIL_PORT=${MAIL_PORT}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
-      - SSL_KEYSTORE_DOMAIN=${DOMAIN}
-      - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
     depends_on:
       - db
+    networks:
+      - backend_db
+      - frontend_backend
 
   db:
     image: postgres:15
@@ -49,6 +60,12 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend_db
 
 volumes:
   postgres-data:
+
+networks:
+  backend_db:
+  frontend_backend:
