@@ -32,7 +32,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy the Nginx configuration files
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY .config/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose ports
 EXPOSE 80 443
