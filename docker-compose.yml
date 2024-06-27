@@ -19,6 +19,7 @@ services:
       context: ./client
       dockerfile: Dockerfile
       args:
+      - VITE_BASE_URL=${BASE_URL}
       - VITE_API_URL=${API_URL}
     depends_on:
       - backend
