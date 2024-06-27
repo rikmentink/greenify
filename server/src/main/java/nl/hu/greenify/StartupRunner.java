@@ -18,6 +18,5 @@ public class StartupRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         this.surveyService.createDefaultTemplate();
-        System.out.println("Default survey template created.");
     }
 }
