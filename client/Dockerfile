@@ -23,7 +23,7 @@ RUN echo "VITE_API_URL=${VITE_API_URL}" > .env
 RUN cat .env
 
 # Build the application
-RUN npm run build
+RUN npm ci --production && npm cache clean --force
 
 # Use nginx image to serve the frontend
 FROM nginx:alpine
