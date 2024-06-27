@@ -5,3 +5,5 @@
 ## Dotenv ##
 .env
 .env.*
+
+.config/
