@@ -27,6 +27,9 @@ ENV DOMAIN=${DOMAIN}
 ARG PASSWORD
 ENV PASSWORD=${SSL_KEYSTORE_PASSWORD}
 
+# Create /app/certs directory
+RUN mkdir -p /app/certs
+
 # Copy SSL certificates from the host machine
 COPY /etc/letsencrypt/live/${DOMAIN}/fullchain.pem /app/certs/fullchain.pem
 COPY /etc/letsencrypt/live/${DOMAIN}/privkey.pem /app/certs/privkey.pem
@@ -35,8 +38,7 @@ COPY /etc/letsencrypt/live/${DOMAIN}/privkey.pem /app/certs/privkey.pem
 RUN apt-get update && apt-get install -y openssl
 
 # Convert the SSL certificates to PKCS12 format
-RUN mkdir -p /app/certs && \
-    openssl pkcs12 -export \
+RUN openssl pkcs12 -export \
     -in /app/certs/fullchain.pem \
     -inkey /app/certs/privkey.pem \
     -out /app/certs/keystore.p12 \
