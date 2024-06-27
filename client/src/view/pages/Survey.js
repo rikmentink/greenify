@@ -63,6 +63,7 @@ export class Survey extends LitElement {
         this.page = 1;
         this.pageSize = 10; // TODO: This should be dynamic
         this.data = []
+        this.displayInputLabels = false;
     }
 
     async connectedCallback() {
@@ -144,9 +145,9 @@ export class Survey extends LitElement {
                                     <div class="factor">
                                         <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                         <ol>
-                                        ${factor.subfactors.map((subfactor) => html`
+                                        ${factor.subfactors.map((subfactor, subfactorIndex) => html`
                                             <li value="${subfactor.number}" id="subfactor${subfactor.number}">
-                                                <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
+                                                <gi-survey-subfactor .subfactor=${subfactor} .displayInputLabels=${subfactorIndex === 0}></gi-survey-subfactor>
                                             </li>
                                         `)}
                                         </ol>

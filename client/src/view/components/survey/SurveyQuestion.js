@@ -58,6 +58,7 @@ export class SurveyQuestion extends LitElement {
         super();
         this.name = '';
         this.answer = -1;
+        this.displayInputLabels = false;
     }
 
     render() {
@@ -65,7 +66,8 @@ export class SurveyQuestion extends LitElement {
             <div class="question" data-question="${this.name}">
                 ${this._findOptions().map(option => html`
                     <div class="answer">
-                        <label>${option.displayName}</label>
+                        <!-- Only display label if constructor value is true -->
+                        ${this.displayInputLabels ? html`<label>${option.displayName}</label>` : ''}
                         <input type="radio" name="${this.name}" value="${option.name}" ?checked="${this.answer === option.value}" @change=${this._selectAnswer}/>
                     </div>
                 `)}
