@@ -12,10 +12,17 @@ export class Header extends LitElement {
         css`
             .nav-head {
                 margin-right: 2rem;
-                font-size: 1.1rem;
+                font-size: 1.5rem;
                 font-weight: 700;
                 max-width: 600px;
                 word-wrap: break-word;
+                font-style: italic;
+            }
+          
+            .nav-head-sub {
+                font-size: 0.8rem;
+                font-weight: 400;
+                color: white;
             }
 
             .nav-head a {
@@ -25,7 +32,6 @@ export class Header extends LitElement {
 
             header {
                 flex: 0 0 auto;
-                padding: 1rem 0;
                 background-color: var(--color-primary);
                 z-index: 100;
             }
@@ -99,13 +105,19 @@ export class Header extends LitElement {
                 <button class="toggler" @click=${this.handleOffcanvasToggle}>
                     <img src="icons/menu.png" width="20" height="20"/>
                 </button>
-                <h1 class="nav-head"><a href="/">GreenIT: Een praktische tool voor succesvolle implementatie van groene interventies in zorgomgevingen</a></h1>
+                <h1 class="nav-head">
+                    <a href="/">GreenIT<br>
+                    <h2 class="nav-head-sub">Een praktische tool voor succesvolle implementatie van groene interventies in zorgomgevingen</h2></a>
+                </h1>
                 <gi-navbar>
                 </gi-navbar>
                 <profile-button @click=${this.handleProfileButtonClick}></profile-button>
         `;
         }
-        return html`<h1 class="nav-head"><a href="${window.url}">GreenIT: Een praktische tool voor succesvolle implementatie van groene interventies in zorgomgevingen</a></h1>`;
+        return html`<h1 class="nav-head">
+            <a href="${window.url}">GreenIT<br>
+                <h2 class="nav-head-sub">Een praktische tool voor succesvolle implementatie van groene interventies in zorgomgevingen</h2></a>
+        </h1>`;
     }
 
 

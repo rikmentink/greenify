@@ -17,6 +17,7 @@ export class InvitationInput extends LitElement {
       }
 
       .invite-btn {
+        margin-left: 1rem;
         padding: 5px 35px;
         background-color: var(--color-primary);
         color: #fff;
