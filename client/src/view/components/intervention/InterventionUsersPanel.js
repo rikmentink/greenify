@@ -17,12 +17,14 @@ export class InterventionUsersPanel extends LitElement {
     `;
 
     static properties = {
-        userData: { type: Array }
+        userData: { type: Array },
+        progress: { type: Array }
     };
 
     constructor() {
         super();
         this.userData = [];
+        this.progress = [];
     }
 
     connectedCallback() {
@@ -37,7 +39,7 @@ export class InterventionUsersPanel extends LitElement {
                     <invitation-input></invitation-input>
                 </div>
                 <div class="users-table">
-                    <intervention-users-table .userData="${this.userData}"></intervention-users-table>
+                    <intervention-users-table .userData="${this.userData}" .progress="${this.progress}"></intervention-users-table>
                 </div>
             </div>
         `;

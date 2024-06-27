@@ -52,8 +52,8 @@ public class InterventionService {
         Intervention intervention = getInterventionById(id);
         Person person = personService.getPersonById(personId);
 
-        if(person == null) {
-            throw new IllegalArgumentException("Person with id " + personId + " does not exist");
+        if(!person.hasSurvey(intervention.getCurrentPhase())) {
+            surveyService.createSurveysForParticipants(intervention.getCurrentPhase(), List.of(person));
         }
 
         if(intervention.getParticipants().contains(person)) {
@@ -121,5 +121,12 @@ public class InterventionService {
     public Intervention getInterventionById(Long id) {
         return interventionRepository.findById(id)
                 .orElseThrow(() -> new InterventionNotFoundException(id));
+    }
+
+    public Intervention removeParticipant(Long id, Long personId) {
+        Intervention intervention = getInterventionById(id);
+        Person person = personService.getPersonById(personId);
+        intervention.removeParticipant(person);
+        return interventionRepository.save(intervention);
     }
 }

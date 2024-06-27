@@ -12,6 +12,7 @@ export class GenericContainer extends LitElement {
         .outer-container {
             display: flex;
             justify-content: center;
+            overflow-y: auto;
         }
 
         .main-block {
@@ -32,6 +33,21 @@ export class GenericContainer extends LitElement {
         .description {
             color: black;
             margin-top: 5px;
+        }
+
+
+        .outer-container::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .outer-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+            height: 50px;
+        }
+
+        .outer-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
 
         @media (max-width: 600px) {

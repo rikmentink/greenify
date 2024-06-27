@@ -1,7 +1,6 @@
 import { LitElement, html, css } from 'lit';
 
 import {login, register} from '../../services/AccountService.js';
-import {InfoPopUp} from "./InfoPopUp.js";
 import globalStyles from "../../assets/global-styles.js";
 
 export class Register extends LitElement {
@@ -66,6 +65,7 @@ export class Register extends LitElement {
             width: 15px;
             height: 15px;
             margin-right: 10px;
+            appearance: auto;
         }
         
         .privacy-group {
@@ -86,6 +86,10 @@ export class Register extends LitElement {
         
         .error-message {
             color: red;
+        }
+        
+        a {
+            text-decoration: none;
         }
 
         @media (min-width: 992px) {
@@ -164,9 +168,11 @@ export class Register extends LitElement {
                             <button type="submit">Aanmelden</button>
                         </div>
                         <p class="error-message"></p>
+                        <p>Heeft u al een account? <a href="/login">Log in</a></p>
                     </form>
                 </div>
             </div>
+            <a class="btn" href="/login">&larr; Ga terug</a>
         `;
     }
 }

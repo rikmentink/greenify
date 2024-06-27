@@ -11,20 +11,8 @@ async function getPersonByEmail(email) {
     const response = await fetch(`${API_URL}/person/email/${email}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    await handleErrorMessages(response);
-
-    return response.json();
-}
-
-async function getPersonById(id) {
-    const response = await fetch(`${API_URL}/person/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
     });
 
@@ -47,4 +35,4 @@ async function getCurrentPerson() {
     return response.json();
 }
 
-export { getPersonByEmail, getPersonById, getCurrentPerson};
+export { getPersonByEmail, getCurrentPerson};

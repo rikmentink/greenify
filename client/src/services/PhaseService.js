@@ -11,7 +11,10 @@ async function createPhase(id, phaseName, description) {
     const url = new URL(`${API_URL}/intervention/${id}/phase`);
     return fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
         body: JSON.stringify({phaseName, description}),
     })
     .then(response => {
@@ -29,7 +32,8 @@ async function getPhaseById(id) {
     const response = await fetch(`${API_URL}/intervention/phase/${id}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
     });
 

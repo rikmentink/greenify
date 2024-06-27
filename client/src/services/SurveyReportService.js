@@ -9,14 +9,25 @@ async function handleErrorMessages(response) {
 }
 
 export async function getCategoryScores(phaseId) {
-    return DummyCategoryScores;
+    const response = await fetch(`${API_URL}/survey-report/${phaseId}/category-scores`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+    });
+    await handleErrorMessages(response);
+    return response.json();
 }
 
 export async function getSubfactorScoresOfCategory(phaseId, categoryName) {
-
-    // TODO: Perform actual API call. If-statement is to test updating of charts dynamically
-    if (categoryName === "Dummy Category 2") {
-        return DummySubfactorScores2;
-    }
-    return DummySubfactorScores;
+    const response = await fetch(`${API_URL}/survey-report/${phaseId}/subfactor-scores/${categoryName}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+    });
+    await handleErrorMessages(response);
+    return response.json();
 }

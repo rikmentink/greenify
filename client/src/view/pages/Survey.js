@@ -5,7 +5,7 @@ import global from "../../assets/global-styles.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
-import { InfoPopUp } from "./InfoPopUp.js";
+import { InfoPopUp } from "../components/containers/InfoPopUp.js";
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
@@ -67,10 +67,13 @@ export class Survey extends LitElement {
 
     async connectedCallback() {
         super.connectedCallback();
-        this.id = getRouter().location.params.id || 0;
-        if (this.id == 0) {
+        if (!this.extractParams()) {
             window.location.href = '/';
         }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('category');
+        this.categoryId = myParam ? parseInt(myParam) : 0;
 
         await this._fetchData(this.id);
         if (this.authorizeAndRedirect()) {
@@ -84,6 +87,19 @@ export class Survey extends LitElement {
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('updatedResponse');
+    }
+
+    extractParams() {
+        this.id = getRouter().location.params.id || 0;
+        if (this.id === 0) return false;
+
+        const params = new URLSearchParams(window.location.search);
+        this.categoryId = params.get('category') || 0;
+        this.page = params.get('page') || 0;
+        this.pageSize = params.get('pageSize') || 0;
+
+        if (this.categoryId < 0 || this.page < 0 || this.pageSize < 0) return false;
+        return true;
     }
 
     async authorizeAndRedirect() {
@@ -114,7 +130,7 @@ export class Survey extends LitElement {
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (survey) => html`
-                        <a class="link" href="/intervention/${this.id}">&larr; Terug naar overzicht</a>
+                        <a class="link" href="/intervention/${survey.interventionId}/phase/${survey.phaseId}">&larr; Terug naar overzicht</a>
                         ${survey.categories.map((category) => html`
                             <h1><strong>Domein ${category.number}</strong> - ${category.name}</h1>
                             <div class="survey">
@@ -129,7 +145,7 @@ export class Survey extends LitElement {
                                         <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                         <ol>
                                         ${factor.subfactors.map((subfactor) => html`
-                                            <li>
+                                            <li value="${subfactor.number}" id="subfactor${subfactor.number}">
                                                 <gi-survey-subfactor .subfactor=${subfactor}></gi-survey-subfactor>
                                             </li>
                                         `)}

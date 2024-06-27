@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.presentation.dto.overview;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,11 @@ public class CategoryDto {
             throw new IllegalArgumentException("Survey should have at least one category");
 
         return survey.getCategories().stream()
-                .map(category -> new CategoryDto(
-                     category.getId(),
-                     category.getName(),
-                     SubfactorDto.fromEntities(category.getSubfactors())))
-                .collect(Collectors.toList());
+                        .map(category -> new CategoryDto(
+                             category.getId(),
+                             category.getName(),
+                             SubfactorDto.fromEntities(category.getSubfactors()).stream()
+                                    .sorted(Comparator.comparing(SubfactorDto::getNumber)).toList()))
+                        .collect(Collectors.toList());
     }
 }

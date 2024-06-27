@@ -9,6 +9,7 @@ import { getCategoryScores, getSubfactorScoresOfCategory } from "../../services/
 import globalStyles from "../../assets/global-styles.js";
 import "../components/surveyReport/PdfReportGenerator.js";
 import {Task} from "@lit/task";
+import {getRouter} from "../../router.js";
 
 export class SurveyResultReport extends LitElement {
   static styles = [globalStyles,
@@ -111,6 +112,7 @@ export class SurveyResultReport extends LitElement {
 
   static get properties() {
     return {
+      phaseId : { type: Number },
       polarChartData: { type: Array },
       polarChartLabels: { type: Array },
       barChartData: { type: Array },
@@ -120,7 +122,7 @@ export class SurveyResultReport extends LitElement {
 
   constructor() {
     super();
-    this.phaseId = 1; // TODO: Adjust based on the URL
+    this.phaseId = 0;
     this.polarChartData = [];
     this.polarChartLabels = [];
     this.barChartData = [];
@@ -140,6 +142,13 @@ export class SurveyResultReport extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
+
+    // Get the phaseId from the URL and redirect to the home page if the phaseId is not found
+    this.phaseId = getRouter().location.params.id || 0;
+    if (this.phaseId == 0) {
+        window.location.href = '/';
+    }
+
     await this._fetchData.run();
   }
 
@@ -152,8 +161,8 @@ export class SurveyResultReport extends LitElement {
   _fetchData = new Task(this, {
     task: async () => {
       const categoryScores = await getCategoryScores(this.phaseId);
-      this.polarChartData = categoryScores.categoryScores.map(score => score.percentage);
-      this.polarChartLabels = categoryScores.categoryScores.map(score => score.categoryName);
+      this.polarChartData = categoryScores.map(score => score.percentage);
+      this.polarChartLabels = categoryScores.map(score => score.categoryName);
     },
     args: () => [this.phaseId]
   });
@@ -182,11 +191,11 @@ export class SurveyResultReport extends LitElement {
     }
 
     // Sort the subfactor scores based on the percentage from lowest to highest
-    subfactorScores.subfactorScores.sort((a, b) => a.percentage - b.percentage);
+    subfactorScores.sort((a, b) => a.percentage - b.percentage);
 
-    this.barChartData = subfactorScores.subfactorScores.map(score => ({
+    this.barChartData = subfactorScores.map(score => ({
       description: score.subfactorName,
-      chartData: [score.averageScore],
+      chartData: [score.percentage],
       chartLabels: ["Percentage"],
       chartColors: ["purple"]
     }));
@@ -203,7 +212,12 @@ export class SurveyResultReport extends LitElement {
       <div class="grid-container">
         <div class="grid-left-section">
           <content-box-plain class="content-box-chart">
-            <agreement-polar-chart .chartData=${this.polarChartData} .chartLabels=${this.polarChartLabels} @chart-click="${this.openDialog}"></agreement-polar-chart>
+            <agreement-polar-chart 
+                .chartData=${this.polarChartData} 
+                .chartLabels=${this.polarChartLabels} 
+                .chartDescription=${"Klik op een bolletje voor meer details"} 
+                @chart-click="${this.openDialog}">
+            </agreement-polar-chart>
           </content-box-plain>
         </div>
         

@@ -1,7 +1,8 @@
 import { html, css, LitElement } from 'lit';
+import globalStyles from "../../../assets/global-styles.js";
 
 export class CategoryBox extends LitElement {
-    static styles = css`
+    static styles = [globalStyles, css`
       p, h1, h2, h3, h4, h5, h6, em {
         color: black;
       }
@@ -18,11 +19,17 @@ export class CategoryBox extends LitElement {
         min-width: 200px;
         min-height: 100px;
         width: 600px;
-        height: 200px;
+        height: 100px;
         border: #D6D6D6 2px solid;
         margin-top: 10px;
         padding: 20px;
         border-radius: 5px;
+        overflow: hidden;
+        transition: height 0.3s ease;
+      }
+
+      .rectangle.expanded {
+        height: 200px;
       }
 
       .title-description {
@@ -54,7 +61,7 @@ export class CategoryBox extends LitElement {
       }
 
       .my-category-btn a {
-        background-color: #4CBB17;
+        background-color: var(--color-primary);
         color: white;
         padding: 10px 60px 10px 60px;
         border-radius: 2px;
@@ -62,19 +69,28 @@ export class CategoryBox extends LitElement {
         text-decoration: none;
       }
 
+
       .questions-container {
-        display: flex;
+        display: none;
         flex-direction: row;
         gap: 10px;
         margin-top: 10px;
       }
-
+      
       .my-question-btn {
         display: flex;
       }
 
+      .my-question-btn a.disabled {
+        background-color: grey;
+      }
+
+      .my-question-btn a.enabled {
+        background-color: var(--color-primary);
+      }
+
       .my-question-btn a {
-        background-color: #4CBB17;
+        background-color: var(--color-primary);
         color: white;
         padding: 10px 17.6px;
         border-radius: 2px;
@@ -107,7 +123,7 @@ export class CategoryBox extends LitElement {
 
       .progress {
         height: 100%;
-        background-color: #4CBB17;
+        background-color: var(--color-primary)
         border-radius: 5px;
       }
 
@@ -135,7 +151,7 @@ export class CategoryBox extends LitElement {
 
       .progress {
         height: 100%;
-        background-color: #4CBB17;
+        background-color: var(--color-primary)
         border-radius: 5px;
       }
 
@@ -151,60 +167,125 @@ export class CategoryBox extends LitElement {
       .progress-label {
         margin: 0;
       }
-    `;
+
+      .show-more {
+        color: #6e706e;
+        background-color: transparent;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .show-less {
+        color: #6e706e;
+        background-color: transparent;
+        text-decoration: none;
+        cursor: pointer;
+        display: none;
+      }
+
+      .rectangle.expanded .show-more {
+        display: none;
+      }
+
+      .rectangle.expanded .show-less {
+        display: block;
+      }
+
+      .rectangle.expanded .questions-container {
+        display: flex;
+      }
+    `];
+
+    static properties = {
+        category: { type: Object },
+        progress: { type: Array },
+        surveyId: { type: Number },
+        expanded: { type: Boolean }
+    }
 
     constructor() {
         super();
         this.category = {};
         this.progress = [];
+        this.surveyId = 0;
+        this.expanded = false;
     }
 
-    _getProgress() {
-      if (!this.progress) {
-        throw new Error('Progress is not set');
-      }
-      return this.progress.filter((participant) => participant.isCurrentUser)[0];
+    _getUserProgress() {
+        if (!this.progress) {
+            throw new Error('Progress is not set');
+        }
+        const currentUser = this.progress.find(participant => participant.currentUser);
+        if (!currentUser) {
+            return 0;
+        }
+
+        const categoryProgress = currentUser.progress.find(p => p.categoryId === this.category.id);
+        if (!categoryProgress) {
+            return 0;
+        }
+
+        return categoryProgress.progress;
+    }
+
+    _isSubfactorAnswered(subfactorId) {
+        const currentUser = this.progress.find(participant => participant.currentUser);
+        if (!currentUser) {
+            return false;
+        }
+
+        const response = currentUser.responses.find(response => response.subfactorId === subfactorId);
+        return response && response.facilitatingFactor && response.priority;
+    }
+
+    _toggleExpand() {
+        this.expanded = !this.expanded;
+    }
+
+    _calculateProgressData() {
+        const userProgress = this._getUserProgress();
+        const totalQuestions = this.category.subfactors.length;
+        const answeredQuestions = Math.round(userProgress * totalQuestions);
+        const progressPercentage = Math.round(userProgress * 100);
+
+        return { totalQuestions, answeredQuestions, progressPercentage };
     }
 
     render() {
-      /**
-       * TODO: Color the my-question-btn green based on the progress of the user. If both questions have been answered.
-       * TODO: Make the progress bar dynamic based on the progress of the user.
-       * TODO: Make the progress label dynamic based on the progress of the user.
-       */
+        const { totalQuestions, answeredQuestions, progressPercentage } = this._calculateProgressData();
+
         return html`
-            <div class="rectangle">
+            <div class="rectangle ${this.expanded ? 'expanded' : ''}" id="show-hide-text">
                 <div class="title-description">
                     <h2 class="title">${this.category.name}</h2>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
-                            <p class="progress-label">Nog 0 vragen te gaan</p>
+                            <p class="progress-label">Nog ${totalQuestions - answeredQuestions} vragen te gaan</p>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" aria-label="Progression bar"></div>
+                            <div class="progress" style="width: ${progressPercentage}%;" aria-label="Progression bar"></div>
                         </div>
                         <div class="progress-labels">
-                            <p class="progress-label">0%</p>
+                            <p class="progress-label">${progressPercentage}%</p>
                         </div>
                     </div>
                     <div class="questions-container">
-                        ${this.category.subfactors.map((subfactor) =>
-                                html`
-                                    <div class="my-question-btn">
-                                        <a href="/tool/1?categoryId=${this.category.id}">${subfactor.number}</a>
-                                    </div>`)}
+                        ${this.category.subfactors.map((subfactor) => html`
+                            <div class="my-question-btn">
+                                <a class="${this._isSubfactorAnswered(subfactor.id) ? 'enabled' : 'disabled'}" href="/tool/${this.surveyId}?categoryId=${this.category.id}#subfactor${subfactor.number}">${subfactor.number}</a>
+                            </div>`)}
                     </div>
                 </div>
                 <div class="button-container">
                     <div class="my-category-btn">
-                        <a href="/category/">Ga verder</a>
+                        <a href="/tool/${this.surveyId}?category=${this.category.id}">Ga verder</a>
                     </div>
                 </div>
+                <a class="show-more" @click="${this._toggleExpand}">Bekijk Vooruitgang V</a>
+                <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang Ʌ</a>
             </div>
         `;
     }
-    
-    
 }
 
 customElements.define('gi-categorybox', CategoryBox);
