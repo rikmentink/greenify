@@ -10,10 +10,6 @@ let routes = [
   { path: "(.*)", action: () => window.location.href = "/" }
 ];
 
-(async () => {
-  
-})();
-
 export const initRouter = async (outlet) => {
   router = new Router(outlet, {
     baseUrl: BASE_URL,
