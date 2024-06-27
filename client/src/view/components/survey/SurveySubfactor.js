@@ -37,6 +37,7 @@ export class SurveySubfactor extends LitElement {
             priority: 0,
             comment: ''
         };
+        this.displayInputLabels = false;
     }
     
     firstUpdated() {
@@ -49,14 +50,17 @@ export class SurveySubfactor extends LitElement {
         super.connectedCallback();
         this.addEventListener('answer', event => {
             this.response[event.detail.question] = event.detail.answer;
-            this.dispatchEvent(new CustomEvent('updatedResponse', {
-                detail: {
-                    subfactorId: this.subfactor.id,
-                    response: this.response,
-                },
-                bubbles: true,
-                composed: true,
-            }));
+            // Only dispatch the event if both a response has been provided for the facilitating factor and the priority
+            if (this.response.facilitatingFactor && this.response.priority) {
+                this.dispatchEvent(new CustomEvent('updatedResponse', {
+                    detail: {
+                        subfactorId: this.subfactor.id,
+                        response: this.response,
+                    },
+                    bubbles: true,
+                    composed: true,
+                }));
+            }
         });
     }
 
@@ -69,10 +73,10 @@ export class SurveySubfactor extends LitElement {
         return html`
                 <div class="subfactor__name">${this.subfactor.title}</div>
                 <div class="subfactor__question">
-                    <gi-survey-question name="facilitatingFactor" .answer=${this.response.facilitatingFactor}></gi-survey-question>
+                    <gi-survey-question name="facilitatingFactor" .answer=${this.response.facilitatingFactor} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
                 </div>
                 <div class="subfactor__question">
-                    <gi-survey-question name="priority" .answer=${this.response.priority}></gi-survey-question>
+                    <gi-survey-question name="priority" .answer=${this.response.priority} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
                 </div>
                 <div class="subfactor__comments">FA</div>
         `

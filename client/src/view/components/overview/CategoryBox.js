@@ -151,7 +151,7 @@ export class CategoryBox extends LitElement {
 
       .progress {
         height: 100%;
-        background-color: var(--color-primary)
+        background-color: var(--color-primary);
         border-radius: 5px;
       }
 

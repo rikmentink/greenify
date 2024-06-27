@@ -28,7 +28,7 @@ export class SurveyResultReport extends LitElement {
       .grid-container {
         display: grid;
         gap: 20px;
-        margin: 20px;
+        margin: 20px 0;
         grid-template-columns: repeat(2, 1fr);
       }
       
