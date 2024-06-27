@@ -22,6 +22,7 @@ services:
       dockerfile: Dockerfile
       args:
         - DOMAIN=${DOMAIN}
+        - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
     ports:
       - "8443:8443"
     environment:
