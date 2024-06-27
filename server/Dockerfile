@@ -28,4 +28,4 @@ EXPOSE 8443
 ENV SPRING_PROFILES_ACTIVE=ssl
 
 # Run the jar file
-ENTRYPOINT ["sh", "-c", "openssl pkcs12 -export -in /etc/letsencrypt/live/$DOMAIN/fullchain.pem -inkey /etc/letsencrypt/live/$DOMAIN/privkey.pem -out /app/certs/keystore.p12 -name tomcat -CAfile /etc/letsencrypt/live/$DOMAIN/fullchain.pem -caname root -password pass:$PASSWORD && java -jar /app/your-app.jar"]
+ENTRYPOINT ["sh", "-c", "openssl pkcs12 -export -in /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -inkey /etc/letsencrypt/live/${DOMAIN}/privkey.pem -out /app/certs/keystore.p12 -name tomcat -CAfile /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -caname root -password pass:${PASSWORD} && java -jar /app/your-app.jar"]
