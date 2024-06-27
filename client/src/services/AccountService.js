@@ -1,3 +1,5 @@
+import { fetchData } from "../utils/fetch";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function handleErrorMessages(response) {
@@ -35,41 +37,15 @@ async function register (email, password, firstName, lastName){
 }
 
 async function getCurrentUser(){
-    const response = await fetch(`${API_URL}/account/current`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-
-    if (!response.ok) {
-        return null;
-    }
-
-    return response.json();
+    return fetchData(`/account/current`);
 }
 
 async function changeRoleToManager() {
-    const response = await fetch(`${API_URL}/account/roletomanager`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-    await handleErrorMessages(response);
+    return fetchData('account/roletomanager', {}, 'PUT');
 }
 
 async function changeRoleToParticipant() {
-    const response = await fetch(`${API_URL}/account/roletoparticipant`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-    await handleErrorMessages(response);
+    return fetchData(`/account/roletoparticipant`, {}, 'PUT');
 }
 
 export { login, register, getCurrentUser, changeRoleToManager, changeRoleToParticipant};

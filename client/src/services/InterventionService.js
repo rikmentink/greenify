@@ -1,96 +1,29 @@
-const API_URL = import.meta.env.VITE_API_URL;
+import { fetchData } from '../utils/fetch.js';
 import { createPhase } from './PhaseService.js';
 
-async function handleErrorMessages(response) {
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
-}
-
 async function getInterventionById(id) {
-    const response = await fetch(`${API_URL}/intervention/${id}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-        }
-    });
-
-    await handleErrorMessages(response);
-
-    return response.json();
+    return fetchData(`/intervention/${id}`);
 }
 
 async function addParticipantToIntervention(interventionId, personId) {
-const response = await fetch(`${API_URL}/intervention/${interventionId}/person/${personId}`, {
-        method: 'POST',
-         headers: {
-        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-        'Content-Type': 'application/json'
-    },
-    });
-
-    await handleErrorMessages(response);
-
-    return response.json();
+    return fetchData(`/intervention/${interventionId}/person/${personId}`, {}, 'POST');
 }
 
 async function removeParticipantFromIntervention(interventionId, personId) {
-    const response = await fetch(`${API_URL}/intervention/${interventionId}/person/${personId}/remove`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-
-    await handleErrorMessages(response);
-    return response.json();
+    return fetchData(`/intervention/${interventionId}/person/${personId}/remove`, {}, 'POST');
 }
 
 async function getInterventionByPersonId(id) {
-    const response = await fetch(`${API_URL}/intervention/all/${id}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-
-    await handleErrorMessages(response);
-
-    return response.json();
+    return fetchData(`/intervention/all/${id}`);
 }
 
 async function createInterventionWithPhase(adminId, name, description, phaseName, phaseDescription) {
-    const response = await fetch(`${API_URL}/intervention`, {
-        method: 'POST',
-        body: JSON.stringify({adminId, name, description}),
-        headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
-            'Content-Type': 'application/json'
-        }
-    });
-
-    const data = await response.json();
-    await createPhase(data.id, phaseName, phaseDescription);
-
-    await handleErrorMessages(response);
+    let intervention = await fetchData(`/intervention`, { adminId, name, description }, 'POST');
+    return await createPhase(intervention.id, phaseName, phaseDescription);
 }
 
 async function getPhasesByInterventionId(id) {
-    const response = await fetch(`${API_URL}/intervention/${id}/phases`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-
-    await handleErrorMessages(response);
-
-    return response.json();
+    return fetchData(`/intervention/${id}/phases`);
 }
 
 export { getInterventionById, getInterventionByPersonId, addParticipantToIntervention, getPhasesByInterventionId, createInterventionWithPhase, removeParticipantFromIntervention};
