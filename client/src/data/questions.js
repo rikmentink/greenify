@@ -5,27 +5,27 @@ const questions = [
             {
                 name: "TOTALLY_DISAGREE",
                 displayName: "Totally disagree",
-                value: 1
+                value: 0
             },
             {
                 name: "DISAGREE",
                 displayName: "Disagree",
-                value: 2
+                value: 1
             },
             {
                 name: "NEUTRAL",
                 displayName: "Neutral",
-                value: 3
+                value: 2
             },
             {
                 name: "AGREE",
                 displayName: "Agree",
-                value: 4
+                value: 3
             },
             {
                 name: "TOTALLY_AGREE",
                 displayName: "Totally agree",
-                value: 5
+                value: 4
             },
             // {
             //     name: "I_DONT_KNOW",
@@ -40,7 +40,7 @@ const questions = [
             {
                 name: "NO_PRIORITY",
                 displayName: "No priority",
-                value: 1
+                value: 3
             },
             {
                 name: "LITTLE_PRIORITY",
@@ -50,12 +50,12 @@ const questions = [
             {
                 name: "PRIORITY",
                 displayName: "Priority",
-                value: 3
+                value: 1
             },
             {
                 name: "TOP_PRIORITY",
                 displayName: "Top priority",
-                value: 4
+                value: 0
             }
         ]
     }
