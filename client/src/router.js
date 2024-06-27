@@ -3,15 +3,22 @@ import { getCurrentUser } from "./services/AccountService.js";
 
 let BASE_URL = import.meta.env.BASE_URL;
 let router;
-let routes = [];
+let routes = [
+  { path: "", component: "gi-login", },
+  { path: "/login", component: "gi-login" },
+  { path: "/register", component: "gi-register" },
+  { path: "(.*)", action: () => window.location.href = "/" }
+];
 
 (async () => {
-  routes = [
-    { path: "", component: "gi-login", },
-    { path: "/login", component: "gi-login" },
-    { path: "/register", component: "gi-register" },
-    { path: "(.*)", action: () => window.location.href = "/" }
-  ];
+  
+})();
+
+export const initRouter = async (outlet) => {
+  router = new Router(outlet, {
+    baseUrl: BASE_URL,
+  });
+  
   await getCurrentUser().then((user) => {
     if (user) {
       routes = [
@@ -25,13 +32,6 @@ let routes = [];
         { path: "(.*)", action: () => window.location.href = "/" }];
     }
   });
-})();
-
-export const initRouter = (outlet) => {
-  router = new Router(outlet, {
-    baseUrl: BASE_URL,
-  });
-  
   router.setRoutes(routes);
 }
 
