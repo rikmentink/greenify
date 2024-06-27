@@ -37,8 +37,6 @@ services:
       - MAIL_PASSWORD=${MAIL_PASSWORD}
       - SSL_KEYSTORE_DOMAIN=${DOMAIN}
       - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
-    volumes:
-      - "/etc/letsencrypt:/etc/letsencrypt"
     depends_on:
       - db
 

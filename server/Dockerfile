@@ -27,12 +27,9 @@ ENV DOMAIN=${DOMAIN}
 ARG PASSWORD
 ENV PASSWORD=${SSL_KEYSTORE_PASSWORD}
 
-# Create /app/certs directory
-RUN mkdir -p /app/certs
-
 # Copy SSL certificates from the host machine
-COPY /etc/letsencrypt/live/${DOMAIN}/fullchain.pem /app/certs/fullchain.pem
-COPY /etc/letsencrypt/live/${DOMAIN}/privkey.pem /app/certs/privkey.pem
+COPY certs/fullchain.pem /app/certs/fullchain.pem
+COPY certs/privkey.pem /app/certs/privkey.pem
 
 # Install OpenSSL to convert certificates
 RUN apt-get update && apt-get install -y openssl
