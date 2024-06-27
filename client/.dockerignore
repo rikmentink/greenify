@@ -1,11 +1,35 @@
-**/node_modules/
-**/.git
-**/README.md
-**/LICENSE
-**/.vscode
-**/npm-debug.log
-**/coverage
-**/.env
-**/.editorconfig
-**/.aws
-**/dist
+## Ignore all root files
+**
+
+## Allow specific files and directories
+!package.json
+!package-lock.json
+!vite.config.js
+!Dockerfile
+!index.html
+!.config/
+!src/
+!public/
+!dist/
+
+## Additional exclusions 
+node_modules/
+npm-debug.log
+yarn-error.log
+.DS_Store
+.git/
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+*.code-workspace
+.env
+coverage/
+*.pem
+*.p12
+*.cer
+*.crt
+*.key
+*.md
+LICENSE
