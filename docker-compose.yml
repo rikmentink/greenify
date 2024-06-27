@@ -20,8 +20,10 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+      args:
+        - DOMAIN=${DOMAIN}
     ports:
-      - "8080:8080"
+      - "8443:8443"
     environment:
       - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
@@ -33,6 +35,10 @@ services:
       - MAIL_PORT=${MAIL_PORT}
       - MAIL_USERNAME=${MAIL_USERNAME}
       - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - SSL_KEYSTORE_DOMAIN=${DOMAIN}
+      - SSL_KEYSTORE_PASSWORD=${SSL_KEYSTORE_PASSWORD}
+    volumes:
+      - "/etc/letsencrypt:/etc/letsencrypt"
     depends_on:
       - db
 
