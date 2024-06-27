@@ -48,9 +48,9 @@ export class SurveyQuestion extends LitElement {
         }
       
       .answer > label {
-        transform: rotate(-45deg) translate(40%);
-        transform-origin: 40% 100%;
-        margin-left: 1rem;
+        transform: rotate(-45deg) translate(50%, -100%);
+        position: absolute;
+        max-width: 50px;
       }
     `
 
