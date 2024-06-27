@@ -20,8 +20,6 @@ services:
       dockerfile: Dockerfile
       args:
       - VITE_API_URL=${API_URL}
-    ports:
-      - "80:80"
     depends_on:
       - backend
 
