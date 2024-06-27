@@ -21,6 +21,33 @@ WORKDIR /app
 # Copy the built jar file from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
+# Set environment variables for SSL
+ARG DOMAIN
+ENV DOMAIN=${DOMAIN}
+ARG PASSWORD
+ENV PASSWORD=${SSL_KEYSTORE_PASSWORD}
+
+# Copy SSL certificates from the host machine
+COPY /etc/letsencrypt/live/${DOMAIN}/fullchain.pem /app/certs/fullchain.pem
+COPY /etc/letsencrypt/live/${DOMAIN}/privkey.pem /app/certs/privkey.pem
+
+# Install OpenSSL to convert certificates
+RUN apt-get update && apt-get install -y openssl
+
+# Convert the SSL certificates to PKCS12 format
+RUN mkdir -p /app/certs && \
+    openssl pkcs12 -export \
+    -in /app/certs/fullchain.pem \
+    -inkey /app/certs/privkey.pem \
+    -out /app/certs/keystore.p12 \
+    -name tomcat \
+    -CAfile /app/certs/fullchain.pem \
+    -caname root \
+    -password pass:${PASSWORD}
+
+# Clean up OpenSSL
+RUN apt-get remove --purge -y openssl && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+
 # Expose port 8080
 EXPOSE 8443
 
@@ -28,4 +55,4 @@ EXPOSE 8443
 ENV SPRING_PROFILES_ACTIVE=ssl
 
 # Run the jar file
-ENTRYPOINT ["sh", "-c", "openssl pkcs12 -export -in /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -inkey /etc/letsencrypt/live/${DOMAIN}/privkey.pem -out /app/certs/keystore.p12 -name tomcat -CAfile /etc/letsencrypt/live/${DOMAIN}/fullchain.pem -caname root -password pass:${PASSWORD} && java -jar /app/your-app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
