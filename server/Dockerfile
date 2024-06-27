@@ -21,10 +21,6 @@ WORKDIR /app
 # Copy the built jar file from the build stage
 COPY --from=build /app/target/*.jar app.jar
 
-# Set environment variables for SSL
-ARG PASSWORD
-ENV PASSWORD=${SSL_KEYSTORE_PASSWORD}
-
 # Copy SSL certificates from the host machine
 COPY certs/fullchain.pem /app/certs/fullchain.pem
 COPY certs/privkey.pem /app/certs/privkey.pem
@@ -33,6 +29,7 @@ COPY certs/privkey.pem /app/certs/privkey.pem
 RUN apt-get update && apt-get install -y openssl
 
 # Convert the SSL certificates to PKCS12 format
+ARG SSL_KEYSTORE_PASSWORD
 RUN openssl pkcs12 -export \
     -in /app/certs/fullchain.pem \
     -inkey /app/certs/privkey.pem \
@@ -40,7 +37,7 @@ RUN openssl pkcs12 -export \
     -name tomcat \
     -CAfile /app/certs/fullchain.pem \
     -caname root \
-    -password pass:${PASSWORD}
+    -password pass:$SSL_KEYSTORE_PASSWORD
 
 # Clean up OpenSSL
 RUN apt-get remove --purge -y openssl && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
