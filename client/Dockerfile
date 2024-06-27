@@ -31,5 +31,11 @@ FROM nginx:alpine
 # Copy the built application from the build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose port 80
-EXPOSE 80
+# Copy the Nginx configuration files
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose ports
+EXPOSE 80 443
+
+# Start nginx server
+CMD ["nginx", "-g", "daemon off;"]
