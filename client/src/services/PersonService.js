@@ -1,11 +1,38 @@
-import { fetchData } from "../utils/fetch";
+const API_URL = import.meta.env.VITE_API_URL;
+
+async function handleErrorMessages(response) {
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+    }
+}
 
 async function getPersonByEmail(email) {
-    return fetchData(`/person/email/${email}`);
+    const response = await fetch(`${API_URL}/person/email/${email}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
 }
 
 async function getCurrentPerson() {
-    return fetchData(`/person/current`);
+    const response = await fetch(`${API_URL}/person/current`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+
+    await handleErrorMessages(response);
+
+    return response.json();
 }
 
 export { getPersonByEmail, getCurrentPerson};
