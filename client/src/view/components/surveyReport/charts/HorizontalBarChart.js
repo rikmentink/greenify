@@ -46,13 +46,15 @@ export class HorizontalBarChart extends LitElement {
         }
 
         const displayLabels = !!this.chartDatasetLabel; // If there is a label, display it
+        const roundedChartData = this.chartData.map(value => Math.round(value)); // Round the data to whole numbers
+
         this.chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: this.chartLabels,
                 datasets: [{
                     label: this.chartDatasetLabel,
-                    data: this.chartData,
+                    data: roundedChartData,
                     backgroundColor: this.chartColors,
                 }]
             },
