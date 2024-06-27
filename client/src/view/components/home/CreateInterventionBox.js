@@ -4,11 +4,6 @@ import globalStyles from "../../../assets/global-styles.js";
 
 export class CreateInterventionsBox extends LitElement {
     static styles = [globalStyles, css`
-        .create-interventions-container {
-            width: 60%;
-            margin-bottom: 50px;
-        }
-
         .create-interventions-header {
             background-color: var(--color-primary);
             color: white;

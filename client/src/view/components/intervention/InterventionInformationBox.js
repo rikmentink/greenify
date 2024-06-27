@@ -8,11 +8,6 @@ export class InterventionInformationBox extends LitElement {
             flex-direction: row; 
             justify-content: space-between;
         }
-
-        .description-box {
-            padding: 10px;
-            flex: 1; 
-        }
         
         h3, p {
             margin: 0;
