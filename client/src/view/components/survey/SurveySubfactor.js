@@ -50,14 +50,17 @@ export class SurveySubfactor extends LitElement {
         super.connectedCallback();
         this.addEventListener('answer', event => {
             this.response[event.detail.question] = event.detail.answer;
-            this.dispatchEvent(new CustomEvent('updatedResponse', {
-                detail: {
-                    subfactorId: this.subfactor.id,
-                    response: this.response,
-                },
-                bubbles: true,
-                composed: true,
-            }));
+            // Only dispatch the event if both a response has been provided for the facilitating factor and the priority
+            if (this.response.facilitatingFactor && this.response.priority) {
+                this.dispatchEvent(new CustomEvent('updatedResponse', {
+                    detail: {
+                        subfactorId: this.subfactor.id,
+                        response: this.response,
+                    },
+                    bubbles: true,
+                    composed: true,
+                }));
+            }
         });
     }
 
