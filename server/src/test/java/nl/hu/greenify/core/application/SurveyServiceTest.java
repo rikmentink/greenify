@@ -232,6 +232,34 @@ public class SurveyServiceTest {
         verify(templateRepository).save(any(Template.class));
     }
 
+    @Test
+    @DisplayName("When deleting a response, it should be deleted the subfactor")
+    public void deleteResponseShouldDelete() {
+        // Mock a response
+        Response response = mock(Response.class);
+
+        // Assign the response to a subfactor that is part of the survey
+        Subfactor subfactor = new Subfactor(1L, "Subfactor", 1, true);
+        subfactor.setResponse(response);
+
+        // Remaining setup of the survey
+        Factor factor = new Factor(1L, "Factor", 1, List.of(subfactor));
+        Category category = new Category(1L, "Category", "", "", List.of(factor));
+        Survey survey = new Survey(1L, phase, List.of(category), person);
+
+        // Mock the survey repository
+        when(surveyRepository.findById(1L)).thenReturn(Optional.of(survey));
+
+        // Confirm the response is assigned to the subfactor
+        assertTrue(subfactor.getResponse().equals(response));
+
+        // Delete the response
+        surveyService.deleteResponse(1L, 1L);
+
+        // Confirm the response is removed from the subfactor
+        assertTrue(subfactor.getResponse() == null);
+    }
+
     private Template mockTemplate() {
         return mock(Template.class);
     }
