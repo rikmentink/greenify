@@ -9,13 +9,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import nl.hu.greenify.core.application.SurveyService;
 import nl.hu.greenify.core.domain.Response;
@@ -65,5 +59,12 @@ public class SurveyController extends Controller {
     public ResponseEntity<?> submitResponse(@PathVariable("id") Long id, @RequestBody SubmitResponseDto responseDto) {
         Response response = this.surveyService.submitResponse(id, responseDto);
         return this.createResponse(response, HttpStatus.CREATED);
+    }
+
+//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @DeleteMapping(value="{surveyId}/response/{subfactorId}", produces="application/json")
+    public ResponseEntity<?> deleteResponse(@PathVariable("surveyId") Long surveyId, @PathVariable("subfactorId") Long subfactorId) {
+        this.surveyService.deleteResponse(surveyId, subfactorId);
+        return this.createResponse(null);
     }
 }
