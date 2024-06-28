@@ -61,7 +61,7 @@ export class Survey extends LitElement {
         this.id = 0;
         this.categoryId = 0;
         this.page = 1;
-        this.pageSize = 10; // TODO: This should be dynamic
+        this.pageSize = 10;
         this.data = []
         this.displayInputLabels = false;
     }
