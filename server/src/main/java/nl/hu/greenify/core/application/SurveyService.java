@@ -119,6 +119,12 @@ public class SurveyService {
         return response;
     }
 
+    public void deleteResponse(Long surveyId, Long subfactorId) {
+        Survey survey = this.getSurvey(surveyId);
+        survey.deleteResponse(subfactorId);
+        surveyRepository.save(survey);
+    }
+
     public Template createDefaultTemplate() {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();

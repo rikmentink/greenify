@@ -1,5 +1,6 @@
 package nl.hu.greenify.core.presentation;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,6 +34,7 @@ public class SurveyControllerIntegrationTest {
     private static final Long PHASE_ID = 1L;    
     private static final Long PERSON_ID = 1L;    
     private static final Long SURVEY_ID = 1L;
+    private static final Long SUBFACTOR_ID = 1L;
 
     private Person person;
     private Phase phase;
@@ -234,5 +236,25 @@ public class SurveyControllerIntegrationTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Deleting a response should return 200")
+    void deleteResponseShouldReturnOk() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.delete("/survey/" + SURVEY_ID + "/response/" + SUBFACTOR_ID);
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Deleting a response with invalid survey ID should return 404")
+    void deleteResponseShouldReturnBadRequest() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.delete("/survey/" + SURVEY_ID + "/response/" + SUBFACTOR_ID);
+        // Throw exception when deleteResponse is called
+        doThrow(new SurveyNotFoundException("")).when(surveyService).deleteResponse(SURVEY_ID, SUBFACTOR_ID);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNotFound());
     }
 }

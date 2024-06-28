@@ -66,4 +66,8 @@ public class Subfactor implements IFactor {
     public void setNumber(int number) {
 
     }
+
+    public void deleteResponse() {
+        this.response = null;
+    }
 }
