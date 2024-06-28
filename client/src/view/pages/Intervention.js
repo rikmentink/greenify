@@ -75,13 +75,22 @@ export class Intervention extends LitElement {
             });
     }
 
+    renderUserPanel(data){
+        const userRoles = this.userData.value.authorities.map(role => role.authority);
+        if (this.userData.value.email === data.admin.email && userRoles.includes("ROLE_MANAGER")) {
+            return html`
+            <intervention-users-panel .userData="${data.participants}" .progress="${data.participantProgress}"></intervention-users-panel>
+        `;
+        }
+    }
+
     render() {
         return html`
             ${this.data.render({
                 complete:  (data) => html`
                 <intervention-information-box .interventionData="${data}"></intervention-information-box>
                 <intervention-survey-box .id="${data.id}"></intervention-survey-box>
-                <intervention-users-panel .userData="${data.participants}" .progress="${data.participantProgress}"></intervention-users-panel>
+                ${this.renderUserPanel(data)}
             `,
             })}
         `
