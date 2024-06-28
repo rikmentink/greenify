@@ -33,8 +33,8 @@ export class SurveySubfactor extends LitElement {
         super();
         this.subfactor = {};
         this.response = {
-            facilitatingFactor: 0,
-            priority: 0,
+            facilitatingFactor: -1,
+            priority: -1,
             comment: ''
         };
         this.displayInputLabels = false;
@@ -64,6 +64,18 @@ export class SurveySubfactor extends LitElement {
         });
     }
 
+    _commentChanged(e) {
+        this.response.comment = e.target.value;
+        this.dispatchEvent(new CustomEvent('answer', {
+            detail: {
+                subfactorId: this.subfactor.id,
+                response: this.response,
+            },
+            bubbles: true,
+            composed: true,
+        }));
+    }
+
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('answer');
@@ -71,14 +83,16 @@ export class SurveySubfactor extends LitElement {
 
     render() {
         return html`
-                <div class="subfactor__name">${this.subfactor.title}</div>
-                <div class="subfactor__question">
-                    <gi-survey-question name="facilitatingFactor" .answer=${this.response.facilitatingFactor} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
-                </div>
-                <div class="subfactor__question">
-                    <gi-survey-question name="priority" .answer=${this.response.priority} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
-                </div>
-                <div class="subfactor__comments">FA</div>
+            <div class="subfactor__name">${this.subfactor.title}</div>
+            <div class="subfactor__question">
+                <gi-survey-question name="facilitatingFactor" .answer=${this.response.facilitatingFactor} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
+            </div>
+            <div class="subfactor__question">
+                <gi-survey-question name="priority" .answer=${this.response.priority} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
+            </div>
+            <div class="subfactor__comments">
+                <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.response.facilitatingFactor === -1 && this.response.priority === -1} />
+            </div>
         `
     }
 }
