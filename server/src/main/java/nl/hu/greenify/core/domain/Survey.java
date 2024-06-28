@@ -134,4 +134,8 @@ public class Survey {
                 .map(Category::copyOf)
                 .collect(Collectors.toList());
     }
+
+    public void deleteResponse(Long subfactorId) {
+        this.getSubfactorById(subfactorId).deleteResponse();
+    }
 }
