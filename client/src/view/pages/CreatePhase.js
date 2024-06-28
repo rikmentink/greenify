@@ -134,7 +134,6 @@ export class CreatePhase extends LitElement {
     async _savePhase(data) {
         await createPhase(this.id, data.name, data.description)
         .then((data) => {
-            console.log('Phase created:', data);
             this.shadowRoot.getElementById('feedback').innerText = 'Fase is succesvol aangemaakt.';
             this.shadowRoot.getElementById('feedback').classList.add('success');
 

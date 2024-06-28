@@ -58,8 +58,6 @@ export class InvitationInput extends LitElement {
     async fetchPerson(email) {
         try {
             this.person = await getPersonByEmail(email);
-            console.log(this.person);
-
             this.dispatchEvent(new CustomEvent('person-fetched', {
                 detail: { person: this.person },
                 bubbles: false,

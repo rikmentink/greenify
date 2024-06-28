@@ -77,7 +77,6 @@ export class Survey extends LitElement {
         this.categoryId = myParam ? parseInt(myParam) : 0;
 
         await this._fetchData(this.id);
-        console.log(this.data);
         if (this.authorizeAndRedirect()) {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
