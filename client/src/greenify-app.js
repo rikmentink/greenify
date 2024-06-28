@@ -44,8 +44,8 @@ export class GreenifyApp extends LitElement {
     `
   }
 
-  firstUpdated() {
-    initRouter(this.shadowRoot.getElementById('outlet'));
+  async firstUpdated() {
+    await initRouter(this.shadowRoot.getElementById('outlet'));
   }
 }
 
