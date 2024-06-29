@@ -3,13 +3,11 @@ package nl.hu.greenify.core.domain;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
 @Getter
 @Entity
 @EqualsAndHashCode
@@ -24,7 +22,7 @@ public class Intervention {
     @ManyToOne
     private Person admin;
 
-    @OneToMany
+    @OneToMany(mappedBy="intervention", cascade=CascadeType.PERSIST)
     private List<Phase> phases = new ArrayList<>();
 
     @ManyToMany
