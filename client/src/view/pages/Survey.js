@@ -5,6 +5,7 @@ import global from "../../assets/global-styles.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
+import { deleteResponse } from '../../services/SurveyService.js';
 import { InfoPopUp } from "../components/containers/InfoPopUp.js";
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
@@ -81,6 +82,11 @@ export class Survey extends LitElement {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
                 await saveResponse(this.id, subfactorId, response);
+            });
+
+            this.addEventListener('delete', async (event) => {
+                const subfactorId = event.detail.subfactorId;
+                await deleteResponse(this.id, subfactorId);
             });
         }
     }
