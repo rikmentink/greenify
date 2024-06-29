@@ -24,7 +24,7 @@ export class Survey extends LitElement {
         .survey > .header,
         .survey > .factor gi-survey-subfactor {
             display: grid;
-            grid-template-columns: 6fr 2.5fr 2fr 1fr;
+            grid-template-columns: 6fr 2.5fr 2fr 1fr 1fr;
             gap: 1rem;
         }
         h1 {
@@ -140,6 +140,7 @@ export class Survey extends LitElement {
                                     <div class="column">Faciliterende factor</div>
                                     <div class="column">Prioriteit</div>
                                     <div class="column">Opmerkingen</div>
+                                    <div></div> <!-- Empty column for the delete button -->
                                 </div>
                                 ${category.factors.map((factor) => html`    
                                     <div class="factor">

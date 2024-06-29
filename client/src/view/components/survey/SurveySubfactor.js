@@ -76,6 +76,23 @@ export class SurveySubfactor extends LitElement {
         }));
     }
 
+    _deleteRequest() {
+        this.dispatchEvent(new CustomEvent('delete', {
+            detail: {
+                subfactorId: this.subfactor.id
+            },
+            bubbles: true,
+            composed: true
+        }));
+
+        // Reset the response to the default values
+        this.response = {
+            facilitatingFactor: -1,
+            priority: -1,
+            comment: ''
+        }
+    }
+
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('answer');
@@ -92,6 +109,9 @@ export class SurveySubfactor extends LitElement {
             </div>
             <div class="subfactor__comments">
                 <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.response.facilitatingFactor === -1 && this.response.priority === -1} />
+            </div>
+            <div class="subfactor__delete">
+                <input type="button" value="Verwijder" @click=${this._deleteRequest}>
             </div>
         `
     }
