@@ -22,11 +22,46 @@ export class SurveySubfactor extends LitElement {
             border-right: 1px solid #d6d6d6;
             padding-right: 1rem;
         }
-
+      
         .subfactor__comments {
-            flex: 0 0 auto;
-            text-align: center;
+          display: flex;
+          align-items: center;
+          padding-right: 1rem;
+          border-right: 1px solid #d6d6d6;
         }
+      
+        .subfactor__comments > input {
+            background-color: white;
+            color: black;
+            border: 1px solid var(--color-primary);
+            padding: .5rem;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+      
+        .subfactor__comments > input::placeholder {
+            color: darkgray;
+        } 
+      
+      .subfactor__delete {
+        display: flex;
+        align-items: center;
+      } 
+      
+      .subfactor__delete > input {
+        background-color: var(--color-primary);
+        color: white;
+        border: 1px solid var(--color-primary);
+        padding: .5rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 10px;
+      } 
+      
+      .subfactor__delete > input:hover {
+        background-color: white;
+        color: grey;
+      }
     `
 
     constructor() {
