@@ -1,12 +1,8 @@
 import { html, css, LitElement } from 'lit';
-import globalStyles from "../../../assets/global-styles.js";
+import global from "../../../assets/global-styles.js";
 
 export class CategoryBox extends LitElement {
-    static styles = [globalStyles, css`
-      p, h1, h2, h3, h4, h5, h6, em {
-        color: black;
-      }
-
+    static styles = [global, css`
       .title {
         color: black;
         margin-top: 0;
@@ -16,20 +12,10 @@ export class CategoryBox extends LitElement {
       .rectangle {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        min-width: 200px;
-        min-height: 100px;
-        width: 600px;
-        height: 100px;
         border: #D6D6D6 2px solid;
-        margin-top: 10px;
         padding: 20px;
-        border-radius: 5px;
+        border-radius: 8px;
         overflow: hidden;
-        transition: height 0.3s ease;
-      }
-
-      .rectangle.expanded {
-        height: 200px;
       }
 
       .title-description {
@@ -43,57 +29,32 @@ export class CategoryBox extends LitElement {
         align-items: flex-start;
       }
 
-      greenify-button {
-        color: black;
-      }
-
-      greenify-categoryquestionbutton {
-        color: black;
-      }
-
-      .my-category-btn {
-        width: 100%;
-        justify-content: flex-end;
-        display: flex;
-        margin-bottom: 5px;
-        margin-right: 20px;
-        margin-top: 10px;
-      }
-
-      .my-category-btn a {
-        background-color: var(--color-primary);
-        color: white;
-        padding: 10px 60px 10px 60px;
-        border-radius: 2px;
-        font-size: 16px;
-        text-decoration: none;
-      }
-
-
       .questions-container {
-        display: none;
+        display: flex;
         flex-direction: row;
         gap: 10px;
-        margin-top: 10px;
+        margin-bottom: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.5s;
       }
-      
+
       .my-question-btn {
         display: flex;
       }
 
       .my-question-btn a.disabled {
-        background-color: grey;
+        background-color: rgba(224, 224, 224, .35);
       }
 
       .my-question-btn a.enabled {
-        background-color: var(--color-primary);
+        background-color: rgba(97, 255, 0, .35);
       }
 
       .my-question-btn a {
-        background-color: var(--color-primary);
-        color: white;
+        color: var(--color-text);
         padding: 10px 17.6px;
-        border-radius: 2px;
+        border-radius: 4px;
         font-size: 16px;
         text-decoration: none;
       }
@@ -112,19 +73,9 @@ export class CategoryBox extends LitElement {
         flex-direction: column;
       }
 
-      .progress-bar {
+      .progress-wrapper {
         width: 100%;
-        background-color: #e0e0e0;
-        height: 10px;
-        border-radius: 5px;
-        margin-top: 10px;
-        display: flex;
-      }
-
-      .progress {
-        height: 100%;
-        background-color: var(--color-primary)
-        border-radius: 5px;
+        margin-bottom: .5rem;
       }
 
       .progress-labels {
@@ -136,36 +87,31 @@ export class CategoryBox extends LitElement {
         margin-top: 10px;
       }
 
-      .progress-label {
-        margin: 0;
-      }
-
       .progress-bar {
         width: 100%;
         background-color: #e0e0e0;
-        height: 10px;
+        height: 4px;
         border-radius: 5px;
         margin-top: 10px;
         display: flex;
       }
 
-      .progress {
-        height: 100%;
+      .progress-bar > .progress {
+        width: 100%;
+        height: 4px;
         background-color: var(--color-primary);
         border-radius: 5px;
       }
 
-      .progress-labels {
-        width: 100%;
-        display: flex;
-        color: #666666;
-        font-style: italic;
-        justify-content: flex-end;
-        margin-top: 10px;
+      .progress-value {
+        font-size: 13px;
+        width: 0%;
+        text-align: right;
       }
 
       .progress-label {
-        margin: 0;
+        line-height: 1;
+        margin: .25rem 0 .75rem 0;
       }
 
       .show-more {
@@ -192,7 +138,8 @@ export class CategoryBox extends LitElement {
       }
 
       .rectangle.expanded .questions-container {
-        display: flex;
+        max-height: 10rem;
+        margin-bottom: 10px;
       }
     `];
 
@@ -213,7 +160,7 @@ export class CategoryBox extends LitElement {
 
     _getUserProgress() {
         if (!this.progress) {
-            throw new Error('Progress is not set');
+            return 0;
         }
         const currentUser = this.progress.find(participant => participant.currentUser);
         if (!currentUser) {
@@ -259,14 +206,12 @@ export class CategoryBox extends LitElement {
                 <div class="title-description">
                     <h2 class="title">${this.category.name}</h2>
                     <div class="sy-progress-container">
-                        <div class="progress-labels">
-                            <p class="progress-label">Nog ${totalQuestions - answeredQuestions} vragen te gaan</p>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: ${progressPercentage}%;" aria-label="Progression bar"></div>
-                        </div>
-                        <div class="progress-labels">
-                            <p class="progress-label">${progressPercentage}%</p>
+                        <div class="progress-wrapper">
+                          <p>${answeredQuestions} van de ${totalQuestions} vragen beantwoord</p>
+                          <div class="progress-bar">
+                              <div class="progress" style="width: ${progressPercentage}%;" aria-label="Progression bar"></div>
+                          </div>
+                            <p class="progress-value" style="width: ${progressPercentage}%;">${progressPercentage}%</p>
                         </div>
                     </div>
                     <div class="questions-container">
@@ -277,12 +222,10 @@ export class CategoryBox extends LitElement {
                     </div>
                 </div>
                 <div class="button-container">
-                    <div class="my-category-btn">
-                        <a href="/tool/${this.surveyId}?category=${this.category.id}">Ga verder</a>
-                    </div>
+                  <a href="/tool/${this.surveyId}?category=${this.category.id}" class="btn">Ga verder</a>
                 </div>
-                <a class="show-more" @click="${this._toggleExpand}">Bekijk Vooruitgang V</a>
-                <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang Ʌ</a>
+                <a class="show-more" @click="${this._toggleExpand}">Bekijk Vooruitgang <span style="font-size: 1.25rem;">&vee;</span></a>
+                <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang <span style="font-size: 1.25rem;">&wedge;</span></a>
             </div>
         `;
     }
