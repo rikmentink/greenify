@@ -152,11 +152,11 @@ export class Survey extends LitElement {
                                     <div class="factor">
                                         <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                         <ol>
-                                        ${factor.subfactors.map((subfactor, subfactorIndex) => html`
-                                            <li value="${subfactor.number}" id="subfactor${subfactor.number}">
-                                                <gi-survey-subfactor .subfactor=${subfactor} .displayInputLabels=${subfactorIndex === 0}></gi-survey-subfactor>
-                                            </li>
-                                        `)}
+                                            ${factor.subfactors.sort((a, b) => a.number - b.number).map((subfactor, subfactorIndex) => html`
+                                                <li value="${subfactor.number}" id="subfactor${subfactor.number}">
+                                                    <gi-survey-subfactor .subfactor=${subfactor} .displayInputLabels=${subfactorIndex === 0}></gi-survey-subfactor>
+                                                </li>
+                                            `)}
                                         </ol>
                                     </div>
                                 `)}
