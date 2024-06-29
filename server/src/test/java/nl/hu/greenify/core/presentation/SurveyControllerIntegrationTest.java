@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import nl.hu.greenify.core.application.SurveyService;
 import nl.hu.greenify.core.application.exceptions.PersonNotFoundException;
 import nl.hu.greenify.core.application.exceptions.SurveyNotFoundException;
+import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Survey;
@@ -37,6 +39,7 @@ public class SurveyControllerIntegrationTest {
     private static final Long SUBFACTOR_ID = 1L;
 
     private Person person;
+    private Intervention intervention;
     private Phase phase;
     private Survey survey;
 
@@ -49,7 +52,8 @@ public class SurveyControllerIntegrationTest {
     @BeforeEach
     void setup() {
         this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@example.com", new ArrayList<>());
-        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description");
+        this.intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), Arrays.asList(person));
+        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
         this.survey = new Survey(SURVEY_ID, this.phase, new ArrayList<>(), this.person);
     }
 

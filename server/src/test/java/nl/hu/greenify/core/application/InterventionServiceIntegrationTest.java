@@ -55,7 +55,7 @@ public class InterventionServiceIntegrationTest {
     void setUp() {
         this.person = new Person(1L, "firstName", "lastName", "johndoe@gmail.com", new ArrayList<>());
         this.intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), Arrays.asList(person));
-        this.phase = new Phase(1L, PhaseName.PLANNING, "Description");
+        this.phase = new Phase(1L, PhaseName.PLANNING, "Description", this.intervention, new ArrayList<>());
         Intervention interventionWithPhase = new Intervention(1L, "Intervention", "Intervention description", person, Arrays.asList(phase), Arrays.asList(person));
         
         var subfactor = new Subfactor(1L, "Subfactor", 1, true);
