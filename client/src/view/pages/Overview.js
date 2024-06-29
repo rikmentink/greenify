@@ -75,7 +75,6 @@ export class Overview extends LitElement {
         return;
       }
 
-      console.log("Intervention ID: " + this.interventionId)
       console.log("Phase ID: " + this.phaseId)
 
       await this._fetchData(this.interventionId, this.phaseId);
