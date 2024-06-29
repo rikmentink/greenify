@@ -42,7 +42,7 @@ public class InterventionServiceTest {
     void setUp() {
         person = new Person(1L, "firstName", "lastName", "username@gmail.com", new ArrayList<>());
         intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
-        phase = new Phase(1L, PhaseName.PLANNING, "Description");
+        phase = new Phase(1L, PhaseName.PLANNING, "Description", intervention, new ArrayList<>());
 
         when(personService.getPersonById(1L)).thenReturn(person);
         when(interventionRepository.save(intervention)).thenReturn(intervention);

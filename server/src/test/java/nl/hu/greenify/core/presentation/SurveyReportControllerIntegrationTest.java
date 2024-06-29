@@ -112,7 +112,7 @@ public class SurveyReportControllerIntegrationTest {
 
         // Create phase
         System.out.println("Creating phase");
-        Phase phase = Phase.createPhase(PhaseName.INITIATION, "Description");
+        Phase phase = Phase.createPhase(intervention, PhaseName.INITIATION, "Description");
         System.out.println("Saving phase to repository");
         this.phaseRepository.save(phase);
         System.out.println("Set ID of phase");

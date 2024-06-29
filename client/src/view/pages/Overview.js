@@ -1,5 +1,6 @@
 import { css, html, LitElement } from 'lit';
 import { Task } from "@lit/task";
+import { Router } from "@vaadin/router";
 import { getRouter } from "../../router.js";
 
 import { getOverview } from '../../services/OverviewService.js';
@@ -69,6 +70,11 @@ export class Overview extends LitElement {
       super.connectedCallback();
       this.interventionId = getRouter().location.params.interventionId || 0;
       this.phaseId = getRouter().location.params.phaseId || 0;
+      if (this.interventionId == 0 || this.phaseId == 0) {
+        Router.go("/")
+        return;
+      }
+
 
       await this._fetchData(this.interventionId, this.phaseId);
       this.authorizeAndRedirect();

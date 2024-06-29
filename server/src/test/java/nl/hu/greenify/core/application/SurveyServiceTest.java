@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +68,9 @@ public class SurveyServiceTest {
     @BeforeEach
     public void setup() {
         this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
-        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description");
+
+        var intervention = new Intervention(1L, "Intervention", "Description", this.person, new ArrayList<>(), Arrays.asList(this.person));
+        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
 
         var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
         var factor = new Factor(FACTOR_ID, "Factor", 1, List.of(subfactor));
