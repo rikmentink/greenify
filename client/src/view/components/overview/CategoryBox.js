@@ -1,6 +1,8 @@
 import { html, css, LitElement } from 'lit';
 import globalStyles from "../../../assets/global-styles.js";
 
+import { CategoryQuestionItem } from './CategoryQuestionItem.js';
+
 export class CategoryBox extends LitElement {
     static styles = [globalStyles, css`
       p, h1, h2, h3, h4, h5, h6, em {
@@ -75,27 +77,6 @@ export class CategoryBox extends LitElement {
         flex-direction: row;
         gap: 10px;
         margin-top: 10px;
-      }
-      
-      .my-question-btn {
-        display: flex;
-      }
-
-      .my-question-btn a.disabled {
-        background-color: grey;
-      }
-
-      .my-question-btn a.enabled {
-        background-color: var(--color-primary);
-      }
-
-      .my-question-btn a {
-        background-color: var(--color-primary);
-        color: white;
-        padding: 10px 17.6px;
-        border-radius: 2px;
-        font-size: 16px;
-        text-decoration: none;
       }
 
       .sy-progress-container {
@@ -271,9 +252,13 @@ export class CategoryBox extends LitElement {
                     </div>
                     <div class="questions-container">
                         ${this.category.subfactors.map((subfactor) => html`
-                            <div class="my-question-btn">
-                                <a class="${this._isSubfactorAnswered(subfactor.id) ? 'enabled' : 'disabled'}" href="/tool/${this.surveyId}?categoryId=${this.category.id}#subfactor${subfactor.number}">${subfactor.number}</a>
-                            </div>`)}
+                          <gi-categoryquestion 
+                            .subfactorNumber=${subfactor.number} 
+                            .answered=${this._isSubfactorAnswered(subfactor.id)} 
+                            .categoryId=${this.category.id} 
+                            .surveyId=${this.surveyId}
+                          ></gi-categoryquestion>
+                        `)}
                     </div>
                 </div>
                 <div class="button-container">
