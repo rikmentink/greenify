@@ -33,10 +33,6 @@ const global = css`
     }
   }
 
-  h1, h2 {
-    color: var(--color-primary);;
-  }
-
   .link {
     color: var(--color-primary);
     text-decoration: none;
@@ -49,12 +45,18 @@ const global = css`
   .btn {
     background-color: var(--color-primary);
     color: white;
-    padding: 0.75rem 2rem;
+    padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 1.25rem;
     cursor: pointer;
     font-size: 15px;
     font-weight: 600;
+    text-decoration: none;
+    transition: background-color .3s;
+  }
+
+  .btn:hover {
+    background-color: var(--color-primary-dark);
   }
 
   form input,

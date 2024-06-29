@@ -12,13 +12,11 @@ export class Overview extends LitElement {
     static styles = [
       global,
       css`
-      p, h1, h3, em {
-        color: black;
-      }
 
       .grid-container {
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: 1fr 1fr;
+        gap: .75rem;
       }
 
       .grid-container div {
@@ -35,25 +33,25 @@ export class Overview extends LitElement {
         grid-template-columns: auto auto 1fr;
         align-items: start;
         gap: 20px;
-      }
-
-      .description {
-        max-width: 600px;
-      }
-
-      .title-desc {
-        min-width: 43vw;
+        margin-top: 1rem;
       }
 
       .algemeneinfo {
-        margin-top: 30px;
+        font-size: 18px;
+      }
+
+      .title-desc > h1 {
+        margin: 0;
+      }
+
+      .title-desc > p {
+        margin-top: .25rem;
       }
 
       hr.divider {
-        margin-top: 25px;
         border-color: #f8f8f8;
         margin-left: 20px;
-        min-height: 150px;
+        height: 100%;
         flex-grow: 1;
         width: 0px;
       }
@@ -125,20 +123,22 @@ export class Overview extends LitElement {
                     </div>
                     <hr class="divider">
                     <div>
-                        <h3 class="algemeneinfo">Algemene Informatie</h3>
-                        <div class="grid-container">
-                            <em>Fase</em>
-                            <p class="fase">${data.name}</p>
-                            <em>Voortgang</em>
-                            <p class="voortgang">${this.getAnsweredQuestions(data.contenders)}/${this.getTotalQuestions(data.categories)} beantwoorden vragen</p>
+                        <h2 class="algemeneinfo">Algemene informatie</h2>
+                        <dl class="grid-container">
+                            <dt>Fase</dt>
+                            <dd>${data.name}</dd>
+                            <dt>Voortgang</dt>
+                            <dd>${this.getAnsweredQuestions(data.contenders)}/${this.getTotalQuestions(data.categories)} beantwoorden vragen</dd>
                         </div>
                     </div>
                 </div>
-                <h1>Categorieën</h1>
+                <h2>Categorieën</h2>
+                <div class="grid-container">
                   ${data.categories ? data.categories.map(category => html`
                     <gi-categorybox .progress=${data.contenders} .category=${category} .surveyId=${data.surveyId}></gi-categorybox>`) : html`
                     <p>Loading categories...</p>`
                   }
+                </div>
             `});
     }
 }
