@@ -24,7 +24,7 @@ export class Survey extends LitElement {
         .survey > .header,
         .survey > .factor gi-survey-subfactor {
             display: grid;
-            grid-template-columns: 6fr 2.5fr 2fr 1fr;
+            grid-template-columns: 6fr 2.5fr 2.1fr 1.4fr;
             gap: 1rem;
         }
         h1 {
