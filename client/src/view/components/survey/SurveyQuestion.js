@@ -89,6 +89,8 @@ export class SurveyQuestion extends LitElement {
                 composed: true
             })
         );
+        // Dispatch an event to notify the parent component that the answer has changed
+        this.dispatchEvent(new Event('answer-changed', { bubbles: true, composed: true }));
     }
 }
 

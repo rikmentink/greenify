@@ -6,48 +6,55 @@ export class SurveySubfactor extends LitElement {
     static properties = {
         subfactor: { type: Object },
         response: { type: Object },
+        commentDisabled: { type: Boolean }
     }
 
     static styles = css`
-        .subfactor__name {
-            flex: 1 1 auto;
-            margin: 0;
-        }
+      .subfactor__name {
+        flex: 1 1 auto;
+        margin: 0;
+      }
 
-        .subfactor__question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex: 0 0 auto;
-            border-right: 1px solid #d6d6d6;
-            padding-right: 1rem;
-        }
-      
-        .subfactor__comments {
-          display: flex;
-          align-items: center;
-          padding-right: 1rem;
-          border-right: 1px solid #d6d6d6;
-        }
-      
-        .subfactor__comments > input {
-            background-color: white;
-            color: black;
-            border: 1px solid var(--color-primary);
-            padding: .5rem;
-            border-radius: 20px;
-            font-size: 10px;
-        }
-      
-        .subfactor__comments > input::placeholder {
-            color: darkgray;
-        } 
-      
+      .subfactor__question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 0 0 auto;
+        border-right: 1px solid #d6d6d6;
+        padding-right: 1rem;
+      }
+
+      .subfactor__comments {
+        display: flex;
+        align-items: center;
+        padding-right: 1rem;
+        border-right: 1px solid #d6d6d6;
+      }
+
+      .subfactor__comments > input {
+        background-color: white;
+        color: black;
+        border: 1px solid var(--color-primary);
+        padding: .5rem;
+        border-radius: 20px;
+        font-size: 10px;
+      }
+
+      .subfactor__comments > input::placeholder {
+        color: darkgray;
+      }
+
+      .subfactor__comments > input:disabled {
+        background-color: #efefef;
+        color: darkgray;
+        border: 1px solid #d6d6d6;
+      }
+
       .subfactor__delete {
         display: flex;
         align-items: center;
-      } 
-      
+      }
+
       .subfactor__delete > input {
         background-color: var(--color-primary);
         color: white;
@@ -56,8 +63,8 @@ export class SurveySubfactor extends LitElement {
         border-radius: 20px;
         cursor: pointer;
         font-size: 10px;
-      } 
-      
+      }
+
       .subfactor__delete > input:hover {
         background-color: white;
         color: grey;
@@ -73,11 +80,17 @@ export class SurveySubfactor extends LitElement {
             comment: ''
         };
         this.displayInputLabels = false;
+        this.commentDisabled = true;
     }
     
     firstUpdated() {
         if (this.subfactor.response) {
             this.response = this.subfactor.response;
+        }
+
+        // Enable the comment input if both a response was provided for the facilitating factor and the priority
+        if (this.response.facilitatingFactor !== -1 && this.response.priority !== -1) {
+            this.commentDisabled = false;
         }
     }
 
@@ -96,6 +109,11 @@ export class SurveySubfactor extends LitElement {
                     composed: true,
                 }));
             }
+        });
+
+        this.addEventListener('answer-changed', () => {
+            const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
+            commentInput.disabled = this.response.facilitatingFactor === -1 || this.response.priority === -1;
         });
     }
 
@@ -131,6 +149,7 @@ export class SurveySubfactor extends LitElement {
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('answer');
+        this.removeEventListener('answer-changed')
     }
 
     render() {
@@ -143,7 +162,7 @@ export class SurveySubfactor extends LitElement {
                 <gi-survey-question name="priority" .answer=${this.response.priority} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
             </div>
             <div class="subfactor__comments">
-                <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.response.facilitatingFactor === -1 && this.response.priority === -1} />
+                <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.commentDisabled}/>
             </div>
             <div class="subfactor__delete">
                 <input type="button" value="Verwijder" @click=${this._deleteRequest}>
