@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -101,7 +102,9 @@ public class SurveyTest {
     @BeforeEach
     void setup() {
         this.person = new Person(1L, "John", "Doe", "you@example.com", new ArrayList<>());
-        this.survey = new Survey(1L, new Phase(1L, PhaseName.INITIATION, "Description"), new ArrayList<>(), this.person);
+        var intervention = new Intervention(1L, "Intervention", "Description", this.person, new ArrayList<>(), Arrays.asList(this.person));
+        var phase = new Phase(1L, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
+        this.survey = new Survey(1L, phase, new ArrayList<>(), this.person);
         this.category = new Category(1L, "", "", "", new ArrayList<>());
         this.factor = new Factor(1L, "", 0, new ArrayList<>());
         this.subfactor = new Subfactor(1L, "subfactor", 1, true);

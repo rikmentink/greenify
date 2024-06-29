@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,14 +62,15 @@ public class SurveyReportTest {
         // 6. Create a template with the categories
         Template template = new Template(1L, "name", "description", 1, List.of(categoryTemplate1, categoryTemplate2));
 
-        // Phase creation to create surveys for based on the template:
-        this.phase = new Phase(1L, PhaseName.INITIATION, "Description");
-
         // Person creation to set as the respondant:
         Person person1 = mock(Person.class);
         Person person2 = mock(Person.class);
         when(person1.hasSurvey(phase)).thenReturn(false);
         when(person2.hasSurvey(phase)).thenReturn(false);
+
+        // Phase creation to create surveys for based on the template:
+        var intervention = new Intervention(1L, "Intervention", "Description", person1, new ArrayList<>(), Arrays.asList(person1));
+        this.phase = new Phase(1L, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
 
         // Survey creations based on templates:
         Survey.createSurvey(phase, Template.copyOf(template), person1);
