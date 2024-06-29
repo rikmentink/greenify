@@ -137,13 +137,25 @@ export class SurveySubfactor extends LitElement {
             bubbles: true,
             composed: true
         }));
+        this._resetInputs();
+    }
 
-        // Reset the response to the default values
-        this.response = {
-            facilitatingFactor: -1,
-            priority: -1,
-            comment: ''
-        }
+    _resetInputs() {
+        // Disabled relevant comment field
+        const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
+        console.log(commentInput)
+        console.log("I am a comment input and I am", commentInput.disabled);
+        commentInput.value = '';
+        commentInput.disabled = true;
+
+        // Uncheck all radio buttons
+        const surveyQuestions = this.shadowRoot.querySelectorAll('gi-survey-question');
+        surveyQuestions.forEach(question => {
+            const radioButtons = question.shadowRoot.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radioButton => {
+                radioButton.checked = false;
+            });
+        });
     }
 
     async disconnectedCallback() {
