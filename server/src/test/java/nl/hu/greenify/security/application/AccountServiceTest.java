@@ -4,6 +4,7 @@ import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.application.exceptions.AccountAlreadyExistsException;
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
+import nl.hu.greenify.security.application.exceptions.PasswordIsInvalidException;
 import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.domain.AccountCredentials;
@@ -94,6 +95,17 @@ public class AccountServiceTest {
         assertThrows(AccountAlreadyExistsException.class, () -> accountService.register("johndoe@gmail.com",
                 "password", "John", "doe"));
     }
+
+    @Test
+    @DisplayName("registering an account throws exception when password is too short")
+    void registeringAccountThrowsExceptionWhenPasswordIsTooShort() {
+        when(passwordEncoder.encode("password")).thenReturn("password");
+        when(greenifyRepository.save(person)).thenReturn(person);
+
+        assertThrows(PasswordIsInvalidException.class, () -> accountService.register("johndoe@gmail.com",
+                "1234", "John", "doe"));
+    }
+
 
     @Test
     @DisplayName("login an account")
