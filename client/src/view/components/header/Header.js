@@ -67,14 +67,15 @@ export class Header extends LitElement {
         super();
         this.rendered = false;
         this.roles = [];
+        this.userData = [];
         this.fetchCurrentUserRoles();
         this.handleLocationChange = this.handleLocationChange.bind(this);
     }
 
     async fetchCurrentUserRoles() {
         try {
-            const userData = await getCurrentUser();
-            this.roles = userData.authorities.map(auth => auth.authority);
+            this.userData = await getCurrentUser();
+            this.roles = this.userData.authorities.map(auth => auth.authority);
             this.requestUpdate();
         } catch (error) {
             console.error('Error fetching user roles:', error);
@@ -103,7 +104,7 @@ export class Header extends LitElement {
         if (Array.isArray(this.roles) && (this.roles.includes('ROLE_USER') || this.roles.includes('ROLE_ADMIN'))) {
             return html`
                 <button class="toggler" @click=${this.handleOffcanvasToggle}>
-                    <img src="icons/menu.png" width="20" height="20"/>
+                    <img src="/icons/menu.png" width="20" height="20"/>
                 </button>
                 <h1 class="nav-head">
                     <a href="/">GreenIT<br>
@@ -111,7 +112,7 @@ export class Header extends LitElement {
                 </h1>
                 <gi-navbar>
                 </gi-navbar>
-                <profile-button @click=${this.handleProfileButtonClick}></profile-button>
+                <profile-button @click=${this.handleProfileButtonClick} .userData="${this.userData}"></profile-button>
         `;
         }
         return html`<h1 class="nav-head">
