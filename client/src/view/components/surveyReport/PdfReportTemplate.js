@@ -16,6 +16,10 @@ export class PdfReportTemplate extends LitElement {
                 :host {
                     display: block;
                 }
+              
+              h1, h2 {
+                color: var(--color-primary);
+              }
 
                 .section {
                   display: block;
