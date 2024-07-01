@@ -187,7 +187,6 @@ export class InterventionSurveyBox extends LitElement {
                 <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
                     <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
                     <div class="sy-status">
-                        <a href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk vragen &#10132;</a>
                         <a @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk eindrapport &#10132;</a>
                     </div>
                     <div class="sy-progress-container">
@@ -213,11 +212,15 @@ export class InterventionSurveyBox extends LitElement {
         Router.go(`/phase/${phaseId}/report?&interventionId=${interventionIdParam}&interventionName=${interventionNameParam}&phaseName=${phaseNameParam}`);
     }
 
+
     render() {
         return html`
             <div class="1ntainer">
                 <h2>Fases</h2>
                 <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>
+                ${this.phaseData.map(phase => html`
+                <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool</a>
+            `)}
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}
