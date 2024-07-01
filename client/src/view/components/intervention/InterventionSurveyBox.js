@@ -216,12 +216,15 @@ export class InterventionSurveyBox extends LitElement {
                 <hr>
                 ${this.phaseData.map(phase => html`
                 <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool &#10132;</a><br>
-                <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport</a>
-                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>
                 `)}
             </div>
             <div class="survey-container">
                 ${this.renderSurveys()}
+            </div>
+            <div class="1ntainer">
+                ${this.phaseData.map(phase => html`
+                <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport</a>
+                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>`)}
             </div>
         `;
     }
