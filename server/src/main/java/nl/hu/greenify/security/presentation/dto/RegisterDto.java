@@ -8,7 +8,7 @@ public class RegisterDto {
     @NotBlank
     public String email;
 
-    @Size(min = 5)
+    @NotBlank
     public String password;
 
     @NotBlank

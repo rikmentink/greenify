@@ -1,10 +1,21 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 async function handleErrorMessages(response) {
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
+    if (response.ok) return;
+
+    const errorData = await response.json();
+    let errorMessage = mapErrorMessage(errorData.message);
+    throw new Error(errorMessage);
+}
+
+function mapErrorMessage(message) {
+    const errorMessages = {
+        'Email or password is incorrect': 'Email of wachtwoord is onjuist',
+        'Email is already in use': 'Email is al in gebruik',
+        'Password is too short': 'Wachtwoord is te kort. Gebruik minimaal 5 tekens'
+    };
+
+    return errorMessages[message] || message;
 }
 
 

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import nl.hu.greenify.core.data.PersonRepository;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.security.application.exceptions.AccountAlreadyExistsException;
+import nl.hu.greenify.security.application.exceptions.PasswordIsInvalidException;
 import nl.hu.greenify.security.data.AccountRepository;
 import nl.hu.greenify.security.domain.Account;
 import nl.hu.greenify.security.application.exceptions.AccountNotFoundException;
@@ -52,6 +53,11 @@ public class AccountService implements UserDetailsService {
         // Check if the email is already in use
         if (accountRepository.findByEmail(email).isPresent()) {
             throw new AccountAlreadyExistsException("Email is already in use");
+        }
+
+        // Check if the password is valid
+        if (!isPasswordValid(password)) {
+            throw new PasswordIsInvalidException("Password is too short");
         }
 
         // Encode the password
@@ -103,5 +109,10 @@ public class AccountService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return accountRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    private boolean isPasswordValid(String password) {
+        // Can be extended with more requirements
+        return password.length() >= 5;
     }
 }

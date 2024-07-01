@@ -129,7 +129,7 @@ export class InterventionUsersTable extends LitElement {
     searchUser(event) {
         const searchValue = event.target.value.toLowerCase();
         this.filteredUserData = this.userData.filter(user => {
-            return user.name.toLowerCase().includes(searchValue) || user.email.toLowerCase().includes(searchValue);
+            return user.firstName.toLowerCase().includes(searchValue) || user.email.toLowerCase().includes(searchValue);
         });
         this.requestUpdate();
     }
