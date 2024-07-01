@@ -21,10 +21,6 @@ export class InterventionInformationBox extends LitElement {
             .information-container {
                 flex-direction: column;
             }
-            
-            .information-box {
-                margin-left: 0;
-            }
         }
     `;
 
