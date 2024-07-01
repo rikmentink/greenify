@@ -14,9 +14,6 @@ import {getRouter} from "../../router.js";
 export class SurveyResultReport extends LitElement {
   static styles = [globalStyles,
     css`
-      :host {
-          background-color: #f0f0f0;
-      }
       h1 {
         color: var(--color-primary);
       }
@@ -169,6 +166,12 @@ export class SurveyResultReport extends LitElement {
       {title: "Actiepunt 9", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
       {title: "Actiepunt 10", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."}
     ];
+    this.interventionId = this.getUrlParam('interventionId');
+  }
+
+  getUrlParam(paramName) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return decodeURIComponent(urlParams.get(paramName));
   }
 
   async connectedCallback() {
@@ -236,6 +239,7 @@ export class SurveyResultReport extends LitElement {
 
   render() {
     return html`
+      <a href="/intervention/${this.interventionId}" class="link">&larr; Terug naar interventie</a>
       <h1>Vergroenings rapportage</h1>
       <div class="btn-group">
         <gi-pdf-report-generator slot="actions"></gi-pdf-report-generator>
