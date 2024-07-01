@@ -4,16 +4,28 @@ import {InterventionUsersTable} from "./InterventionUsersTable.js";
 
 export class InterventionUsersPanel extends LitElement {
     static styles = css`
-      .user-container {
-        display: grid;
-        grid-template-rows: auto 1fr;
-        gap: 20px;
-        margin-bottom: 40px;
-      }
+        .user-container {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
 
-      .inventation-box {
-        width: 40%;
-      }
+        .inventation-box {
+            width: 40%;
+        }
+
+        @media (max-width: 767px) {
+            .inventation-box {
+                width: 90%;
+            }
+
+            .users-table {
+                width: 90%;
+            }
+        }
+
+
     `;
 
     static properties = {

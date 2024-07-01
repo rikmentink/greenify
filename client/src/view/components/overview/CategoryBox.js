@@ -141,6 +141,16 @@ export class CategoryBox extends LitElement {
         max-height: 10rem;
         margin-bottom: 10px;
       }
+
+        @media (max-width: 767px) {
+            .title {
+                font-size: 18px;
+            }
+            
+            .progress-wrapper {
+                white-space: nowrap;
+            }
+        }
     `];
 
     static properties = {
