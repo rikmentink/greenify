@@ -68,6 +68,12 @@ export class CreatePhase extends LitElement {
         #feedback.success {
             color: green;
         }
+
+        @media (max-width: 767px) {
+            .main-block {
+                width: 100%;
+            }
+        }
     `]
 
     static properties = {
