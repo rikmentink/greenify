@@ -108,6 +108,31 @@ export class SurveyResultReport extends LitElement {
       ::-webkit-scrollbar-thumb:hover {
         background: #555;
       }
+      
+      /* Styling for mobile devices */
+      @media (max-width: 767px) {
+        h1 {
+          font-size: 24px;
+        }
+
+        .grid-container {
+          display: block;
+        }
+
+        .grid-left-section, .grid-right-section {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .header-box-contents {
+          max-height: 500px;
+        }
+
+        .list-item-chart {
+          min-width: 300px;
+          height: 40px;
+        }
+      }
     `];
 
   static get properties() {
