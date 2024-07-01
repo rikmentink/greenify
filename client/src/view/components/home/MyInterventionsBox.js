@@ -92,7 +92,7 @@ export class MyInterventionsBox extends LitElement {
         
         @media (max-width: 768px) {
             .my-interventions-container {
-                width: 90%;
+                width: 100%;
             }
         }
 
@@ -160,7 +160,7 @@ export class MyInterventionsBox extends LitElement {
                     </div>
                     <div class="my-interventions-progress-container">
                         <div class="my-interventions-item-description">
-                            <p>Mijn progressie over ${interventie.surveyAmount} vragenlijst(en)</p>
+                            <p>Progressie over huidige fase</p>
                         </div>
                         <div class="my-interventions-item-progress">
                             <horizontal-bar-chart .chartDatasetLabel="Bar" .chartData=${progress}
