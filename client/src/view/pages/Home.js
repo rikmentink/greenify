@@ -39,17 +39,35 @@ export class Home extends LitElement {
         
         .user-info {
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: space-between;
+        }
+        
+        .new-intervention-btn {
+            display: none;
         }
 
 
         @media (max-width: 767px) {
             .home-header {
-                width: 80%;
+                width: 100%;
             }
             .home-container {
                 flex-direction: column;
+            }
+            
+            .btn {
+                text-align: center;
+                font-size: 13px;
+                margin-right: 10px;
+            }
+            
+            .home-header h2 {
+                font-size: 1.5em;
+            }
+
+            .new-intervention-btn {
+                display: block;
             }
 
             my-intervention-box {
@@ -58,7 +76,7 @@ export class Home extends LitElement {
 
             create-intervention-box{
                 margin-right: 0;
-                width: 90%;
+                width: 100%;
             }
         }
     ;
@@ -108,7 +126,8 @@ export class Home extends LitElement {
     renderButtons() {
         const userRoles = this.userData.authorities.map(role => role.authority);
         if (userRoles.includes("ROLE_MANAGER")) {
-            return html`<button class="btn" @click=${this.handleParticipateButtonClick}>Deelnemen aan interventie</button>`;
+            return html`<a class="btn new-intervention-btn" href="/intervention/${this.personData.id}/new-intervention">Interventie aanmaken</a>
+            <a class="btn" @click=${this.handleParticipateButtonClick}>Mijn interventie deelnames</a>`;
         }
         return html`<a class="btn" @click=${this.handleManageButtonClick}>Interventie aanmaken? Word beheerder!</a>`;
     }
