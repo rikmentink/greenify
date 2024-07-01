@@ -5,6 +5,7 @@ import { getRouter } from "../../router.js";
 
 import { getOverview } from '../../services/OverviewService.js';
 import global from '../../assets/global-styles.js';
+import { InfoPopUp } from "../components/containers/InfoPopUp.js";
 
 import { CategoryBox } from '../components/overview/CategoryBox.js';
 
@@ -132,6 +133,7 @@ export class Overview extends LitElement {
             loading: () => html`<p>Loading...</p>`,
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
             complete: (data) => html`
+                <gi-info-popup></gi-info-popup>
                 <a href="/intervention/${this.interventionId}" class="link">&larr; Terug naar interventie</a>
                 <div class="content">
                     <div class="title-desc">

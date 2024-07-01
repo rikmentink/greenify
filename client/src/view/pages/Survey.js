@@ -6,7 +6,6 @@ import global from "../../assets/global-styles.js";
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
 import { deleteResponse } from '../../services/SurveyService.js';
-import { InfoPopUp } from "../components/containers/InfoPopUp.js";
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
@@ -132,7 +131,6 @@ export class Survey extends LitElement {
 
     render() {
         return html`
-            <gi-info-popup></gi-info-popup>
                 ${this.data.render({
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
