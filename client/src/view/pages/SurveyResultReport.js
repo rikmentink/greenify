@@ -231,10 +231,22 @@ export class SurveyResultReport extends LitElement {
       description: score.subfactorName,
       chartData: [score.percentage],
       chartLabels: ["Percentage"],
-      chartColors: ["purple"]
+      chartColors: [this.getBarChartColor(score.percentage)]
     }));
 
     this.shadowRoot.querySelector('dialog-plain').open();
+  }
+
+  getBarChartColor(percentage) {
+    if (percentage >= 80) {
+      return "#90EE90";
+    } else if (percentage >= 60) {
+      return "#f3cb93";
+    } else if (percentage >= 40) {
+      return "#fd9b87";
+    } else {
+      return "#F08080";
+    }
   }
 
   render() {
