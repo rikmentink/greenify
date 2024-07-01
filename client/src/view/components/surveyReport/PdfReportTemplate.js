@@ -158,7 +158,7 @@ export class PdfReportTemplate extends LitElement {
 
     renderChart() {
         return html`
-            <agreement-polar-chart .chartData=${this.data.polarChartData} .chartLabels=${this.data.polarChartLabels}></agreement-polar-chart>
+            <agreement-polar-chart .chartData=${this.data.polarChartData} .chartLabels=${this.data.polarChartLabels} .chartDescription=${"Hogere percentages duiden op betere prestaties of resultaten"}></agreement-polar-chart>
         `
     }
 

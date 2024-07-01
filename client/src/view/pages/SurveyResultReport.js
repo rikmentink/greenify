@@ -109,6 +109,12 @@ export class SurveyResultReport extends LitElement {
         background: #555;
       }
       
+      .chart-footer {
+        font-size: 12px;
+        color: grey;
+        text-align: center;
+      }
+      
       /* Styling for mobile devices */
       @media (max-width: 767px) {
         h1 {
@@ -243,6 +249,7 @@ export class SurveyResultReport extends LitElement {
                 .chartDescription=${"Klik op een bolletje voor meer details"} 
                 @chart-click="${this.openDialog}">
             </agreement-polar-chart>
+            <p class="chart-footer">Hogere percentages duiden op betere prestaties of resultaten</p>
           </content-box-plain>
         </div>
         
