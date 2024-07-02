@@ -64,7 +64,7 @@ export class CategoryQuestionItem extends LitElement {
         return html`
             <div class="my-question-btn">
                 <a class="${this.answered ? 'enabled' : 'disabled'}" href="/tool/${this.surveyId}?categoryId=${this.categoryId}#subfactor${this.subfactorNumber}">${this.subfactorNumber}</a>
-                <div class="badge">${this.answers.length}</div>
+                ${this.answers.length > 0 ? html`<span class="badge">${this.answers.length}</span>` : ''}
             </div>
         `;
     }
