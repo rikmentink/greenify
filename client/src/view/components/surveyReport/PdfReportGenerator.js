@@ -48,9 +48,13 @@ export class PdfReportGenerator extends LitElement {
     constructor() {
         super();
         this.phaseId = 0;
+        this.interventionName = this.getUrlParam('interventionName');
+        this.phaseName = this.getUrlParam('phaseName');
+    }
+
+    getUrlParam(paramName) {
         const urlParams = new URLSearchParams(window.location.search);
-        this.interventionName = decodeURIComponent(urlParams.get('interventionName'));
-        this.phaseName = decodeURIComponent(urlParams.get('phaseName'));
+        return decodeURIComponent(urlParams.get(paramName));
     }
 
     _fetchData = new Task(this, {

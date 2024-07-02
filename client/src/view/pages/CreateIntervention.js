@@ -182,6 +182,12 @@ export class CreateIntervention extends LitElement {
             }
         }
 
+        @media (max-width: 767px) {
+            dialog {
+                width: 90%;
+            }
+        }
+
     `];
 
     constructor() {

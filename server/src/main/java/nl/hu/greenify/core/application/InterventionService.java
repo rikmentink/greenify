@@ -74,12 +74,11 @@ public class InterventionService {
             throw new IllegalArgumentException("Intervention with id " + id + " does not exist");
         }
         
-        Phase phase = Phase.createPhase(phaseName, description);
+        Phase phase = Phase.createPhase(intervention, phaseName, description);
         phase = phaseRepository.save(phase);
-        surveyService.createSurveysForParticipants(phase, intervention.getParticipants());
-
-        intervention.addPhase(phase);
         interventionRepository.save(intervention);
+
+        surveyService.createSurveysForParticipants(phase, intervention.getParticipants());
         return phase;
     }
 

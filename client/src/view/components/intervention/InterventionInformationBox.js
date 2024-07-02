@@ -25,6 +25,16 @@ export class InterventionInformationBox extends LitElement {
             flex: 1; 
             margin-left: 20px; 
         }
+
+        @media (max-width: 767px) {
+            .information-container {
+                flex-direction: column;
+            }
+            
+            .information-box {
+                margin-left: 0;
+            }
+        }
     `;
 
     constructor() {

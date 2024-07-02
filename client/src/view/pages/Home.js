@@ -2,7 +2,7 @@ import {css, html, LitElement} from "lit";
 import {MyInterventionsBox} from "../components/home/MyInterventionsBox.js";
 import {CreateInterventionsBox} from "../components/home/CreateInterventionBox.js";
 import {getCurrentPerson} from "../../services/PersonService.js";
-import {getCurrentUser} from "../../services/AccountService.js";
+import {changeRoleToManager, changeRoleToParticipant, getCurrentUser} from "../../services/AccountService.js";
 import globalStyles from "../../assets/global-styles.js";
 
 export class Home extends LitElement {
@@ -35,6 +35,49 @@ export class Home extends LitElement {
         my-intervention-box, create-intervention-box {
             flex: 1; /* Make both boxes take equal space */
             margin-right: 10px; /* Add some spacing between the boxes */
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        
+        .new-intervention-btn {
+            display: none;
+        }
+
+
+        @media (max-width: 767px) {
+            .home-header {
+                width: 100%;
+            }
+            .home-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                text-align: center;
+                font-size: 13px;
+                margin-right: 10px;
+            }
+            
+            .home-header h2 {
+                font-size: 1.5em;
+            }
+
+            .new-intervention-btn {
+                display: block;
+            }
+
+            my-intervention-box {
+                width: 100%;
+            }
+
+            create-intervention-box{
+                margin-right: 0;
+                width: 100%;
+            }
         }
     ;
     `];
@@ -70,16 +113,33 @@ export class Home extends LitElement {
         return html``;
     }
 
+    async handleParticipateButtonClick() {
+        await changeRoleToParticipant();
+        window.location.href = '/home';
+    }
 
-    connectedCallback() {
-        super.connectedCallback();
+    async handleManageButtonClick() {
+        await changeRoleToManager();
+        window.location.href = '/home';
+    }
+
+    renderButtons() {
+        const userRoles = this.userData.authorities.map(role => role.authority);
+        if (userRoles.includes("ROLE_MANAGER")) {
+            return html`<a class="btn new-intervention-btn" href="/intervention/${this.personData.id}/new-intervention">Interventie aanmaken</a>
+            <a class="btn" @click=${this.handleParticipateButtonClick}>Mijn interventie deelnames</a>`;
+        }
+        return html`<a class="btn" @click=${this.handleManageButtonClick}>Interventie aanmaken? Word beheerder!</a>`;
     }
 
     render() {
         return html`
             <div class="home-header">
                 <h1>Welkom</h1>
-                <h2>${this.homePageUserInfo()}</h2>
+                <div class="user-info">
+                    <h2>${this.homePageUserInfo()}</h2>
+                    ${this.renderButtons()}
+                </div>
             </div>
             <div class="home-container">
                 <my-intervention-box .userId=${this.userData.person.id}></my-intervention-box>

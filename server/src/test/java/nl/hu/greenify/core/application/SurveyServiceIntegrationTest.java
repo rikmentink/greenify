@@ -23,6 +23,7 @@ import nl.hu.greenify.core.data.ResponseRepository;
 import nl.hu.greenify.core.data.SurveyRepository;
 import nl.hu.greenify.core.data.TemplateRepository;
 import nl.hu.greenify.core.domain.Category;
+import nl.hu.greenify.core.domain.Intervention;
 import nl.hu.greenify.core.domain.Person;
 import nl.hu.greenify.core.domain.Phase;
 import nl.hu.greenify.core.domain.Response;
@@ -67,7 +68,10 @@ public class SurveyServiceIntegrationTest {
     @BeforeEach
     void setup() {
         this.participant = new Person(PERSON_ID, "John", "Doe", "john@example.com", new ArrayList<>());
-        this.phase = new Phase(PHASE_ID, PhaseName.EXECUTION, "Description");
+        
+        var intervention = new Intervention(1L, "Intervention", "Description", participant, new ArrayList<>(), List.of(participant));
+        this.phase = new Phase(PHASE_ID, PhaseName.EXECUTION, "Description", intervention, new ArrayList<>());
+        
         var subfactor = new Subfactor(SUBFACTOR_ID, "Subfactor", 1, true);
         var subfactorWithResponse = new Subfactor(SUBFACTOR_ANSWERED_ID, "Subfactor 2", 2, false);
         var response = new Response(RESPONSE_ID, 0, "Comment", FacilitatingFactor.AGREE, Priority.PRIORITY, subfactorWithResponse);

@@ -14,9 +14,6 @@ import {getRouter} from "../../router.js";
 export class SurveyResultReport extends LitElement {
   static styles = [globalStyles,
     css`
-      :host {
-          background-color: #f0f0f0;
-      }
       h1 {
         color: var(--color-primary);
       }
@@ -108,6 +105,37 @@ export class SurveyResultReport extends LitElement {
       ::-webkit-scrollbar-thumb:hover {
         background: #555;
       }
+      
+      .chart-footer {
+        font-size: 12px;
+        color: grey;
+        text-align: center;
+      }
+      
+      /* Styling for mobile devices */
+      @media (max-width: 767px) {
+        h1 {
+          font-size: 24px;
+        }
+
+        .grid-container {
+          display: block;
+        }
+
+        .grid-left-section, .grid-right-section {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+
+        .header-box-contents {
+          max-height: 500px;
+        }
+
+        .list-item-chart {
+          min-width: 300px;
+          height: 40px;
+        }
+      }
     `];
 
   static get properties() {
@@ -138,6 +166,12 @@ export class SurveyResultReport extends LitElement {
       {title: "Actiepunt 9", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."},
       {title: "Actiepunt 10", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, orci nec lacinia."}
     ];
+    this.interventionId = this.getUrlParam('interventionId');
+  }
+
+  getUrlParam(paramName) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return decodeURIComponent(urlParams.get(paramName));
   }
 
   async connectedCallback() {
@@ -197,14 +231,27 @@ export class SurveyResultReport extends LitElement {
       description: score.subfactorName,
       chartData: [score.percentage],
       chartLabels: ["Percentage"],
-      chartColors: ["purple"]
+      chartColors: [this.getBarChartColor(score.percentage)]
     }));
 
     this.shadowRoot.querySelector('dialog-plain').open();
   }
 
+  getBarChartColor(percentage) {
+    if (percentage >= 80) {
+      return "#90EE90";
+    } else if (percentage >= 60) {
+      return "#f3cb93";
+    } else if (percentage >= 40) {
+      return "#fd9b87";
+    } else {
+      return "#F08080";
+    }
+  }
+
   render() {
     return html`
+      <a href="/intervention/${this.interventionId}" class="link">&larr; Terug naar interventie</a>
       <h1>Vergroenings rapportage</h1>
       <div class="btn-group">
         <gi-pdf-report-generator slot="actions"></gi-pdf-report-generator>
@@ -218,6 +265,7 @@ export class SurveyResultReport extends LitElement {
                 .chartDescription=${"Klik op een bolletje voor meer details"} 
                 @chart-click="${this.openDialog}">
             </agreement-polar-chart>
+            <p class="chart-footer">Hogere percentages duiden op betere prestaties of resultaten</p>
           </content-box-plain>
         </div>
         

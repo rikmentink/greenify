@@ -6,27 +6,69 @@ export class SurveySubfactor extends LitElement {
     static properties = {
         subfactor: { type: Object },
         response: { type: Object },
+        commentDisabled: { type: Boolean }
     }
 
     static styles = css`
-        .subfactor__name {
-            flex: 1 1 auto;
-            margin: 0;
-        }
+      .subfactor__name {
+        flex: 1 1 auto;
+        margin: 0;
+      }
 
-        .subfactor__question {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex: 0 0 auto;
-            border-right: 1px solid #d6d6d6;
-            padding-right: 1rem;
-        }
+      .subfactor__question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 0 0 auto;
+        border-right: 1px solid #d6d6d6;
+        padding-right: 1rem;
+      }
 
-        .subfactor__comments {
-            flex: 0 0 auto;
-            text-align: center;
-        }
+      .subfactor__comments {
+        display: flex;
+        align-items: center;
+        padding-right: 1rem;
+        border-right: 1px solid #d6d6d6;
+      }
+
+      .subfactor__comments > input {
+        background-color: white;
+        color: black;
+        border: 1px solid var(--color-primary);
+        padding: .5rem;
+        border-radius: 20px;
+        font-size: 10px;
+      }
+
+      .subfactor__comments > input::placeholder {
+        color: darkgray;
+      }
+
+      .subfactor__comments > input:disabled {
+        background-color: #efefef;
+        color: darkgray;
+        border: 1px solid #d6d6d6;
+      }
+
+      .subfactor__delete {
+        display: flex;
+        align-items: center;
+      }
+
+      .subfactor__delete > input {
+        background-color: var(--color-primary);
+        color: white;
+        border: 1px solid var(--color-primary);
+        padding: .5rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 10px;
+      }
+
+      .subfactor__delete > input:hover {
+        background-color: white;
+        color: grey;
+      }
     `
 
     constructor() {
@@ -38,11 +80,17 @@ export class SurveySubfactor extends LitElement {
             comment: ''
         };
         this.displayInputLabels = false;
+        this.commentDisabled = true;
     }
     
     firstUpdated() {
         if (this.subfactor.response) {
             this.response = this.subfactor.response;
+        }
+
+        // Enable the comment input if both a response was provided for the facilitating factor and the priority
+        if (this.response.facilitatingFactor !== -1 && this.response.priority !== -1) {
+            this.commentDisabled = false;
         }
     }
 
@@ -62,6 +110,11 @@ export class SurveySubfactor extends LitElement {
                 }));
             }
         });
+
+        this.addEventListener('answer-changed', () => {
+            const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
+            commentInput.disabled = this.response.facilitatingFactor === -1 || this.response.priority === -1;
+        });
     }
 
     _commentChanged(e) {
@@ -76,9 +129,39 @@ export class SurveySubfactor extends LitElement {
         }));
     }
 
+    _deleteRequest() {
+        this.dispatchEvent(new CustomEvent('delete', {
+            detail: {
+                subfactorId: this.subfactor.id
+            },
+            bubbles: true,
+            composed: true
+        }));
+        this._resetInputs();
+    }
+
+    _resetInputs() {
+        // Disabled relevant comment field
+        const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
+        console.log(commentInput)
+        console.log("I am a comment input and I am", commentInput.disabled);
+        commentInput.value = '';
+        commentInput.disabled = true;
+
+        // Uncheck all radio buttons
+        const surveyQuestions = this.shadowRoot.querySelectorAll('gi-survey-question');
+        surveyQuestions.forEach(question => {
+            const radioButtons = question.shadowRoot.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radioButton => {
+                radioButton.checked = false;
+            });
+        });
+    }
+
     async disconnectedCallback() {
         super.disconnectedCallback();
         this.removeEventListener('answer');
+        this.removeEventListener('answer-changed')
     }
 
     render() {
@@ -91,7 +174,10 @@ export class SurveySubfactor extends LitElement {
                 <gi-survey-question name="priority" .answer=${this.response.priority} .displayInputLabels=${this.displayInputLabels}></gi-survey-question>
             </div>
             <div class="subfactor__comments">
-                <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.response.facilitatingFactor === -1 && this.response.priority === -1} />
+                <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.commentDisabled}/>
+            </div>
+            <div class="subfactor__delete">
+                <input type="button" value="Verwijder" @click=${this._deleteRequest}>
             </div>
         `
     }

@@ -5,7 +5,7 @@ import global from "../../assets/global-styles.js";
 
 import { getSurvey } from '../../services/SurveyService.js';
 import { saveResponse } from '../../services/SurveyService.js';
-import { InfoPopUp } from "../components/containers/InfoPopUp.js";
+import { deleteResponse } from '../../services/SurveyService.js';
 
 import { SurveySubfactor } from "../components/survey/SurveySubfactor.js";
 
@@ -24,7 +24,7 @@ export class Survey extends LitElement {
         .survey > .header,
         .survey > .factor gi-survey-subfactor {
             display: grid;
-            grid-template-columns: 6fr 2.5fr 2fr 1fr;
+            grid-template-columns: 6fr 2.5fr 2fr 1.4fr 1fr;
             gap: 1rem;
         }
         h1 {
@@ -82,6 +82,11 @@ export class Survey extends LitElement {
                 const { subfactorId, response } = event.detail;
                 await saveResponse(this.id, subfactorId, response);
             });
+
+            this.addEventListener('delete', async (event) => {
+                const subfactorId = event.detail.subfactorId;
+                await deleteResponse(this.id, subfactorId);
+            });
         }
     }
 
@@ -126,7 +131,6 @@ export class Survey extends LitElement {
 
     render() {
         return html`
-            <gi-info-popup></gi-info-popup>
                 ${this.data.render({
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
@@ -140,16 +144,17 @@ export class Survey extends LitElement {
                                     <div class="column">Faciliterende factor</div>
                                     <div class="column">Prioriteit</div>
                                     <div class="column">Opmerkingen</div>
+                                    <div></div> <!-- Empty column for the delete button -->
                                 </div>
                                 ${category.factors.map((factor) => html`    
                                     <div class="factor">
                                         <h2 class="full-width"><strong>${factor.number}</strong> - ${factor.title}</h2>
                                         <ol>
-                                        ${factor.subfactors.map((subfactor, subfactorIndex) => html`
-                                            <li value="${subfactor.number}" id="subfactor${subfactor.number}">
-                                                <gi-survey-subfactor .subfactor=${subfactor} .displayInputLabels=${subfactorIndex === 0}></gi-survey-subfactor>
-                                            </li>
-                                        `)}
+                                            ${factor.subfactors.sort((a, b) => a.number - b.number).map((subfactor, subfactorIndex) => html`
+                                                <li value="${subfactor.number}" id="subfactor${subfactor.number}">
+                                                    <gi-survey-subfactor .subfactor=${subfactor} .displayInputLabels=${subfactorIndex === 0}></gi-survey-subfactor>
+                                                </li>
+                                            `)}
                                         </ol>
                                     </div>
                                 `)}

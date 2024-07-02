@@ -68,6 +68,9 @@ public class Survey {
     }
 
     public Long getPhaseId() {
+        if (this.phase == null) {
+            return 0L;
+        }
         return phase.getId();
     }
 

@@ -71,10 +71,30 @@ export class InterventionUsersTable extends LitElement {
             background-color: var(--color-primary);
             border-radius: 5px;
         }
-        
+
         .progress-labels {
             width: 60%;
             text-align: end;
+        }
+
+        @media (max-width: 767px) {
+            table {
+                display: block;
+                overflow-y: auto;
+                width: 100%;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            input {
+                margin-bottom: 10px;
+            }
         }
     `;
 
@@ -129,7 +149,7 @@ export class InterventionUsersTable extends LitElement {
     searchUser(event) {
         const searchValue = event.target.value.toLowerCase();
         this.filteredUserData = this.userData.filter(user => {
-            return user.name.toLowerCase().includes(searchValue) || user.email.toLowerCase().includes(searchValue);
+            return user.firstName.toLowerCase().includes(searchValue) || user.email.toLowerCase().includes(searchValue);
         });
         this.requestUpdate();
     }

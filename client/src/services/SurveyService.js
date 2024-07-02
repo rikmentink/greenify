@@ -45,6 +45,30 @@ async function saveResponse(id, subfactorId, response) {
   .catch(error => {
     console.error(error);
   });
-} 
+}
 
-export { getSurvey, saveResponse };
+async function deleteResponse(surveyId, subfactorId) {
+  const url = new URL(`${API_URL}/survey/${surveyId}/response/${subfactorId}`);
+  return fetch(url, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+    },
+      body: JSON.stringify({
+          surveyId,
+          subfactorId
+      }),
+  })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`Could not delete response. HTTP Error ${response.status}: ${response.statusText}`);
+          }
+          return response.json();
+      })
+      .catch(error => {
+          console.error(error);
+      });
+}
+
+export { getSurvey, saveResponse, deleteResponse };
