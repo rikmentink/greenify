@@ -76,6 +76,42 @@ export class Survey extends LitElement {
             z-index: 1000;
             text-decoration: none;
         }
+
+      .info-icon {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        background-color: #ccc;
+        color: white;
+        border-color: #ccc;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 10px;
+        line-height: 15px;
+        margin-left: 10px;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .popup {
+        display: none;
+        position: absolute;
+        top: 30px;
+        left: 0;
+        background-color: white;
+        color: black;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        width: 200px;
+        font-weight: normal;
+      }
+
+      .info-icon:hover .popup {
+        display: block;
+      }
     `]
 
     constructor() {
@@ -169,8 +205,18 @@ export class Survey extends LitElement {
                             <div class="survey">
                                 <div class="header">
                                     <div class="column"></div>
-                                    <div class="column">Faciliterende factor</div>
-                                    <div class="column">Prioriteit</div>
+                                    <div class="column">
+                                        Faciliterende factor
+                                        <span class="info-icon">i
+                                            <div class="popup">Hieronder kunt u per factor aangeven in hoeverre hiermee rekening gehouden is tijdens de implementatie van de NBI.</div>
+                                        </span>
+                                    </div>
+                                    <div class="column">
+                                        Prioriteit
+                                        <span class="info-icon">i
+                                            <div class="popup">In hoeverre heeft deze factor prioriteit om aan te pakken?</div>
+                                        </span>
+                                    </div>
                                     <div class="column">Opmerkingen</div>
                                     <div></div> <!-- Empty column for the delete button -->
                                 </div>
