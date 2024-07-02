@@ -7,6 +7,7 @@ export class CategoryQuestionItem extends LitElement {
         css`
             .my-question-btn {
                 display: flex;
+                position: relative;
             }
 
             .my-question-btn a.disabled {
@@ -24,6 +25,20 @@ export class CategoryQuestionItem extends LitElement {
                 border-radius: 2px;
                 font-size: 16px;
                 text-decoration: none;
+            }
+
+            .badge {
+                padding: .25rem .5rem;
+                border-radius: .75rem;
+                position: absolute;
+                top: 0;
+                left: 100%;
+                transform: translate(-50%, -50%);
+                background-color: var(--color-primary);
+                color: #fff;
+                font-size: 12px;
+                font-weight: bold;
+                line-height: 1;
             }
         `
     ];
