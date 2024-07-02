@@ -111,6 +111,16 @@ export class InterventionSurveyBox extends LitElement {
             margin-top: 10px;
         }
 
+      .button-container {
+        display: flex;
+        justify-content: space-between; /* Adjust as needed */
+        margin: 10px 0;
+      }
+
+      .button-container a {
+        margin-right: 10px; /* Adjust as needed */
+      }
+
         .progress-label {
             margin: 0;
         }
@@ -185,9 +195,13 @@ export class InterventionSurveyBox extends LitElement {
                let progress = Math.round(phase.progress) + "%"
                return html`
                 <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
-                    <p class="sy-header"><span class="sy-phase">Naam | ${phase.name}</span></p>
+                    <p class="sy-header"><span class="sy-phase">Naam: ${phase.name}</span></p>
                     <div class="sy-progress-container">
                         <div class="progress-labels">
+                        </div>
+                        <div class="button-container">
+                            <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool &#10132;</a>
+                            <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport &#10132;</a>
                         </div>
                         <div class="progress-bar">
                             <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
@@ -214,19 +228,13 @@ export class InterventionSurveyBox extends LitElement {
         return html`
             <div class="1ntainer">
                 <hr>
-                ${this.phaseData.map(phase => html`
-                <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool &#10132;</a><br>
-                `)}
-            </div>
             <div class="survey-container">
                 ${this.renderSurveys()}
             </div>
             <div class="1ntainer">
-                ${this.phaseData.map(phase => html`
-                <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport</a>
-                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>`)}
-            </div>
-        `;
+                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>
+                <hr>
+            </div>`;
     }
 }
 
