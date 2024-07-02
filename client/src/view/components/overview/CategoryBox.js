@@ -206,7 +206,7 @@ export class CategoryBox extends LitElement {
                     <h2 class="title">${this.category.name}</h2>
                     <div class="sy-progress-container">
                         <div class="progress-wrapper">
-                          <p>${answeredQuestions} van de ${totalQuestions} vragen beantwoord</p>
+                          <p>${answeredQuestions} van de ${totalQuestions} factoren beantwoord</p>
                           <div class="progress-bar">
                               <div class="progress" style="width: ${progressPercentage}%;" aria-label="Progression bar"></div>
                           </div>

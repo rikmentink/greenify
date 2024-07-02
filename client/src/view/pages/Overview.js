@@ -8,6 +8,7 @@ import global from '../../assets/global-styles.js';
 import { InfoPopUp } from "../components/containers/InfoPopUp.js";
 
 import { CategoryBox } from '../components/overview/CategoryBox.js';
+import {getInterventionById} from "../../services/InterventionService.js";
 
 export class Overview extends LitElement {
     static styles = [
@@ -72,6 +73,10 @@ export class Overview extends LitElement {
               .alg-info-container {
                   gap: 0;
               }
+
+              .popup-btn {
+                  font-size: 10px;
+              }
           }
     `];
 
@@ -80,6 +85,8 @@ export class Overview extends LitElement {
         this.interventionId = 0;
         this.phaseId = 0;
         this.data = {};
+        this.interventionData = {};
+        this.attachShadow({ mode: 'open' });
     }
 
     async connectedCallback() {
@@ -93,6 +100,7 @@ export class Overview extends LitElement {
 
 
       await this._fetchData(this.interventionId, this.phaseId);
+      await this._fetchInterventionData(this.interventionId);
       this.authorizeAndRedirect();
     }
 
@@ -117,6 +125,14 @@ export class Overview extends LitElement {
         return await this.data.run();
     }
 
+    async _fetchInterventionData(interventionId) {
+        this.interventionData = new Task(this, {
+            task: async ([interventionId]) => getInterventionById(interventionId),
+            args: () => [interventionId]
+        });
+        return await this.interventionData.run();
+    }
+
     getTotalQuestions(categories) {
         return categories.reduce((total, category) => total + category.subfactors.length, 0);
     }
@@ -128,26 +144,35 @@ export class Overview extends LitElement {
         return currentUser.responses.length;
     }
 
+    async popUpHandeler(event){
+        event.preventDefault(); // Prevent default link behavior
+        const infoPopup = this.shadowRoot.getElementById('infoPopup');
+        const dialog = infoPopup.shadowRoot.querySelector('dialog');
+        dialog.showModal();
+    }
+
     render() {
         return this.data.render({
             loading: () => html`<p>Loading...</p>`,
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
             complete: (data) => html`
-                <gi-info-popup></gi-info-popup>
+                <gi-info-popup id="infoPopup"></gi-info-popup>
                 <a href="/intervention/${this.interventionId}" class="link">&larr; Terug naar interventie</a>
                 <div class="content">
                     <div class="title-desc">
-                        <h1>Vragenlijst</h1>
-                        <p>Hier kunt u alle vragen en categorieën bekijken. Klik op een categorie en vraag om deze in te vullen.</p>
+                        <h1>Tool</h1>
+                        <p>Hier kunt u alle factoren en categorieën bekijken. Klik op een categorie en factor om deze in te vullen.</p>
+                        <a class="btn-white popup-btn" @click="${this.popUpHandeler.bind(this)}">Toon informatie over de tool</a>
                     </div>
                     <hr class="divider">
                     <div class="algemeneinfo">
-                        <h2>Algemene informatie</h2>
                         <dl class="grid-container alg-info-container">
-                            <dt>Fase:</dt>
+                            <dt>Interventie:</dt>
+                            <dd>${this.interventionData._value.name}</dd>
+                            <dt>Huidige fase:</dt>
                             <dd>${data.name}</dd>
                             <dt>Voortgang:</dt>
-                            <dd>${this.getAnsweredQuestions(data.contenders)}/${this.getTotalQuestions(data.categories)} beantwoorden vragen</dd>
+                            <dd>${this.getAnsweredQuestions(data.contenders)}/${this.getTotalQuestions(data.categories)} beantwoorden factoren</dd>
                         </div>
                     </div>
                 </div>
