@@ -1,6 +1,8 @@
 import { html, css, LitElement } from 'lit';
 import global from "../../../assets/global-styles.js";
 
+import { CategoryQuestionItem } from './CategoryQuestionItem.js';
+
 export class CategoryBox extends LitElement {
     static styles = [global, css`
       .title {
@@ -35,28 +37,9 @@ export class CategoryBox extends LitElement {
         gap: 10px;
         margin-bottom: 0;
         max-height: 0;
+        padding-top: 0;
         overflow: hidden;
-        transition: all 0.5s;
-      }
-
-      .my-question-btn {
-        display: flex;
-      }
-
-      .my-question-btn a.disabled {
-        background-color: rgba(224, 224, 224, .35);
-      }
-
-      .my-question-btn a.enabled {
-        background-color: rgba(97, 255, 0, .35);
-      }
-
-      .my-question-btn a {
-        color: var(--color-text);
-        padding: 10px 17.6px;
-        border-radius: 4px;
-        font-size: 16px;
-        text-decoration: none;
+        transition: max-height .5s ease, margin .5s ease, padding-top .4s ease;
       }
 
       .sy-progress-container {
@@ -140,6 +123,7 @@ export class CategoryBox extends LitElement {
       .rectangle.expanded .questions-container {
         max-height: 10rem;
         margin-bottom: 10px;
+        padding-top: .75rem;
       }
 
         @media (max-width: 767px) {
@@ -185,16 +169,6 @@ export class CategoryBox extends LitElement {
         return categoryProgress.progress;
     }
 
-    _isSubfactorAnswered(subfactorId) {
-        const currentUser = this.progress.find(participant => participant.currentUser);
-        if (!currentUser) {
-            return false;
-        }
-
-        const response = currentUser.responses.find(response => response.subfactorId === subfactorId);
-        return response && response.facilitatingFactor && response.priority;
-    }
-
     _toggleExpand() {
         this.expanded = !this.expanded;
     }
@@ -208,6 +182,21 @@ export class CategoryBox extends LitElement {
         return { totalQuestions, answeredQuestions, progressPercentage };
     }
 
+    _getSubfactorAnswers(subfactorNumber) {
+      return this.progress
+        .filter(participant => participant.responses.some(response => response.subfactorNumber === subfactorNumber))
+        .map(participant => participant.responses.find(response => response.subfactorNumber === subfactorNumber));
+    }
+
+    _isSubfactorAnswered(subfactorNumber) {
+        const currentUser = this.progress.find(participant => participant.currentUser);
+        if (!currentUser) {
+            return false;
+        }
+
+        return currentUser.responses.some(response => response.subfactorNumber === subfactorNumber);
+    }
+
     render() {
         const { totalQuestions, answeredQuestions, progressPercentage } = this._calculateProgressData();
 
@@ -217,7 +206,7 @@ export class CategoryBox extends LitElement {
                     <h2 class="title">${this.category.name}</h2>
                     <div class="sy-progress-container">
                         <div class="progress-wrapper">
-                          <p>${answeredQuestions} van de ${totalQuestions} vragen beantwoord</p>
+                          <p>${answeredQuestions} van de ${totalQuestions} factoren beantwoord</p>
                           <div class="progress-bar">
                               <div class="progress" style="width: ${progressPercentage}%;" aria-label="Progression bar"></div>
                           </div>
@@ -226,9 +215,14 @@ export class CategoryBox extends LitElement {
                     </div>
                     <div class="questions-container">
                         ${this.category.subfactors.map((subfactor) => html`
-                            <div class="my-question-btn">
-                                <a class="${this._isSubfactorAnswered(subfactor.id) ? 'enabled' : 'disabled'}" href="/tool/${this.surveyId}?categoryId=${this.category.id}#subfactor${subfactor.number}">${subfactor.number}</a>
-                            </div>`)}
+                          <gi-categoryquestion 
+                            .subfactorNumber=${subfactor.number} 
+                            .answered=${this._isSubfactorAnswered(subfactor.number)} 
+                            .categoryId=${this.category.id} 
+                            .surveyId=${this.surveyId}
+                            .answers=${this._getSubfactorAnswers(subfactor.number)}
+                          ></gi-categoryquestion>
+                        `)}
                     </div>
                 </div>
                 <div class="button-container">
