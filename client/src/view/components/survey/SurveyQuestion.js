@@ -26,9 +26,13 @@ export class SurveyQuestion extends LitElement {
       }
 
       .question > .answer > label {
-        font-size: 10px;
-        font-weight: 300;
-        line-height: 1;
+        font-size: 11px;
+        font-weight: 350;
+        line-height: 1.1;
+        transform: rotate(-45deg) translate(50%, -100%);
+        position: absolute;
+        max-width: 50px;
+        color: #000000;
       }
 
       .question > .answer > input {
@@ -46,13 +50,6 @@ export class SurveyQuestion extends LitElement {
       .question > .answer > input:checked {
         border-color: var(--color-primary);
         background-color: rgba(var(--color-primary-rgb), .2);
-      }
-
-      .answer > label {
-        transform: rotate(-45deg) translate(50%, -100%);
-        position: absolute;
-        max-width: 50px;
-        color: #000000;
       }
     `
 
