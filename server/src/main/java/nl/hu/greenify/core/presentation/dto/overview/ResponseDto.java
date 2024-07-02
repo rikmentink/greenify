@@ -8,11 +8,13 @@ import nl.hu.greenify.core.domain.factor.Subfactor;
 @Getter
 public class ResponseDto {
     private Long subfactorId;
+    private int subfactorNumber;
     private boolean facilitatingFactor;
     private boolean priority;
 
-    protected ResponseDto(Long subfactorId, boolean facilitatingFactor, boolean priority) {
+    public ResponseDto(Long subfactorId, int subfactorNumber, boolean facilitatingFactor, boolean priority) {
         this.subfactorId = subfactorId;
+        this.subfactorNumber = subfactorNumber;
         this.facilitatingFactor = facilitatingFactor;
         this.priority = priority;
     }
@@ -25,6 +27,7 @@ public class ResponseDto {
 
         return new ResponseDto(
                 subfactor.getId(),
+                subfactor.getNumber(),
                 hasFacilitatingFactor,
                 hasPriority);
     }
