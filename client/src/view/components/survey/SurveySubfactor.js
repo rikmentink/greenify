@@ -143,8 +143,6 @@ export class SurveySubfactor extends LitElement {
     _resetInputs() {
         // Disabled relevant comment field
         const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
-        console.log(commentInput)
-        console.log("I am a comment input and I am", commentInput.disabled);
         commentInput.value = '';
         commentInput.disabled = true;
 
