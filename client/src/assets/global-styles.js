@@ -63,6 +63,24 @@ const global = css`
         transition: background-color .3s;
     }
 
+    .btn-white {
+        background-color: white;
+        color: var(--color-primary);
+        padding: 0.5rem 1.5rem;
+        border: var(--color-primary) 1px solid;
+        border-radius: 1.25rem;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background-color .3s;
+    }
+    
+    .btn-white:hover {
+        background-color: var(--color-primary);
+        color: white;
+    }
+
     .btn:hover {
         background-color: var(--color-primary-dark);
     }
