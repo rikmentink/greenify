@@ -54,6 +54,27 @@ export class Survey extends LitElement {
         }
         .survey > .factor > ol > li > gi-survey-subfactor {
             margin-bottom: .5rem;
+        } 
+      
+      .next-category {
+        display: block;
+        text-align: right;
+      }
+      
+        .scroll-to-top {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background-color: var(--color-primary);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            line-height: 2rem;
+            text-align: center;
+            border-radius: 25%;
+            font-size: 1.5rem;
+            z-index: 1000;
+            text-decoration: none;
         }
     `]
 
@@ -139,6 +160,9 @@ export class Survey extends LitElement {
                     loading: () => html`<p>Loading...</p>`,
                     error: (error) => html`<p>An error occured while loading the questions: ${error.message}</p>`,
                     complete: (survey) => html`
+                        <a class="scroll-to-top" href="#top">
+                            <i>&uarr;</i>
+                        </a>
                         <a class="link" href="/intervention/${survey.interventionId}/phase/${survey.phaseId}">&larr; Terug naar overzicht</a>
                         ${survey.categories.map((category) => html`
                             <h1><strong>Domein ${category.number}</strong> - ${category.name}</h1>
@@ -162,7 +186,7 @@ export class Survey extends LitElement {
                                         </ol>
                                     </div>
                                 `)}
-                                <a class="link" href="/tool/${this.id}?category=${this.nextCategoryId}">Ga direct naar volgende categorie &rarr;</a>
+                                <a class="link next-category" href="/tool/${this.id}?category=${this.nextCategoryId}">Ga direct naar volgende categorie &rarr;</a>
                             </div>
                         `)}
                     `
