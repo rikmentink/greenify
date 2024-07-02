@@ -63,11 +63,12 @@ public class SurveyService {
      */
     public QuestionSetDto getQuestions(Long surveyId, Long categoryId, int page, int pageSize) {
         Survey survey = this.getSurvey(surveyId);
+        Long nextCategoryId = survey.getNextCategoryId(categoryId);
         
         if (categoryId == null || categoryId == 0) {
-            return QuestionSetDto.fromEntity(survey, survey.getCategories());
+            return QuestionSetDto.fromEntity(survey, nextCategoryId, survey.getCategories());
         }
-        return QuestionSetDto.fromEntity(survey, Arrays.asList(survey.getCategoryById(categoryId)));
+        return QuestionSetDto.fromEntity(survey, nextCategoryId, Arrays.asList(survey.getCategoryById(categoryId)));
     }
 
     /**
