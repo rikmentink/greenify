@@ -37,8 +37,9 @@ export class CategoryBox extends LitElement {
         gap: 10px;
         margin-bottom: 0;
         max-height: 0;
+        padding-top: 0;
         overflow: hidden;
-        transition: all 0.5s;
+        transition: max-height .5s ease, margin .5s ease, padding-top .4s ease;
       }
 
       .sy-progress-container {
@@ -122,6 +123,7 @@ export class CategoryBox extends LitElement {
       .rectangle.expanded .questions-container {
         max-height: 10rem;
         margin-bottom: 10px;
+        padding-top: .75rem;
       }
 
         @media (max-width: 767px) {
@@ -181,14 +183,9 @@ export class CategoryBox extends LitElement {
     }
 
     _getSubfactorAnswers(subfactorNumber) {
-      let answers = this.progress
+      return this.progress
         .filter(participant => participant.responses.some(response => response.subfactorNumber === subfactorNumber))
         .map(participant => participant.responses.find(response => response.subfactorNumber === subfactorNumber));
-
-      console.log(`All answers for subfactor ${subfactorNumber}`)
-      console.log(answers);
-
-      return answers;
     }
 
     _isSubfactorAnswered(subfactorNumber) {
