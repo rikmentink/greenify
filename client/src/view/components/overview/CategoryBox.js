@@ -209,16 +209,6 @@ export class CategoryBox extends LitElement {
         return categoryProgress.progress;
     }
 
-    _isSubfactorAnswered(subfactorId) {
-        const currentUser = this.progress.find(participant => participant.currentUser);
-        if (!currentUser) {
-            return false;
-        }
-
-        const response = currentUser.responses.find(response => response.subfactorId === subfactorId);
-        return response && response.facilitatingFactor && response.priority;
-    }
-
     _toggleExpand() {
         this.expanded = !this.expanded;
     }
@@ -230,6 +220,26 @@ export class CategoryBox extends LitElement {
         const progressPercentage = Math.round(userProgress * 100);
 
         return { totalQuestions, answeredQuestions, progressPercentage };
+    }
+
+    _getSubfactorAnswers(subfactorNumber) {
+      let answers = this.progress
+        .filter(participant => participant.responses.some(response => response.subfactorNumber === subfactorNumber))
+        .map(participant => participant.responses.find(response => response.subfactorNumber === subfactorNumber));
+
+      console.log(`All answers for subfactor ${subfactorNumber}`)
+      console.log(answers);
+
+      return answers;
+    }
+
+    _isSubfactorAnswered(subfactorNumber) {
+        const currentUser = this.progress.find(participant => participant.currentUser);
+        if (!currentUser) {
+            return false;
+        }
+
+        return currentUser.responses.some(response => response.subfactorNumber === subfactorNumber);
     }
 
     render() {
@@ -254,9 +264,10 @@ export class CategoryBox extends LitElement {
                         ${this.category.subfactors.map((subfactor) => html`
                           <gi-categoryquestion 
                             .subfactorNumber=${subfactor.number} 
-                            .answered=${this._isSubfactorAnswered(subfactor.id)} 
+                            .answered=${this._isSubfactorAnswered(subfactor.number)} 
                             .categoryId=${this.category.id} 
                             .surveyId=${this.surveyId}
+                            .answers=${this._getSubfactorAnswers(subfactor.number)}
                           ></gi-categoryquestion>
                         `)}
                     </div>

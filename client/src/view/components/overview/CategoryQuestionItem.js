@@ -32,7 +32,8 @@ export class CategoryQuestionItem extends LitElement {
         subfactorNumber: { type: Number },
         isAnswered: { type: Boolean },
         categoryId: { type: Number },
-        surveyId: { type: Number }
+        surveyId: { type: Number },
+        answers: { type: Array }
     }
 
     constructor() {
@@ -41,12 +42,14 @@ export class CategoryQuestionItem extends LitElement {
         this.isAnswered = false;
         this.categoryId = 0;
         this.surveyId = 0;
+        this.answers = [];
     }
 
     render() {
         return html`
             <div class="my-question-btn">
                 <a class="${this.answered ? 'enabled' : 'disabled'}" href="/tool/${this.surveyId}?categoryId=${this.categoryId}#subfactor${this.subfactorNumber}">${this.subfactorNumber}</a>
+                <div class="badge">${this.answers.length}</div>
             </div>
         `;
     }
