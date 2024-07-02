@@ -11,18 +11,17 @@ export class CategoryQuestionItem extends LitElement {
             }
 
             .my-question-btn a.disabled {
-                background-color: grey;
+                background-color: rgba(224, 224, 224, .35);
             }
 
             .my-question-btn a.enabled {
-                background-color: var(--color-primary);
+                background-color: rgba(97, 255, 0, .35);
             }
 
             .my-question-btn a {
-                background-color: var(--color-primary);
-                color: white;
+                color: var(--color-text);
                 padding: 10px 17.6px;
-                border-radius: 2px;
+                border-radius: 4px;
                 font-size: 16px;
                 text-decoration: none;
             }
@@ -33,7 +32,7 @@ export class CategoryQuestionItem extends LitElement {
                 position: absolute;
                 top: 0;
                 left: 100%;
-                transform: translate(-50%, -50%);
+                transform: translate(-70%, -30%);
                 background-color: var(--color-primary);
                 color: #fff;
                 font-size: 12px;
