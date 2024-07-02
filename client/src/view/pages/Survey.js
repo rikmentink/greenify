@@ -13,6 +13,7 @@ export class Survey extends LitElement {
     static properties = {
         id: { type: Number },
         categoryId: { type: Number },
+        nextCategoryId: { type: Number },
         page: { type: Number },
         pageSize: { type: Number }
     }
@@ -64,6 +65,7 @@ export class Survey extends LitElement {
         this.pageSize = 10;
         this.data = []
         this.displayInputLabels = false;
+        this.nextCategoryId = 0;
     }
 
     async connectedCallback() {
@@ -77,6 +79,7 @@ export class Survey extends LitElement {
         this.categoryId = myParam ? parseInt(myParam) : 0;
 
         await this._fetchData(this.id);
+        this.nextCategoryId = this.data._value.nextCategoryId;
         if (this.authorizeAndRedirect()) {
             this.addEventListener('updatedResponse', async (event) => {
                 const { subfactorId, response } = event.detail;
@@ -126,6 +129,7 @@ export class Survey extends LitElement {
             task: async ([id, categoryId, page, pageSize]) => getSurvey(id, categoryId, page, pageSize),
             args: () => [id, this.categoryId, this.page, this.pageSize]
         });
+        console.log(this.data);
         return await this.data.run();
     }
 
@@ -158,6 +162,7 @@ export class Survey extends LitElement {
                                         </ol>
                                     </div>
                                 `)}
+                                <a class="link" href="/tool/${this.id}?category=${this.nextCategoryId}">Ga direct naar volgende categorie &rarr;</a>
                             </div>
                         `)}
                     `
