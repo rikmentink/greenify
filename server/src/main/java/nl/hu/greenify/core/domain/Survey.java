@@ -141,4 +141,18 @@ public class Survey {
     public void deleteResponse(Long subfactorId) {
         this.getSubfactorById(subfactorId).deleteResponse();
     }
+
+    public Long getNextCategoryId(Long currentCategoryId) {
+        for (int index = 0; index < this.categories.size(); index++) {
+            if (this.categories.get(index).getId().equals(currentCategoryId)) {
+                // If the current category is the last one, return the first category ID
+                if (index == this.categories.size() - 1) {
+                    return this.categories.get(0).getId();
+                }
+                // Otherwise, return the next category ID
+                return this.categories.get(index + 1).getId();
+            }
+        }
+        return 0L;
+    }
 }
