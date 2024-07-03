@@ -5,7 +5,7 @@ export class InterventionInformationBox extends LitElement {
         .information-container {
             display: flex;
             width: 100%;
-            flex-direction: row; 
+            flex-direction: column;
             justify-content: space-between;
         }
         
@@ -16,23 +16,10 @@ export class InterventionInformationBox extends LitElement {
         h1 {
             margin-bottom: 0;
         }
-        
-        span {
-            font-style: italic;
-        }
-        
-        .information-box {
-            flex: 1; 
-            margin-left: 20px; 
-        }
 
         @media (max-width: 767px) {
             .information-container {
                 flex-direction: column;
-            }
-            
-            .information-box {
-                margin-left: 0;
             }
         }
     `;
@@ -49,12 +36,11 @@ export class InterventionInformationBox extends LitElement {
 
     renderInterventionInformation() {
         return html`
-            <div class="description-box">
-                <p>${this.interventionData.description}</p>
-            </div>
-            <div class="information-box">
-                <h3>Algemene informatie</h3>
-                <p><span>Huidige fase: </span> ${this.interventionData.currentPhase ? this.interventionData.currentPhase.name : 'N/A'}</p>
+            <div class="information-container">
+                <div class="description-box">
+                    <p><span><b>Beschrijving: </b></span>${this.interventionData.description}</p>
+                    <p><span><b>Huidige fase: </b></span> ${this.interventionData.currentPhase ? this.interventionData.currentPhase.name : 'N/A'}</p>
+                </div>
             </div>
         `;
     }
@@ -65,7 +51,7 @@ export class InterventionInformationBox extends LitElement {
         }
 
         return html`
-            <h1>${this.interventionData.name}</h1>
+            <h1>Naam: ${this.interventionData.name}</h1>
             <div class="information-container">
                 ${this.renderInterventionInformation()}
             </div>
