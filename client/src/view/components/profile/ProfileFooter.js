@@ -55,7 +55,7 @@ export class ProfileFooter extends LitElement {
     }
 
     renderButtons() {
-        const userRoles = this.userData.authorities.map(role => role.authority);
+        const userRoles = this.userData.authorities ? this.userData.authorities.map(role => role.authority) : [];
         if (userRoles.includes("ROLE_MANAGER")) {
             return html`<a class="role-button" @click=${this.handleParticipateButtonClick}>Mijn interventie deelnames</a>`;
         }
