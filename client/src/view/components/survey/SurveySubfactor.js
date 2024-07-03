@@ -69,6 +69,29 @@ export class SurveySubfactor extends LitElement {
         background-color: white;
         color: grey;
       }
+
+      .popup {
+        display: none;
+        position: absolute;
+        background-color: white;
+        color: black;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+        font-weight: normal;
+        overflow-wrap: break-word;
+        margin-bottom: 6rem;
+        font-size: 10px;
+        max-width: 300px;
+        max-height: 40px;
+        overflow-y: auto;
+      }
+
+      .subfactor__comments:focus-within .popup{
+        display: block;
+      }
     `
 
     constructor() {
@@ -92,6 +115,8 @@ export class SurveySubfactor extends LitElement {
         if (this.response.facilitatingFactor !== -1 && this.response.priority !== -1) {
             this.commentDisabled = false;
         }
+
+        this.updatePopupContent();
     }
 
     async connectedCallback() {
@@ -114,6 +139,15 @@ export class SurveySubfactor extends LitElement {
         this.addEventListener('answer-changed', () => {
             const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
             commentInput.disabled = this.response.facilitatingFactor === -1 || this.response.priority === -1;
+        });
+    }
+
+    updatePopupContent() {
+        const inputField = this.shadowRoot.querySelector('.subfactor__comments > input');
+        const popup = this.shadowRoot.querySelector('.popup');
+
+        inputField.addEventListener('input', () => {
+            popup.textContent = inputField.value;
         });
     }
 
@@ -173,6 +207,7 @@ export class SurveySubfactor extends LitElement {
             </div>
             <div class="subfactor__comments">
                 <input type="text" .value=${this.response.comment} @input=${e => this.response.comment = e.target.value} @change="${this._commentChanged}" placeholder="Opmerking..." ?disabled=${this.commentDisabled}/>
+                <div class="popup">${this.response.comment}</div>
             </div>
             <div class="subfactor__delete">
                 <input type="button" value="Verwijder" @click=${this._deleteRequest}>
