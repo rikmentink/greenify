@@ -104,7 +104,7 @@ export class Home extends LitElement {
     }
 
     renderCreateInterventionBox() {
-        const userRoles = this.userData.authorities.map(role => role.authority);
+        const userRoles = this.userData.authorities ? this.userData.authorities.map(role => role.authority) : [];
         if (userRoles.includes("ROLE_MANAGER")) {
             return html`
             <create-intervention-box personId="${this.userData.person.id}"></create-intervention-box>
@@ -124,7 +124,7 @@ export class Home extends LitElement {
     }
 
     renderButtons() {
-        const userRoles = this.userData.authorities.map(role => role.authority);
+        const userRoles = this.userData.authorities ? this.userData.authorities.map(role => role.authority) : [];
         if (userRoles.includes("ROLE_MANAGER")) {
             return html`<a class="btn new-intervention-btn" href="/intervention/${this.personData.id}/new-intervention">Interventie aanmaken</a>
             <a class="btn" @click=${this.handleParticipateButtonClick}>Mijn interventie deelnames</a>`;
@@ -142,7 +142,7 @@ export class Home extends LitElement {
                 </div>
             </div>
             <div class="home-container">
-                <my-intervention-box .userId=${this.userData.person.id}></my-intervention-box>
+                ${this.userData.person ? html`<my-intervention-box .userId=${this.userData.person.id}></my-intervention-box>` : ''}
                 ${this.renderCreateInterventionBox()}
             </div>
         `;
