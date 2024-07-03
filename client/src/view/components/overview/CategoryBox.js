@@ -5,132 +5,138 @@ import { CategoryQuestionItem } from './CategoryQuestionItem.js';
 
 export class CategoryBox extends LitElement {
     static styles = [global, css`
-      .title {
-        color: black;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
+        .title {
+            color: black;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
 
-      .rectangle {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        border: #D6D6D6 2px solid;
-        padding: 20px;
-        border-radius: 8px;
-        overflow: hidden;
-      }
+        .rectangle {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: #D6D6D6 2px solid;
+            padding: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-      .title-description {
-        display: flex;
-        flex-direction: column;
-      }
+        .title-description {
+            display: flex;
+            flex-direction: column;
+        }
 
-      .button-container {
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-start;
-      }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
 
-      .questions-container {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        margin-bottom: 0;
-        max-height: 0;
-        padding-top: 0;
-        overflow: hidden;
-        transition: max-height .5s ease, margin .5s ease, padding-top .4s ease;
-      }
+        .questions-container {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            margin-bottom: 0;
+            max-height: 0;
+            padding-top: 0;
+            overflow: hidden;
+            transition: max-height .5s ease, margin .5s ease, padding-top .4s ease;
+        }
 
-      .sy-progress-container {
-        align-items: center;
-        line-height: 0.1;
-        display: flex;
-        flex-direction: column;
-      }
+        .sy-progress-container {
+            align-items: center;
+            line-height: 0.1;
+            display: flex;
+            flex-direction: column;
+        }
 
-      .sy-progress-container {
-        align-items: center;
-        line-height: 0.1;
-        display: flex;
-        flex-direction: column;
-      }
+        .sy-progress-container {
+            align-items: center;
+            line-height: 0.1;
+            display: flex;
+            flex-direction: column;
+        }
 
-      .progress-wrapper {
-        width: 100%;
-        margin-bottom: .5rem;
-      }
+        .progress-wrapper {
+            width: 100%;
+            margin-bottom: .5rem;
+        }
 
-      .progress-labels {
-        width: 100%;
-        display: flex;
-        color: #666666;
-        font-style: italic;
-        justify-content: flex-end;
-        margin-top: 10px;
-      }
+        .progress-labels {
+            width: 100%;
+            display: flex;
+            color: #666666;
+            font-style: italic;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
 
-      .progress-bar {
-        width: 100%;
-        background-color: #e0e0e0;
-        height: 4px;
-        border-radius: 5px;
-        margin-top: 10px;
-        display: flex;
-      }
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            height: 4px;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: flex;
+        }
 
-      .progress-bar > .progress {
-        width: 100%;
-        height: 4px;
-        background-color: var(--color-primary);
-        border-radius: 5px;
-      }
+        .progress-bar > .progress {
+            width: 100%;
+            height: 4px;
+            background-color: var(--color-primary);
+            border-radius: 5px;
+        }
 
-      .progress-value {
-        font-size: 13px;
-        width: 0%;
-        text-align: right;
-      }
+        .progress-value {
+            font-size: 13px;
+            width: 0%;
+            text-align: right;
+        }
 
-      .progress-label {
-        line-height: 1;
-        margin: .25rem 0 .75rem 0;
-      }
+        .progress-label {
+            line-height: 1;
+            margin: .25rem 0 .75rem 0;
+        }
 
-      .show-more {
-        color: #6e706e;
-        background-color: transparent;
-        text-decoration: none;
-        cursor: pointer;
-      }
+        .show-more {
+            color: #6e706e;
+            background-color: transparent;
+            text-decoration: none;
+            cursor: pointer;
+        }
 
-      .show-less {
-        color: #6e706e;
-        background-color: transparent;
-        text-decoration: none;
-        cursor: pointer;
-        display: none;
-      }
+        .show-less {
+            color: #6e706e;
+            background-color: transparent;
+            text-decoration: none;
+            cursor: pointer;
+            display: none;
+        }
 
-      .rectangle.expanded .show-more {
-        display: none;
-      }
+        .rectangle.expanded .show-more {
+            display: none;
+        }
 
-      .rectangle.expanded .show-less {
-        display: block;
-      }
+        .rectangle.expanded .show-less {
+            display: block;
+        }
 
-      .rectangle.expanded .questions-container {
-        max-height: 10rem;
-        margin-bottom: 10px;
-        padding-top: .75rem;
-      }
+        .rectangle.expanded .questions-container {
+            max-height: 10rem;
+            margin-bottom: 10px;
+            padding-top: .75rem;
+        }
+
+        .arrow-span {
+            font-size: 1rem;
+            color: var(--color-primary);
+            vertical-align: middle;
+        }
 
         @media (max-width: 767px) {
             .title {
                 font-size: 18px;
             }
-            
+
             .progress-wrapper {
                 white-space: nowrap;
             }
@@ -228,8 +234,8 @@ export class CategoryBox extends LitElement {
                 <div class="button-container">
                   <a href="/tool/${this.surveyId}?category=${this.category.id}" class="btn">Ga verder</a>
                 </div>
-                <a class="show-more" @click="${this._toggleExpand}">Bekijk Vooruitgang <span style="font-size: 1.25rem;">&vee;</span></a>
-                <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang <span style="font-size: 1.25rem;">&wedge;</span></a>
+                <a class="show-more" @click="${this._toggleExpand}">Bekijk Vooruitgang <span class="arrow-span">&#x25BC;</span></a>
+                <a class="show-less" @click="${this._toggleExpand}">Bekijk Vooruitgang <span class="arrow-span">&#x25B2;</span></a>
             </div>
         `;
     }

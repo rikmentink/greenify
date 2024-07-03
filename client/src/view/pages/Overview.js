@@ -168,7 +168,7 @@ export class Overview extends LitElement {
                     <div class="algemeneinfo">
                         <dl class="grid-container alg-info-container">
                             <dt>Interventie:</dt>
-                            <dd>${this.interventionData._value.name}</dd>
+                            <dd>${this.interventionData._value?.name ?? ''}</dd>
                             <dt>Huidige fase:</dt>
                             <dd>${data.name}</dd>
                             <dt>Voortgang:</dt>

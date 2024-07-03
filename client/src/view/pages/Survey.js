@@ -186,7 +186,6 @@ export class Survey extends LitElement {
             task: async ([id, categoryId, page, pageSize]) => getSurvey(id, categoryId, page, pageSize),
             args: () => [id, this.categoryId, this.page, this.pageSize]
         });
-        console.log(this.data);
         return await this.data.run();
     }
 
