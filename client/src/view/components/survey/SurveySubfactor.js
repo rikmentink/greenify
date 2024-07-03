@@ -115,6 +115,8 @@ export class SurveySubfactor extends LitElement {
         if (this.response.facilitatingFactor !== -1 && this.response.priority !== -1) {
             this.commentDisabled = false;
         }
+
+        this.updatePopupContent();
     }
 
     async connectedCallback() {
@@ -137,6 +139,15 @@ export class SurveySubfactor extends LitElement {
         this.addEventListener('answer-changed', () => {
             const commentInput = this.shadowRoot.querySelector('.subfactor__comments > input');
             commentInput.disabled = this.response.facilitatingFactor === -1 || this.response.priority === -1;
+        });
+    }
+
+    updatePopupContent() {
+        const inputField = this.shadowRoot.querySelector('.subfactor__comments > input');
+        const popup = this.shadowRoot.querySelector('.popup');
+
+        inputField.addEventListener('input', () => {
+            popup.textContent = inputField.value;
         });
     }
 
