@@ -1,0 +1,106 @@
+﻿Categorie;;;Factor;;Subfactor;;
+Name;Color;Description;Title;Number;Title;Number;isSupportingFactor
+De groene interventie;#FF0000;Kenmerken van de groene interventie die van invloed zijn op de implementatie ;Afkomst plan ;1;De betrokkenen zien de ontwikkelaar van de interventie als legitiem;1;TRUE
+;;;;;Er is transparantie in hoe de besluitvorming rondom de groene interventie is verlopen;2;TRUE
+;;;Kwaliteit en sterkte bewijs ;2;Er is betrouwbaar ondersteunend bewijs voor de werking van de groene interventie. Naast wetenschappelijk bewijs kan dit bestaan uit verhalen van collega's en patiëntervaringen;3;TRUE
+;;;;;Het bewijs is gedeeld met betrokkenen;4;TRUE
+;;;Relative Advantage;3;Betrokkenen zien in dat het implementeren van de groene interventie voordelen heeft ten opzichte van de huidige situatie of het implementeren van alternatieve ideeën die hetzelfde doel hebben;5;TRUE
+;;;Aanpassingsvermogen;4;De groene interventie kan worden aangepast naar de behoefte van de betrokkenen;6;TRUE
+;;;Testbaarheid ;5;De groene interventie kan op kleine schaal worden uitgeprobeerd en indien nodig aangepast, verbeterd of teruggedraaid worden;7;TRUE
+;;;Complexiteit;6;Er is een inschatting gemaakt van de complexiteit: er is inzicht in de duur/de benodigde stappen, het bereik, hoe ingrijpend/ontwrichtend de implementatie kan zijn;8;TRUE
+;;;;;Bij het implementeren van de groene interventie wordt gebruik gemaakt van duidelijke implementatieplannen in de vorm van planningen, taakbeschrijvingen en stappenplannen;9;TRUE
+;;;Kosten;7;Er is inzicht in kosten en baten van de implementatie van de groene interventie, denk hierbij aan het ontwerp, de aanleg, gebruik en onderhoud;10;TRUE
+;;;;;Er is een gezonde balans tussen kosten en baten van de implementatie;11;TRUE
+;;;Algemeen ;8;Het ontwerp van de interventie sluit aan bij de behoeften van de gebruikers ;12;TRUE
+;;;;;Het ontwerp sluit aan bij de doelen van de interventie  ;13;TRUE
+;;;Presentatie en uitstraling;9;De groene interventie is uitnodigend en aantrekkelijk ;14;TRUE
+;;;;;De groene interventie biedt een balans tussen complexiteit, variatie en wildernis waarmee uitdaging en afleiding geboden worden en uniformiteit waarmee rust geboden wordt en overprikkeling wordt voorkomen ;15;TRUE
+;;;Toegankelijkheid ;10;De groene interventie is goed toegankelijk voor de beoogde gebruikers                                        ;16;TRUE
+;;;;;De groene interventie is in nabijheid van de gebruikers;17;TRUE
+;;;;;De groene interventie heeft gemakkelijk toegankelijke deuren, zowel langs de route naar de interventie als bij de ingang, waardoor directe toegang tot het NBI mogelijk is. Deze deuren zijn ontworpen met het oog op gebruiksgemak, zoals automatisch, ontgrendeld, zonder alarm, breed genoeg en eenvoudig te openen met een rollator, rolstoel of ander medisch hulpmiddel;18;TRUE
+;;;;;De groene interventie heeft paden geschikt voor verschillende groepen, waaronder mensen die medische hulpmiddelen gebruiken. Denk hierbij bijvoorbeeld aan paden die voorzien zijn van anti-slip bestrating, die vlak zijn zonder hellingen of trappen, en breed genoeg zijn om rolstoelen, rollators of patiënten bedden te accommoderen. ;19;TRUE
+;;;;;De groene interventie is goed onderhouden ten behoeve van de begaanbaarheid ;20;TRUE
+;;;;;Er is voldoende informatie beschikbaar over het bestaan, het doel, de gebruiksmogelijkheden en de beoogde doelgroepen van de groene interventie. Dit omvat ook de locatie, die wordt aangegeven door middel van bewegwijzering, informatieborden/folders en duidelijke toegangsdeuren.;21;TRUE
+;;;Elementen gericht op beleving ;11;De groene interventie stimuleert de zintuigen door het gebruik van een diversiteit aan kleuren, geuren, texturen, patronen, structuren en geluiden. ;22;TRUE
+;;;;;De groene interventie sluit aan bij de belevingswereld van de gebruiker  ;23;TRUE
+;;;Beschutting ;12;De groene interventie biedt beschutting tegen verschillende weersomstandigheden (zon, neerslag, wind, kou), zoals bomen, pergola's, overdekking, patio’s, glazen terras/serre;24;TRUE
+;;;Veiligheid ;13;De groene interventie is veilig:;25;TRUE
+;;;;;Er is gebruik gemaakt van elementen ter voorkoming van vallen, zoals relingen/leuningen langs wandelpaden, kleurcontrasterende (stoep)randen langs paden, lage stoepranden, gelijkmatige bodembedekking, beperkte hellingen, geen plotselinge hoogteverschillen, hellingen in plaats van trappen en anti-slip bestrating ;26;TRUE
+;;;;;Er is in het ontwerp rekening gehouden met allergische reacties, hygiënische aspecten, insecten, giftige planten, het veroorzaken van beschadigingen aan de huid (skin-tears) ;27;TRUE
+;;;;;Er is gebruik gemaakt van elementen ter voorkoming van dwalen/weglopen/bevorderen van een veilig gevoel zoals, een besloten patio, groen in nabijheid van personeel, buitengrenzen die een veilig gevoel bieden van “omsloten zijn, zonder opgesloten te zijn”, goede wegbewijzering, overzicht, herkenbare markeringen ;28;TRUE
+;;;Privacy ;14;De groene interventie biedt plekken voor privacy van gebruikers, zoals semi-omsloten ruimtes, ruimtes afgeschermd voor buitenstaanders, aparte maar nabijgelegen ruimtes voor medewerkers om zich terug te trekken, natuurlijke scheidingswanden ;29;TRUE
+;;;Comfort ;15;De groene interventie is comfortabel in het gebruik, waarbij rekening gehouden is met factoren zoals comfortabel zitmeubilair, de aanwezigheid van toiletten, rustgebieden, faciliteiten voor versnaperingen en aangename omstandigheden zoals een goede temperatuur en verlichting ;30;TRUE
+;;;Integrale duurzaamheid;16;Het ontwerp van de groene interventie is toekomstbestendig en impactvol doordat er rekening gehouden is met het stimuleren van biodiversiteit, klimaatbestendigheid, temperatuur, koeling en het gebruik van duurzame materialen  ;31;TRUE
+;;;Gezonde leefstijl ondersteunende elementen ;17;De groene interventie bevat elementen ter stimulering van een gezonde leefstijl:;32;TRUE
+;;;;;"Er is gebruik gemaakt van elementen die beweging stimuleren, zoals wandelpaden, labyrinten, aansprekende en overzichtelijke routes met interessante bestemmingen, afstandsmarkeringen, beweegtoestellen en fysieke uitdagingen (bijv. trappen, hellingen, heuvels en glooiingen; ruimtes met diverse oppervlakken)";33;TRUE
+;;;;;Er is gebruik gemaakt van elementen die sociale interactie stimuleren, zoals gemeenschappelijke ruimtes voor sociale activiteiten, hoekjes voor gesprekken, ontmoetingsplekken, eetplekken, verschillende (flexibele) zitmogelijkheden, objecten waarover gepraat kan worden;34;TRUE
+;;;;;Er is gebruik gemaakt van elementen die helpen te ontspannen, zoals comfortabele zitgelegenheden, rustplekken, waterelementen;35;TRUE
+;;;;;Er is gebruik gemaakt van elementen die ondersteunen bij een gezond voedingspatroon, zoals een kas, pluk/snoeptuin, moestuin met eetbare groenten en fruit;36;TRUE
+;;;;;Er is gebruik gemaakt van elementen die zingeving bevorderen, zoals meditatie- en stilteplekken;37;TRUE
+;;;Gebruik ;18;"Er is inzicht in welke activiteiten uitgevoerd kunnen worden in het groen, zoals zorg/therapieondersteunende activiteiten als mobiliteit- en balans training, stimuleren beweging en gespreksvoering; activiteiten met natuur, zoals het planten water geven, zaaien en plukken van vruchten; wandelen; mindfulness; (gezamenlijk) eten en drinken en pauzeren";38;TRUE
+;;;;;(Groen)activiteiten zijn afgestemd op interesses, behoeften, skills en revalidatiedoelen van de gebruiker;39;TRUE
+;;;;;Het uitvoeren van activiteiten wordt gestimuleerd en waar nodig begeleid  ;40;TRUE
+;;;;;Het is duidelijk door wie, waar en wanneer activiteiten uitgevoerd en begeleid worden;41;TRUE
+;;;;;Activiteiten worden het jaarrond uitgevoerd, en houden rekening met verschillende seizoenen en weersomstandigheden;42;TRUE
+;;;;;Het ontwerp van de groene interventie is afgestemd op de verschillende activiteiten;43;TRUE
+;;;;;Het budget van de groene interventie is afgestemd op de verschillende activiteiten;44;TRUE
+;;;;;Het NBI biedt mogelijkheden voor zowel actieve (bewust geïnitieerde) activiteiten met de natuur als passieve activiteiten waarbij gebruikers in de aanwezigheid van de natuur kunnen zijn, deze kunnen observeren en er passief van kunnen genieten.;45;TRUE
+;;;Onderhoud ;19;Er is een onderhouds- of beheerplan of kalender voor het groen;46;TRUE
+;;;;;Er zijn duidelijke afspraken over wie verantwoordelijk is voor het onderhoud en beheer van het groen;47;TRUE
+De externe omgeving;#FF0000;Kenmerken van de externe omgeving die van invloed zijn op de implementatie ;Behoeften en wensen gebruikers ;20;Gebruikers worden vroegtijdig betrokken bij de implementatie van de groene interventie ;48;TRUE
+;;;;;Er is inzicht in de behoeften en belangen van de gebruikers van de groene interventie;49;TRUE
+;;;;;De behoeften en belangen van de gebruikers staan centraal binnen de implementatie en worden geïntegreerd in het implementatieplan en het ontwerp van de groene interventie;50;TRUE
+;;;Netwerk externe organisaties ;21;De organisatie heeft een sterk (groen) netwerk buiten de organisatie met bijvoorbeeld groene partijen, natuurexperts, vrijwilligersorganisaties, sociale initiatieven, scholen en beroepsgroepen   ;51;TRUE
+;;;;;De organisatie gebruikt de kennis en kunde van externe partijen en blijft op de hoogte van de laatste actuele ontwikkelingen en kennis rondom groene interventies;52;TRUE
+;;;Externe prikkels ;22;Belangrijke samenwerkings- en/of concurrerende organisaties zijn voorgegaan in het implementeren van de groene interventie, waardoor er een positieve stimulans is om dit voorbeeld te volgen. ;53;TRUE
+;;;;;Vanuit externe centrale instanties zoals de overheid, brancheverenigingen en zorgverzekeraars wordt bijvoorbeeld via beleid, richtlijnen, subsidies en aanbevelingen implementatie van groene interventies binnen zorginstellingen ondersteund;54;TRUE
+De organisatie;#FF0000;Kenmerken van de organisatie die van invloed zijn op de implementatie ;Kenmerken organisatie ;23;Organisatorische factoren als de structuur, de omvang, de mate van professionaliteit, hoe lang een organisatie bestaat zijn van positieve invloed op de implementatie van de groene interventie;55;TRUE
+;;;Samenwerking en communicatie;24;Binnen de organisatie is er een goede samenwerking en effectieve communicatie tussen verschillende stakeholders;56;TRUE
+;;;Cultuur (Implementatiecultuur);25;De visie, normen, waarden en standpunten van de organisatie ondersteunen de implementatie van de groene interventie;57;TRUE
+;;;Behoefte aan verandering;26;Er is behoefte aan verandering ;58;TRUE
+;;;Passend ;27;De groene interventie sluit aan bij de behoeften en normen en waarden van betrokkenen;59;TRUE
+;;;;;De groene interventie kan geïntegreerd worden in het zorgproces, beleid en werkwijze;60;TRUE
+;;;Prioriteit;28;De groene interventie wordt binnen de organisatie als prioriteit gezien: het gebruik van het groen wordt gepromoot, ondersteund en beloond;61;TRUE
+;;;;;"Medewerkers beschouwen het gebruik van de groene interventie als onderdeel van hun werk in plaats van als afleiding van hun ""echte"" werk";62;TRUE
+;;;;;Medewerkers krijgen de vrijheid en vertrouwen om groen activiteiten zelfstandig te organiseren en de middelen aan te schaffen die daarvoor nodig zijn ;63;TRUE
+;;;Doelen en Feedback;29;Implementatiedoelen worden duidelijk gecommuniceerd naar betrokkenen, er wordt naar de doelen gehandeld en betrokkenen ontvangen feedback die afgestemd is op de gestelde doelen.;64;TRUE
+;;;Positief leerklimaat;30;Leiders tonen hun eventuele onvolmaaktheden en hulpvragen aan andere betrokkenen ;65;TRUE
+;;;;;Betrokkenen voelen zich goed geïnformeerd, gewaardeerd en ervaren dat ze een essentieel onderdeel zijn van het implementatieproces  ;66;TRUE
+;;;;;Betrokkenen voelen zich veilig om nieuwe methoden uit te proberen;67;TRUE
+;;;;;Er is voldoende tijd en ruimte voor reflectie en evaluatie;68;TRUE
+;;;Gereedheid voor implementatie ;31;De organisatie laat bereidheid en toewijding zien om de groene interventie te implementeren, zoals blijkt uit de volgende factoren:;69;TRUE
+;;;Betrokken leiders ;32;Belangrijke leiders of managers tonen toewijding, zijn betrokken en nemen verantwoordelijkheid voor de implementatie van de groene interventie;70;TRUE
+;;;Beschikbare middelen;33;Er is voldoende budget voor het implementeren van de groene interventie;71;TRUE
+;;;;;Er is voldoende tijd voor betrokkenen voor de implementatie, gebruik en onderhoud van de groene interventie;72;TRUE
+;;;;;Er zijn scholing en trainingen waarin betrokkenen leren hoe ze de groene interventie kunnen gebruiken en onderhouden  ;73;TRUE
+;;;;;Er is voldoende fysieke ruimte om de groene interventie te gebruiken;74;TRUE
+;;;;;Er zijn vrijwilligers die helpen bij het onderhoud van de groene interventie ;75;TRUE
+;;;;;Er zijn vrijwilligers die ingezet kunnen worden om met patiënten de groene interventie te gebruiken;76;TRUE
+;;;;;Er is een vervangingsplan dat rekening houdt met het mogelijk wegvallen van vrijwilligers  ;77;TRUE
+;;;Toegang tot kennis en informatie;34;Betrokkenen hebben toegang tot informatie- en kennisbronnen over de groene interventie en over hoe dit in werktaken kan worden geïntegreerd.;78;TRUE
+;;;;;Er is scholing en trainingen waarin betrokkenen leren hoe ze de groene interventie kunnen gebruiken en onderhouden  ;79;TRUE
+Kenmerken betrokkenen;#FF0000;Kenmerken van betrokkenen die van invloed zijn op de implementatie ;Kennis en overtuigingen tov de groene interventie;35;Betrokkenen hebben een positieve houding ten opzichte van de groene interventie: ze hechten waarde aan het implementeren van de groene interventie en / of ze zijn bekend met feiten, waarheden en principes betreffende de interventie ;80;TRUE
+;;;Vertrouwen in eigen kunnen ;36;Betrokkenen hebben vertrouwen in eigen vermogen en capaciteiten om veranderingen aan te brengen/acties uit te voeren die nodig zijn om (implementatie)doelen van de groene interventie te bereiken;81;TRUE
+;;;Gereedheid tot verandering;37;Betrokkenen zijn klaar voor de verandering ten aanzien van het implementeren en het op een enthousiaste en bekwame manier gebruiken van de groene interventie;82;TRUE
+;;;Betrokkenheid organisatie;38;Betrokkenen voelen zich betrokken bij de organisatie;83;TRUE
+;;;Overige persoonlijke kenmerken;39;Betrokkenen bezitten persoonlijke eigenschappen die een positieve invloed kunnen hebben op de implementatie, zoals intellectuele competentie, motivatie, waarden, vaardigheden, capaciteit, innovativiteit, passie, energie, doorzettingsvermogen, geduld, vermogen om kansen te grijpen, ervaring en leergierigheid;84;TRUE
+Proces;#FF0000;Kenmerken van het proces die van invloed zijn op de implementatie ;Visie;40;Er is een duidelijke visie ontwikkeld over het gebruik, de uitvoering, het onderhoud en de duurzaamheid van de groene interventie.;85;TRUE
+;;;Plan;41;Er worden eenvoudige, duidelijke en gedetailleerde implementatieplannen gebruikt voor de implementatie van de groene interventie (bijv. met behulp van schema's, taakbeschrijvingen of stappenplannen);86;TRUE
+;;;Doelen ;42;Er zijn SMART (Specifiek, Meetbaar, Acceptabel, Realistisch, Tijdsgebonden) doelstellingen opgesteld voor het implementeren van de groene interventie;87;TRUE
+;;;Planning;43;Er is een planning ontwikkeld die aansluit bij de SMART doelstellingen voor implementatie;88;TRUE
+;;;;;Er is een planning ontwikkeld waarin de rollen en taken met betrekking tot de implementatie, gebruik, onderhoud en borging van de groene interventie zijn verwerkt;89;TRUE
+;;;;;Groenactiviteiten en onderhoud hebben een vaste plek in de agenda;90;TRUE
+;;;Ontwerp ;44;Er is een integraal ontwerp waarbij rekening gehouden is met verschillende aspecten als functionaliteit, vormgeving, gebruiksgemak, duurzaamheid, levensduurkosten, produceerbaarheid, kwaliteit ;91;TRUE
+;;;;;Er een gedeelde ambitie tussen het ontwerpteam, de organisatie en betrokkenen;92;TRUE
+;;;Aantrekken en inzetten van personen;45;Binnen de organisatie zijn er formeel aangestelde bekwame implementatieleiders (b.v. een coördinator, projectmanager of teamleider) ingezet die verantwoordelijk zijn voor het leiden van de implementatie van het groen  ;93;TRUE
+;;;;;Binnen de organisatie zijn er aanspreekpunten die verantwoordelijk zijn voor onderdelen van het implementatieproces, bijvoorbeeld voor de kosten, groenactiviteiten, faciliteiten en onderhoud;94;TRUE
+;;;;;Binnen de organisatie zijn er experts of peers betrokken bij het implementatieproces die invloed hebben op de houding en overtuigingen van hun collega's met betrekking tot het implementeren en het gebruik van het groen ;95;TRUE
+;;;;;Binnen de organisatie zijn er personen die het implementeren van de groene interventie ondersteunen, stimuleren en zich inzetten om weerstand tegen het implementeren van het groen te overwinnen ;96;TRUE
+;;;;;De organisatie zet meerdere strategieën in om gebruikersaan te trekken en te betrekken bij de implementatie of het gebruik van de groene interventie (bijv. door middel van sociale marketing, scholing, het inzetten van rolmodellen, trainingen);97;TRUE
+;;;Uitvoering;46;De implementatie van de groene interventie wordt uitgevoerd en voltooid volgens plan;98;TRUE
+;;;Reflectie en evaluatie;47;Er is ruimte en tijd ingepland voor het evalueren van de voortgang en kwaliteit van het implementatieproces;99;TRUE
+;;;Continuïteit en borging ;48;Het gebruik van de groene interventie is ingebed in de organisatie en is een vast onderdeel van de dagelijkse praktijk ;100;TRUE
+;;;;;Een gestandaardiseerde cyclische methode, zoals de PDCA-cyclus, wordt gebruikt om de interventie te evalueren, nodige verbeteringen toe te passen, de resultaten te monitoren en te rapporteren over de verbeteringsacties;101;TRUE
+;;;;;Er zijn structurele fondsen gereserveerd voor onderhoud, beheer en afschrijving van het groen in het meerjarenbudget van de zorginstellingen.;102;TRUE
+;;;;;Er is en blijft iemand eigenaar van de tuin;103;TRUE
+;;;;;De groene interventie blijft onder de aandacht van betrokkenen  ;104;TRUE
