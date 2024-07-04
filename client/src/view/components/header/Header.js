@@ -16,11 +16,10 @@ export class Header extends LitElement {
                 font-weight: 700;
                 max-width: 600px;
                 word-wrap: break-word;
-                font-style: italic;
             }
           
             .nav-head-sub {
-                font-size: 0.8rem;
+                font-size: 1rem;
                 font-weight: 400;
                 color: white;
             }

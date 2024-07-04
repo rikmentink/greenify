@@ -54,7 +54,7 @@ public class InterventionControllerIntegrationTest {
     void setUp() {
         person = new Person(1L, "John", "Doe", "johndoe@gmail.com", new ArrayList<>());
         intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), Arrays.asList(person));
-        phase = new Phase(1L, PhaseName.PLANNING, "Description", intervention, new ArrayList<>());
+        phase = new Phase(1L, PhaseName.EXECUTION, "Description", intervention, new ArrayList<>());
 
         when(interventionRepository.findById(1L)).thenReturn(Optional.of(intervention));
         when(phaseRepository.findById(1L)).thenReturn(Optional.of(phase));

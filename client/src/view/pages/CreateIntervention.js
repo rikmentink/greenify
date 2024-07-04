@@ -251,17 +251,17 @@ export class CreateIntervention extends LitElement {
                                 <span class="info-icon">i
                                     <div class="popup">Geef een korte beschrijving van de interventie. Vermeld de belangrijkste doelstellingen en acties die worden ondernomen.</div>
                                 </span>
+                                <select class="phase-select" id="phase" name="phase" required>
+                                    <option value="">Kies een fase</option>
+                                    <option value="DEVELOPMENT">Ontwikkeling</option>
+                                    <option value="EXECUTION">Uitvoering</option>
+                                    <option value="EVALUATION">Evaluatie</option>
+                                </select>
                                 <textarea class="phase-description-field" id="phaseDescription" name="phaseDescription" placeholder="Beschrijving fase" required></textarea>
                                 <span class="info-icon phasedesc">i
                                     <div class="popup">Geef hier wat extra informatie aan voor de geselecteerde fase.</div>
                                 </span>
                             </div>
-                            <select class="phase-select" id="phase" name="phase" required>
-                                <option value="">Kies een fase</option>
-                                <option value="PLANNING">Planning</option>
-                                <option value="INITIATION">Initiatie</option>
-                                <option value="EXECUTION">Uitvoering</option>
-                            </select>
                         </div>
                         <div class="btn-container">
                             <button type="submit">Creëren</button>
