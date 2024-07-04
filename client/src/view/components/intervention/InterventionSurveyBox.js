@@ -3,6 +3,7 @@ import {getInterventionById, getPhasesByInterventionId} from "../../../services/
 import {getPhaseById} from "../../../services/PhaseService.js";
 import globalStyles from "../../../assets/global-styles.js";
 import {Router} from "@vaadin/router";
+import {Task} from "@lit/task";
 export class InterventionSurveyBox extends LitElement {
     static styles = [globalStyles, css`
         .title-container {
@@ -162,25 +163,36 @@ export class InterventionSurveyBox extends LitElement {
         this.phaseData = [];
         this.loading = true;
         this.data = {};
-        this.fetchIntervention();
+    }
+
+    async connectedCallback() {
+        super.connectedCallback();
+        await this.fetchIntervention();
     }
 
 
     async fetchIntervention() {
         const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
-        this.data = selectedIntervention;
+        await this._fetchData(selectedIntervention.id);
 
         if (selectedIntervention) {
-            this.interventionData = selectedIntervention;
+            this.interventionData = this.data;
         }
 
-        this.phaseData = await getPhasesByInterventionId(this.interventionData.id);
-        window.sessionStorage.setItem('intervention', JSON.stringify(this.intervention));
+        this.phaseData = await getPhasesByInterventionId(selectedIntervention.id);
         this.loading = false;
     }
 
+    async _fetchData(id) {
+        this.data = new Task(this, {
+            task: async ([id]) => getInterventionById(id),
+            args: () => [id]
+        });
+        return await this.data.run();
+    }
+
     showCurrentPhase(phase) {
-        if (phase === this.interventionData.currentPhase.id) {
+        if (phase === this.interventionData.value.currentPhase.id) {
             return '2px solid var(--color-primary)';
         }
 
@@ -188,32 +200,38 @@ export class InterventionSurveyBox extends LitElement {
     }
 
     renderSurveys() {
-       if(this.loading) {
-           return html`<p>Loading...</p>`;
-       } else {
-           return this.phaseData.map(phase => {
-               let progress = Math.round(phase.progress) + "%"
-               return html`
-                <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
-                    <p class="sy-header"><span class="sy-phase">Naam: ${phase.name}</span></p>
-                    <div class="sy-progress-container">
-                        <div class="progress-labels">
-                        </div>
-                        <div class="button-container">
-                            <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool &#10132;</a>
-                            <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport &#10132;</a>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
-                        </div>
-                        <div class="progress-labels">
-                            <p class="progress-label">${progress}</p>
-                        </div>
+        if(this.loading) {
+            return html`<p>Loading...</p>`;
+        } else {
+            const sortedPhases = [...this.phaseData].sort((a, b) => {
+                if (a.id === this.interventionData.value.currentPhase.id) return -1;
+                if (b.id === this.interventionData.value.currentPhase.id) return 1;
+                return 0;
+            });
+
+            return sortedPhases.map(phase => {
+                let progress = Math.round(phase.progress) + "%"
+                return html`
+            <div class="survey-box" style="border: ${this.showCurrentPhase(phase.id)}">
+                <p class="sy-header"><span class="sy-phase">Naam: ${phase.name}</span></p>
+                <div class="sy-progress-container">
+                    <div class="progress-labels">
+                    </div>
+                    <div class="button-container">
+                        <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool &#10132;</a>
+                        <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport &#10132;</a>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <p class="progress-label">${progress}</p>
                     </div>
                 </div>
-            `;
-           });
-       }
+            </div>
+        `;
+            });
+        }
     }
 
     navigateToReport(phaseId, phaseName, interventionId) {
@@ -232,7 +250,7 @@ export class InterventionSurveyBox extends LitElement {
                 ${this.renderSurveys()}
             </div>
             <div class="1ntainer">
-                <a class="start-fase-btn" href="/intervention/${this.data.id}/new-phase">Nieuwe fase starten</a>
+                <a class="start-fase-btn" href="/intervention/${this.data.value.id}/new-phase">Nieuwe fase starten</a>
                 <hr>
             </div>`;
     }
