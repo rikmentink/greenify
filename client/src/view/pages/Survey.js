@@ -56,11 +56,11 @@ export class Survey extends LitElement {
             margin-bottom: .5rem;
         } 
       
-      .btn-container {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 3rem;
-      }
+        .btn-container {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 3rem;
+        }
       
         .scroll-to-top {
             position: fixed;
@@ -78,41 +78,41 @@ export class Survey extends LitElement {
             text-decoration: none;
         }
 
-      .info-icon {
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        background-color: #ccc;
-        color: white;
-        border-color: #ccc;
-        text-align: center;
-        border-radius: 50%;
-        font-size: 10px;
-        line-height: 15px;
-        margin-left: 10px;
-        cursor: pointer;
-        position: relative;
-      }
+        .info-icon {
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          background-color: #ccc;
+          color: white;
+          border-color: #ccc;
+          text-align: center;
+          border-radius: 50%;
+          font-size: 10px;
+          line-height: 15px;
+          margin-left: 10px;
+          cursor: pointer;
+          position: relative;
+        }
 
-      .popup {
-        display: none;
-        position: absolute;
-        top: 30px;
-        left: 0;
-        background-color: white;
-        color: black;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        padding: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        z-index: 10;
-        width: 200px;
-        font-weight: normal;
-      }
+        .popup {
+          display: none;
+          position: absolute;
+          top: 30px;
+          left: 0;
+          background-color: white;
+          color: black;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          padding: 10px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          z-index: 10;
+          width: 200px;
+          font-weight: normal;
+        }
 
-      .info-icon:hover .popup {
-        display: block;
-      }
+        .info-icon:hover .popup {
+          display: block;
+        }
     `]
 
     constructor() {
