@@ -218,7 +218,7 @@ public class SurveyServiceTest {
      */
     @Test
     @DisplayName("When creating a default template, it should return the active template if one already exists")
-    public void createDefaultTemplateShouldReturnActive() {
+    public void createDefaultTemplateShouldReturnActive() throws Exception {
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 
         surveyService.createDefaultTemplate();
@@ -227,7 +227,7 @@ public class SurveyServiceTest {
 
     @Test
     @DisplayName("When creating a default template and none exists, it should create one")
-    public void createDefaultTemplateShouldCreate() {
+    public void createDefaultTemplateShouldCreate() throws Exception {
         when(templateRepository.count()).thenReturn(0L);
         when(templateRepository.findFirstByOrderByVersionDesc()).thenReturn(Optional.of(this.mockTemplate()));
 

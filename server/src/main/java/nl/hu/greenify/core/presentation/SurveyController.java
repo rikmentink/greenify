@@ -50,7 +50,7 @@ public class SurveyController extends Controller {
 
 //    @Secured("ROLE_VUMEDEWERKER")
     @PostMapping(value="/template/default", produces="application/json")
-    public ResponseEntity<?> createDefaultTemplate() {
+    public ResponseEntity<?> createDefaultTemplate() throws Exception {
         return this.createResponse(this.surveyService.createDefaultTemplate());
     }
 
