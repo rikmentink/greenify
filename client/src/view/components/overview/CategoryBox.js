@@ -122,7 +122,7 @@ export class CategoryBox extends LitElement {
         }
 
         .rectangle.expanded .questions-container {
-            max-height: 10rem;
+            max-height: 25rem;
             margin-bottom: 10px;
             padding-top: .75rem;
         }
