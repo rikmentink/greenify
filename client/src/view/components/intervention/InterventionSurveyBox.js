@@ -172,14 +172,11 @@ export class InterventionSurveyBox extends LitElement {
 
 
     async fetchIntervention() {
-        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
-        await this._fetchData(selectedIntervention.id);
+        await this._fetchData(this.id);
 
-        if (selectedIntervention) {
-            this.interventionData = this.data;
-        }
+        this.interventionData = this.data || {};
 
-        this.phaseData = await getPhasesByInterventionId(selectedIntervention.id);
+        this.phaseData = await getPhasesByInterventionId(this.id);
         this.loading = false;
     }
 
@@ -218,8 +215,8 @@ export class InterventionSurveyBox extends LitElement {
                     <div class="progress-labels">
                     </div>
                     <div class="button-container">
-                        <a class="start-fase-btn" href="/intervention/${this.interventionData.id}/phase/${phase.id}">Bekijk Tool &#10132;</a>
-                        <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.interventionData.id)}>Bekijk Eindrapport &#10132;</a>
+                        <a class="start-fase-btn" href="/intervention/${this.id}/phase/${phase.id}">Bekijk Tool &#10132;</a>
+                        <a class="start-fase-btn" @click=${() => this.navigateToReport(phase.id, phase.name, this.id)}>Bekijk Eindrapport &#10132;</a>
                     </div>
                     <div class="progress-bar">
                         <div class="progress" style="width: ${progress}" aria-label="Progression bar"></div>
@@ -235,7 +232,7 @@ export class InterventionSurveyBox extends LitElement {
     }
 
     navigateToReport(phaseId, phaseName, interventionId) {
-        const interventionNameParam = encodeURIComponent(this.interventionData.name);
+        const interventionNameParam = encodeURIComponent(this.interventionData.value.name);
         const phaseNameParam = encodeURIComponent(phaseName);
         const interventionIdParam = encodeURIComponent(interventionId);
         Router.go(`/phase/${phaseId}/report?&interventionId=${interventionIdParam}&interventionName=${interventionNameParam}&phaseName=${phaseNameParam}`);
@@ -250,7 +247,7 @@ export class InterventionSurveyBox extends LitElement {
                 ${this.renderSurveys()}
             </div>
             <div class="1ntainer">
-                <a class="start-fase-btn" href="/intervention/${this.data.value.id}/new-phase">Nieuwe fase starten</a>
+                <a class="start-fase-btn" href="/intervention/${this.id}/new-phase">Nieuwe fase starten</a>
                 <hr>
             </div>`;
     }
