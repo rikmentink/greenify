@@ -1,6 +1,6 @@
 ﻿Categorie;;;Factor;;Subfactor;;
 Name;Color;Description;Title;Number;Title;Number;isSupportingFactor
-De groene interventie;#FF0000;Kenmerken van de groene interventie die van invloed zijn op de implementatie ;Afkomst plan ;1;De betrokkenen zien de ontwikkelaar van de interventie als legitiem;1;TRUE
+1. De groene interventie;#FF0000;Kenmerken van de groene interventie die van invloed zijn op de implementatie ;Afkomst plan ;1;De betrokkenen zien de ontwikkelaar van de interventie als legitiem;1;TRUE
 ;;;;;Er is transparantie in hoe de besluitvorming rondom de groene interventie is verlopen;2;TRUE
 ;;;Kwaliteit en sterkte bewijs ;2;Er is betrouwbaar ondersteunend bewijs voor de werking van de groene interventie. Naast wetenschappelijk bewijs kan dit bestaan uit verhalen van collega's en patiëntervaringen;3;TRUE
 ;;;;;Het bewijs is gedeeld met betrokkenen;4;TRUE
@@ -47,14 +47,14 @@ De groene interventie;#FF0000;Kenmerken van de groene interventie die van invloe
 ;;;;;Het NBI biedt mogelijkheden voor zowel actieve (bewust geïnitieerde) activiteiten met de natuur als passieve activiteiten waarbij gebruikers in de aanwezigheid van de natuur kunnen zijn, deze kunnen observeren en er passief van kunnen genieten.;45;TRUE
 ;;;Onderhoud ;19;Er is een onderhouds- of beheerplan of kalender voor het groen;46;TRUE
 ;;;;;Er zijn duidelijke afspraken over wie verantwoordelijk is voor het onderhoud en beheer van het groen;47;TRUE
-De externe omgeving;#FF0000;Kenmerken van de externe omgeving die van invloed zijn op de implementatie ;Behoeften en wensen gebruikers ;20;Gebruikers worden vroegtijdig betrokken bij de implementatie van de groene interventie ;48;TRUE
+2. De externe omgeving;#FF0000;Kenmerken van de externe omgeving die van invloed zijn op de implementatie ;Behoeften en wensen gebruikers ;20;Gebruikers worden vroegtijdig betrokken bij de implementatie van de groene interventie ;48;TRUE
 ;;;;;Er is inzicht in de behoeften en belangen van de gebruikers van de groene interventie;49;TRUE
 ;;;;;De behoeften en belangen van de gebruikers staan centraal binnen de implementatie en worden geïntegreerd in het implementatieplan en het ontwerp van de groene interventie;50;TRUE
 ;;;Netwerk externe organisaties ;21;De organisatie heeft een sterk (groen) netwerk buiten de organisatie met bijvoorbeeld groene partijen, natuurexperts, vrijwilligersorganisaties, sociale initiatieven, scholen en beroepsgroepen   ;51;TRUE
 ;;;;;De organisatie gebruikt de kennis en kunde van externe partijen en blijft op de hoogte van de laatste actuele ontwikkelingen en kennis rondom groene interventies;52;TRUE
 ;;;Externe prikkels ;22;Belangrijke samenwerkings- en/of concurrerende organisaties zijn voorgegaan in het implementeren van de groene interventie, waardoor er een positieve stimulans is om dit voorbeeld te volgen. ;53;TRUE
 ;;;;;Vanuit externe centrale instanties zoals de overheid, brancheverenigingen en zorgverzekeraars wordt bijvoorbeeld via beleid, richtlijnen, subsidies en aanbevelingen implementatie van groene interventies binnen zorginstellingen ondersteund;54;TRUE
-De organisatie;#FF0000;Kenmerken van de organisatie die van invloed zijn op de implementatie ;Kenmerken organisatie ;23;Organisatorische factoren als de structuur, de omvang, de mate van professionaliteit, hoe lang een organisatie bestaat zijn van positieve invloed op de implementatie van de groene interventie;55;TRUE
+3. De organisatie;#FF0000;Kenmerken van de organisatie die van invloed zijn op de implementatie ;Kenmerken organisatie ;23;Organisatorische factoren als de structuur, de omvang, de mate van professionaliteit, hoe lang een organisatie bestaat zijn van positieve invloed op de implementatie van de groene interventie;55;TRUE
 ;;;Samenwerking en communicatie;24;Binnen de organisatie is er een goede samenwerking en effectieve communicatie tussen verschillende stakeholders;56;TRUE
 ;;;Cultuur (Implementatiecultuur);25;De visie, normen, waarden en standpunten van de organisatie ondersteunen de implementatie van de groene interventie;57;TRUE
 ;;;Behoefte aan verandering;26;Er is behoefte aan verandering ;58;TRUE
@@ -79,12 +79,12 @@ De organisatie;#FF0000;Kenmerken van de organisatie die van invloed zijn op de i
 ;;;;;Er is een vervangingsplan dat rekening houdt met het mogelijk wegvallen van vrijwilligers  ;77;TRUE
 ;;;Toegang tot kennis en informatie;34;Betrokkenen hebben toegang tot informatie- en kennisbronnen over de groene interventie en over hoe dit in werktaken kan worden geïntegreerd.;78;TRUE
 ;;;;;Er is scholing en trainingen waarin betrokkenen leren hoe ze de groene interventie kunnen gebruiken en onderhouden  ;79;TRUE
-Kenmerken betrokkenen;#FF0000;Kenmerken van betrokkenen die van invloed zijn op de implementatie ;Kennis en overtuigingen tov de groene interventie;35;Betrokkenen hebben een positieve houding ten opzichte van de groene interventie: ze hechten waarde aan het implementeren van de groene interventie en / of ze zijn bekend met feiten, waarheden en principes betreffende de interventie ;80;TRUE
+4. Kenmerken betrokkenen;#FF0000;Kenmerken van betrokkenen die van invloed zijn op de implementatie ;Kennis en overtuigingen tov de groene interventie;35;Betrokkenen hebben een positieve houding ten opzichte van de groene interventie: ze hechten waarde aan het implementeren van de groene interventie en / of ze zijn bekend met feiten, waarheden en principes betreffende de interventie ;80;TRUE
 ;;;Vertrouwen in eigen kunnen ;36;Betrokkenen hebben vertrouwen in eigen vermogen en capaciteiten om veranderingen aan te brengen/acties uit te voeren die nodig zijn om (implementatie)doelen van de groene interventie te bereiken;81;TRUE
 ;;;Gereedheid tot verandering;37;Betrokkenen zijn klaar voor de verandering ten aanzien van het implementeren en het op een enthousiaste en bekwame manier gebruiken van de groene interventie;82;TRUE
 ;;;Betrokkenheid organisatie;38;Betrokkenen voelen zich betrokken bij de organisatie;83;TRUE
 ;;;Overige persoonlijke kenmerken;39;Betrokkenen bezitten persoonlijke eigenschappen die een positieve invloed kunnen hebben op de implementatie, zoals intellectuele competentie, motivatie, waarden, vaardigheden, capaciteit, innovativiteit, passie, energie, doorzettingsvermogen, geduld, vermogen om kansen te grijpen, ervaring en leergierigheid;84;TRUE
-Proces;#FF0000;Kenmerken van het proces die van invloed zijn op de implementatie ;Visie;40;Er is een duidelijke visie ontwikkeld over het gebruik, de uitvoering, het onderhoud en de duurzaamheid van de groene interventie.;85;TRUE
+5. Proces;#FF0000;Kenmerken van het proces die van invloed zijn op de implementatie ;Visie;40;Er is een duidelijke visie ontwikkeld over het gebruik, de uitvoering, het onderhoud en de duurzaamheid van de groene interventie.;85;TRUE
 ;;;Plan;41;Er worden eenvoudige, duidelijke en gedetailleerde implementatieplannen gebruikt voor de implementatie van de groene interventie (bijv. met behulp van schema's, taakbeschrijvingen of stappenplannen);86;TRUE
 ;;;Doelen ;42;Er zijn SMART (Specifiek, Meetbaar, Acceptabel, Realistisch, Tijdsgebonden) doelstellingen opgesteld voor het implementeren van de groene interventie;87;TRUE
 ;;;Planning;43;Er is een planning ontwikkeld die aansluit bij de SMART doelstellingen voor implementatie;88;TRUE
