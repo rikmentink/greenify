@@ -1,8 +1,12 @@
 package nl.hu.greenify.core.application;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.BufferedReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
+
+import org.springframework.core.io.ClassPathResource;
+import java.io.FileReader;
 
 import jakarta.annotation.PostConstruct;
 import nl.hu.greenify.core.domain.*;
@@ -126,7 +130,7 @@ public class SurveyService {
         surveyRepository.save(survey);
     }
 
-    public Template createDefaultTemplate() {
+    public Template createDefaultTemplate() throws Exception {
         this.createTemplateIfNotExists();
         return this.getActiveTemplate();
     }
@@ -145,64 +149,65 @@ public class SurveyService {
                 .orElseThrow(() -> new TemplateNotFoundException("No active template found."));
     }
 
-    private void createTemplateIfNotExists() {
+    private void createTemplateIfNotExists() throws Exception {
         if (this.templateRepository.count() > 0) return;
+        this.createTemplateFromCsv();
+    }
 
-        // Category 1
-        // For factor 1
-        Subfactor subfactor1 = Subfactor.createSubfactor("De betrokkenen zien de ontwikkelaar van de interventie als legitiem", 1, true);
-        Subfactor subfactor2 = Subfactor.createSubfactor("Er is transparantie in hoe de besluitvorming rondom de groene interventie is verlopen", 2, true);
-        // For factor 2
-        Subfactor subfactor3 = Subfactor.createSubfactor("Er is betrouwbaar ondersteunend bewijs voor de werking van de groene interventie. Naast wetenschappelijk bewijs kan dit bestaan uit verhalen van collega's en patiëntervaringen", 3, true);
-        Subfactor subfactor4 = Subfactor.createSubfactor("Het bewijs is gedeeld met betrokkenen", 4, true);
+    private void createTemplateFromCsv() throws Exception {
+        List<String[]> csvRecords = readCsv("templates/GreenIT_Template_1.csv");
+        Map<String, Category> categoriesMap = new HashMap<>();
+        Map<String, Factor> factorsMap = new HashMap<>();
+        String lastCategoryName = null;
+        String lastFactorTitle = null;
 
-        // Category 2
-        // For factor 3
-        Subfactor subfactor5 = Subfactor.createSubfactor("Gebruikers worden vroegtijdig betrokken bij de implementatie van de groene interventie", 5, true);
-        Subfactor subfactor6 = Subfactor.createSubfactor("Er is inzicht in de behoeften en belangen van de gebruikers van de groene interventie", 6, true);
-        Subfactor subfactor7 = Subfactor.createSubfactor("De behoeften en belangen van de gebruikers staan centraal binnen de implementatie en worden geïntegreerd in het implementatieplan en het ontwerp van de groene interventie", 7, true);
-        // For factor 4
-        Subfactor subfactor8 = Subfactor.createSubfactor("De organisatie heeft een sterk (groen) netwerk buiten de organisatie met bijvoorbeeld groene partijen, natuurexperts, vrijwilligersorganisaties, sociale initiatieven, scholen en beroepsgroepen", 8, true);
-        Subfactor subfactor9 = Subfactor.createSubfactor("De organisatie gebruikt de kennis en kunde van externe partijen en blijft op de hoogte van de laatste actuele ontwikkelingen en kennis rondom groene interventies", 9, true);
+        for (int i = 2; i < csvRecords.size(); i++) {
+            String[] record = csvRecords.get(i);
+            if (record.length < 8) continue;
 
-        // Category 3
-        // For factor 5
-        Subfactor subfactor10 = Subfactor.createSubfactor("Organisatorische factoren als de structuur, de omvang, de mate van professionaliteit, hoe lang een organisatie bestaat zijn van positieve invloed op de implementatie van de groene interventie", 10, true);
-        // For factor 6
-        Subfactor subfactor11 = Subfactor.createSubfactor("Binnen de organisatie is er een goede samenwerking en effectieve communicatie tussen verschillende stakeholders", 11, true);
+            String categoryName = record[0].isEmpty() ? lastCategoryName : record[0];
+            String categoryColor = record[1];
+            String categoryDescription = record[2];
+            String factorTitle = record[3].isEmpty() ? lastFactorTitle : record[3];
+            try {
+                int factorNumber = Integer.parseInt(record[4].isEmpty() ? "-1" : record[4]);
+                String subfactorTitle = record[5];
+                int subfactorNumber = Integer.parseInt(record[6]);
+                boolean isSupportingFactor = Boolean.parseBoolean(record[7]);
 
-        // Factors
-        Factor factor1 = Factor.createFactor("Afkomst plan", 1);
-        Factor factor2 = Factor.createFactor("Kwaliteit en sterkte bewijs", 2);
-        Factor factor3 = Factor.createFactor("Behoeften en wensen gebruikers", 3);
-        Factor factor4 = Factor.createFactor("Netwerk externe organisaties", 4);
-        Factor factor5 = Factor.createFactor("Kenmerken organisatie", 5);
-        Factor factor6 = Factor.createFactor("Samenwerking en communicatie", 6);
+                Category category = categoriesMap.computeIfAbsent(categoryName, k -> Category.createCategory(categoryName, categoryColor, categoryDescription));
+                String factorKey = categoryName + "_" + factorTitle;
+                Factor factor = factorsMap.computeIfAbsent(factorKey, k -> Factor.createFactor(factorTitle, factorNumber));
+                Subfactor subfactor = Subfactor.createSubfactor(subfactorTitle, subfactorNumber, isSupportingFactor);
+                factor.addSubfactor(subfactor);
 
-        factor1.setSubfactors(List.of(subfactor1, subfactor2));
-        factor2.setSubfactors(List.of(subfactor3, subfactor4));
+                if (!category.getFactors().contains(factor)) {
+                    category.addFactor(factor);
+                }
 
-        factor3.setSubfactors(List.of(subfactor5, subfactor6, subfactor7));
-        factor4.setSubfactors(List.of(subfactor8, subfactor9));
+                lastCategoryName = categoryName;
+                lastFactorTitle = factorTitle;
+            } catch (NumberFormatException e) {
+                continue;
+            }
+        }
 
-        factor5.setSubfactors(List.of(subfactor10));
-        factor6.setSubfactors(List.of(subfactor11));
-
-        // Categories
-        Category category1 = Category.createCategory("De groene interventie", "#FF0000", "Kenmerken van de groene interventie die van invloed zijn op de implementatie");
-        Category category2 = Category.createCategory("De externe omgeving", "#00FF00", "Kenmerken van de externe omgeving die van invloed zijn op de implementatie");
-        Category category3 = Category.createCategory("De organisatie", "#00FF00", "Kenmerken van de organisatie die van invloed zijn op de implementatie");
-        category1.setFactors(List.of(factor1, factor2));
-        category2.setFactors(List.of(factor3, factor4));
-        category3.setFactors(List.of(factor5, factor6));
-
-        Template template = Template.createTemplate(
-            "Default Template",
-            "Should be changed for production!",
-            1,
-            List.of(category1, category2, category3)
-        );
-
+        List<Category> categories = new ArrayList<>(categoriesMap.values());
+        Template template = Template.createTemplate("Generated Template", "Generated from CSV", 1, categories);
         this.templateRepository.save(template);
+    }
+
+    private List<String[]> readCsv(String filePath) throws Exception {
+        List<String[]> records = new ArrayList<>();
+        ClassPathResource resource = new ClassPathResource(filePath);
+
+        try (BufferedReader br = Files.newBufferedReader(Path.of(resource.getURI()))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(";");
+                records.add(values);
+            }
+        }
+        return records;
     }
 }
