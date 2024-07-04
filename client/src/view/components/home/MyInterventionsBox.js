@@ -130,7 +130,7 @@ export class MyInterventionsBox extends LitElement {
     }
 
    fetchIntervention(intervention) {
-        sessionStorage.setItem('selectedIntervention', JSON.stringify(intervention));
+        localStorage.setItem('selectedIntervention', JSON.stringify(intervention));
         Router.go(`/intervention/${intervention.id}`);
    }
 

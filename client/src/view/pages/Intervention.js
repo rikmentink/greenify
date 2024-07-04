@@ -31,7 +31,8 @@ export class Intervention extends LitElement {
            this.interventionId = selectedIntervention.id;
         }
 
-        this._fetchData(this.interventionId);
+        await this._fetchData(this.interventionId);
+        console.log(this.data.value);
         await this._fetchCurrentAccount();
     }
 
