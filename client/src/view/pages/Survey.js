@@ -56,9 +56,10 @@ export class Survey extends LitElement {
             margin-bottom: .5rem;
         } 
       
-      .next-category {
-        display: block;
-        text-align: right;
+      .btn-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 3rem;
       }
       
         .scroll-to-top {
@@ -231,7 +232,9 @@ export class Survey extends LitElement {
                                         </ol>
                                     </div>
                                 `)}
-                                <a class="link next-category" href="/tool/${this.id}?category=${this.nextCategoryId}">Ga direct naar volgende categorie &rarr;</a>
+                                <div class="btn-container">
+                                    <a class="btn" href="/tool/${this.id}?category=${this.nextCategoryId}">Ga direct naar volgende categorie &rarr;</a>
+                                </div>
                             </div>
                         `)}
                     `
