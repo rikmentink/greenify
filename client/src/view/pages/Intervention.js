@@ -9,6 +9,7 @@ import {getInterventionById} from "../../services/InterventionService.js";
 import {Task} from "@lit/task";
 import {getSurvey} from "../../services/SurveyService.js";
 import {removeParticipantFromIntervention} from "../../services/InterventionService.js";
+import {getRouter} from "../../router.js";
 
 export class Intervention extends LitElement {
     static styles = [css`;`];
@@ -26,13 +27,9 @@ export class Intervention extends LitElement {
         this.addEventListener('person-fetched', this.handlePersonFetched);
         this.addEventListener('remove-user', this.onUserDeleted);
 
-        const selectedIntervention = JSON.parse(sessionStorage.getItem('selectedIntervention'));
-        if (selectedIntervention) {
-           this.interventionId = selectedIntervention.id;
-        }
+        this.interventionId = getRouter().location.params.id || 0;
 
         await this._fetchData(this.interventionId);
-        console.log(this.data.value);
         await this._fetchCurrentAccount();
     }
 
@@ -77,8 +74,9 @@ export class Intervention extends LitElement {
     }
 
     renderUserPanel(data){
-        const userRoles = this.userData.value.authorities.map(role => role.authority);
-        if (this.userData.value.email === data.admin.email && userRoles.includes("ROLE_MANAGER")) {
+        const userRoles = this.userData.value ? this.userData.value.authorities.map(role => role.authority) : [];
+        const user = this.userData.value ? this.userData.value : {};
+        if (user.email === data.admin.email && userRoles.includes("ROLE_MANAGER")) {
             return html`
             <intervention-users-panel .userData="${data.participants}" .progress="${data.participantProgress}"></intervention-users-panel>
         `;
@@ -90,7 +88,7 @@ export class Intervention extends LitElement {
             ${this.data.render({
                 complete:  (data) => html`
                 <intervention-information-box .interventionData="${data}"></intervention-information-box>
-                <intervention-survey-box .id="${data.id}"></intervention-survey-box>
+                <intervention-survey-box .id="${this.interventionId}"></intervention-survey-box>
                 ${this.renderUserPanel(data)}
             `,
             })}
