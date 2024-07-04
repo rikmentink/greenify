@@ -33,7 +33,7 @@ export class CategoryBox extends LitElement {
 
         .questions-container {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
+            grid-template-columns: repeat(7, 1fr);
             flex-direction: row;
             gap: 10px;
             margin-bottom: 0;
