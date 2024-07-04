@@ -17,6 +17,7 @@ public class Subfactor implements IFactor {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(length = 1000)
     private String title;
     private int number;
     private boolean isSupportingFactor;
