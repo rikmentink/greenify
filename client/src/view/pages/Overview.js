@@ -152,6 +152,8 @@ export class Overview extends LitElement {
     }
 
     render() {
+        const sortedCategories = this.data._value?.categories.sort((a, b) => a.name.localeCompare(b.name));
+
         return this.data.render({
             loading: () => html`<p>Loading...</p>`,
             error: (data) => html`<p>An error occured while loading the questions: ${data.message}</p>`,
@@ -178,7 +180,7 @@ export class Overview extends LitElement {
                 </div>
                 <h2>Categorieën</h2>
                 <div class="grid-container categorie-container">
-                  ${data.categories ? data.categories.map(category => html`
+                ${sortedCategories ? sortedCategories.map(category => html`
                     <gi-categorybox .progress=${data.contenders} .category=${category} .surveyId=${data.surveyId}></gi-categorybox>`) : html`
                     <p>Loading categories...</p>`
                   }

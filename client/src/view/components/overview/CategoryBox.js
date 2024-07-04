@@ -32,7 +32,8 @@ export class CategoryBox extends LitElement {
         }
 
         .questions-container {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
             flex-direction: row;
             gap: 10px;
             margin-bottom: 0;
@@ -121,7 +122,7 @@ export class CategoryBox extends LitElement {
         }
 
         .rectangle.expanded .questions-container {
-            max-height: 10rem;
+            max-height: 25rem;
             margin-bottom: 10px;
             padding-top: .75rem;
         }
