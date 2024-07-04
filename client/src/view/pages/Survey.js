@@ -122,7 +122,6 @@ export class Survey extends LitElement {
         this.pageSize = 10;
         this.data = []
         this.displayInputLabels = false;
-        // this.nextCategoryId = 0;
     }
 
     async connectedCallback() {
