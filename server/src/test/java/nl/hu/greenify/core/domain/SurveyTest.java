@@ -103,7 +103,7 @@ public class SurveyTest {
     void setup() {
         this.person = new Person(1L, "John", "Doe", "you@example.com", new ArrayList<>());
         var intervention = new Intervention(1L, "Intervention", "Description", this.person, new ArrayList<>(), Arrays.asList(this.person));
-        var phase = new Phase(1L, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
+        var phase = new Phase(1L, PhaseName.DEVELOPMENT, "Description", intervention, new ArrayList<>());
         this.survey = new Survey(1L, phase, new ArrayList<>(), this.person);
         this.category = new Category(1L, "", "", "", new ArrayList<>());
         this.factor = new Factor(1L, "", 0, new ArrayList<>());
@@ -115,7 +115,7 @@ public class SurveyTest {
 
     private Phase mockPhase() {
         Phase phase = mock(Phase.class);
-        when(phase.getName()).thenReturn(PhaseName.INITIATION);
+        when(phase.getName()).thenReturn(PhaseName.DEVELOPMENT);
         return phase;
     }
 

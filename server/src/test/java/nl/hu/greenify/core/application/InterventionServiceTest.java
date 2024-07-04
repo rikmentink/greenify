@@ -42,7 +42,7 @@ public class InterventionServiceTest {
     void setUp() {
         person = new Person(1L, "firstName", "lastName", "username@gmail.com", new ArrayList<>());
         intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), new ArrayList<>());
-        phase = new Phase(1L, PhaseName.PLANNING, "Description", intervention, new ArrayList<>());
+        phase = new Phase(1L, PhaseName.EXECUTION, "Description", intervention, new ArrayList<>());
 
         when(personService.getPersonById(1L)).thenReturn(person);
         when(interventionRepository.save(intervention)).thenReturn(intervention);
@@ -70,14 +70,14 @@ public class InterventionServiceTest {
     @DisplayName("When adding a phase to an intervention, it should be added to the intervention")
     @Test
     void addPhase() {
-        interventionService.addPhase(1L, PhaseName.PLANNING, "Description");
+        interventionService.addPhase(1L, PhaseName.EXECUTION, "Description");
         verify(interventionRepository).save(intervention);
     }
 
     @DisplayName("When adding a phase to an intervention, a survey should be created for each participant")
     @Test
     void addPhaseShouldCreateSurveys() {
-        interventionService.addPhase(1L, PhaseName.PLANNING, "Description");
+        interventionService.addPhase(1L, PhaseName.EXECUTION, "Description");
         verify(surveyService).createSurveysForParticipants(any(), eq(intervention.getParticipants()));
     }
 

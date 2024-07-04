@@ -258,9 +258,9 @@ export class CreateIntervention extends LitElement {
                             </div>
                             <select class="phase-select" id="phase" name="phase" required>
                                 <option value="">Kies een fase</option>
-                                <option value="PLANNING">Planning</option>
-                                <option value="INITIATION">Initiatie</option>
+                                <option value="DEVELOPMENT">Ontwikkeling</option>
                                 <option value="EXECUTION">Uitvoering</option>
+                                <option value="EVALUATION">Evaluatie</option>
                             </select>
                         </div>
                         <div class="btn-container">

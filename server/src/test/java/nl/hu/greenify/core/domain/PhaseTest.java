@@ -17,7 +17,7 @@ public class PhaseTest {
     @BeforeEach
     void setUp() {
         this.intervention = new Intervention(1L, "Intervention", "Description", new Person(), new ArrayList<>(), new ArrayList<>());
-        phase = new Phase(1L, PhaseName.PLANNING, "Description", intervention, new ArrayList<>());
+        phase = new Phase(1L, PhaseName.EXECUTION, "Description", intervention, new ArrayList<>());
     }
 
     @DisplayName("Phase should have a name")

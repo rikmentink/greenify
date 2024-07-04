@@ -170,9 +170,9 @@ export class CreatePhase extends LitElement {
                             <h2>${intervention.name}</h2>
                             <form id="createPhaseForm">
                                 <select name="name" id="name" class="phase-select" required>
-                                    <option value="initiation">Initiation</option>
-                                    <option value="planning">Planning</option>
-                                    <option value="execution">Execution</option>
+                                    <option value="development">Ontwikkeling</option>
+                                    <option value="execution">Uitvoering</option>
+                                    <option value="evaluation">Evaluatie</option>
                                 </select>
                                 <textarea rows="2" name="description" id="description" placeholder="Beschrijving"></textarea>
                                 <div id="feedback"></div>

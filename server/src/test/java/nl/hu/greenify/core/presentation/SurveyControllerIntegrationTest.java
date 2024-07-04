@@ -53,7 +53,7 @@ public class SurveyControllerIntegrationTest {
     void setup() {
         this.person = new Person(PERSON_ID, "John", "Doe", "johndoe@example.com", new ArrayList<>());
         this.intervention = new Intervention(1L, "Intervention", "Intervention description", person, new ArrayList<>(), Arrays.asList(person));
-        this.phase = new Phase(PHASE_ID, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
+        this.phase = new Phase(PHASE_ID, PhaseName.DEVELOPMENT, "Description", intervention, new ArrayList<>());
         this.survey = new Survey(SURVEY_ID, this.phase, new ArrayList<>(), this.person);
     }
 

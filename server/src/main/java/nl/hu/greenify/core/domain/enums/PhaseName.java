@@ -1,9 +1,9 @@
 package nl.hu.greenify.core.domain.enums;
 
 public enum PhaseName { // default values for the phases of the project
-    INITIATION("Initiation"),
-    PLANNING("Planning"),
-    EXECUTION("Execution");
+    DEVELOPMENT("Ontwikkeling"),
+    EXECUTION("Uitvoering"),
+    EVALUATION("Evaluatie");
 
     private String value;
 

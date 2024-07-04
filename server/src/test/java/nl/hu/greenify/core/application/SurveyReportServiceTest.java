@@ -72,7 +72,7 @@ public class SurveyReportServiceTest {
 
         // Phase creation to create surveys for based on the template:
         var intervention = new Intervention(1L, "Intervention", "Description", person1, new ArrayList<>(), Arrays.asList(person1));
-        this.phase = new Phase(1L, PhaseName.INITIATION, "Description", intervention, new ArrayList<>());
+        this.phase = new Phase(1L, PhaseName.DEVELOPMENT, "Description", intervention, new ArrayList<>());
 
         // Survey creations based on templates:
         Survey.createSurvey(phase, Template.copyOf(template), person1);
