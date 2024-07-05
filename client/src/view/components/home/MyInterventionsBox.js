@@ -130,7 +130,6 @@ export class MyInterventionsBox extends LitElement {
     }
 
    fetchIntervention(intervention) {
-        localStorage.setItem('selectedIntervention', JSON.stringify(intervention));
         Router.go(`/intervention/${intervention.id}`);
    }
 
