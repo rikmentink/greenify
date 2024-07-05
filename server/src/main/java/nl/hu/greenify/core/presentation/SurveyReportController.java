@@ -21,14 +21,14 @@ public class SurveyReportController extends Controller {
         this.surveyReportService = surveyReportService;
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{phaseId}/category-scores", produces="application/json")
     public ResponseEntity<?> getAverageScoresOfCategoryForPhase(@PathVariable("phaseId") Long phaseId) {
         List<CategoryScoresDto> categoryScores = this.surveyReportService.getCategoryScores(phaseId);
         return this.createResponse(categoryScores);
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{phaseId}/subfactor-scores/{categoryName}", produces="application/json")
     public ResponseEntity<?> getAverageScoreOfSubfactorsInCategoryForPhase(@PathVariable("phaseId") Long phaseId, @PathVariable("categoryName") String categoryName) {
         List<SubfactorScoresDto> subfactorScores = this.surveyReportService.getSubfactorScores(phaseId, categoryName);

@@ -34,25 +34,26 @@ public class InterventionController extends Controller {
      * Intervention endpoints
      */
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<?> getInterventionById(@PathVariable("id") Long id) {
         Person currentPerson = accountService.getCurrentPerson();
         return this.createResponse(InterventionDto.fromEntity(this.interventionService.getInterventionById(id), currentPerson));
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_USER", "ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
     @PostMapping(value="/{id}/person/{personId}", produces="application/json")
     public ResponseEntity<?> addParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
         return this.createResponse(this.interventionService.addParticipant(id, personId), HttpStatus.CREATED);
     }
 
+    @Secured({"ROLE_USER", "ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
     @PostMapping(value="/{id}/person/{personId}/remove", produces="application/json")
     public ResponseEntity<?> removeParticipant(@PathVariable("id") Long id, @PathVariable("personId") Long personId) {
         return this.createResponse(this.interventionService.removeParticipant(id, personId), HttpStatus.CREATED);
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping("/all/{id}")
     public ResponseEntity<?> getAllInterventionsByPerson(@PathVariable("id") Long id) {
         List<Intervention> i = this.interventionService.getAllInterventionsByPerson(id);
@@ -61,7 +62,7 @@ public class InterventionController extends Controller {
         return this.createResponse(InterventionDto.fromEntities(i, person));
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @PostMapping(consumes="application/json", produces="application/json")
     public ResponseEntity<?> createIntervention(@RequestBody CreateInterventionDto createInterventionDto) {
         return this.createResponse(
@@ -78,24 +79,24 @@ public class InterventionController extends Controller {
      * Phase endpoints
      */
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/phase/{id}", produces="application/json")
     public ResponseEntity<?> getPhaseById(@PathVariable("id") Long id) {
         return this.createResponse(this.interventionService.getPhaseById(id));
     }
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{id}/phases", produces="application/json")
     public ResponseEntity<?> getPhasesByInterventionId(@PathVariable("id") Long id) {
         return this.createResponse(PhaseDto.fromEntities(this.interventionService.getPhasesByIntervention(id)));
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{interventionId}/phase/{phaseId}", produces="application/json")
     public ResponseEntity<?> getPhaseProgress(@PathVariable("interventionId") Long interventionId, @PathVariable("phaseId") Long phaseId) {
         return this.createResponse(this.interventionService.getPhaseProgress(interventionId, phaseId));
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @PostMapping(value="/{id}/phase", consumes="application/json", produces="application/json")
     public ResponseEntity<?> addPhase(@PathVariable("id") Long id, @RequestBody CreatePhaseDto createPhaseDto) {
         return this.createResponse(this.interventionService.addPhase(id, createPhaseDto.getPhaseName(), createPhaseDto.getDescription()), HttpStatus.CREATED);

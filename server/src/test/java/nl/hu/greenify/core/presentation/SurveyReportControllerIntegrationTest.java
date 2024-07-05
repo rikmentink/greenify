@@ -7,6 +7,8 @@ import nl.hu.greenify.core.domain.enums.PhaseName;
 import nl.hu.greenify.core.domain.enums.Priority;
 import nl.hu.greenify.core.domain.factor.Factor;
 import nl.hu.greenify.core.domain.factor.Subfactor;
+import nl.hu.greenify.security.application.AccountService;
+import nl.hu.greenify.security.domain.AccountCredentials;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,13 +16,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.List;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.hamcrest.Matchers.*;
@@ -46,6 +52,9 @@ public class SurveyReportControllerIntegrationTest {
     @Autowired
     private ResponseRepository responseRepository;
 
+    @MockBean
+    private AccountService accountService;
+
     Long phaseId = 0L;
     Long surveyId1 = 0L;
     Long surveyId2 = 0L;
@@ -60,6 +69,12 @@ public class SurveyReportControllerIntegrationTest {
         personRepository.deleteAll();
 
         createRepositoryData();
+
+        when(accountService.login("johndoe@gmail.com", "password"))
+                .thenReturn(new AccountCredentials("johndoe@gmail.com",
+                        List.of(new SimpleGrantedAuthority("ROLE_MANAGER"),
+                                new SimpleGrantedAuthority("ROLE_USER"),
+                                new SimpleGrantedAuthority("ROLE_VUMEDEWERKER"))));
     }
 
     void createRepositoryData() {
@@ -176,8 +191,22 @@ public class SurveyReportControllerIntegrationTest {
     @Test
     @DisplayName("Obtain category scores of non existing phase provides a message to tell the user it does not exist")
     void getCategoryScoresOfNonExistingPhaseTest() throws Exception {
+        accountService.register("johndoe@gmail.com", "password", "John", "Doe");
+
+        String loginBody = "{\"email\": \"johndoe@gmail.com\", \"password\": \"password\"}";
+        RequestBuilder requestLogin = MockMvcRequestBuilders.post("/account/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginBody);
+
+        MvcResult loginResult = mockMvc.perform(requestLogin)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String authHeader = loginResult.getResponse().getHeader("Authorization");
+
         Long phaseId = 0L;
         RequestBuilder request = MockMvcRequestBuilders.get("/survey-report/{phaseId}/category-scores", phaseId)
+                .header("Authorization", authHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
@@ -189,9 +218,23 @@ public class SurveyReportControllerIntegrationTest {
     @Test
     @DisplayName("Obtain category scores of a phase provides the average and maximum possible scores of the categories")
     void getCategoryScoresOfPhaseTest() throws Exception {
+        accountService.register("johndoe@gmail.com", "password", "John", "Doe");
+
+        String loginBody = "{\"email\": \"johndoe@gmail.com\", \"password\": \"password\"}";
+        RequestBuilder requestLogin = MockMvcRequestBuilders.post("/account/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginBody);
+
+        MvcResult loginResult = mockMvc.perform(requestLogin)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String authHeader = loginResult.getResponse().getHeader("Authorization");
+
         Long phaseId = this.phaseId;
         RequestBuilder request = MockMvcRequestBuilders
-                .get("/survey-report/{phaseId}/category-scores", phaseId);
+                .get("/survey-report/{phaseId}/category-scores", phaseId)
+                .header("Authorization", authHeader);
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -214,10 +257,24 @@ public class SurveyReportControllerIntegrationTest {
     @Test
     @DisplayName("Test getting subfactor scores for a category in a phase")
     public void testGetSubfactorScores() throws Exception {
+        accountService.register("johndoe@gmail.com", "password", "John", "Doe");
+
+        String loginBody = "{\"email\": \"johndoe@gmail.com\", \"password\": \"password\"}";
+        RequestBuilder requestLogin = MockMvcRequestBuilders.post("/account/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(loginBody);
+
+        MvcResult loginResult = mockMvc.perform(requestLogin)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String authHeader = loginResult.getResponse().getHeader("Authorization");
+
         Long phaseId = this.phaseId;
         String categoryName = "category1";
 
         RequestBuilder request = MockMvcRequestBuilders.get("/survey-report/{phaseId}/subfactor-scores/{categoryName}", phaseId, categoryName)
+                .header("Authorization", authHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
 
