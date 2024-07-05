@@ -9,7 +9,7 @@ We gaan de volgende technologieën gebruiken voor de ontwikkeling van deze appli
 
 ### Front-end
 - Lit met JavaScript
-- Sass voor styles
+- CSS voor styles
 
 ### Back-end
 - Spring Boot met Java
