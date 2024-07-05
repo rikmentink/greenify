@@ -11,15 +11,6 @@ public class ResearchReport implements IReport {
 
     @Setter
     private Phase phase;
-    @Override
-    public void generateReport() {
-
-    }
-
-    @Override
-    public double calculateAgreementScore() {
-        return 0;
-    }
 
     @Override
     public List<String> getActionPoints() {

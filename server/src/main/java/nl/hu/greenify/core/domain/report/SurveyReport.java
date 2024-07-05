@@ -26,16 +26,6 @@ public class SurveyReport implements IReport {
     }
 
     @Override
-    public void generateReport() {
-
-    }
-
-    @Override
-    public double calculateAgreementScore() {
-        return 0;
-    }
-
-    @Override
     public List<String> getActionPoints() {
         return null;
     }
