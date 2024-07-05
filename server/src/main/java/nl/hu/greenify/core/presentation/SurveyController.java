@@ -23,21 +23,21 @@ public class SurveyController extends Controller {
         this.surveyService = surveyService;
     }
 
-//    @Secured("ROLE_VUMEDEWERKER")
+    @Secured("ROLE_VUMEDEWERKER")
     @GetMapping(produces="application/json")
     public ResponseEntity<?> getAllSurveys() {
         List<SurveyDto> surveys = SurveyDto.fromEntities(this.surveyService.getAllSurveys());
         return this.createResponse(surveys);
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<?> getSurvey(@PathVariable("id") Long id) {
         SurveyDto survey = SurveyDto.fromEntity(this.surveyService.getSurvey(id));
         return this.createResponse(survey);
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @GetMapping(value="/{id}/questions", produces="application/json")
     public ResponseEntity<?> getSurveyQuestions(
             @PathVariable("id") Long id,
@@ -48,20 +48,20 @@ public class SurveyController extends Controller {
         return this.createResponse(questions);
     }
 
-//    @Secured("ROLE_VUMEDEWERKER")
+    @Secured("ROLE_VUMEDEWERKER")
     @PostMapping(value="/template/default", produces="application/json")
     public ResponseEntity<?> createDefaultTemplate() throws Exception {
         return this.createResponse(this.surveyService.createDefaultTemplate());
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @PostMapping(value="{id}/response", consumes="application/json", produces="application/json")
     public ResponseEntity<?> submitResponse(@PathVariable("id") Long id, @RequestBody SubmitResponseDto responseDto) {
         Response response = this.surveyService.submitResponse(id, responseDto);
         return this.createResponse(response, HttpStatus.CREATED);
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @DeleteMapping(value="{surveyId}/response/{subfactorId}", produces="application/json")
     public ResponseEntity<?> deleteResponse(@PathVariable("surveyId") Long surveyId, @PathVariable("subfactorId") Long subfactorId) {
         this.surveyService.deleteResponse(surveyId, subfactorId);

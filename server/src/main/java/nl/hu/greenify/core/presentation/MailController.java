@@ -16,7 +16,7 @@ public class MailController extends Controller {
         this.mailService = mailService;
     }
 
-//    @Secured({"ROLE_MANAGER", "ROLE_VUMEDEWERKER"})
+    @Secured({"ROLE_MANAGER", "ROLE_USER", "ROLE_VUMEDEWERKER"})
     @PostMapping(consumes="application/json", produces="application/json")
     public ResponseEntity<?> sendEmail(@RequestBody MailDto emailDTO) {
         return this.createResponse(
