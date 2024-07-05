@@ -23,4 +23,3 @@ We gaan de volgende technologieën gebruiken voor de ontwikkeling van deze appli
 ### CI/CD
 - GitHub voor continuous integration
 - GitHub Actions voor build pipeline
-- Azure voor deployment voor productie
