@@ -9,7 +9,7 @@ We gaan de volgende technologieën gebruiken voor de ontwikkeling van deze appli
 
 ### Front-end
 - Lit met JavaScript
-- Sass voor styles
+- CSS voor styles
 
 ### Back-end
 - Spring Boot met Java
@@ -23,4 +23,3 @@ We gaan de volgende technologieën gebruiken voor de ontwikkeling van deze appli
 ### CI/CD
 - GitHub voor continuous integration
 - GitHub Actions voor build pipeline
-- Azure voor deployment voor productie
